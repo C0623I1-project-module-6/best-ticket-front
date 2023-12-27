@@ -1,6 +1,5 @@
-import './App.css'
-import Navbar from "./component/Navbar.jsx";
-import HomeUser from "./layout/pages/home/HomeUser.jsx";
+import './index.css'
+
 import {Provider} from "react-redux";
 import {store} from "./redux/app/Store.js";
 import AppRoutes from "./ultility/router/AppRoutes.jsx";
