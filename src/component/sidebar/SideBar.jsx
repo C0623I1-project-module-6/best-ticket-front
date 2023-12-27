@@ -11,6 +11,7 @@ import iconEventHCM from '../../assets/icon/iconHCM.png';
 import iconEventHN from '../../assets/icon/iconHN.png';
 
 const Sidebar = () => {
+    const pathname = window.location.pathname;
     const icons = [
         { icon: iconHome, label: 'Trang chủ' },
         { icon: iconLiveMusic, label: 'Nhạc sống' },
