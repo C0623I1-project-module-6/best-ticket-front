@@ -1,4 +1,4 @@
-import './App.css'
+import './index.css'
 import {Provider} from "react-redux";
 import {BrowserRouter} from "react-router-dom";
 import AppRoutes from "./ultility/router/AppRoutes.jsx";
