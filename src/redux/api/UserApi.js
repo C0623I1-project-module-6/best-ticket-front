@@ -1,10 +1,10 @@
 import axios from "axios";
-import {SHOP_API} from "../../ultility/AppConstant.js"
+import {BEST_TICKET_API} from "../../ultility/AppConstant.js"
 
 export async function login(user) {
     let response = null;
     await axios({
-        url: `${SHOP_API}auth/login`,
+        url: `${BEST_TICKET_API}auth/login`,
         headers: {
             'Content-Type': 'application/json',
         },
@@ -22,7 +22,7 @@ export async function login(user) {
 export async function register(user) {
     let response = null;
     await axios({
-        url: `${SHOP_API}auth/register`,
+        url: `${BEST_TICKET_API}auth/register`,
         headers: {
             'Content-Type': 'application/json',
         },
@@ -40,7 +40,7 @@ export async function register(user) {
 export async function loginGoogle(user) {
     let response = null;
     await axios({
-        url: `${SHOP_API}auth/google-login`,
+        url: `${BEST_TICKET_API}auth/google-login`,
         headers: {
             'Content-Type': 'application/json',
         },

@@ -1,17 +1,21 @@
 import './App.css'
+import Navbar from "./component/Navbar.jsx";
+import HomeUser from "./layout/pages/home/HomeUser.jsx";
 import {Provider} from "react-redux";
-import {BrowserRouter} from "react-router-dom";
-import AppRoutes from "./ultility/router/AppRoutes.jsx";
 import {store} from "./redux/app/Store.js";
+import AppRoutes from "./ultility/router/AppRoutes.jsx";
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
 
     return (
-        <Provider store={store}>
-            <BrowserRouter>
-                <AppRoutes/>
-            </BrowserRouter>
-        </Provider>
+        <>
+         <Provider store={store}>
+             <BrowserRouter>
+                 <AppRoutes/>
+             </BrowserRouter>
+         </Provider>
+        </>
     )
 }
 
