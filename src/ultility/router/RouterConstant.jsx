@@ -1,18 +1,21 @@
-
-import Home from "../../component/content/Content.jsx"
-import HomeUser from "../../layout/pages/home/HomeUser.jsx";
+import Content from "../../component/content/Content.jsx"
+import UserHomePage from "../../layout/pages/home/UserHomePage.jsx";
 import UserLayout from "../../layout/UserLayout.jsx";
 import AdminLayout from "../../layout/AdminLayout.jsx";
-import Login from "../../component/Login.jsx";
-import HomeAdmin from "../../layout/pages/home/HomeAdmin.jsx";
+import Login from "../../component/auth/Login.jsx";
+import AdminHomePage from "../../layout/pages/home/AdminHomePage.jsx";
 import GuestLayout from "../../layout/GuestLayout.jsx";
-import Register from "../../component/Register.jsx";
+import Register from "../../component/auth/Register.jsx";
+import TicketHistory from "../../layout/pages/ticket/TicketHistory.jsx";
+import OrganizesLayout from "../../layout/OganizesLayout.jsx";
+import EventHomePage from "../../layout/pages/event/EventHomePage.jsx";
 
 export const ROUT_DATA = [
-    {path: "/", element: Home, layout: UserLayout},
     {path: "/login", element: Login, layout: GuestLayout},
     {path: "/register", element: Register, layout: GuestLayout},
-    {path: "/home", element: HomeUser, layout: UserLayout},
-    {path: "/admin", element: HomeAdmin, layout: AdminLayout},
+    {path: "/", element: UserHomePage, layout: UserLayout},
+    {path: "/event", element: EventHomePage, layout: UserLayout},
+    {path: "/my-ticket", element: TicketHistory, layout: UserLayout},
+    {path: "/admin", element: AdminHomePage, layout: AdminLayout},
 
 ];

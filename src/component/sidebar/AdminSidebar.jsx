@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {MdAccountCircle, MdAnalytics, MdLogout, MdOutlineDashboard, MdOutlineSettings,} from 'react-icons/md';
 import {BsCalendarCheck, BsChatLeftText, BsChevronDown, BsFiles, BsServer,} from 'react-icons/bs';
+import {CiCoffeeCup} from "react-icons/ci";
 
 const Menus = [
     {title: 'Dashboard', src: 'Chart_fill', icon: <MdOutlineDashboard/>},
@@ -27,6 +28,21 @@ const Menus = [
             {
                 title: 'Service 3',
                 src: '/services/services3',
+            },{
+                title: 'Service 3',
+                src: '/services/services3',
+            },{
+                title: 'Service 3',
+                src: '/services/services3',
+            },{
+                title: 'Service 3',
+                src: '/services/services3',
+            },{
+                title: 'Service 3',
+                src: '/services/services3',
+            }, {
+                title: 'Service 3',
+                src: '/services/services3',
             },
         ],
     },
@@ -36,7 +52,7 @@ const Menus = [
     {title: 'Logout', src: 'Logout', icon: <MdLogout/>},
 ];
 
-const Sidebar = () => {
+const AdminSidebar = () => {
     const [open, setOpen] = useState(true);
     const [subMenuOpen, setSubMenuOpen] = useState(false);
     const toggleSidebar = () => {
@@ -47,21 +63,8 @@ const Sidebar = () => {
             <div className=" h-screen flex items-center justify-start ">
                 <button
                     className="fixed lg:hidden z-90 bottom-10 right-8 bg-teal-800 w-10 h-10 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800   duration-300"
-                    onClick={toggleSidebar}
-                >
-        <span className="text-white">
-          <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              className="w-6 m-auto"
-              viewBox="0 0 16 16"
-          >
-            <path
-                fillRule="evenodd"
-                d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"
-            />
-          </svg>
-        </span>
+                    onClick={toggleSidebar}>
+                    <CiCoffeeCup/>
                 </button>
 
                 <div
@@ -84,7 +87,7 @@ const Sidebar = () => {
                                 <li
                                     key={index}
                                     className={`flex  rounded-md p-2 cursor-pointer hover:bg-teal-400 text-white text-sm items-center gap-x-4 
-              ${Menu.gap ? 'mt-9' : 'mt-2'}  `}
+                                        ${Menu.gap ? 'mt-9' : 'mt-2'}  `}
                                 >
                                     {Menu.icon ? Menu.icon : <MdOutlineDashboard/>}
                                     <span className="flex-1">{Menu.title}</span>
@@ -117,4 +120,4 @@ const Sidebar = () => {
     );
 };
 
-export default Sidebar;
+export default AdminSidebar;

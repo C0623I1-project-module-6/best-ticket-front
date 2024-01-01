@@ -10,24 +10,24 @@ import iconSport from '../../assets/icon/iconSport.png';
 import iconEventHCM from '../../assets/icon/iconHCM.png';
 import iconEventHN from '../../assets/icon/iconHN.png';
 
-const Sidebar = () => {
+const UserSideBar = () => {
     const pathname = window.location.pathname;
     const icons = [
-        { icon: iconHome, label: 'Trang chủ' },
-        { icon: iconLiveMusic, label: 'Nhạc sống' },
-        { icon: iconCulture, label: 'Sân khấu-Nghệ thuật ' },
-        { icon: iconNightLife, label: 'Night Life' },
-        { icon: iconCommunity, label: 'Hội thảo-Cộng đồng' },
-        { icon: iconCourse, label: 'Khóa học' },
-        { icon: iconAttractions, label: 'Tham quan du lịch' },
-        { icon: iconSport, label: 'Thể thao' },
-        { icon: iconEventHCM, label: 'Sự kiện tại TPHCM' },
-        { icon: iconEventHN, label: 'Sự kiện tại Hà Nội' },
+        { icon: iconHome, label: 'Home' },
+        { icon: iconLiveMusic, label: 'Live Music' },
+        { icon: iconCulture, label: 'Theater - Art Culture ' },
+        { icon: iconNightLife, label: 'Nightlife' },
+        { icon: iconCommunity, label: 'Community' },
+        { icon: iconCourse, label: 'Course' },
+        { icon: iconAttractions, label: 'Attractions' },
+        { icon: iconSport, label: 'Sport' },
+        { icon: iconEventHCM, label: 'Event at Ho Chi Minh City' },
+        { icon: iconEventHN, label: 'Event at Ha Noi' },
 
     ];
 
     return (
-        <div className="w-[20%] p-2 pt-5">
+        <div className="w-[800px] p-2 pt-5">
             <ul className="ml-2 text-sm ">
                 {icons.map(({ icon, label }, index) => (
                     <li key={index} className="p-2 flex rounded-full gap-2 items-center cursor-pointer transition-transform transform-gpu hover:scale-105 hover:bg-white">
@@ -40,4 +40,4 @@ const Sidebar = () => {
     );
 };
 
-export default Sidebar;
+export default UserSideBar;

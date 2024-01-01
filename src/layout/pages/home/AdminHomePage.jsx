@@ -1,4 +1,4 @@
-function HomeAdmin() {
+function AdminHomePage() {
     return (
         <>
             <div className="hero min-h-screen"
@@ -17,4 +17,4 @@ function HomeAdmin() {
     )
 }
 
-export default HomeAdmin;
+export default AdminHomePage;
