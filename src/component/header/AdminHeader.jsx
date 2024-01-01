@@ -23,8 +23,8 @@ function AdminHeader() {
                     <FaEnvelope className="cursor-pointer w-[24px]"/>
                 </div>
                 <div className="flex items-center gap-[15px] relative">
-                    <ImUserPlus className="cursor-pointer w-[24px]" onClick={() => navigate("/register")}/>
-                    <FaSignInAlt className="cursor-pointer w-[24px]" onClick={() => navigate("/login")}/>
+                    <ImUserPlus className="cursor-pointer w-[24px]" />
+                    <FaSignInAlt className="cursor-pointer w-[24px]"/>
                 </div>
             </div>
         </div>

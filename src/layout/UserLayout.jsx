@@ -1,13 +1,12 @@
-import Header from "../component/header/Header.jsx";
-import SideBar from "../component/sidebar/SideBar.jsx";
+import UserHeader from "../component/header/UserHeader.jsx";
+import {CustomSpeedDial} from "../component/CustomSpeedDial.jsx";
 
 const UserLayout = ({children}) => {
     return (
         <>
-            <div>
-                <Header/>
-                <div className="flex  ">
-                    <SideBar/>
+            <div className="flex-col relative item-center overflow-hidden">
+                <UserHeader/>
+                <div className="relative md:flex h-screen overflow-hidden ">
                     {children}
                 </div>
             </div>

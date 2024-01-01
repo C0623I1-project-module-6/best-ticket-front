@@ -1,4 +1,4 @@
-function HomeGuest() {
+function GuestHomePage() {
     return (
         <>
             <div className="hero min-h-screen bg-base-200">
@@ -18,4 +18,4 @@ function HomeGuest() {
     )
 }
 
-export default HomeGuest;
+export default GuestHomePage;
