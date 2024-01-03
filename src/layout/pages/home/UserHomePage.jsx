@@ -7,9 +7,8 @@ const UserHomePage = () => {
         <>
             <SideBar/>
             <div className="relative md:flex h-screen overflow-hidden">
-                <div className="flex-wrap overflow-y-auto">
+                <div className="flex-wrap overflow-y-auto h-screen overflow-hidden">
                     <Content/>
-                    <Footer/>
                 </div>
             </div>
         </>
