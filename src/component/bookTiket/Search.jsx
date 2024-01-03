@@ -52,7 +52,7 @@ export default function Search() {
     };
 
     return (
-        <div className="w-full bg-white m-2 rounded-lg p-2 ">
+        <div className="w-full bg-white m-2 rounded-lg p-2 overflow-y-auto">
             <div className="flex  gap-3">
                 <div className=" flex border-2 border-gray-300 rounded-lg cursor-pointer p-2">
                     <CiLocationOn size={23}/>
@@ -100,7 +100,7 @@ export default function Search() {
                     <SelectDay />
                 </div>
             </div>
-            <div className="grid grid-cols-3 mt-10">
+            <div className="grid grid-cols-3 mt-10 ">
                 {events.map((event) => (
                     <Event key={event.id} event={event} />
                 ))}
