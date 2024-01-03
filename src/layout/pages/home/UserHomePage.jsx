@@ -6,8 +6,8 @@ const UserHomePage = () => {
     return (
         <>
             <SideBar/>
-            <div className="relative md:flex h-screen overflow-hidden">
-                <div className="flex-wrap overflow-y-auto h-screen overflow-hidden">
+            <div className="relative md:flex h-screen overflow-hidden w-full">
+                <div className="flex-wrap overflow-y-auto w-full h-screen overflow-hidden">
                     <Content/>
                 </div>
             </div>

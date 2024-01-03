@@ -13,6 +13,8 @@ import {selectLoginSuccess} from "../../redux/features/UserSlice.js";
 
 const UserHeader = () => {
     const inputRef = useRef();
+    const [searchTerm, setSearchTerm] = useState('');
+
     const navigate = useNavigate();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userValue = useSelector(selectLoginSuccess)
