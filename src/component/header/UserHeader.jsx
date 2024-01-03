@@ -1,41 +1,51 @@
-import logo from "../../assets/img/logo/best-ticket-logo-v3.svg";
+import logo from "../../assets/img/logo/logo-auth-header-light.svg";
 import {CiSearch} from "react-icons/ci";
 import {FaMoon, FaSun, FaTicket} from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
-import SlideOvers from "../SlideOvers.jsx";
-import {useEffect, useState} from "react";
-import {Button, Popover, PopoverContent, PopoverHandler,} from "@material-tailwind/react";
+import {useEffect, useRef, useState} from "react";
+import {Popover, PopoverContent, PopoverHandler,} from "@material-tailwind/react";
 import {GrLanguage} from "react-icons/gr";
 import logoVie from "../../assets/img/logo/Flag_of_Vietnam.svg"
 import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
-import {CustomSpeedDial} from "../CustomSpeedDial.jsx";
+import {useSelector} from "react-redux";
+import {selectLoginSuccess} from "../../redux/features/UserSlice.js";
 
 
 const UserHeader = () => {
-
-    const [searchTerm, setSearchTerm] = useState('');
-    const handleSearch = () => {
-    };
+    const inputRef = useRef();
     const navigate = useNavigate();
-    const [openSlide, setOpenSlide] = useState(false);
+    const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    const userValue = useSelector(selectLoginSuccess)
     useEffect(() => {
-        localStorage.setItem("theme", "light");
-        const selectedTheme = localStorage.getItem("theme");
-        if (selectedTheme) {
-            document.body.classList.add(selectedTheme);
-        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            document.body.classList.add("dark");
+        localStorage.setItem("theme", theme);
+        if (
+            localStorage.theme === 'dark'
+            || (!('theme' in localStorage)
+                && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            document.documentElement.classList.add('dark')
         } else {
-            document.body.classList.add("light");
+            document.documentElement.classList.remove('dark')
         }
+    }, [theme]);
+    useEffect(() => {
+        inputRef.current.checked = theme !== "dark";
     }, []);
+
+    const changeTheme = async (e) => {
+        if (e.target.checked) {
+            await setTheme("light")
+        } else {
+            await setTheme("dark")
+        }
+    }
     return (
         <>
-            <div className="h-[76px] w-full bg-[#2dc275] text-white px-3">
-                <div className="px-6 h-full flex text-center justify-center gap-20 items-center
-                text-sm border-b-2 border-gray-400">
-                    <div className="flex items-center gap-3 font-semibold">
-                        <img src={logo} alt="" className="h-[75px] w-[100px] m-0 cursor-pointer"
+            <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">
+                <div className="px-6  flex text-center justify-center gap-20 items-center
+                text-sm border-b-2 border-gray-400 ">
+                    <div className="flex items-center gap-3 font-semibold dark:text-white">
+                        <img src={logo} alt="" className="h-[75px] w-[100px] m-0 cursor-pointer  "
                              onClick={() => navigate("/")}/>
                     </div>
                     <div className="relative text-gray-600">
@@ -47,7 +57,8 @@ const UserHeader = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button type="submit" className="absolute right-0 top-0 mt-3 mr-4" onClick={()=>navigate(`/search?${searchTerm}`)}>
+                        <button type="submit" className="absolute right-0 top-0 mt-3 mr-4"
+                                onClick={() => navigate(`/search?${searchTerm}`)}>
                             <CiSearch className="text-gray-600 h-5 w-5"/>
                         </button>
                     </div>
@@ -60,16 +71,18 @@ const UserHeader = () => {
                 </span>
 
                     </div>
-                    <div className="cursor-pointer flex items-center gap-3" onClick={() => navigate("/my-ticket")}>
+                    <div className="cursor-pointer flex items-center gap-3 hover:text-amber-400"
+                         onClick={() => navigate("/my-ticket")}>
                         <FaTicket size={30}/>
                         <span>My ticket</span>
                     </div>
                     <div className="cursor-pointer flex items-center gap-4 font-bold">
-                        <span onClick={() => navigate("/login")}>Login | Register</span>
+                        <span onClick={() => navigate("/login")}
+                              className="hover:text-amber-400">Login | Register</span>
                         {/*<IoSettingsOutline size={30} onClick={clickOpenSlide}/>*/}
                         <Popover placement="bottom">
                             <PopoverHandler>
-                               <span className="hover:bg-white rounded-full">
+                               <span className="hover:text-amber-400 rounded-full">
                                     <GrLanguage size={20}/>
                                </span>
                             </PopoverHandler>
@@ -94,7 +107,14 @@ const UserHeader = () => {
                                 </div>
                             </PopoverContent>
                         </Popover>
-                        <input type="checkbox" className="toggle toggle-warning"/>
+                        <input type="checkbox" className="toggle toggle-warning" ref={inputRef} onClick={changeTheme}/>
+                        <div>
+                            {
+                                theme === "light" ?
+                                    <FaSun color={"yellow"} size={30}/> :
+                                    <FaMoon color={"black"} size={30}/>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

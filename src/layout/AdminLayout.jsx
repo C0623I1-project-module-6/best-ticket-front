@@ -1,15 +1,14 @@
 import AdminSidebar from "../component/sidebar/AdminSidebar.jsx";
-import AdminSidebarV1 from "../component/sidebar/AdminSidebarV1.jsx";
 
 const AdminLayout = ({children}) => {
     return (
         <>
-            <div className="flex">
-                <div className="">
+            <div className="flex max-h-full h-screen overflow-hidden">
+                <div className="h-screen">
                     <AdminSidebar/>
                 </div>
-                <div className="flex-col justify-center w-full h-full ">
-                    <div className="flex h-fit">
+                <div className="flex-col justify-center w-full h-screen overflow-hidden">
+                    <div className="flex h-fit overflow-y-auto p-10">
                         {
                             children
                         }

@@ -20,8 +20,8 @@ export default function Content() {
     }, []);
 
     return (
-        <div className="w-full bg-white mx-auto overflow-x-hidden ">
-            <div className="w-full">
+        <div className=" w-full bg-white dark:bg-[#121212] mx-auto overflow-x-hidden h-full ">
+            <div className=" w-full">
                 <div className="w-[1028px] h-[500px] p-5 m-4 mx-auto">
                     <CarouselDefault />
                 </div>
