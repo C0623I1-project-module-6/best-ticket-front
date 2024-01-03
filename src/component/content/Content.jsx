@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/bundle';
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllEvent } from "../../redux/features/EventSlice.js";
+import { getAllEvent } from "../../features/EventSlice.js";
 import { CarouselDefault } from "../CarouselDefault.jsx";
 
 export default function Content() {

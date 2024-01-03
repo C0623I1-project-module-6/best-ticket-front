@@ -25,7 +25,7 @@ export default {
       },
     },
   },
-  plugins: [require('flowbite/plugin')],
+  plugins: [],
   daisyui: {
     themes: ["light", "dark", "cupcake"],
   },
@@ -45,7 +45,6 @@ module.exports = withMT({
     require("daisyui"),
     require('tailwindcss'),
     require('autoprefixer'),
-    require('flowbite/plugin'),
   ],
   daisyui: {
     themes: ["light", "dark", "cupcake"],

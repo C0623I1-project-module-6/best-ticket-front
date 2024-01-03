@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import AuthHeader from "./AuthHeader.jsx";
 import {useEffect} from "react";
-import {loginUser, selectLoginSuccess, selectUserLogin} from "../../redux/features/UserSlice.js";
+import {loginUser, selectLoginSuccess, selectUserLogin} from "../../features/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 
 function Login() {
@@ -31,7 +31,7 @@ function Login() {
         ">
             <AuthHeader name={"Login"}/>
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6"  method="POST" onSubmit={handleSubmit}>
+                <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="email"

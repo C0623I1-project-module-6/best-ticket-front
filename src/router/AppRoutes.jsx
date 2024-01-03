@@ -10,7 +10,6 @@ function AppRoutes(){
                     return <Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
                 })
             }
-
         </Routes>
     )
 }

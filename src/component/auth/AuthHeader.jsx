@@ -4,6 +4,7 @@ import logoLight from "../../assets/img/logo/logo-auth-header-light.svg";
 import logoDark from "../../assets/img/logo/logo-auth-header-dark.svg";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {GoogleLogin} from "@react-oauth/google";
 
 function AuthHeader(props) {
     const navigate = useNavigate();
@@ -25,10 +26,9 @@ function AuthHeader(props) {
         <>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm m-0">
                 <Tooltip content="Back Home">
-
                     <img
                         className="mx-auto h-[150px] w-[200px] cursor-pointer"
-                        src={theme==="light" ? logoLight : logoDark}
+                        src={theme === "light" ? logoLight : logoDark}
                         alt="Your Company"
                         onClick={() => navigate("/")}
                     />
@@ -48,15 +48,18 @@ function AuthHeader(props) {
                         </div>
                     </div>
                     <div className="w-full ">
-                        <div
-                            className="w-full h-full flex gap-3 items-center border cursor-pointer text-dark-purple
-                                hover:bg-[#ecf5ff] hover:text-[#409eff]
-                                justify-center rounded-full
-                                "
-                        >
-                            <FaGoogle className="text-[#e94820]"/>
-                            Google
-                        </div>
+                        <GoogleLogin
+                            shape={"pill"}
+                            size={"medium"}
+                            text={"continue_with"}
+                            logo_alignment={"left"}
+                            onSuccess={(response) => {
+                                console.log(response)
+                            }}
+                            onError={() => {
+                                console.log('Login Failed');
+                            }}
+                        />
                     </div>
                 </div>
                 <div className="mt-3">

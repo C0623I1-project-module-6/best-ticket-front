@@ -83,7 +83,7 @@ const TABLE_ROWS = [
 
 export default function AdminTable() {
     return (
-        <Card className="h-full w-full">
+        <Card className="h-screen w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>

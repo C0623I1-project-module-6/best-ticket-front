@@ -54,34 +54,34 @@ const UserSideBar = () => {
     ];
 
     return (
-        <div className="w-[400px] p-1 md:flex overflow-y-auto ">
-            <ul className="ml-2 text-sm w-full max-h-full h-screen">
+        <div className="w-[400px] flex-col p-1 md:flex overflow-hidden h-full ">
+            <ul className="ml-2 flex-col gap-1 text-sm w-full max-h-full h-full overflow-y-auto">
                 {icons.map(({icon, label}, index) => (
-                    <li key={index} className="p-2 flex  gap-2 items-center cursor-pointer
+                    <li key={index} className="p-2 flex gap-2 items-center cursor-pointer
                     transition-transform transform-gpu
-                    hover:scale-105 hover:bg-white
+                     hover:bg-white
                     dark:hover:bg-gray-800
                     ">
                         <img src={icon} alt={`Icon ${index}`} className="h-6 w-6  "/>
-                        <span className="overflow-hidden">{label}</span>
+                        <span>{label}</span>
                     </li>
                 ))}
                 <div>
                     <hr className="m-3 border-black dark:border-white"/>
                 </div>
                 {iconsFooter.map(({icon, label}, index) => (
-                    <div key={index} className="p-2 flex gap-2 items-center cursor-pointer
-                    transition-transform transform-gpu w-full
-                    hover:scale-105 hover:bg-white
+                    <li key={index} className="p-2 flex gap-2 items-center cursor-pointer
+                    transition-transform transform-gpu w-full h-fit
+                    hover:bg-white
                     dark:hover:bg-gray-800
-                    overflow-hidden
+
                     ">
                         {icon}
-                        <span className="overflow-hidden">{label}</span>
-                    </div>
+                        <span >{label}</span>
+                    </li>
                 ))}
-
             </ul>
+
         </div>
     );
 };
