@@ -9,6 +9,7 @@ import iconAttractions from '../../assets/icon/iconAttractions.png';
 import iconSport from '../../assets/icon/iconSport.png';
 import iconEventHCM from '../../assets/icon/iconHCM.png';
 import iconEventHN from '../../assets/icon/iconHN.png';
+import {Link} from "react-router-dom";
 
 const UserSideBar = () => {
     const pathname = window.location.pathname;
@@ -30,10 +31,13 @@ const UserSideBar = () => {
         <div className="w-[800px] p-2 pt-5">
             <ul className="ml-2 text-sm ">
                 {icons.map(({ icon, label }, index) => (
-                    <li key={index} className="p-2 flex rounded-full gap-2 items-center cursor-pointer transition-transform transform-gpu hover:scale-105 hover:bg-white">
-                        <img src={icon} alt={`Icon ${index}`} className="h-6 w-6  " />
-                        <span>{label}</span>
-                    </li>
+                    <Link to="/">
+                        <li key={index} className="p-2 flex rounded-full gap-2 items-center cursor-pointer transition-transform transform-gpu hover:scale-105 hover:bg-white">
+                            <img src={icon} alt={`Icon ${index}`} className="h-6 w-6  " />
+                            <span>{label}</span>
+                        </li>
+                    </Link>
+
                 ))}
             </ul>
         </div>

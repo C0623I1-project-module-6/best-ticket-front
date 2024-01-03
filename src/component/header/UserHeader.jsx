@@ -12,6 +12,10 @@ import {CustomSpeedDial} from "../CustomSpeedDial.jsx";
 
 
 const UserHeader = () => {
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const handleSearch = () => {
+    };
     const navigate = useNavigate();
     const [openSlide, setOpenSlide] = useState(false);
     useEffect(() => {
@@ -40,8 +44,10 @@ const UserHeader = () => {
                             name="search"
                             placeholder="Bạn cần tìm gì ?"
                             className="border-green-600 border-[1px] h-11 px-5 w-[380px] pr-10 rounded-lg text-sm focus:outline-none flex"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
+                        <button type="submit" className="absolute right-0 top-0 mt-3 mr-4" onClick={()=>navigate(`/search?${searchTerm}`)}>
                             <CiSearch className="text-gray-600 h-5 w-5"/>
                         </button>
                     </div>
