@@ -20,6 +20,7 @@ import {LiaShippingFastSolid} from "react-icons/lia";
 import {RiContactsBookLine} from "react-icons/ri";
 import {TbBooks} from "react-icons/tb";
 import {MdOutlinePayment} from "react-icons/md";
+import {Link} from "react-router-dom";
 
 const UserSideBar = () => {
     const pathname = window.location.pathname;
@@ -40,15 +41,15 @@ const UserSideBar = () => {
         {icon: <BsExclamationOctagon/>, label: 'About us'},
         {icon: <FiUsers/>, label: 'For Organizer'},
         {icon: <FaQuestion/>, label: 'FAQ'},
-        {icon: <FaRegBuilding />, label: 'Operational regulations'},
-        {icon: <PiShieldStarDuotone />, label: 'Information privacy policy'},
-        {icon: <FaBuildingColumns />, label: 'Dispute settlement policy'},
-        {icon: <IoShieldCheckmarkOutline />, label: 'Payment privacy policy'},
-        {icon: <LuPackageSearch />, label: 'Return and Inspection policy'},
-        {icon: <LiaShippingFastSolid />, label: 'Shipping and Delivery conditions'},
-        {icon: <RiContactsBookLine />, label: 'Customer Terms of Use'},
-        {icon: <TbBooks />, label: 'Organize Terms of Use'},
-        {icon: <MdOutlinePayment />, label: 'Payment Methods'},
+        {icon: <FaRegBuilding/>, label: 'Operational regulations'},
+        {icon: <PiShieldStarDuotone/>, label: 'Information privacy policy'},
+        {icon: <FaBuildingColumns/>, label: 'Dispute settlement policy'},
+        {icon: <IoShieldCheckmarkOutline/>, label: 'Payment privacy policy'},
+        {icon: <LuPackageSearch/>, label: 'Return and Inspection policy'},
+        {icon: <LiaShippingFastSolid/>, label: 'Shipping and Delivery conditions'},
+        {icon: <RiContactsBookLine/>, label: 'Customer Terms of Use'},
+        {icon: <TbBooks/>, label: 'Organize Terms of Use'},
+        {icon: <MdOutlinePayment/>, label: 'Payment Methods'},
 
     ];
 

@@ -1,18 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
-import {FaPlay} from "react-icons/fa"; // Import CSS for tippy.js
+import {CiLocationOn} from "react-icons/ci";
+import {GiDuration} from "react-icons/gi";
 
-export default function Event() {
-    const img =
-        'https://images.tkbcdn.com/1/780/300/Upload/eventcover/2023/11/30/9DAAA1.jpg';
+export default function Event({event}) {
 
     const tooltipRef = useRef(null);
 
     useEffect(() => {
         tippy(tooltipRef.current, {
-            content:
-                '[LULULOLA SHOW]',
+            content: event.name,
         });
     }, []);
 
@@ -22,16 +20,26 @@ export default function Event() {
          dark:bg-amber-300 dark:text-black dark:hover:text-black
         ">
             <div className="relative aspect-w-16 aspect-h-9 w-full h-full rounded-md overflow-hidden">
-                <img src={img} alt="" className="object-cover " />
+                <img src={event.image} alt="" className="object-cover "/>
             </div>
             <div className="flex flex-col items-start w-full pt-4 gap-y-1">
                 <p className="font-bold truncate w-full" ref={tooltipRef}>
-                    [LULULOLA SHOW]
+                    {event.name}
                 </p>
-                <p>20/2/2014</p>
-                <p className="text-neutral-400 text-sm pb-4 w-full">
-                    Văn Mai Hương
-                </p>
+                <p>20/2/2024</p>
+                <div className="flex mt-2 gap-1 items-center">
+                    <CiLocationOn/>
+                    <p className="text-neutral-400 text-sm  w-full">
+                        {event.address}
+                    </p>
+                </div>
+                <div className="flex mt-2 gap-1 items-center">
+                    <GiDuration/>
+                    <p className="text-neutral-400 text-sm w-full">
+                        {event.duration}
+                    </p>
+                </div>
+
             </div>
         </div>
     );
