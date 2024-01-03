@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { IoListOutline } from "react-icons/io5";
-import { FcCheckmark } from "react-icons/fc";
+import React, {useState} from 'react';
+import {IoListOutline} from "react-icons/io5";
+import {FcCheckmark} from "react-icons/fc";
 import SelectDay from "./partials/SelectDay.jsx";
 import Event from "./partials/Event.jsx";
-import MySelect from "./partials/MySelect.jsx";
 
 export default function Search() {
     const [selectedOptions, setSelectedOptions] = useState([]);
