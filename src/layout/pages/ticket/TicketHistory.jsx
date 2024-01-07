@@ -11,7 +11,7 @@ function TicketHistory() {
         setKeyword(data)
     }
     return (
-        <div className="bg-[#27272a]">
+        <div className="bg-[#27272a] w-full">
             <div className="flex-col mx-80 px-28 gap-10  space-y-10 text-white">
                 <div className="space-y-10">
                     <Breadcrumbs className="bg-dark ">

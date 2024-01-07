@@ -1,37 +1,155 @@
-import logo from "../../assets/img/logo/best-ticket-logo-v3.svg";
+import logo from "../../assets/img/logo/logo-auth-header-light.svg";
 import {CiSearch} from "react-icons/ci";
-import {FaMoon, FaSun, FaTicket} from "react-icons/fa6";
+import {FaMoon, FaSun, FaTicket, FaUser} from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
-import SlideOvers from "../SlideOvers.jsx";
-import {useEffect, useState} from "react";
-import {Button, Popover, PopoverContent, PopoverHandler,} from "@material-tailwind/react";
+import {useEffect, useRef, useState} from "react";
+import {Avatar, Popover, PopoverContent, PopoverHandler,} from "@material-tailwind/react";
 import {GrLanguage} from "react-icons/gr";
 import logoVie from "../../assets/img/logo/Flag_of_Vietnam.svg"
 import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
-import {CustomSpeedDial} from "../CustomSpeedDial.jsx";
+import {FaCog, FaSignOutAlt} from "react-icons/fa";
 
 
 const UserHeader = () => {
+    const inputRef = useRef();
+    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
-    const [openSlide, setOpenSlide] = useState(false);
+    const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    const user = {
+        username: "baoandlk",
+        fullName: "Hà Bảo Ân",
+        avatar: "https://docs.material-tailwind.com/img/face-2.jpg"
+    }
     useEffect(() => {
-        localStorage.setItem("theme", "light");
-        const selectedTheme = localStorage.getItem("theme");
-        if (selectedTheme) {
-            document.body.classList.add(selectedTheme);
-        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            document.body.classList.add("dark");
+        localStorage.setItem("theme", theme);
+        if (
+            localStorage.theme === 'dark'
+            || (!('theme' in localStorage)
+                && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            document.documentElement.classList.add('dark')
         } else {
-            document.body.classList.add("light");
+            document.documentElement.classList.remove('dark')
         }
+    }, [theme]);
+    useEffect(() => {
+        inputRef.current.checked = theme !== "dark";
     }, []);
+    const changeTheme = async (e) => {
+        if (e.target.checked) {
+            await setTheme("light")
+        } else {
+            await setTheme("dark")
+        }
+    }
+    const loginButton = () => {
+        return (
+            !user ?
+                <span onClick={() => navigate("/login")} className="hover:text-amber-400">
+                    Login | Register
+                </span>
+                : <Popover placement="bottom-end">
+                    <PopoverHandler>
+                        <Avatar
+                            size="sm"
+                            alt="avatar"
+                            src={user.avatar}
+                            className="border border-green-500 shadow-xl shadow-green-900/20 ring-4 ring-green-500/30"
+                        />
+
+                    </PopoverHandler>
+                    <PopoverContent className="w-48 p-1">
+                        <div className="flex-col w-full gap-3">
+                            <div className="flex-col bg-blue-gray-50 text-center items-center justify-items-center justify-center  w-full
+                                      border-2">
+                                <div>Hello</div>
+                                <div className="font-bold text-xl">{user.fullName}</div>
+                            </div>
+                            <div className="flex space-x-2 border-2  items-center justify-start w-full
+                                      cursor-pointer
+                                    ">
+                                <div className="w-[20px]">
+                                    <FaCog/>
+                                </div>
+                                <div>Edit Profile</div>
+                            </div>
+                            <div className="flex space-x-2 border-2 items-center justify-start w-full
+                                     cursor-pointer
+                                    ">
+                                <div className="w-[20px]">
+                                    <FaUser/>
+                                </div>
+                                <div>My Organize Profile</div>
+                            </div>
+                            <div className="flex space-x-2   items-center justify-start w-full
+                                    border-2 cursor-pointer
+                                    ">
+                                <div className="w-[20px]">
+                                    <FaSignOutAlt/>
+                                </div>
+                                <div>Sign out</div>
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+        )
+    }
+    const changeLanguageButton = () => {
+        return (
+            <>
+                <Popover placement="bottom-start">
+                    <PopoverHandler>
+               <span className="hover:text-amber-400 rounded-full">
+                    <GrLanguage size={20}/>
+               </span>
+                    </PopoverHandler>
+                    <PopoverContent className="w-32 p-1">
+                        <div className="flex-col justify-center justify-items-center items-center w-full">
+                            <div className="flex space-x-2 justify-center  items-center w-full
+                                    hover:bg-gray-500  hover:text-white
+                                    cursor-pointer
+                                    ">
+                                <div className="w-[20px]">
+                                    <img src={logoVie} alt="" className="w-[20px]"/>
+                                </div>
+                                <div>Viet Nam</div>
+                            </div>
+                            <div className="flex space-x-2 gap-2 justify-center  items-center w-full
+                                    hover:bg-gray-500  hover:text-white
+                                    cursor-pointer
+                                    ">
+                                <div className="w-fit h-fit">
+                                    <img src={logoEng} alt="" className="w-[20px]"/>
+                                </div>
+                                <div>English</div>
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+            </>
+        )
+    }
+    const changeThemeButton = () => {
+        return (
+            <>
+                <input type="checkbox" className="toggle toggle-warning" ref={inputRef} onClick={changeTheme}/>
+                <div>
+                    {
+                        theme === "light" ?
+                            <FaSun color={"yellow"} size={30}/> :
+                            <FaMoon color={"black"} size={30}/>
+                    }
+                </div>
+            </>
+        )
+    }
     return (
         <>
-            <div className="h-[76px] w-full bg-[#2dc275] text-white px-3">
-                <div className="px-6 h-full flex text-center justify-center gap-20 items-center
-                text-sm border-b-2 border-gray-400">
-                    <div className="flex items-center gap-3 font-semibold">
-                        <img src={logo} alt="" className="h-[75px] w-[100px] m-0 cursor-pointer"
+            <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">
+                <div className="px-6  flex text-center justify-center gap-20 items-center
+                text-sm border-b-2 border-gray-400 ">
+                    <div className="flex items-center gap-3 font-semibold dark:text-white">
+                        <img src={logo} alt="" className="h-[75px] w-[100px] m-0 cursor-pointer  "
                              onClick={() => navigate("/")}/>
                     </div>
                     <div className="relative text-gray-600">
@@ -40,60 +158,35 @@ const UserHeader = () => {
                             name="search"
                             placeholder="Bạn cần tìm gì ?"
                             className="border-green-600 border-[1px] h-11 px-5 w-[380px] pr-10 rounded-lg text-sm focus:outline-none flex"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
+                        <button type="submit" className="absolute right-0 top-0 mt-3 mr-4"
+                                onClick={() => navigate(`/search?${searchTerm}`)}>
                             <CiSearch className="text-gray-600 h-5 w-5"/>
                         </button>
                     </div>
                     <div className="flex items-center gap-3 font-semibold">
-                <span
-                    className="cursor-pointer border-white border-[1px]
-                                hover:bg-white hover:text-black
-                                rounded-3xl font-bold px-6 py-2" onClick={() => navigate("/event")}>
-                    Create Event
-                </span>
-
+                        <span
+                            className="cursor-pointer border-white border-[1px]
+                                        hover:bg-white hover:text-black
+                                        rounded-3xl font-bold px-6 py-2" onClick={() => navigate("/event")}>
+                            Create Event
+                        </span>
                     </div>
-                    <div className="cursor-pointer flex items-center gap-3" onClick={() => navigate("/my-ticket")}>
+                    <div className="cursor-pointer flex items-center gap-3 hover:text-amber-400"
+                         onClick={() => navigate("/my-ticket")}>
                         <FaTicket size={30}/>
                         <span>My ticket</span>
                     </div>
                     <div className="cursor-pointer flex items-center gap-4 font-bold">
-                        <span onClick={() => navigate("/login")}>Login | Register</span>
-                        {/*<IoSettingsOutline size={30} onClick={clickOpenSlide}/>*/}
-                        <Popover placement="bottom">
-                            <PopoverHandler>
-                               <span className="hover:bg-white rounded-full">
-                                    <GrLanguage size={20}/>
-                               </span>
-                            </PopoverHandler>
-                            <PopoverContent className="w-32 p-1">
-                                <div className="flex-col justify-center justify-items-center items-center w-full">
-                                    <div className="flex space-x-2 justify-center  items-center w-full
-                                    hover:bg-gray-500 rounded-full cursor-pointer
-                                    ">
-                                        <div className="w-[20px]">
-                                            <img src={logoVie} alt="" className="w-[20px]"/>
-                                        </div>
-                                        <div>Viet Nam</div>
-                                    </div>
-                                    <div className="flex space-x-2 gap-2 justify-center  items-center w-full
-                                    hover:bg-gray-500 rounded-full cursor-pointer
-                                    ">
-                                        <div className="w-fit h-fit">
-                                            <img src={logoEng} alt="" className="w-[20px]"/>
-                                        </div>
-                                        <div>English</div>
-                                    </div>
-                                </div>
-                            </PopoverContent>
-                        </Popover>
-                        <input type="checkbox" className="toggle toggle-warning"/>
+                        {loginButton()}
+                        {changeLanguageButton()}
+                        {changeThemeButton()}
                     </div>
                 </div>
             </div>
         </>
     );
 };
-
 export default UserHeader;

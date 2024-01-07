@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 const EventFilter = () => {
     const [startDate, setStartDate] = useState(null);
@@ -28,20 +29,26 @@ const EventFilter = () => {
     const options = ['Tất cả các ngày', 'Hôm nay', 'Tuần tới', 'Tháng tới'];
 
     return (
-        <div className="relative z-10">
-            <div onClick={() => setShowOptions(!showOptions)} className="border-2 border-gray-300 rounded-lg gap-2 cursor-pointer p-2">
-                {selectOption}
+        <div className="relative z-10 w-[250px] ">
+            <div className="flex  border-2 border-gray-300 rounded-lg gap-2 cursor-pointer p-2"
+                 onClick={() => setShowOptions(!showOptions)}>
+                <FaRegCalendarAlt size={23} />
+                <div  >
+                    {selectOption}
+                </div>
             </div>
+
             {showOptions && (
-                <div className="absolute top-2 right-0">
+                <div className="absolute top-12 bg-white w-full rounded-lg">
                     {options.map((option, index) => (
-                        <div key={index} onClick={() => setSelectOption(option)}>
+                        <div key={index} onClick={() => setSelectOption(option)}
+                            className="cursor-pointer hover:bg-green-200 p-2 rounded-lg ">
                             {option}
                         </div>
                     ))}
                     <div>
-                        <div>
-                            <p>Bắt đầu từ:</p>
+                        <div className="flex gap-2 cursor-pointer hover:bg-green-200 p-2 rounded-lg">
+                            <p>Từ: </p>
                             <DatePicker
                                 selected={startDate}
                                 onChange={handleChangeStart}
@@ -49,8 +56,8 @@ const EventFilter = () => {
                                 placeholderText="Chọn ngày"
                             />
                         </div>
-                        <div>
-                            <p>Kết thúc tại:</p>
+                        <div className="flex gap-2 cursor-pointer hover:bg-green-200 p-2 rounded-lg">
+                            <p>Tới:</p>
                             <DatePicker
                                 selected={endDate}
                                 onChange={handleChangeEnd}
@@ -58,7 +65,7 @@ const EventFilter = () => {
                                 placeholderText="Chọn ngày"
                             />
                         </div>
-                        <button onClick={handleApplyFilters}>Áp dụng</button>
+                        <button onClick={handleApplyFilters} className="ml-2">Áp dụng</button>
                     </div>
                 </div>
             )}

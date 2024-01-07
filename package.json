@@ -27,6 +27,7 @@
     "react-tailwindcss-select": "^1.8.5",
     "redux": "^5.0.0",
     "swiper": "^11.0.5",
+    "tailwind-merge": "^2.2.0",
     "tippy.js": "^6.3.7"
   },
   "devDependencies": {

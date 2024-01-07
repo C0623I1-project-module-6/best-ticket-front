@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 function AdminHeader() {
     const navigate = useNavigate();
     return (
-        <div className="flex items-center justify-between h-[70px] shadow-lg ps-[25px] pe-3">
+        <div className="flex items-center justify-between h-[70px] bg-blue-gray-400 shadow-lg ps-[25px] pe-3">
             <div className="flex items-center rounded-[5px]">
                 <input type="text"
                        className="bg-gray-100 h-[40px] outline-none pl-[13px]
@@ -23,7 +23,7 @@ function AdminHeader() {
                     <FaEnvelope className="cursor-pointer w-[24px]"/>
                 </div>
                 <div className="flex items-center gap-[15px] relative">
-                    <ImUserPlus className="cursor-pointer w-[24px]" />
+                    <ImUserPlus className="cursor-pointer w-[24px]"/>
                     <FaSignInAlt className="cursor-pointer w-[24px]"/>
                 </div>
             </div>

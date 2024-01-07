@@ -1,19 +1,45 @@
 import {useNavigate} from "react-router-dom";
 import AuthHeader from "./AuthHeader.jsx";
+import {useEffect} from "react";
+import {loginUser, selectLoginSuccess, selectUserLogin} from "../../features/UserSlice.js";
+import {useDispatch, useSelector} from "react-redux";
 
 function Login() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const selector = useSelector(selectUserLogin)
+    const loginSuccess = useSelector(selectLoginSuccess)
+    console.log(loginSuccess)
+    console.log(selector)
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const user = {
+            email: e.target[0].value,
+            password: e.target[1].value
+        }
+        dispatch(loginUser(user))
+        console.log(loginSuccess)
+        console.log(selector)
+    }
+    useEffect(() => {
+        console.log(loginSuccess)
+        console.log(selector)
+    }, [loginSuccess]);
     return (
-        <div className="flex bg-white rounded-lg items-center  flex-1 flex-col justify-center lg:px-8">
+        <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
+        dark:bg-black dark:text-white
+        ">
             <AuthHeader name={"Login"}/>
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" action="#" method="POST">
+                <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="email"
                                    className="block text-sm font-medium leading-6 text-gray-900
-                                       hover:text-gray-500 cursor-pointer">
-                                Username
+                                       hover:text-gray-500 cursor-pointer
+                                       dark:text-white
+                                       ">
+                                Email
                             </label>
                         </div>
                         <div className="mt-2">
@@ -23,7 +49,11 @@ function Login() {
                                 required
                                 type="text"
                                 autoComplete="email"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className="block w-full rounded-md border-0 py-1.5
+                                text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400
+                                focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6
+                                dark:bg-gray-400 dark:text-black
+                                "
                             />
                         </div>
                     </div>
@@ -32,7 +62,9 @@ function Login() {
                         <div className="flex items-center justify-between m-0">
                             <label htmlFor="password"
                                    className="block text-sm font-medium leading-6 text-gray-900
-                                       hover:text-gray-500 cursor-pointer">
+                                       hover:text-gray-500 cursor-pointer
+                                       dark:text-white
+                                       ">
                                 Password
                             </label>
                         </div>
@@ -45,15 +77,17 @@ function Login() {
                                 required
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1
                                     ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset
-                                    focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    focus:ring-indigo-600 sm:text-sm sm:leading-6
+                                    dark:bg-gray-400 dark:text-black
+                                    "
                             />
                         </div>
                     </div>
                     <div className="flex justify-center gap-3">
                         <div className="w-full ">
-                            <div className="w-full btn btn-outline btn-primary">
+                            <button type="submit" className="w-full btn btn-outline btn-primary dark:btn-info">
                                 Sign in
-                            </div>
+                            </button>
                         </div>
                     </div>
                     <div className="w-full flex justify-between text-sm">
