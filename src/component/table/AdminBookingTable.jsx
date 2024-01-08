@@ -134,7 +134,7 @@ export default function AdminTable() {
           <tbody>
             {tableRows.map(
               ({
-                bookingId,
+                id,
                 createdAt,
                 updatedAt,
                 status,
@@ -143,10 +143,10 @@ export default function AdminTable() {
                 organizer,
               }) => {
                 return (
-                  <tr key={bookingId}>
+                  <tr key={id}>
                     <td className="border-b border-blue-gray-50 p-4">
                       <Typography variant="body" color="blue-gray">
-                        {bookingId}
+                        {id}
                       </Typography>
                     </td>
                     <td className="border-b border-blue-gray-50 p-4">
@@ -171,12 +171,12 @@ export default function AdminTable() {
                     </td>
                     <td className="border-b border-blue-gray-50 p-4">
                       <Typography variant="body" color="blue-gray">
-                        {customer.id}
+                        {customer.fullName}
                       </Typography>
                     </td>
                     <td className="border-b border-blue-gray-50 p-4">
                       <Typography variant="body" color="blue-gray">
-                        {organizer.id}
+                        {organizer.name}
                       </Typography>
                     </td>
                   </tr>
