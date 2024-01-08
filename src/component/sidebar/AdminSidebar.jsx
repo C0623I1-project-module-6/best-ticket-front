@@ -13,7 +13,7 @@ function AdminSidebar() {
     const itemDashboard = [
         {icon: <FaHome size={25}/>, label: "Dashboard", path: "/admin"},
         {icon: <FaUsers size={25}/>, label: " Users", path: "/admin/user"},
-        {icon: <FaFileContract size={25}/>, label: " Bookings", path: "/admin/user"},
+        {icon: <FaFileContract size={25}/>, label: " Bookings", path: "/admin/bookings"},
         {icon: <MdEventAvailable size={25}/>, label: " Events", path: "/admin/user"},
         {icon: <ImTicket size={25}/>, label: " Tickets", path: "/admin/user"},
     ]

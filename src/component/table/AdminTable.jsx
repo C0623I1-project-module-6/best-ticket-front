@@ -37,7 +37,7 @@ const TABLE_ROWS = [
     {
         img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
         name: "John Michael",
-        email: "john@creative-tim.com",
+        email: "john@creative-tim .com",
         job: "Manager",
         org: "Organization",
         online: true,
