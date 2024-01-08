@@ -7,7 +7,6 @@ import EventHomePage from "../layout/pages/event/EventHomePage.jsx";
 import Login from "../component/auth/Login.jsx";
 import Register from "../component/auth/Register.jsx";
 import TicketHistory from "../layout/pages/ticket/TicketHistory.jsx";
-import EventHomePage from "../layout/pages/event/EventHomePage.jsx";
 import Search from "../component/bookTiket/Search.jsx";
 import AdminTable from "../component/table/AdminTable.jsx";
 import AdminBookingTable from "../component/table/AdminBookingTable.jsx";
