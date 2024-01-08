@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import AuthHeader from "./AuthHeader.jsx";
+import AuthHeader from "../header/AuthHeader.jsx";
 
 function Register() {
     const navigate = useNavigate();

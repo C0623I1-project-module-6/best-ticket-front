@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  mode: "jit",
   darkMode: "class",
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    './node_modules/preline/preline.js',
   ],
   theme: {
     extend: {
@@ -25,7 +25,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require('preline/plugin'),],
   daisyui: {
     themes: ["light", "dark", "cupcake"],
   },
@@ -34,7 +34,10 @@ export default {
 const withMT = require("@material-tailwind/react/utils/withMT");
 
 module.exports = withMT({
-  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  content: [
+    "./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}",
+    './node_modules/preline/preline.js',
+  ],
   theme: {
     fontFamily: {
       sans: ["Open Sans", "sans-serif"],
@@ -45,6 +48,7 @@ module.exports = withMT({
     require("daisyui"),
     require('tailwindcss'),
     require('autoprefixer'),
+    require('preline/plugin'),
   ],
   daisyui: {
     themes: ["light", "dark", "cupcake"],

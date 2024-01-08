@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import AuthHeader from "./AuthHeader.jsx";
+import AuthHeader from "../header/AuthHeader.jsx";
 import {useEffect} from "react";
 import {loginUser, selectLoginSuccess, selectUserLogin} from "../../features/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
@@ -7,23 +7,20 @@ import {useDispatch, useSelector} from "react-redux";
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const selector = useSelector(selectUserLogin)
+    const user = useSelector(selectUserLogin)
     const loginSuccess = useSelector(selectLoginSuccess)
-    console.log(loginSuccess)
-    console.log(selector)
-    const handleSubmit = (e) => {
+    const handleSubmit =  (e) => {
         e.preventDefault()
         const user = {
+            username: e.target[0].value,
             email: e.target[0].value,
+            phoneNumber: e.target[0].value,
             password: e.target[1].value
         }
         dispatch(loginUser(user))
-        console.log(loginSuccess)
-        console.log(selector)
     }
     useEffect(() => {
-        console.log(loginSuccess)
-        console.log(selector)
+        console.log(user)
     }, [loginSuccess]);
     return (
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8

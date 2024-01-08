@@ -8,18 +8,18 @@ import {GrLanguage} from "react-icons/gr";
 import logoVie from "../../assets/img/logo/Flag_of_Vietnam.svg"
 import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
+import {useDispatch, useSelector} from "react-redux";
+import {logoutUser, selectUserLogin} from "../../features/UserSlice.js";
+import avatar from "../../assets/img/User.png"
 
 
 const UserHeader = () => {
-    const inputRef = useRef();
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
+    const user =  useSelector(selectUserLogin);
+    const dispatch = useDispatch();
+    const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
-    const user = {
-        username: "baoandlk",
-        fullName: "Hà Bảo Ân",
-        avatar: "https://docs.material-tailwind.com/img/face-2.jpg"
-    }
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -52,7 +52,7 @@ const UserHeader = () => {
                     <PopoverHandler>
                         <Avatar
                             size="sm"
-                            alt="avatar"
+                            alt={avatar}
                             src={user.avatar}
                             className="border border-green-500 shadow-xl shadow-green-900/20 ring-4 ring-green-500/30"
                         />
@@ -63,7 +63,7 @@ const UserHeader = () => {
                             <div className="flex-col bg-blue-gray-50 text-center items-center justify-items-center justify-center  w-full
                                       border-2">
                                 <div>Hello</div>
-                                <div className="font-bold text-xl">{user.fullName}</div>
+                                <div className="font-bold text-xl">{user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
                                       cursor-pointer
@@ -83,7 +83,7 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2   items-center justify-start w-full
                                     border-2 cursor-pointer
-                                    ">
+                                    " onClick={()=>{logout}}>
                                 <div className="w-[20px]">
                                     <FaSignOutAlt/>
                                 </div>
@@ -142,6 +142,10 @@ const UserHeader = () => {
                 </div>
             </>
         )
+    }
+
+    const logout = () =>{
+        dispatch(logoutUser())
     }
     return (
         <>
