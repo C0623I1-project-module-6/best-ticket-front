@@ -1,15 +1,48 @@
-import logo from "../../assets/img/logo/best-ticket-logo-v1.svg"
-import {FaCogs, FaFileContract, FaHome, FaSignOutAlt} from "react-icons/fa";
-import {FaUsers} from "react-icons/fa6";
+import {FaCogs, FaFileContract, FaHome, FaSearch, FaSignOutAlt} from "react-icons/fa";
+import {FaMoon, FaSun, FaUsers} from "react-icons/fa6";
 import {MdEventAvailable} from "react-icons/md";
 import {ImTicket} from "react-icons/im";
 import {useNavigate, useParams} from "react-router-dom";
-import {Avatar, Typography} from "@material-tailwind/react";
+import {Avatar} from "@material-tailwind/react";
+import {useEffect, useRef, useState} from "react";
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
 
 function AdminSidebar() {
     const navigate = useNavigate();
     const param = useParams();
-    console.log(param)
+    const inputRef = useRef();
+    const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    useEffect(() => {
+        localStorage.setItem("theme", theme);
+        if (
+            localStorage.theme === 'dark'
+            || (!('theme' in localStorage)
+                && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    }, [theme]);
+    useEffect(() => {
+        inputRef.current.checked = theme !== "dark";
+    }, []);
+    const changeTheme = async (e) => {
+        if (e.target.checked) {
+            await setTheme("light")
+        } else {
+            await setTheme("dark")
+        }
+    }
+    const changeThemeButton = () => {
+        return (
+            <>
+            </>
+        )
+    }
+
     const itemDashboard = [
         {icon: <FaHome size={25}/>, label: "Dashboard", path: "/admin"},
         {icon: <FaUsers size={25}/>, label: " Users", path: "/admin/user"},
@@ -20,10 +53,21 @@ function AdminSidebar() {
     const itemFooter = [
         {icon: <FaCogs size={25}/>, label: "Setting", path: "/admin"},
         {icon: <FaSignOutAlt size={25}/>, label: "Log out", path: "/admin"},
+        {
+            label: <input type="checkbox" className="toggle toggle-warning" ref={inputRef} onClick={changeTheme}/>
+            , icon: <div>
+                {
+                    theme === "light" ?
+                        <FaSun color={"yellow"} size={30}/> :
+                        <FaMoon color={"black"} size={30}/>
+                }
+            </div>, path: ""
+        },
     ]
     return (
         <>
-            <div className="w-full h-screen max-h-full flex-col overflow-y-auto bg-deep-purple-700
+            <div className="w-full text-center h-screen max-h-full flex-col overflow-y-auto bg-deep-purple-700
+            dark:bg-blue-gray-400
             justify-end
             ">
                 <div className="flex w-[250px] gap-2 h-[100px]
@@ -40,15 +84,31 @@ function AdminSidebar() {
                         Admin
                     </span>
                 </div>
+                <div className="p-2 space-x-1 flex items-center justify-center">
+                    <input id="search" type="text" placeholder="Search"
+                           className="input input-sm input-bordered input-primary w-full max-w-xs"/>
+                </div>
                 <hr/>
                 {
-                    itemDashboard.map(({icon, label, path}, index) => (
-                        <div key={index} className="flex gap-5 items-center p-2 justify-items-start
-                        cursor-pointer text-sm
-                        text-white
-                        transition-transform transform-gpu
-                        hover:bg-white hover:text-black hover
-                        " onClick={() => navigate(path)}>
+                    itemDashboard.map(({icon, label, path,current}, index) => (
+                        <div
+                            key={index}
+                            className={classNames(
+                                current ?
+                                    "flex gap-5 items-center p-2 justify-items-start" +
+                                    "cursor-pointer text-sm" +
+                                    "text-center" +
+                                    "transition-transform transform-gpu " +
+                                    "bg-white text-black hover:bg-white hover:text-black"
+                                    :
+                                    "flex gap-5 items-center p-2 justify-items-start " +
+                                    "                        cursor-pointer text-sm " +
+                                    "                        text-white text-center" +
+                                    "                        transition-transform transform-gpu" +
+                                    "                        hover:bg-white hover:text-black"
+
+                            )}
+                            onClick={() => navigate(path)}>
                             <div>
                                 {icon}
                             </div>

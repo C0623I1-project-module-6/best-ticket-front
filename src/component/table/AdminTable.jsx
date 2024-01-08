@@ -1,20 +1,10 @@
-import {
-    Avatar,
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
-    Chip,
-    IconButton,
-    Input,
-    Tab,
-    Tabs,
-    TabsHeader,
-    Tooltip,
-    Typography,
-} from "@material-tailwind/react";
-import {HiMagnifyingGlass, HiPencil, HiUserPlus} from "react-icons/hi2";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {getPageBookings, selectBookings} from "../../features/AdminSlice.js";
+import Pagination from "../Pagination.jsx";
+import {FaCheckCircle} from "react-icons/fa";
+import {GiCancel} from "react-icons/gi";
 
 const TABS = [
     {
@@ -82,160 +72,120 @@ const TABLE_ROWS = [
 ];
 
 export default function AdminTable() {
-    return (
-        <Card className="h-screen w-full">
-            <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-8 flex items-center justify-between gap-8">
-                    <div>
-                        <Typography variant="h5" color="blue-gray">
-                            Members list
-                        </Typography>
-                        <Typography color="gray" className="mt-1 font-normal">
-                            See information about all members
-                        </Typography>
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm">
-                            view all
-                        </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                            <HiUserPlus strokeWidth={2} className="h-4 w-4" /> Add member
-                        </Button>
-                    </div>
-                </div>
-                <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                    <Tabs value="all" className="w-full md:w-max">
-                        <TabsHeader>
-                            {TABS.map(({ label, value }) => (
-                                <Tab key={value} value={value}>
-                                    &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                                </Tab>
-                            ))}
-                        </TabsHeader>
-                    </Tabs>
-                    <div className="w-full md:w-72">
-                        <Input
-                            label="Search"
-                            icon={<HiMagnifyingGlass className="h-5 w-5" />}
-                        />
-                    </div>
-                </div>
-            </CardHeader>
-            <CardBody className="overflow-scroll px-0">
-                <table className="mt-4 w-full min-w-max table-auto text-left">
-                    <thead>
-                    <tr>
-                        {TABLE_HEAD.map((head) => (
-                            <th
-                                key={head}
-                                className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                            >
-                                <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="font-normal leading-none opacity-70"
-                                >
-                                    {head}
-                                </Typography>
-                            </th>
-                        ))}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {TABLE_ROWS.map(
-                        ({ img, name, email, job, org, online, date }, index) => {
-                            const isLast = index === TABLE_ROWS.length - 1;
-                            const classes = isLast
-                                ? "p-4"
-                                : "p-4 border-b border-blue-gray-50";
+    const param = useParams();
+    const dispatch = useDispatch();
+    const bookings = useSelector(selectBookings);
+    const [data, setData] = useState([]);
+    const [dataHeader, setDataHeader] = useState([]);
+    const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    console.log(param.param)
 
-                            return (
-                                <tr key={name}>
-                                    <td className={classes}>
-                                        <div className="flex items-center gap-3">
-                                            <Avatar src={img} alt={name} size="sm" />
-                                            <div className="flex flex-col">
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal"
-                                                >
-                                                    {name}
-                                                </Typography>
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal opacity-70"
-                                                >
-                                                    {email}
-                                                </Typography>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <div className="flex flex-col">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {job}
-                                            </Typography>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal opacity-70"
-                                            >
-                                                {org}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <div className="w-max">
-                                            <Chip
-                                                variant="ghost"
-                                                size="sm"
-                                                value={online ? "online" : "offline"}
-                                                color={online ? "green" : "blue-gray"}
-                                            />
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <Typography
-                                            variant="small"
-                                            color="blue-gray"
-                                            className="font-normal"
-                                        >
-                                            {date}
-                                        </Typography>
-                                    </td>
-                                    <td className={classes}>
-                                        <Tooltip content="Edit User">
-                                            <IconButton variant="text">
-                                                <HiPencil className="h-4 w-4" />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </td>
-                                </tr>
-                            );
-                        },
-                    )}
-                    </tbody>
-                </table>
-            </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal">
-                    Page 1 of 10
-                </Typography>
-                <div className="flex gap-2">
-                    <Button variant="outlined" size="sm">
-                        Previous
-                    </Button>
-                    <Button variant="outlined" size="sm">
-                        Next
-                    </Button>
+    useEffect(() => {
+        localStorage.setItem("theme", theme);
+        if (
+            localStorage.theme === 'dark'
+            || (!('theme' in localStorage)
+                && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    }, [theme]);
+    useEffect(() => {
+        if (param.param === "bookings") {
+            if (bookings === null) {
+                dispatch(getPageBookings())
+            } else {
+                setData(bookings)
+                setDataHeader([])
+            }
+            for (let key in data[0]) {
+                dataHeader.push(key)
+            }
+            console.log(data)
+        }
+    }, [bookings]);
+    console.log(data)
+    return (
+        <>
+            <div className="flex-col items-center justify-center justify-items-center">
+                <div className="flex justify-center gap-4 items-center bg-amber-500">
+                    <div>Right</div>
+                    <div>Header</div>
+                    <div>Left</div>
                 </div>
-            </CardFooter>
-        </Card>
+                <div className="flex justify-center mt-3 ">
+                    <div className="uppercase font-bold text-3xl">{param.param}</div>
+                </div>
+                <div className="flex justify-center mt-3 ">
+                    <table className="table-lg table-zebra-zebra rounded-full border-2">
+                        <thead className="bg-amber-500
+                        dark:text-white dark:bg-black">
+                        <tr>
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+                                STT
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+                                Username
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+                                Email
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+                                Name
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+                                Customer
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+                                Organizer
+                            </th>
+                            <th scope="col"
+                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+                                Status
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
+                            <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
+                        </tr>
+                        </thead>
+                        <tbody className="bg-white dark:bg-blue-gray-400">
+                        <tr>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">1</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">thinhlord</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">thinhlord@gmail.com</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">Thinh</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
+                                <FaCheckCircle className="mx-auto" color={"blue"}/></td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                {/*<FaCheckCircle className="mx-auto" color={"blue"}/>*/}
+                                <GiCancel className="mx-auto" color={"red"}/>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                {/*<button type="button" className="btn btn-outline btn-sm btn-active btn-info">Active*/}
+                                {/*</button>*/}
+                                <button type="button"
+                                        className="btn btn-outline btn-sm btn-disabled btn-info dark:btn-accent">Inactive
+                                </button>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <button type="button" className="btn btn-outline btn-sm btn-warning">Edit</button>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <button type="button" className="btn btn-outline btn-sm btn-error">Delete</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <Pagination/>
+            </div>
+
+        </>
     );
 }

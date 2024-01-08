@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {login, loginGoogle, register} from "../api/UserApi.js";
+import {login, loginGoogle, logout, register} from "../api/UserApi.js";
 
 const initialState = {
   value: null,
@@ -17,10 +17,23 @@ export const loginUser = createAsyncThunk(
       console.log(response)
       return rejectWithValue(response.data.message);
     }
-    console.log(response)
+    console.log(response.data.data)
     return response.data;
   }
 );
+
+export const logoutUser = createAsyncThunk(
+  "logout",
+  async (logoutData,{rejectWithValue}) => {
+    const response = await logout(logoutData);
+    if (response.status !== 200) {
+      console.log(response)
+      return rejectWithValue(response.data.message);
+    }
+    console.log(response)
+    return response.data;
+  }
+)
 
 export const loginWithGoogle = createAsyncThunk(
   "loginGoogle",
@@ -42,7 +55,7 @@ export const registerUser = createAsyncThunk(
       console.log(response)
       return rejectWithValue(response.data.message);
     }
-    console.log(response)
+    console.log(response.data)
     return response.data;
   }
 );
@@ -80,7 +93,23 @@ export const userSlice = createSlice(
         .addCase(loginUser.fulfilled, (state, action) => {
           state.loginSuccess = true;
           state.loading = false;
-          state.value = action.payload;
+          state.value = action.payload.data;
+          state.loginError = false;
+        })
+        .addCase(loginWithGoogle.pending, (state) => {
+          state.loginSuccess = false;
+          state.loading = true;
+          state.loginError = false;
+        })
+        .addCase(loginWithGoogle.rejected, (state, action) => {
+          state.loginSuccess = false;
+          state.loading = false;
+          state.loginError = action.payload;
+        })
+        .addCase(loginWithGoogle.fulfilled, (state, action) => {
+          state.loginSuccess = true;
+          state.loading = false;
+          state.value = action.payload.data;
           state.loginError = false;
         })
     }
