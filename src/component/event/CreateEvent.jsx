@@ -1,9 +1,9 @@
 import CreateEventSideBar from "./partials/CreateEventSideBar.jsx";
 import {Button, Input} from "@material-tailwind/react";
 import {useEffect, useState} from "react";
-import { ProvincesApi } from "../../redux/api/ProvincesApi.js";
+import { ProvincesApi } from "../../api/ProvincesApi.js";
 import { Select, Option } from "@material-tailwind/react";
-import {findAllEventType} from "../../redux/api/EventTypeApi.js";
+import {findAllEventType} from "../../api/EventTypeApi.js";
 import banner from "../../assets/img/cover-event.jpg"
 export default function CreateEvent(){
     const [email, setEmail] = useState("");

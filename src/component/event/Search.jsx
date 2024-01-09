@@ -4,9 +4,9 @@ import { FcCheckmark } from 'react-icons/fc';
 import SelectDay from './partials/SelectDay.jsx';
 import Event from './partials/Event.jsx';
 import { CiLocationOn } from 'react-icons/ci';
-import { findAllEventType } from '../../redux/api/EventTypeApi.js';
+import { findAllEventType } from "../../api/EventTypeApi.js";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllEvent, getEventsByName } from '../../redux/features/EventSlice.js';
+import { getAllEvent, getEventsByName } from '../../features/EventSlice.js';
 
 export default function Search() {
     const [selectedOptions, setSelectedOptions] = useState([]);
@@ -22,7 +22,7 @@ export default function Search() {
     const fetchApiEventTypes = async () => {
         try {
             const result = await findAllEventType();
-            setEventTypes(result.data.eventTypeList);
+            setEventTypes(result.data.eventTyepeList);
         } catch (error) {
             console.error('Error EventTypeAPI', error);
         }

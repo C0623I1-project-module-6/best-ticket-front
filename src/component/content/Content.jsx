@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import 'swiper/css/bundle';
 import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllEvent } from "../../redux/features/EventSlice.js";
+import { getAllEvent } from "../../features/EventSlice.js";
 import { CarouselDefault } from "../CarouselDefault.jsx";
 
 export default function Content() {
@@ -20,8 +20,8 @@ export default function Content() {
     }, [currentPage]);
     console.log(currentPage)
     return (
-        <div className="w-full bg-white mx-auto overflow-x-hidden ">
-            <div className="w-full">
+        <div className=" w-full bg-white dark:bg-[#121212] mx-auto overflow-x-hidden h-full ">
+            <div className=" w-full">
                 <div className="w-[1028px] h-[500px] p-5 m-4 mx-auto">
                     <CarouselDefault />
                 </div>

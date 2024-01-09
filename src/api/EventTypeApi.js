@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BEST_TICKET_API} from "../../ultility/AppConstant.js"
+import {BEST_TICKET_API} from "../ultility/AppConstant.js"
 
 export const findAllEventType = async ()=>{
     let result = null;

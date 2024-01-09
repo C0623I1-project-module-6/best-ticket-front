@@ -1,123 +1,140 @@
-import {useState} from 'react';
-import {MdAccountCircle, MdAnalytics, MdLogout, MdOutlineDashboard, MdOutlineSettings,} from 'react-icons/md';
-import {BsCalendarCheck, BsChatLeftText, BsChevronDown, BsFiles, BsServer,} from 'react-icons/bs';
-import {CiCoffeeCup} from "react-icons/ci";
+import {FaCogs, FaFileContract, FaHome, FaSearch, FaSignOutAlt} from "react-icons/fa";
+import {FaMoon, FaSun, FaUsers} from "react-icons/fa6";
+import {MdEventAvailable} from "react-icons/md";
+import {ImTicket} from "react-icons/im";
+import {useNavigate, useParams} from "react-router-dom";
+import {Avatar} from "@material-tailwind/react";
+import {useEffect, useRef, useState} from "react";
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
 
-const Menus = [
-    {title: 'Dashboard', src: 'Chart_fill', icon: <MdOutlineDashboard/>},
-    {title: 'Inbox', src: 'Chat', icon: <BsChatLeftText/>},
-    {title: 'Accounts', src: 'User', gap: true, icon: <MdAccountCircle/>},
-    {title: 'Schedule ', src: 'Calendar', icon: <BsCalendarCheck/>},
-    {
-        title: 'Services',
-        src: 'Services',
-        icon: <BsServer/>,
-        subMenus: [
-            {
-                title: 'Service 1',
-                src: '/services/services1',
+function AdminSidebar() {
+    const navigate = useNavigate();
+    const param = useParams();
+    const inputRef = useRef();
+    const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    useEffect(() => {
+        localStorage.setItem("theme", theme);
+        if (
+            localStorage.theme === 'dark'
+            || (!('theme' in localStorage)
+                && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    }, [theme]);
+    useEffect(() => {
+        inputRef.current.checked = theme !== "dark";
+    }, []);
+    const changeTheme = async (e) => {
+        if (e.target.checked) {
+            await setTheme("light")
+        } else {
+            await setTheme("dark")
+        }
+    }
+    const changeThemeButton = () => {
+        return (
+            <>
+            </>
+        )
+    }
 
-                cName: 'sub-nav',
-            },
-            {
-                title: 'Service 2',
-                src: '/services/services2',
-
-                cName: 'sub-nav',
-            },
-            {
-                title: 'Service 3',
-                src: '/services/services3',
-            },{
-                title: 'Service 3',
-                src: '/services/services3',
-            },{
-                title: 'Service 3',
-                src: '/services/services3',
-            },{
-                title: 'Service 3',
-                src: '/services/services3',
-            },{
-                title: 'Service 3',
-                src: '/services/services3',
-            }, {
-                title: 'Service 3',
-                src: '/services/services3',
-            },
-        ],
-    },
-    {title: 'Analytics', src: 'Chart', icon: <MdAnalytics/>},
-    {title: 'Files ', src: 'Folder', gap: true, icon: <BsFiles/>},
-    {title: 'Setting', src: 'Setting', icon: <MdOutlineSettings/>},
-    {title: 'Logout', src: 'Logout', icon: <MdLogout/>},
-];
-
-const AdminSidebar = () => {
-    const [open, setOpen] = useState(true);
-    const [subMenuOpen, setSubMenuOpen] = useState(false);
-    const toggleSidebar = () => {
-        setOpen(!open);
-    };
+    const itemDashboard = [
+        {icon: <FaHome size={25}/>, label: "Dashboard", path: "/admin"},
+        {icon: <FaUsers size={25}/>, label: " Users", path: "/admin/user"},
+        {icon: <FaFileContract size={25}/>, label: " Bookings", path: "/admin/bookings"},
+        {icon: <MdEventAvailable size={25}/>, label: " Events", path: "/admin/user"},
+        {icon: <ImTicket size={25}/>, label: " Tickets", path: "/admin/user"},
+    ]
+    const itemFooter = [
+        {icon: <FaCogs size={25}/>, label: "Setting", path: "/admin"},
+        {icon: <FaSignOutAlt size={25}/>, label: "Log out", path: "/admin"},
+        {
+            label: <input type="checkbox" className="toggle toggle-warning" ref={inputRef} onClick={changeTheme}/>
+            , icon: <div>
+                {
+                    theme === "light" ?
+                        <FaSun color={"yellow"} size={30}/> :
+                        <FaMoon color={"black"} size={30}/>
+                }
+            </div>, path: ""
+        },
+    ]
     return (
         <>
-            <div className=" h-screen flex items-center justify-start ">
-                <button
-                    className="fixed lg:hidden z-90 bottom-10 right-8 bg-teal-800 w-10 h-10 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-800   duration-300"
-                    onClick={toggleSidebar}>
-                    <CiCoffeeCup/>
-                </button>
-
-                <div
-                    className={` ${
-                        open ? 'w-48 px-2 ' : 'w-0 '
-                    } lg:w-72 bg-teal-800 h-screen   relative duration-500`}
-                >
-                    <div className=" justify-center mt-3">
-                        <h1
-                            className={`text-white  font-medium text-2xl text-center duration-200 ${
-                                !open && 'invisible'
-                            }`}
-                        >
-                            LOGO
-                        </h1>
-                    </div>
-                    <ul className="pt-6">
-                        {Menus.map((Menu, index) => (
-                            <>
-                                <li
-                                    key={index}
-                                    className={`flex  rounded-md p-2 cursor-pointer hover:bg-teal-400 text-white text-sm items-center gap-x-4 
-                                        ${Menu.gap ? 'mt-9' : 'mt-2'}  `}
-                                >
-                                    {Menu.icon ? Menu.icon : <MdOutlineDashboard/>}
-                                    <span className="flex-1">{Menu.title}</span>
-                                    {Menu.subMenus && (
-                                        <BsChevronDown
-                                            onClick={() => setSubMenuOpen(!subMenuOpen)}
-                                            className={`${subMenuOpen && 'rotate-180'}`}
-                                        />
-                                    )}
-                                </li>
-                                {Menu.subMenus && subMenuOpen && open && (
-                                    <ul>
-                                        {Menu.subMenus.map((subMenuItem, idx) => (
-                                            <li
-                                                key={idx}
-                                                className="flex px-5 cursor-pointer text-center text-sm text-gray-200 py-1"
-                                            >
-                                                {subMenuItem.title}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </>
-                        ))}
-                    </ul>
+            <div className="w-full text-center h-screen max-h-full flex-col overflow-y-auto bg-deep-purple-700
+            dark:bg-blue-gray-400
+            justify-end
+            ">
+                <div className="flex w-[250px] gap-2 h-[100px]
+                items-center justify-center
+                cursor-pointer text-2xl font-bold text-white font-serif
+                ">
+                    <Avatar
+                        size="lg"
+                        alt="avatar"
+                        src="https://docs.material-tailwind.com/img/face-2.jpg"
+                        className="border border-green-500 shadow-xl shadow-green-900/20 ring-4 ring-green-500/30"
+                    />
+                    <span>
+                        Admin
+                    </span>
                 </div>
+                <div className="p-2 space-x-1 flex items-center justify-center">
+                    <input id="search" type="text" placeholder="Search"
+                           className="input input-sm input-bordered input-primary w-full max-w-xs"/>
+                </div>
+                <hr/>
+                {
+                    itemDashboard.map(({icon, label, path,current}, index) => (
+                        <div
+                            key={index}
+                            className={classNames(
+                                current ?
+                                    "flex gap-5 items-center p-2 justify-items-start" +
+                                    "cursor-pointer text-sm" +
+                                    "text-center" +
+                                    "transition-transform transform-gpu " +
+                                    "bg-white text-black hover:bg-white hover:text-black"
+                                    :
+                                    "flex gap-5 items-center p-2 justify-items-start " +
+                                    "                        cursor-pointer text-sm " +
+                                    "                        text-white text-center" +
+                                    "                        transition-transform transform-gpu" +
+                                    "                        hover:bg-white hover:text-black"
+
+                            )}
+                            onClick={() => navigate(path)}>
+                            <div>
+                                {icon}
+                            </div>
+                            <div>{label}</div>
+                        </div>
+                    ))
+                }
+                <hr/>
+                {
+                    itemFooter.map(({icon, label, path}, index) => (
+                        <div key={index} className="flex gap-5 items-center p-2 justify-items-start
+                        cursor-pointer
+                        text-white text-sm
+                        transition-transform transform-gpu
+                        hover:bg-white hover:text-black hover
+                        ">
+                            <div>
+                                {icon}
+                            </div>
+                            <div>{label}</div>
+                        </div>
+                    ))
+                }
             </div>
         </>
-
     );
-};
+}
 
 export default AdminSidebar;
