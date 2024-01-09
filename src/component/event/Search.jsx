@@ -1,42 +1,36 @@
 import React, {useEffect, useState} from 'react';
-import {IoListOutline} from "react-icons/io5";
-import {FcCheckmark} from "react-icons/fc";
-import SelectDay from "./partials/SelectDay.jsx";
-import Event from "./partials/Event.jsx";
-import {CiLocationOn} from "react-icons/ci";
+import {IoListOutline} from 'react-icons/io5';
+import {FcCheckmark} from 'react-icons/fc';
+import SelectDay from './partials/SelectDay.jsx';
+import Event from './partials/Event.jsx';
+import {CiLocationOn} from 'react-icons/ci';
 import {findAllEventType} from "../../api/EventTypeApi.js";
-import {useDispatch, useSelector} from "react-redux";
-import {getEventsByName} from "../../features/EventSlice.js";
-
+import {useDispatch, useSelector} from 'react-redux';
+import {getEventsByName} from '../../features/EventSlice.js';
 
 export default function Search() {
     const [selectedOptions, setSelectedOptions] = useState([]);
-
     const [showOptions, setShowOptions] = useState(false);
-
     const [eventTypes, setEventTypes] = useState([]);
-
     const dispatch = useDispatch();
-
     const events = useSelector((state) => state.event.events);
 
     useEffect(() => {
         dispatch(getEventsByName());
     }, []);
-    const getAllEventType = async () => {
+
+    const fetchApiEventTypes = async () => {
         try {
-            let result = await findAllEventType();
-            if (result !== null) {
-                setEventTypes(result);
-            }
+            const result = await findAllEventType();
+            setEventTypes(result.data.eventTyepeList);
         } catch (error) {
-            console.error("Error EventTypeAPI", error);
+            console.error('Error EventTypeAPI', error);
         }
     };
+
     useEffect(() => {
-        getAllEventType();
+        fetchApiEventTypes();
     }, []);
-    const options = ['Thể thao', 'Giải trí', 'Nhạc sống', 'nightlight', 'onlineevent','fsfsdfsdf', 'fswdff', 'fffff', 'daybyday', 'onlinfdfdfeevent'];
 
     const toggleOptions = () => {
         setShowOptions(!showOptions);
@@ -53,10 +47,10 @@ export default function Search() {
 
     return (
         <div className="w-full bg-white m-2 rounded-lg p-2 overflow-y-auto">
-            <div className="flex  gap-3">
-                <div className=" flex border-2 border-gray-300 rounded-lg cursor-pointer p-2">
-                    <CiLocationOn size={23}/>
-                    <select >
+            <div className="flex gap-3">
+                <div className="flex border-2 border-gray-300 rounded-lg cursor-pointer p-2">
+                    <CiLocationOn size={23} />
+                    <select>
                         <option>Tất cả địa điểm</option>
                         <option>THCM</option>
                         <option>HN</option>
@@ -64,11 +58,13 @@ export default function Search() {
                         <option>QN</option>
                     </select>
                 </div>
-                <div className="flex-row items-center gap-1 w-[500px] ">
-                    <div className="flex border-2 border-gray-300 rounded-lg gap-2 cursor-pointer p-2 "
-                         onClick={toggleOptions}>
+                <div className="flex-row items-center gap-1 w-[500px]">
+                    <div
+                        className="flex border-2 border-gray-300 rounded-lg gap-2 cursor-pointer p-2"
+                        onClick={toggleOptions}
+                    >
                         <IoListOutline size={23} />
-                        <div  >
+                        <div>
                             {selectedOptions.length === 0
                                 ? 'Tất cả sự kiện'
                                 : selectedOptions.join(',')}
@@ -76,19 +72,28 @@ export default function Search() {
                     </div>
                     <div className="relative z-10 w-full">
                         {showOptions && (
-                            <div className="absolute top-2 right-0 bg-white w-full rounded-lg ">
-                                <div onClick={() => setSelectedOptions([])} className="cursor-pointer hover:bg-green-200 p-2 rounded-lg">
+                            <div className="absolute top-2 right-0 bg-white w-full rounded-lg">
+                                <div
+                                    onClick={() => setSelectedOptions([])}
+                                    className="cursor-pointer hover:bg-green-200 p-2 rounded-lg"
+                                >
                                     Tất cả sự kiện
                                 </div>
-                                {options.map((option, index) => (
+                                {eventTypes.map((eventType, index) => (
                                     <div
                                         key={index}
-                                        onClick={() => toggleOption(option)}
-                                        className="cursor-pointer p-2 hover:bg-green-200 rounded-lg"
+                                        onClick={() => toggleOption(eventType.name)}
+                                        className="cursor-pointer p-2 hover:bg-green-200 rounded-lg border-gray-600"
                                     >
                                         <div className="flex items-center gap-2">
-                                            {option}
-                                            <FcCheckmark className={selectedOptions.includes(option) ? '' : 'hidden'} />
+                                            {eventType.name}
+                                            <FcCheckmark
+                                                className={
+                                                    selectedOptions.includes(eventType.name)
+                                                        ? ''
+                                                        : 'hidden'
+                                                }
+                                            />
                                         </div>
                                     </div>
                                 ))}
@@ -96,7 +101,7 @@ export default function Search() {
                         )}
                     </div>
                 </div>
-                <div >
+                <div>
                     <SelectDay />
                 </div>
             </div>

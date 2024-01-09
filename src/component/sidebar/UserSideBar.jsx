@@ -54,6 +54,7 @@ const UserSideBar = () => {
     ];
 
     return (
+
         <div className="w-[400px] flex-col p-1 md:flex overflow-hidden max-h-full h-full">
             <ul className="ml-2 flex-col gap-1 text-sm w-full max-h-full h-full overflow-y-auto">
                 {icons.map(({icon, label}, index) => (
@@ -74,7 +75,6 @@ const UserSideBar = () => {
                     transition-transform transform-gpu w-full h-fit
                     hover:bg-white
                     dark:hover:bg-gray-800
-
                     ">
                         {icon}
                         <span >{label}</span>
