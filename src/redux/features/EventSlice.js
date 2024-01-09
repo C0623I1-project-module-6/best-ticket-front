@@ -13,8 +13,8 @@ export const getEventsByName = createAsyncThunk("events/byName",async ()=>{
     return response.data;
     }
 )
-export const getAllEvent = createAsyncThunk("events",async ()=>{
-    const response = await findAllEvents();
+export const getAllEvent = createAsyncThunk("events",async (currentPage)=>{
+    const response = await findAllEvents(currentPage);
     return response.data;
 })
 
@@ -34,7 +34,7 @@ const handleRejected = (state, action) => {
 const handleFulfilled = (state, action) => {
     state.success = true;
     state.loading = false;
-    state.events = action.payload.eventDTOS;
+    state.events = action.payload;
     state.error = false;
 };
 

@@ -28,7 +28,7 @@ const UserSideBar = () => {
     ];
 
     return (
-        <div className="w-[800px] p-2 pt-5">
+        <div className="w-[300px] p-2 pt-5">
             <ul className="ml-2 text-sm ">
                 {icons.map(({ icon, label }, index) => (
                     <Link to="/">

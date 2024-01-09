@@ -17,7 +17,7 @@ export default function Event({ event }) {
     return (
         <div className="relative group flex flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 bg-amber-100 cursor-pointer hover:scale-105 hover:bg-amber-50 transition p-3">
             <div className="relative aspect-w-16 aspect-h-9 w-full h-full rounded-md overflow-hidden">
-                <img src={event.image} alt="" className="object-cover " />
+                <img src={event.image} alt="" className="object-cover w-full h-[160px] " />
             </div>
             <div className="flex flex-col items-start w-full pt-4 gap-y-1">
                 <p className="font-bold truncate w-full" ref={tooltipRef}>

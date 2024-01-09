@@ -7,11 +7,15 @@ function AppRoutes(){
                 ROUT_DATA.map((route, index) => {
                     const Layout = route.layout
                     const Page = route.element
-                    return <Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
+                    return route.layout ? (
+                        <Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
+                    ) : (
+                        <Route key={index} path={route.path} element={<Page/>}/>
+                    )
                 })
             }
-
         </Routes>
+
     )
 }
 export default AppRoutes;

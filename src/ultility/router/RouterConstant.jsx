@@ -8,7 +8,8 @@ import GuestLayout from "../../layout/GuestLayout.jsx";
 import Register from "../../component/auth/Register.jsx";
 import TicketHistory from "../../layout/pages/ticket/TicketHistory.jsx";
 import EventHomePage from "../../layout/pages/event/EventHomePage.jsx";
-import Search from "../../component/bookTiket/Search.jsx"
+import Search from "../../component/event/Search.jsx"
+import CreateEvent from "../../component/event/CreateEvent.jsx";
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
@@ -18,4 +19,6 @@ export const ROUT_DATA = [
     {path: "/my-ticket", element: TicketHistory, layout: UserLayout},
     {path: "/admin", element: AdminHomePage, layout: AdminLayout},
     {path: "/search", element: Search, layout:UserLayout },
+    {path: "/event/create", element: CreateEvent},
+
 ];
