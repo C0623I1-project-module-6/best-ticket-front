@@ -10,6 +10,7 @@ function TicketHistory() {
     const sendKeyword = (data) =>{
         setKeyword(data)
     }
+
     return (
         <div className="bg-[#27272a] w-full">
             <div className="flex-col mx-80 px-28 gap-10  space-y-10 text-white">
