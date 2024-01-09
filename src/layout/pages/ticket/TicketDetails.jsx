@@ -42,7 +42,7 @@ function TicketDetails(props) {
                 >
                     Mã barcode quay ngang
                 </div>
-            </div>
+</div>
         </>
     );
 }

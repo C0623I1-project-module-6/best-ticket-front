@@ -54,7 +54,7 @@ const UserSideBar = () => {
     ];
 
     return (
-        <div className="w-[400px] flex-col p-1 md:flex overflow-hidden h-full ">
+        <div className="w-[400px] flex-col p-1 md:flex overflow-hidden max-h-full h-full">
             <ul className="ml-2 flex-col gap-1 text-sm w-full max-h-full h-full overflow-y-auto">
                 {icons.map(({icon, label}, index) => (
                     <li key={index} className="p-2 flex gap-2 items-center cursor-pointer

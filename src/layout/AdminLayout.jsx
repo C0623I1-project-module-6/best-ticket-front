@@ -1,4 +1,5 @@
 import AdminSidebar from "../component/sidebar/AdminSidebar.jsx";
+import AdminHeader from "../component/header/AdminHeader.jsx";
 
 const AdminLayout = ({children}) => {
     return (
@@ -9,6 +10,7 @@ const AdminLayout = ({children}) => {
                 </div>
                 <div className="flex-col justify-center w-full  overflow-hidden">
                     <div className="flex-col  max-h-full overflow-hidden">
+                        <AdminHeader/>
                         <div className="h-fit">
                             {
                                 children

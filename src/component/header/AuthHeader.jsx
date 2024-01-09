@@ -5,10 +5,13 @@ import logoDark from "../../assets/img/logo/logo-auth-header-dark.svg";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {GoogleLogin} from "@react-oauth/google";
+import {useDispatch, useSelector} from "react-redux";
+import {loginWithGoogle, selectUserLogin} from "../../features/UserSlice.js";
 
 function AuthHeader(props) {
     const navigate = useNavigate();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    const dispatch = useDispatch();
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -21,6 +24,10 @@ function AuthHeader(props) {
             document.documentElement.classList.remove('dark')
         }
     }, [theme]);
+
+    const loginGoogle = (res) =>{
+        dispatch(loginWithGoogle(res))
+    }
 
     return (
         <>
@@ -53,11 +60,9 @@ function AuthHeader(props) {
                             size={"medium"}
                             text={"continue_with"}
                             logo_alignment={"left"}
-                            onSuccess={(response) => {
-                                console.log(response)
-                            }}
-                            onError={() => {
-                                console.log('Login Failed');
+                            onSuccess={loginGoogle}
+                            onError={(e) => {
+                                console.log(e);
                             }}
                         />
                     </div>

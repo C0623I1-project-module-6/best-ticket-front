@@ -6,14 +6,14 @@ import TicketDetails from "./TicketDetails.jsx";
 import {useState} from "react";
 
 function TicketHistory() {
-    const [keyword,setKeyword] = useState("");
-    const sendKeyword = (data) =>{
+    const [keyword, setKeyword] = useState("");
+    const sendKeyword = (data) => {
         setKeyword(data)
     }
 
     return (
         <div className="bg-[#27272a] w-full">
-            <div className="flex-col mx-80 px-28 gap-10  space-y-10 text-white">
+            <div className="flex-col mx-80 px-10 gap-10  space-y-10 text-white">
                 <div className="space-y-10">
                     <Breadcrumbs className="bg-dark ">
                         <Link to="/" className="opacity-60 text-white">
@@ -24,7 +24,7 @@ function TicketHistory() {
                         </Link>
                     </Breadcrumbs>
                 </div>
-                <div className="flex gap-10 items-center justify-items-center">
+                <div className="flex gap-10 items-center justify-items-center text-xs">
                     <div className="flex-col items-center justify-between w-60 space-y-5">
                         <div className="flex gap-1 items-center justify-items-center space-x-3">
                             <div className="items-center justify-items-center">
@@ -36,15 +36,18 @@ function TicketHistory() {
                             </div>
                         </div>
                         <div className="flex-col items-center space-y-3 justify-items-center justify-center">
-                            <div className="flex gap-2 items-center cursor-pointer">
+                            <div
+                                className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
                                 <FaUser/>
                                 My Account
                             </div>
-                            <div className="flex gap-2 items-center cursor-pointer">
+                            <div
+                                className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
                                 <FaTicket/>
                                 My Tickets
                             </div>
-                            <div className="flex gap-2 items-center cursor-pointer">
+                            <div
+                                className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
                                 <FaCalendar/>
                                 My Created Event
                             </div>
@@ -65,11 +68,22 @@ function TicketHistory() {
                             <div className="btn rounded-full btn-xs w-[150px] ">Cancelled</div>
                         </div>
                         <div className="flex items-center justify-center gap-5">
-                            <div className="btn btn-xs btn-outline rounded-full text-white" onClick={()=>sendKeyword("upcoming")}>Upcoming</div>
-                            <div className="btn btn-xs btn-outline rounded-full text-white" onClick={()=>sendKeyword("past")}>Past</div>
+                            <button type="button" className="btn btn-xs btn-outline rounded-full text-white"
+                                    onClick={() => {
+                                        sendKeyword("upcoming");
+                                    }}
+
+                            >Upcoming
+                            </button>
+                            <button type="button" className="btn btn-xs btn-outline rounded-full text-white"
+                                    onClick={() => {
+                                        sendKeyword("past")
+                                    }}>
+                                Past
+                            </button>
                         </div>
-                        <div className="flex items-center justify-between overflow-y-auto overflow-x-hidden">
-                           <TicketDetails value={keyword}/>
+                        <div className="flex items-center justify-center overflow-y-auto overflow-x-hidden">
+                            <TicketDetails value={keyword}/>
                         </div>
                     </div>
                 </div>

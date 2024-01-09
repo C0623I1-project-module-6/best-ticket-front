@@ -4,7 +4,7 @@ import {BEST_TICKET_API} from "../ultility/AppConstant.js"
 export const findAllEvents = async ()=>{
     let result = null;
     try {
-        result = await axios.get(`${BEST_TICKET_API}event/events`);
+        result = await axios.get(`${BEST_TICKET_API}events`);
         console.log(`${BEST_TICKET_API}event/events`)
     } catch (e) {
         console.log("Find events API error: " + e);
