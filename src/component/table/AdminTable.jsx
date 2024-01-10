@@ -1,84 +1,25 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getPageBookings, selectBookings} from "../../features/AdminSlice.js";
+import {getPageBookings, getPageUsers, selectBookings, selectUsers} from "../../features/AdminSlice.js";
 import Pagination from "../Pagination.jsx";
 import {FaCheckCircle} from "react-icons/fa";
 import {GiCancel} from "react-icons/gi";
+import {TABLE_HEAD_BOOKING, TABLE_HEAD_USER} from "../../ultility/AppConstant.js";
+import {HiChevronLeft, HiChevronRight} from "react-icons/hi2";
 
-const TABS = [
-    {
-        label: "All",
-        value: "all",
-    },
-    {
-        label: "Monitored",
-        value: "monitored",
-    },
-    {
-        label: "Unmonitored",
-        value: "unmonitored",
-    },
-];
-
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
-
-const TABLE_ROWS = [
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-        name: "John Michael",
-        email: "john@creative-tim .com",
-        job: "Manager",
-        org: "Organization",
-        online: true,
-        date: "23/04/18",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-        name: "Alexa Liras",
-        email: "alexa@creative-tim.com",
-        job: "Programator",
-        org: "Developer",
-        online: false,
-        date: "23/04/18",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-        name: "Laurent Perrier",
-        email: "laurent@creative-tim.com",
-        job: "Executive",
-        org: "Projects",
-        online: false,
-        date: "19/09/17",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-        name: "Michael Levi",
-        email: "michael@creative-tim.com",
-        job: "Programator",
-        org: "Developer",
-        online: true,
-        date: "24/12/08",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-        name: "Richard Gran",
-        email: "richard@creative-tim.com",
-        job: "Manager",
-        org: "Executive",
-        online: false,
-        date: "04/10/21",
-    },
-];
 
 export default function AdminTable() {
     const param = useParams();
     const dispatch = useDispatch();
     const bookings = useSelector(selectBookings);
-    const [data, setData] = useState([]);
+    const users = useSelector(selectUsers);
+    const [data, setData] = useState([0]);
     const [dataHeader, setDataHeader] = useState([]);
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     console.log(param.param)
+
+
 
     useEffect(() => {
         localStorage.setItem("theme", theme);
@@ -94,19 +35,26 @@ export default function AdminTable() {
     }, [theme]);
     useEffect(() => {
         if (param.param === "bookings") {
+            setDataHeader(TABLE_HEAD_BOOKING)
             if (bookings === null) {
                 dispatch(getPageBookings())
             } else {
                 setData(bookings)
-                setDataHeader([])
-            }
-            for (let key in data[0]) {
-                dataHeader.push(key)
             }
             console.log(data)
         }
-    }, [bookings]);
-    console.log(data)
+    }, [param,bookings]);
+    useEffect(() => {
+        if (param.param === "users") {
+            setDataHeader(TABLE_HEAD_USER)
+            if (users === null) {
+                dispatch(getPageUsers())
+            } else {
+                setData(users)
+            }
+            console.log(data)
+        }
+    }, [param,users]);
     return (
         <>
             <div className="flex-col items-center justify-center justify-items-center">
@@ -118,72 +66,163 @@ export default function AdminTable() {
                 <div className="flex justify-center mt-3 ">
                     <div className="uppercase font-bold text-3xl">{param.param}</div>
                 </div>
+                <div className="flex  items-center justify-center mt-3">
+                    <input id="search" type="text" placeholder="Search"
+                           className="input input-sm input-bordered input-primary w-full max-w-xs"/>
+                </div>
                 <div className="flex justify-center mt-3 ">
                     <table className="table-lg table-zebra-zebra rounded-full border-2">
                         <thead className="bg-amber-500
                         dark:text-white dark:bg-black">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                STT
+                            {
+                                dataHeader.map((data, index) => (
+                                    <th scope="col" key={index}
+                                        className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+                                        {data}
+                                    </th>
+                                ))
+                            }
+                            <th scope="col"
+                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+
                             </th>
                             <th scope="col"
                                 className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Username
+
                             </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Email
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Name
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Customer
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Organizer
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Status
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
-                            <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
                         </tr>
                         </thead>
                         <tbody className="bg-white dark:bg-blue-gray-400">
-                        <tr>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">1</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">thinhlord</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">thinhlord@gmail.com</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">Thinh</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
-                                <FaCheckCircle className="mx-auto" color={"blue"}/></td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                {/*<FaCheckCircle className="mx-auto" color={"blue"}/>*/}
-                                <GiCancel className="mx-auto" color={"red"}/>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                {/*<button type="button" className="btn btn-outline btn-sm btn-active btn-info">Active*/}
-                                {/*</button>*/}
-                                <button type="button"
-                                        className="btn btn-outline btn-sm btn-disabled btn-info dark:btn-accent">Inactive
-                                </button>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                <button type="button" className="btn btn-outline btn-sm btn-warning">Edit</button>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                <button type="button" className="btn btn-outline btn-sm btn-error">Delete</button>
-                            </td>
-                        </tr>
+                        {
+                            data.map((user, index) => (
+                                <tr key={index}>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">{index + 1}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">{user.username}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">{user.email}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">{user.customerName === null ? "N/A" : user.customerName}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
+                                        {
+                                            user.customerName === null ? <GiCancel className="mx-auto" color={"red"}/> :
+                                                <FaCheckCircle className="mx-auto" color={"blue"}/>
+                                        }
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                        {
+                                            user.organizerName === null ?
+                                                <GiCancel className="mx-auto" color={"red"}/> :
+                                                <FaCheckCircle className="mx-auto" color={"blue"}/>
+                                        }
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                        {
+                                            user.isActivated ? <button type="button"
+                                                                       className="btn btn-outline btn-sm btn-active btn-info">Active
+                                            </button> : <button type="button"
+                                                                className="btn btn-outline btn-sm btn-disabled btn-info dark:btn-accent">Inactive
+                                            </button>
+                                        }
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                        <button type="button" className="btn btn-outline btn-sm btn-warning">Edit
+                                        </button>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                        <button type="button" className="btn btn-outline btn-sm btn-error">Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
                         </tbody>
                     </table>
                 </div>
-                <Pagination/>
+                <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                    <div className="flex flex-1 justify-between sm:hidden">
+                        <a
+                            href="#"
+                            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        >
+                            Previous
+                        </a>
+                        <a
+                            href="#"
+                            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        >
+                            Next
+                        </a>
+                    </div>
+                    <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                        <div>
+                            <p className="text-sm text-gray-700">
+                                Showing <span className="font-medium">1</span> to <span
+                                className="font-medium">10</span> of{' '}
+                                <span className="font-medium">97</span> results
+                            </p>
+                        </div>
+                        <div>
+                            <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                                 aria-label="Pagination">
+                                <a
+                                    href="#"
+                                    className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                    <span className="sr-only">Previous</span>
+                                    <HiChevronLeft className="h-5 w-5" aria-hidden="true"/>
+                                </a>
+                                {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
+                                <a
+                                    href="#"
+                                    aria-current="page"
+                                    className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                >
+                                    1
+                                </a>
+                                <a
+                                    href="#"
+                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                    2
+                                </a>
+                                <a
+                                    href="#"
+                                    className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+                                >
+                                    3
+                                </a>
+                                <span
+                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
+              ...
+            </span>
+                                <a
+                                    href="#"
+                                    className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+                                >
+                                    8
+                                </a>
+                                <a
+                                    href="#"
+                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                    9
+                                </a>
+                                <a
+                                    href="#"
+                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                    10
+                                </a>
+                                <a
+                                    href="#"
+                                    className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                >
+                                    <span className="sr-only">Next</span>
+                                    <HiChevronRight className="h-5 w-5" aria-hidden="true"/>
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </>

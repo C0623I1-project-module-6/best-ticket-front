@@ -13,12 +13,12 @@ import { CarouselDefault } from "../CarouselDefault.jsx";
 export default function Content() {
     const dispatch = useDispatch();
     const events = useSelector((state) => state.event.events);
-    const [currentPage, setCurrentPage] = useState(0);
+    const totalPages=useSelector(state => state.event.totalPages);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getAllEvent(currentPage));
+        dispatch(getAllEvent(currentPage-1));
     }, [currentPage]);
-    console.log(currentPage)
     return (
         <div className=" w-full bg-white dark:bg-[#121212] mx-auto overflow-x-hidden h-full ">
             <div className=" w-full">
@@ -46,7 +46,7 @@ export default function Content() {
                     spacing={2}
                 >
                     <Pagination
-                        count={20}
+                        count={totalPages||0}
                         color="primary"
                         page={currentPage}
                         onChange={(event, value) => setCurrentPage(value)}

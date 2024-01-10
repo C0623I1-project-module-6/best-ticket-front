@@ -11,6 +11,8 @@ export async function login(user) {
     method: "POST",
     data: user
   }).then((res) => {
+    const token=response.data.token
+    localStorage.getItem('token', token)
     response = res;
   }).catch((e) => {
     response = e;
