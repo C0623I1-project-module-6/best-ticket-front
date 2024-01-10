@@ -1,10 +1,11 @@
-import {FaCogs, FaFileContract, FaHome, FaSearch, FaSignOutAlt} from "react-icons/fa";
+import {FaCogs, FaFileContract, FaHome, FaSignOutAlt} from "react-icons/fa";
 import {FaMoon, FaSun, FaUsers} from "react-icons/fa6";
 import {MdEventAvailable} from "react-icons/md";
 import {ImTicket} from "react-icons/im";
 import {useNavigate, useParams} from "react-router-dom";
 import {Avatar} from "@material-tailwind/react";
 import {useEffect, useRef, useState} from "react";
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
@@ -44,6 +45,7 @@ function AdminSidebar() {
     }
 
     const itemDashboard = [
+
         {icon: <FaHome size={25}/>, label: "Dashboard", path: "/admin",current: param.param === undefined},
         {icon: <FaUsers size={25}/>, label: " Users", path: "/admin/users",current: param.param === 'users'},
         {icon: <FaFileContract size={25}/>, label: " Bookings", path: "/admin/bookings",current: param.param === 'bookings'},
