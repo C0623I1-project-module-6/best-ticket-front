@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { IoListOutline } from 'react-icons/io5';
-import { FcCheckmark } from 'react-icons/fc';
+import React, {useEffect, useState} from 'react';
+import {IoListOutline} from 'react-icons/io5';
+import {FcCheckmark} from 'react-icons/fc';
 import SelectDay from './partials/SelectDay.jsx';
 import Event from './partials/Event.jsx';
+
 import { CiLocationOn } from 'react-icons/ci';
 import { findAllEventType } from "../../api/EventTypeApi.js";
 import { useDispatch, useSelector } from 'react-redux';
