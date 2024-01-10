@@ -166,7 +166,7 @@ const UserHeader = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <button type="submit" className="absolute right-0 top-0 mt-3 mr-4"
-                                onClick={() => navigate(`/search?${searchTerm}`)}>
+                                onClick={() => navigate(`/search?${searchTerm}`,{ state: { text: {searchTerm} } })}>
                             <CiSearch className="text-gray-600 h-5 w-5"/>
                         </button>
                     </div>
@@ -174,7 +174,7 @@ const UserHeader = () => {
                         <span
                             className="cursor-pointer border-white border-[1px]
                                         hover:bg-white hover:text-black
-                                        rounded-3xl font-bold px-6 py-2" onClick={() => navigate("/event")}>
+                                        rounded-3xl font-bold px-6 py-2" onClick={() => navigate("/event/create")}>
                             Create Event
                         </span>
                     </div>
