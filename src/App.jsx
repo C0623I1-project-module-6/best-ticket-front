@@ -4,6 +4,7 @@ import {store} from "./app/Store.js";
 import AppRoutes from "./router/AppRoutes.jsx";
 import {BrowserRouter} from "react-router-dom";
 import {ThemeProvider} from "@material-tailwind/react";
+
 function App() {
     return (
         <>
