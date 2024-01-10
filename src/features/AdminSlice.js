@@ -14,11 +14,13 @@ const initialState = {
 
 export const getPageBookings = createAsyncThunk(
   "getBookings",
-  async (keyword, {rejectWithValue}) => {
+  async (keyword,
+         {rejectWithValue}
+  ) => {
     const response = await showBookings(keyword);
     if (response.status !== 200) {
       console.log(response)
-      return rejectWithValue(response.data.message);
+      return rejectWithValue(response);
     }
     console.log(response)
     return response.data;
@@ -95,7 +97,7 @@ export const adminSlice = createSlice(
         .addCase(getPageBookings.fulfilled, (state, action) => {
           state.success = true;
           state.loading = false;
-          state.bookings = action.payload.data.content;
+          state.bookings = action.payload.data;
           state.error = false;
         })
         .addCase(getPageTickets.pending, (state) => {
@@ -147,7 +149,6 @@ export const adminSlice = createSlice(
           state.error = false;
         })
     }
-
   }
 )
 
