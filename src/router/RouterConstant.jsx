@@ -10,6 +10,7 @@ import TicketHistory from "../layout/pages/ticket/TicketHistory.jsx";
 import Search from "../component/bookTiket/Search.jsx";
 import AdminTable from "../component/table/AdminTable.jsx";
 import AdminBookingTable from "../component/table/AdminBookingTable.jsx";
+import TicketBooking from "../layout/pages/ticket/TicketBooking.jsx";
 
 export const ROUT_DATA = [
   { path: "/login", element: Login, layout: GuestLayout },
@@ -21,4 +22,5 @@ export const ROUT_DATA = [
   { path: "/admin/user", element: AdminTable, layout: AdminLayout },
   { path: "/admin/bookings", element: AdminBookingTable, layout: AdminLayout },
   { path: "/search", element: Search, layout: UserLayout },
+  { path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout },
 ];
