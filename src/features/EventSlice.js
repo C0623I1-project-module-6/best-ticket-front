@@ -1,20 +1,29 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {findAllEvents, findEventsByName} from "../api/EventApi.js";
+import {findAllEvents, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
 
 const initialState = {
     events : [],
     event : null,
+    totalPages: null,
     loading: false,
     success: false,
     error: null,
 };
-export const getEventsByName = createAsyncThunk("events/byName",async ()=>{
-    const response = await findEventsByName();
+export const getEventsByName = createAsyncThunk("events/byName", async ({ searchTerm, currentPage }) => {
+    const response = await findEventsByName(searchTerm, currentPage);
     return response.data;
-    }
-)
-export const getAllEvent = createAsyncThunk("events",async ()=>{
-    const response = await findAllEvents();
+});
+export const getAllEvent = createAsyncThunk("events",async (currentPage)=>{
+    const response = await findAllEvents(currentPage);
+    console.log(response.data)
+
+    return response.data;
+})
+
+export const getEventsByEventTypes = createAsyncThunk("events/eventTypes",async ({ eventTypeNames, currentPage })=>{
+    const response = await findEventsByEventTypes(eventTypeNames,currentPage);
+    console.log(response.data)
+
     return response.data;
 })
 
@@ -34,7 +43,8 @@ const handleRejected = (state, action) => {
 const handleFulfilled = (state, action) => {
     state.success = true;
     state.loading = false;
-    state.events = action.payload.eventDTOS;
+    state.events = action.payload.data;
+    state.totalPages=action.payload.totalPages;
     state.error = false;
 };
 
@@ -53,8 +63,11 @@ export const EventSlice = createSlice({
             // find all
             .addCase(getAllEvent.pending, handlePending)
             .addCase(getAllEvent.rejected, handleRejected)
-            .addCase(getAllEvent.fulfilled, handleFulfilled);
+            .addCase(getAllEvent.fulfilled, handleFulfilled)
             // find by EventType
+            .addCase(getEventsByEventTypes.pending, handlePending)
+            .addCase(getEventsByEventTypes.rejected, handleRejected)
+            .addCase(getEventsByEventTypes.fulfilled, handleFulfilled);
     },
 })
 
