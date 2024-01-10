@@ -2,17 +2,12 @@ import { useNavigate } from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import { useEffect, useState } from "react";
 import { register } from "../../api/UserApi.js";
+import { useDispatch } from "react-redux";
 
 function Register() {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        phoneNumber: '',
-        password: '',
-        confirmPassword: '',
-    });
-    const [error, setError] = useState();
+    const [user, setUser] = useState({});
+    const dispatch= useDispatch();
     const [loading, setLoading] = useState(false);
     useEffect(() => {
     }, [])
@@ -28,7 +23,7 @@ function Register() {
     }
     try {
         register(formData);
-        navigate("/login");
+    
     } catch {
         setError(error.message);
         setLoading(false);
@@ -56,7 +51,7 @@ function Register() {
                                 id="username"
                                 name="username"
                                 value={formData.username}
-                                onChange={(e)=>handleChange}
+                                onChange={handleChange}
                                 required
                                 type="text"
                                 autoComplete="username"
@@ -159,7 +154,7 @@ function Register() {
                         <div className="">
                             <input
                                 id="confirmPassword"
-                                name="password"
+                                name="confirmPassword"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
                                 type="password"

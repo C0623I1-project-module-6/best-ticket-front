@@ -126,4 +126,5 @@ export const {
 
 export const selectLoginSuccess = (state) => state.user.loginSuccess;
 export const selectUserLogin = (state) => state.user.value;
+export const selectUserRegister=(state)=>state.user.value
 export default userSlice.reducer;
