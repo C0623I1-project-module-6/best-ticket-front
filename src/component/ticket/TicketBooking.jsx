@@ -12,7 +12,7 @@ function TicketBooking() {
     };
     return (
 
-        <div className="w-full bg-[#F1F1F1]">
+        <div className="w-full bg-[#F1F1F1] overflow-y-auto">
             <div className=" bg-gradient-to-r from-blue-gray-400 via-brown-300 to-blue-400 text-white">
                 <div className="mx-40 py-6">
                     <div className="w-3/4 ">

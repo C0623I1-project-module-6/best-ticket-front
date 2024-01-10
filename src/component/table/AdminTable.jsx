@@ -1,23 +1,27 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getPageBookings, getPageUsers, selectBookings, selectUsers} from "../../features/AdminSlice.js";
+import {
+    getPageBookings,
+    getPageUsers,
+    selectBookings,
+    selectUsers,
+    setBookings,
+    setUsers
+} from "../../features/AdminSlice.js";
 import Pagination from "../Pagination.jsx";
-import {FaCheckCircle} from "react-icons/fa";
+import {FaCheckCircle, FaCogs} from "react-icons/fa";
 import {GiCancel} from "react-icons/gi";
 import {TABLE_HEAD_BOOKING, TABLE_HEAD_USER} from "../../ultility/AppConstant.js";
 import {HiChevronLeft, HiChevronRight} from "react-icons/hi2";
+import TableContent from "./TableContent.jsx";
 
 
 export default function AdminTable() {
     const param = useParams();
     const dispatch = useDispatch();
-    const bookings = useSelector(selectBookings);
-    const users = useSelector(selectUsers);
-    const [data, setData] = useState([0]);
     const [dataHeader, setDataHeader] = useState([]);
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
-    console.log(param.param)
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -31,29 +35,16 @@ export default function AdminTable() {
         }
     }, [theme]);
     useEffect(() => {
-        if (param.param === "bookings") {
-            setDataHeader(TABLE_HEAD_BOOKING)
-            console.log(bookings)
-            if (bookings === null) {
-                dispatch(getPageBookings())
-            } else {
-                setData(bookings)
-            }
-            console.log(data)
-        }
-    }, [param,bookings]);
-    useEffect(() => {
         if (param.param === "users") {
-            setDataHeader(TABLE_HEAD_USER)
-            console.log(users)
-            if (users === null) {
-                dispatch(getPageUsers())
-            } else {
-                setData(users)
-            }
-            console.log(data)
+            dispatch(setBookings(null))
+            dispatch(getPageUsers())
+            setDataHeader(TABLE_HEAD_USER);
+        } else if (param.param === "bookings") {
+            dispatch(setUsers(null))
+            dispatch(getPageBookings())
+            setDataHeader(TABLE_HEAD_BOOKING)
         }
-    }, [param,users]);
+    }, [param]);
     return (
         <>
             <div className="flex-col items-center justify-center justify-items-center">
@@ -92,48 +83,8 @@ export default function AdminTable() {
                             </th>
                         </tr>
                         </thead>
-                        <tbody className="bg-white dark:bg-blue-gray-400">
-                        {
-                            data.map((user, index) => (
-                                <tr key={index}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">{index + 1}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">{user.username}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">{user.email}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">{user.customerName === null ? "N/A" : user.customerName}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
-                                        {
-                                            user.customerName === null ? <GiCancel className="mx-auto" color={"red"}/> :
-                                                <FaCheckCircle className="mx-auto" color={"blue"}/>
-                                        }
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                        {
-                                            user.organizerName === null ?
-                                                <GiCancel className="mx-auto" color={"red"}/> :
-                                                <FaCheckCircle className="mx-auto" color={"blue"}/>
-                                        }
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                        {
-                                            user.isActivated ? <button type="button"
-                                                                       className="btn btn-outline btn-sm btn-active btn-info">Active
-                                            </button> : <button type="button"
-                                                                className="btn btn-outline btn-sm btn-disabled btn-info dark:btn-accent">Inactive
-                                            </button>
-                                        }
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                        <button type="button" className="btn btn-outline btn-sm btn-warning">Edit
-                                        </button>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                        <button type="button" className="btn btn-outline btn-sm btn-error">Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        }
-                        </tbody>
+                        <TableContent content={param}/>
+
                     </table>
                 </div>
                 <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">

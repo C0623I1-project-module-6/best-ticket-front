@@ -14,7 +14,6 @@ export async function showBookings() {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }
 export async function showTickets() {
@@ -42,7 +41,6 @@ export async function showUsers() {
     method: "GET",
   }).then((res) => {
     response = res;
-    console.log(res)
   }).catch((e) => {
     response = e;
   })
