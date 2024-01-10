@@ -18,9 +18,6 @@ export default function AdminTable() {
     const [dataHeader, setDataHeader] = useState([]);
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     console.log(param.param)
-
-
-
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -36,6 +33,7 @@ export default function AdminTable() {
     useEffect(() => {
         if (param.param === "bookings") {
             setDataHeader(TABLE_HEAD_BOOKING)
+            console.log(bookings)
             if (bookings === null) {
                 dispatch(getPageBookings())
             } else {
@@ -47,6 +45,7 @@ export default function AdminTable() {
     useEffect(() => {
         if (param.param === "users") {
             setDataHeader(TABLE_HEAD_USER)
+            console.log(users)
             if (users === null) {
                 dispatch(getPageUsers())
             } else {
