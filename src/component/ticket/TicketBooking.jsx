@@ -12,9 +12,9 @@ function TicketBooking() {
     };
     return (
 
-        <div className="w-full">
+        <div className="w-full bg-[#F1F1F1]">
             <div className=" bg-gradient-to-r from-blue-gray-400 via-brown-300 to-blue-400 text-white">
-                <div className="mx-56">
+                <div className="mx-40 py-6">
                     <div className="w-3/4 ">
                         <a href="#">
                             <span className="font-bold text-3xl	">
@@ -46,7 +46,7 @@ function TicketBooking() {
                 />
                 <Divider/>
             </div>
-            <div className="mx-56 flex justify-between	">
+            <div className="mx-40 my-5 flex justify-between	">
                 <span>Vui lòng chọn ghế bên dưới</span>
                 <span><span className="mr-2 inline-block w-4 h-4 rounded-full bg-white"></span>Ghế trống</span>
                 <span> <span className="mr-2 inline-block w-4 h-4 rounded-full bg-green-800"></span>Ghế đang chọn</span>
@@ -56,7 +56,7 @@ function TicketBooking() {
                     className="mr-2 inline-block w-4 h-4 rounded-full bg-gray-700"></span>Ghế không được chọn</span>
             </div>
 
-            <div className="flex mx-56">
+            <div className="flex mx-40">
                 <div className="w-4/6  mr-3">
                     <div className="bg-[#E3E3E3]">
                     <div className="flex p-3">
@@ -105,7 +105,7 @@ function TicketBooking() {
                     </div>
                     </div>
                     <div>
-                        <Seat/>
+                        <Seat />
                     </div>
 
                 </div>

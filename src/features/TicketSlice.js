@@ -10,7 +10,7 @@ const initialState = {
 };
 
 
-export const getTicketsByStatusUpcoming = createAsyncThunk(
+export const getTicketsByStatusFinished = createAsyncThunk(
     "tickets/byStatus",
     async (status) => {
         const response = await showAllTicketFinished(status);
@@ -32,7 +32,7 @@ const handleRejected = (state, action) => {
 const handleFulfilled = (state, action) => {
     state.success = true;
     state.loading = false;
-    state.events = action.payload;
+    state.tickets = action.payload;
     state.error = false;
 };
 
@@ -52,14 +52,14 @@ export const TicketSlice = createSlice({
     },
     extraReducers:(builder)=>{
         builder
-            .addCase(getTicketsByStatusUpcoming.pending, handlePending)
-            .addCase(getTicketsByStatusUpcoming.rejected, handleRejected)
-            .addCase(getTicketsByStatusUpcoming.fulfilled, handleFulfilled)
+            .addCase(getTicketsByStatusFinished.pending, handlePending)
+            .addCase(getTicketsByStatusFinished.rejected, handleRejected)
+            .addCase(getTicketsByStatusFinished.fulfilled, handleFulfilled)
     }
 });
 export const { setLoading, setError, setSuccess } = TicketSlice.actions;
 
-export const selectShowTicketUpcoming = (state) => state.ticket.values;
-export const selectShowTicketFinished = (state) => state.ticket.values;
+export const selectShowTicketUpcoming = (state) => state.ticket.tickets;
+export const selectShowTicketFinished = (state) => state.ticket.tickets;
 
 export default TicketSlice.reducer;

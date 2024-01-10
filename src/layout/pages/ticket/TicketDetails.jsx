@@ -1,49 +1,47 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import {selectShowTicketFinished} from "../../../features/TicketSlice.js";
-import {showAllTicketFinished} from "../../../api/TicketApi.js";
-// import {
-//     getTicketsByStatusUpcoming,
-//     selectShowTicketUpcoming,
-// } from "../../../features/TicketSlice";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate, useParams} from "react-router-dom";
+import {getTicketsByStatusFinished, selectShowTicketFinished} from "../../../features/TicketSlice.js";
+
 
 function TicketDetails(props) {
     const [keyword, setKeyword] = useState(props.value);
-    // const { status } = useParams();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const tickets = useSelector(selectShowTicketFinished);
-    console.log(tickets)
-    const showTicketFinished = async (status) => {
-        dispatch(showAllTicketFinished(status));
+    console.log(tickets.data)
+    const showTicketFinished = async () => {
+
+        dispatch(getTicketsByStatusFinished('Pending'));
     };
+
     useEffect(() => {
         setKeyword(props.value);
         showTicketFinished();
+
         console.log(keyword);
     }, []);
     return (
-        <>
-            <div className="w-full flex bg-blue-gray-900">
-                <div className="left w-2/12">hell</div>
-                <div className="center w-7/12">
-                    <div className="center-top">
-                        <h2>Tên sự kiện</h2>
-                        <p>Thời gian</p>
-                        <p>Địa điểm</p>
+        <div className="w-full bg-blue-gray-900">
+            {tickets.data?.map((ticket) => (
+                <div style={{border:"1px solid black"}} className="flex py-3 px-5" key={ticket.id}>
+                    <div className="left w-2/12 border-r ">{ticket.id}</div>
+                    <div className="center w-8/12 pl-3">
+                        <div className="center-top">
+                            <h2>Tên sự kiện</h2>
+                            <p>Thời gian</p>
+                            <p>Địa điểm</p>
+                        </div>
+                        <div className="center-bottom ">Hình ảnh gì đó</div>
                     </div>
-                    <hr />
-                    <div className="center-bottom">Hình ảnh gì đó</div>
+                    <div className="right w-2/12 border-l" style={{writingMode: "vertical-rl"}}>
+                        Mã barcode quay ngang
+                    </div>
+                    <hr/>
                 </div>
-                <div
-                    className="right w-3/12"
-                    style={{ writingMode: "vertical-rl" }}
-                >
-                    Mã barcode quay ngang
-                </div>
-</div>
-        </>
+
+            ))}
+
+        </div>
     );
 }
 
