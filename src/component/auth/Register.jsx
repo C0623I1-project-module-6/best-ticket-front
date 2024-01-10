@@ -17,9 +17,10 @@ function Register() {
     useEffect(() => {
     }, [])
     const handleChange = (e) => {
-        setFormData({
+        setFormData(prev=> ({
+            ...prev,
             [e.target.name]: e.target.value
-        })
+        }))
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,7 +56,7 @@ function Register() {
                                 id="username"
                                 name="username"
                                 value={formData.username}
-                                onChange={handleChange}
+                                onChange={(e)=>handleChange}
                                 required
                                 type="text"
                                 autoComplete="username"
