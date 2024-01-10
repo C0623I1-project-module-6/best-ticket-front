@@ -9,7 +9,6 @@ import Register from "../component/auth/Register.jsx";
 import TicketHistory from "../layout/pages/ticket/TicketHistory.jsx";
 import Search from "../component/event/Search.jsx";
 import AdminTable from "../component/table/AdminTable.jsx";
-import AdminBookingTable from "../component/table/AdminBookingTable.jsx";
 import CreateEvent from "../component/event/CreateEvent.jsx";
 
 export const ROUT_DATA = [
@@ -19,8 +18,7 @@ export const ROUT_DATA = [
   { path: "/event", element: EventHomePage, layout: UserLayout },
   { path: "/my-ticket", element: TicketHistory, layout: UserLayout },
   { path: "/admin", element: AdminHomePage, layout: AdminLayout },
-  { path: "/admin/user", element: AdminTable, layout: AdminLayout },
-  { path: "/admin/bookings", element: AdminBookingTable, layout: AdminLayout },
+  { path: "/admin/:param", element: AdminTable, layout: AdminLayout },
   { path: "/search", element: Search, layout: UserLayout },
   {path: "/event/create", element: CreateEvent},
 
