@@ -6,23 +6,27 @@ import Event from './partials/Event.jsx';
 import { CiLocationOn } from 'react-icons/ci';
 import { findAllEventType } from "../../api/EventTypeApi.js";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllEvent, getEventsByName } from '../../features/EventSlice.js';
+import {getAllEvent, getEventsByEventTypes, getEventsByName} from '../../features/EventSlice.js';
+import {useLocation} from "react-router-dom";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
 
 export default function Search() {
+    const location = useLocation();
+    const { searchTerm } = location.state.text || "";
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [showOptions, setShowOptions] = useState(false);
     const [eventTypes, setEventTypes] = useState([]);
     const dispatch = useDispatch();
     const events = useSelector((state) => state.event.events);
+    const totalPages=useSelector(state => state.event.totalPages);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    useEffect(() => {
-        dispatch(getEventsByName());
-    }, []);
 
     const fetchApiEventTypes = async () => {
         try {
             const result = await findAllEventType();
-            setEventTypes(result.data.eventTyepeList);
+            setEventTypes(result.data.eventTypeList);
         } catch (error) {
             console.error('Error EventTypeAPI', error);
         }
@@ -32,10 +36,20 @@ export default function Search() {
         fetchApiEventTypes();
     }, []);
 
+    useEffect(() => {
+        dispatch(getEventsByName({ searchTerm, currentPage: currentPage - 1 }));
+    }, [searchTerm, currentPage]);
+
+    useEffect(() => {
+        const formattedOptions = selectedOptions.join(',');
+        formattedOptions
+            ? dispatch(getEventsByEventTypes({ eventTypeNames: formattedOptions, currentPage: currentPage - 1 }))
+            : dispatch(getAllEvent(currentPage-1));
+    }, [selectedOptions, currentPage]);
     const toggleOptions = () => {
         setShowOptions(!showOptions);
     };
-
+    console.log(selectedOptions.join(','))
     const toggleOption = (option) => {
         const isSelected = selectedOptions.includes(option);
         const updatedOptions = isSelected
@@ -44,7 +58,6 @@ export default function Search() {
 
         setSelectedOptions(updatedOptions);
     };
-
     return (
         <div className="w-full bg-white m-2 rounded-lg p-2 overflow-y-auto">
             <div className="flex gap-3">
@@ -105,10 +118,34 @@ export default function Search() {
                     <SelectDay />
                 </div>
             </div>
-            <div className="grid grid-cols-3 mt-10 ">
+            <div className="flex items-center justify-center h-20 mb-2">
+                <Stack
+                    spacing={2}
+                >
+                    <Pagination
+                        count={totalPages}
+                        color="primary"
+                        page={currentPage}
+                        onChange={(event, value) => setCurrentPage(value)}
+                    />
+                </Stack>
+            </div>
+            <div className="grid grid-cols-4 mt-2 ">
                 {events.map((event) => (
                     <Event key={event.id} event={event} />
                 ))}
+            </div>
+            <div className="flex items-center justify-center h-20 mb-10">
+                <Stack
+                    spacing={2}
+                >
+                    <Pagination
+                        count={totalPages}
+                        color="primary"
+                        page={currentPage}
+                        onChange={(event, value) => setCurrentPage(value)}
+                    />
+                </Stack>
             </div>
         </div>
     );
