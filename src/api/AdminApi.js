@@ -4,7 +4,7 @@ import {BEST_TICKET_API} from "../ultility/AppConstant.js";
 export async function showBookings() {
   let response = null;
   await axios({
-    url: `${BEST_TICKET_API}admin/bookings`,
+    url: `${BEST_TICKET_API}admins/bookings`,
     headers: {
       'Content-Type': 'application/json',
     },
