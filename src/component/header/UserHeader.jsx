@@ -16,7 +16,7 @@ import avatar from "../../assets/img/User.png"
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
-    const user =  useSelector(selectUserLogin);
+    const user = useSelector(selectUserLogin);
     const dispatch = useDispatch();
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
@@ -63,7 +63,8 @@ const UserHeader = () => {
                             <div className="flex-col bg-blue-gray-50 text-center items-center justify-items-center justify-center  w-full
                                       border-2">
                                 <div>Hello</div>
-                                <div className="font-bold text-xl">{user.fullName !==null ? user.fullName : user.username}</div>
+                                <div
+                                    className="font-bold text-xl">{user.fullName !== null ? user.fullName : user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
                                       cursor-pointer
@@ -83,7 +84,9 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2   items-center justify-start w-full
                                     border-2 cursor-pointer
-                                    " onClick={()=>{logout}}>
+                                    " onClick={() => {
+                                logout
+                            }}>
                                 <div className="w-[20px]">
                                     <FaSignOutAlt/>
                                 </div>
@@ -144,7 +147,7 @@ const UserHeader = () => {
         )
     }
 
-    const logout = () =>{
+    const logout = () => {
         dispatch(logoutUser())
     }
     return (
@@ -166,7 +169,7 @@ const UserHeader = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <button type="submit" className="absolute right-0 top-0 mt-3 mr-4"
-                                onClick={() => navigate(`/search?${searchTerm}`,{ state: { text: {searchTerm} } })}>
+                                onClick={() => navigate(`/search?${searchTerm}`, {state: {text: {searchTerm}}})}>
                             <CiSearch className="text-gray-600 h-5 w-5"/>
                         </button>
                     </div>

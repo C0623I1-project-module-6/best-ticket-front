@@ -62,6 +62,7 @@ export const getPageEvents = createAsyncThunk(
     if (response.status !== 200) {
       return rejectWithValue(response.data.message);
     }
+    console.log(response)
     return response.data;
   }
 )
@@ -153,6 +154,8 @@ export const adminSlice = createSlice(
           state.getPageEventsSuccess = true;
           state.loading = false;
           state.events = action.payload.data.content;
+          state.totalPagesOfEvent = action.payload.data.totalPages;
+          state.totalElementsOfEvent = action.payload.data.totalElements;
           state.error = false;
         })
     }
@@ -176,6 +179,8 @@ export const selectTotalElementsOfUser = (state) => state.admin.totalElementsOfU
 export const selectTotalPageOfUser = (state) => state.admin.totalPagesOfUser;
 export const selectUsersSuccess = (state) => state.admin.getPageUsersSuccess;
 export const selectEvents = (state) => state.admin.events;
+export const selectTotalElementsOfEvent = (state) => state.admin.totalElementsOfEvent;
+export const selectTotalPageOfEvent = (state) => state.admin.totalPagesOfEvent;
 
 
 export default adminSlice.reducer;
