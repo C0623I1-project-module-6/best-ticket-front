@@ -3,23 +3,24 @@ import {CiSearch} from "react-icons/ci";
 import {FaMoon, FaSun, FaTicket, FaUser} from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
-import {Avatar, Popover, PopoverContent, PopoverHandler,} from "@material-tailwind/react";
+import {Avatar, Popover, PopoverContent, PopoverHandler, useSelect,} from "@material-tailwind/react";
 import {GrLanguage} from "react-icons/gr";
 import logoVie from "../../assets/img/logo/Flag_of_Vietnam.svg"
 import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
-import {logoutUser, selectUserLogin} from "../../features/UserSlice.js";
+import {logoutUser, selectLogoutSuccess, selectUserLogin} from "../../features/UserSlice.js";
 import avatar from "../../assets/img/User.png"
 
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
-    const user =  useSelector(selectUserLogin);
+    const user = useSelector(selectUserLogin);
     const dispatch = useDispatch();
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    const logoutSuccess=useSelector(selectLogoutSuccess);
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -63,7 +64,8 @@ const UserHeader = () => {
                             <div className="flex-col bg-blue-gray-50 text-center items-center justify-items-center justify-center  w-full
                                       border-2">
                                 <div>Hello</div>
-                                <div className="font-bold text-xl">{user.fullName !==null ? user.fullName : user.username}</div>
+                                <div
+                                    className="font-bold text-xl">{user.fullName !== null ? user.fullName : user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
                                       cursor-pointer
@@ -83,7 +85,8 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2   items-center justify-start w-full
                                     border-2 cursor-pointer
-                                    " onClick={()=>{logout}}>
+                                    "
+                                 onClick={logout}>
                                 <div className="w-[20px]">
                                     <FaSignOutAlt/>
                                 </div>
@@ -144,9 +147,15 @@ const UserHeader = () => {
         )
     }
 
-    const logout = () =>{
+    const logout = () => {
         dispatch(logoutUser())
     }
+    useEffect(()=>{
+        if (logoutSuccess){
+            localStorage.removeItem('token')
+            navigate("/");
+        }
+    },[logoutSuccess]);
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">
@@ -166,7 +175,7 @@ const UserHeader = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <button type="submit" className="absolute right-0 top-0 mt-3 mr-4"
-                                onClick={() => navigate(`/search?${searchTerm}`,{ state: { text: {searchTerm} } })}>
+                                onClick={() => navigate(`/search?${searchTerm}`, {state: {text: {searchTerm}}})}>
                             <CiSearch className="text-gray-600 h-5 w-5"/>
                         </button>
                     </div>

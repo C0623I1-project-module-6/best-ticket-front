@@ -17,6 +17,16 @@ export const TABLE_HEAD_BOOKING = [
   "total amount",
   "status",
 ];
-export const TABLE_HEAD_TICKET = [];
+export const TABLE_HEAD_TICKET = [
+  "stt"
+];
 
-export const TABLE_HEAD_EVENT = [];
+export const TABLE_HEAD_EVENT = [
+  "stt",
+  "event name",
+  "organizer name",
+  "organizer type",
+  "time",
+  "event type",
+  "location",
+];

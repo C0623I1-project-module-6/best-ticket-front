@@ -46,10 +46,10 @@ export async function showUsers(currentPage) {
   })
   return response;
 }
-export async function showEvents() {
+export async function showEvents(currentPage) {
   let response = null;
   await axios({
-    url: `${BEST_TICKET_API}admin/events`,
+    url: `${BEST_TICKET_API}admin/events?page=${currentPage}`,
     headers: {
       'Content-Type': 'application/json',
     },
