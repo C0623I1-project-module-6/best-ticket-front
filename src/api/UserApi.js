@@ -3,7 +3,7 @@ import { BEST_TICKET_API } from "../ultility/AppConstant.js"
 
 export async function login(user) {
   let response = null;
-  const res = await axios({
+  await axios({
     url: `${BEST_TICKET_API}auth/login`,
     headers: {
       'Content-Type': 'application/json',
@@ -58,6 +58,22 @@ export async function loginGoogle(user) {
   return response;
 }
 
-export function logout() {
-
+export async function logout(user) {
+  let response = null;
+  let token=localStorage.getItem('token');
+  await axios({
+    url: `${BEST_TICKET_API}auth/logout`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization':`Bearer ${token}`,
+    },
+    method: "POST",
+    data: user
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  console.log(response)
+  return response;
 }

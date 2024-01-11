@@ -9,7 +9,7 @@ function Register() {
     const dispatch = useDispatch();
     const [user, setUser] = useState({});
     const userRegister = useSelector(selectUserRegister);
-    const registerSuccess = useSelector(selectRegisterSusccess);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,12 +17,6 @@ function Register() {
         setUser(userRegister);
         navigate("/login")
     }
-    // useEffect(() => {
-    //     console.log(userRegister);
-    //     if (registerSuccess && userRegister) {
-            
-    //     }
-    // }, [registerSuccess, userRegister, navigate])
 
     const handleChange = (e) => {
         setUser({

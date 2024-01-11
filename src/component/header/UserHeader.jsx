@@ -3,13 +3,13 @@ import {CiSearch} from "react-icons/ci";
 import {FaMoon, FaSun, FaTicket, FaUser} from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
-import {Avatar, Popover, PopoverContent, PopoverHandler,} from "@material-tailwind/react";
+import {Avatar, Popover, PopoverContent, PopoverHandler, useSelect,} from "@material-tailwind/react";
 import {GrLanguage} from "react-icons/gr";
 import logoVie from "../../assets/img/logo/Flag_of_Vietnam.svg"
 import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
-import {logoutUser, selectUserLogin} from "../../features/UserSlice.js";
+import {logoutUser, selectLogoutSuccess, selectUserLogin} from "../../features/UserSlice.js";
 import avatar from "../../assets/img/User.png"
 
 
@@ -20,6 +20,7 @@ const UserHeader = () => {
     const dispatch = useDispatch();
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    const logoutSuccess=useSelector(selectLogoutSuccess);
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -83,7 +84,7 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2   items-center justify-start w-full
                                     border-2 cursor-pointer
-                                    " onClick={()=>{logout}}>
+                                    " onClick={logout}>
                                 <div className="w-[20px]">
                                     <FaSignOutAlt/>
                                 </div>
@@ -145,8 +146,14 @@ const UserHeader = () => {
     }
 
     const logout = () =>{
-        dispatch(logoutUser())
+        dispatch(logoutUser(user));
     }
+    useEffect(()=>{
+        if (logoutSuccess){
+            localStorage.removeItem('token')
+            navigate("/");
+        }
+    },[logoutSuccess]);
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">
