@@ -3,16 +3,23 @@ import {showBookings, showEvents, showTickets, showUsers} from "../api/AdminApi.
 
 const initialState = {
   bookings: null,
+  totalPagesOfBooking : null,
+  totalElementsOfBooking : null,
   tickets: null,
+  totalPagesOfTicket : null,
+  totalElementsOfTicket : null,
   users: null,
+  totalPagesOfUser : null,
+  totalElementsOfUser : null,
   events: null,
+  totalPagesOfEvent : null,
+  totalElementsOfEvent : null,
   getPageUsersSuccess: false,
   getPageBookingsSuccess: false,
   getPageEventsSuccess: false,
   getPageTicketsSuccess: false,
   loading: true,
   error: false,
-
 };
 
 export const getPageBookings = createAsyncThunk(
@@ -92,6 +99,8 @@ export const adminSlice = createSlice(
         .addCase(getPageBookings.fulfilled, (state, action) => {
           state.getPageBookingsSuccess = true;
           state.loading = false;
+          state.totalPagesOfBooking = action.payload.data.totalPages
+          state.totalElementsOfBooking = action.payload.data.totalElements
           state.bookings = action.payload.data.content;
           state.error = false;
         })
@@ -125,6 +134,9 @@ export const adminSlice = createSlice(
           state.getPageUsersSuccess = true;
           state.loading = false;
           state.users = action.payload.data.content;
+          state.totalPagesOfUser = action.payload.data.totalPages;
+          state.totalElementsOfUser = action.payload.data.totalElements
+
           state.error = false;
         })
         .addCase(getPageEvents.pending, (state) => {
@@ -156,8 +168,12 @@ export const {
 } = adminSlice.actions;
 export const selectBookings = (state) => state.admin.bookings;
 export const selectBookingsSuccess = (state) => state.admin.getPageBookingsSuccess;
+export const selectTotalElementsOfBooking = (state) => state.admin.totalElementsOfBooking;
+export const selectTotalPageOfBooking = (state) => state.admin.totalPagesOfBooking;
 export const selectTickets = (state) => state.admin.tickets;
 export const selectUsers = (state) => state.admin.users;
+export const selectTotalElementsOfUser = (state) => state.admin.totalElementsOfUser;
+export const selectTotalPageOfUser = (state) => state.admin.totalPagesOfUser;
 export const selectUsersSuccess = (state) => state.admin.getPageUsersSuccess;
 export const selectEvents = (state) => state.admin.events;
 

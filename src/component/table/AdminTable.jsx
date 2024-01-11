@@ -1,27 +1,38 @@
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
     getPageBookings,
-    getPageUsers,
-    selectBookings,
-    selectUsers,
+    getPageUsers, selectBookingsSuccess,
+    selectTotalElementsOfBooking, selectTotalElementsOfUser,
+    selectTotalPageOfBooking, selectTotalPageOfUser, selectUsersSuccess,
     setBookings,
     setUsers
 } from "../../features/AdminSlice.js";
-import Pagination from "../Pagination.jsx";
-import {FaCheckCircle, FaCogs} from "react-icons/fa";
-import {GiCancel} from "react-icons/gi";
 import {TABLE_HEAD_BOOKING, TABLE_HEAD_USER} from "../../ultility/AppConstant.js";
-import {HiChevronLeft, HiChevronRight} from "react-icons/hi2";
 import TableContent from "./TableContent.jsx";
+import Pagination from '@mui/material/Pagination';
 
 
 export default function AdminTable() {
+    const [currentPage, setCurrentPage] = useState(1);
     const param = useParams();
     const dispatch = useDispatch();
     const [dataHeader, setDataHeader] = useState([]);
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    const totalElementOfBooking = useSelector(selectTotalElementsOfBooking)
+    const totalElementOfUser = useSelector(selectTotalElementsOfUser);
+    const totalPagesOfBookings = useSelector(selectTotalPageOfBooking);
+    const totalPageOfUser = useSelector(selectTotalPageOfUser)
+    const [totalPages, setTotalPages] = useState(0);
+    const selectUserSuccess = useSelector(selectUsersSuccess);
+    const selectBookingSuccess = useSelector(selectBookingsSuccess)
+    useEffect(() => {
+        setTotalPages(totalPageOfUser)
+    }, [selectUserSuccess]);
+    useEffect(() => {
+        setTotalPages(totalPagesOfBookings)
+    }, [selectBookingSuccess]);
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -43,11 +54,19 @@ export default function AdminTable() {
             dispatch(setUsers(null))
             dispatch(getPageBookings())
             setDataHeader(TABLE_HEAD_BOOKING)
+
         }
     }, [param]);
+    useEffect(() => {
+        if (param.param === "bookings") {
+            dispatch(getPageBookings(currentPage - 1));
+        }else  if (param.param === "users") {
+            dispatch(getPageUsers(currentPage-1))
+        }
+    }, [currentPage]);
     return (
         <>
-            <div className="flex-col items-center justify-center justify-items-center">
+            <div className="flex-col items-center justify-center justify-items-center ">
                 <div className="flex justify-center gap-4 items-center bg-amber-500">
                     <div>Right</div>
                     <div>Header</div>
@@ -60,8 +79,8 @@ export default function AdminTable() {
                     <input id="search" type="text" placeholder="Search"
                            className="input input-sm input-bordered input-primary w-full max-w-xs"/>
                 </div>
-                <div className="flex justify-center mt-3 ">
-                    <table className="table-lg table-zebra-zebra rounded-full border-2">
+                <div className="flex justify-center mt-3 px-20">
+                    <table className="table-fixed  table-zebra-zebra rounded-full w-full ">
                         <thead className="bg-amber-500
                         dark:text-white dark:bg-black">
                         <tr>
@@ -87,91 +106,19 @@ export default function AdminTable() {
 
                     </table>
                 </div>
-                <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-                    <div className="flex flex-1 justify-between sm:hidden">
-                        <a
-                            href="#"
-                            className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        >
-                            Previous
-                        </a>
-                        <a
-                            href="#"
-                            className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        >
-                            Next
-                        </a>
-                    </div>
-                    <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                <div className="flex items-center justify-center border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                         <div>
-                            <p className="text-sm text-gray-700">
-                                Showing <span className="font-medium">1</span> to <span
-                                className="font-medium">10</span> of{' '}
-                                <span className="font-medium">97</span> results
-                            </p>
+                            <Pagination
+                                count={totalPages || 0}
+                                color="secondary"
+                                showFirstButton
+                                showLastButton
+                                size="large"
+                                variant="outlined"
+                                page={currentPage}
+                                onChange={(event, value) => setCurrentPage(value)}
+                            />
                         </div>
-                        <div>
-                            <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm"
-                                 aria-label="Pagination">
-                                <a
-                                    href="#"
-                                    className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                                >
-                                    <span className="sr-only">Previous</span>
-                                    <HiChevronLeft className="h-5 w-5" aria-hidden="true"/>
-                                </a>
-                                {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-                                <a
-                                    href="#"
-                                    aria-current="page"
-                                    className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                >
-                                    1
-                                </a>
-                                <a
-                                    href="#"
-                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                                >
-                                    2
-                                </a>
-                                <a
-                                    href="#"
-                                    className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-                                >
-                                    3
-                                </a>
-                                <span
-                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
-              ...
-            </span>
-                                <a
-                                    href="#"
-                                    className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-                                >
-                                    8
-                                </a>
-                                <a
-                                    href="#"
-                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                                >
-                                    9
-                                </a>
-                                <a
-                                    href="#"
-                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                                >
-                                    10
-                                </a>
-                                <a
-                                    href="#"
-                                    className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                                >
-                                    <span className="sr-only">Next</span>
-                                    <HiChevronRight className="h-5 w-5" aria-hidden="true"/>
-                                </a>
-                            </nav>
-                        </div>
-                    </div>
                 </div>
             </div>
 
