@@ -1,32 +1,34 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import { useEffect, useState } from "react";
-import { register } from "../../api/UserApi.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, selectRegisterSusccess, selectUserRegister } from "../../features/UserSlice.js";
 
 function Register() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [user, setUser] = useState({});
-    const dispatch= useDispatch();
-    const [loading, setLoading] = useState(false);
-    useEffect(() => {
-    }, [])
-    const handleChange = (e) => {
-        setFormData(prev=> ({
-            ...prev,
-            [e.target.name]: e.target.value
-        }))
-    }
+    const userRegister = useSelector(selectUserRegister);
+    const registerSuccess = useSelector(selectRegisterSusccess);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+        dispatch(registerUser(user));
+        setUser(userRegister);
+        navigate("/login")
     }
-    try {
-        register(formData);
-    
-    } catch {
-        setError(error.message);
-        setLoading(false);
+    // useEffect(() => {
+    //     console.log(userRegister);
+    //     if (registerSuccess && userRegister) {
+            
+    //     }
+    // }, [registerSuccess, userRegister, navigate])
+
+    const handleChange = (e) => {
+        setUser({
+            ...user,
+            [e.target.name]: e.target.value,
+        })
     }
 
     return (
@@ -35,7 +37,7 @@ function Register() {
         ">
             <AuthHeader name={"Registration"} />
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" method="POST">
+                <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="username"
@@ -50,7 +52,7 @@ function Register() {
                             <input
                                 id="username"
                                 name="username"
-                                value={formData.username}
+                                value={user.username}
                                 onChange={handleChange}
                                 required
                                 type="text"
@@ -76,7 +78,7 @@ function Register() {
                             <input
                                 id="email"
                                 name="email"
-                                value={formData.email}
+                                value={user.email}
                                 onChange={handleChange}
                                 required
                                 type="email"
@@ -102,10 +104,9 @@ function Register() {
                             <input
                                 id="phoneNumber"
                                 name="phoneNumber"
-                                value={formData.phoneNumber}
+                                value={user.phoneNumber}
                                 onChange={handleChange}
-                                required
-                                type="number"
+                                type="text"
                                 autoComplete="phoneNumber"
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm
                                  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2
@@ -129,7 +130,7 @@ function Register() {
                             <input
                                 id="password"
                                 name="password"
-                                value={formData.password}
+                                value={user.password}
                                 onChange={handleChange}
                                 type="password"
                                 autoComplete="current-password"
@@ -155,7 +156,7 @@ function Register() {
                             <input
                                 id="confirmPassword"
                                 name="confirmPassword"
-                                value={formData.confirmPassword}
+                                value={user.confirmPassword}
                                 onChange={handleChange}
                                 type="password"
                                 autoComplete="current-password"
@@ -170,8 +171,9 @@ function Register() {
                     </div>
                     <div className="flex justify-center gap-3">
                         <div className="w-full ">
-                            <div className="w-full btn btn-outline btn-primary dark:btn-info">
-                                <button type="submit" onSubmit={handleSubmit}>Register</button>
+                            <div className="w-full">
+                                <button type="submit" className="w-full btn btn-outline btn-primary dark:btn-info"
+                                >Register</button>
                             </div>
                         </div>
                     </div>

@@ -74,12 +74,31 @@ export const userSlice = createSlice(
       setLoginSuccess: (state, action) => {
         state.loginSuccess = action.payload;
       },
+      setRegisterSuccess:(state, action)=>{
+        state.registerSuccess=action.payload;
+      },
       setValue: (state, action) => {
         state.value = action.payload;
       },
     },
     extraReducers: (builder) => {
       builder
+      .addCase(registerUser.pending, (state) => {
+        state.loginSuccess = false;
+        state.loading = true;
+        state.loginError = false;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loginSuccess = false;
+        state.loading = false;
+        state.loginError = action.payload;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loginSuccess = true;
+        state.loading = false;
+        state.value = action.payload.data;
+        state.loginError = false;
+      })
         .addCase(loginUser.pending, (state) => {
           state.loginSuccess = false;
           state.loading = true;
@@ -126,5 +145,6 @@ export const {
 
 export const selectLoginSuccess = (state) => state.user.loginSuccess;
 export const selectUserLogin = (state) => state.user.value;
-export const selectUserRegister=(state)=>state.user.value
+export const selectRegisterSusccess=(state)=>state.user.registerSuccess;
+export const selectUserRegister=(state)=>state.user.value;
 export default userSlice.reducer;

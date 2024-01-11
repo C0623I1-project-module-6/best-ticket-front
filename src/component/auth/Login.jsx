@@ -23,7 +23,7 @@ function Login() {
         console.log(user)
         if (loginSuccess && user && user.token) {
             localStorage.setItem('token', user.token);
-            navigate("/")
+            navigate("/");
         }
     }, [loginSuccess, navigate, user]);
     return (
