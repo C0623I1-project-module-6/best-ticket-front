@@ -63,7 +63,7 @@ const UserHeader = () => {
                             <div className="flex-col bg-blue-gray-50 text-center items-center justify-items-center justify-center  w-full
                                       border-2">
                                 <div>Hello</div>
-                                <div className="font-bold text-xl">{user.username}</div>
+                                <div className="font-bold text-xl">{user.fullName !==null ? user.fullName : user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
                                       cursor-pointer

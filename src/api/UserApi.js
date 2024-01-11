@@ -1,9 +1,9 @@
 import axios from "axios";
-import {BEST_TICKET_API} from "../ultility/AppConstant.js"
+import { BEST_TICKET_API } from "../ultility/AppConstant.js"
 
 export async function login(user) {
   let response = null;
-  await axios({
+  const res = await axios({
     url: `${BEST_TICKET_API}auth/login`,
     headers: {
       'Content-Type': 'application/json',
@@ -11,8 +11,8 @@ export async function login(user) {
     method: "POST",
     data: user
   }).then((res) => {
-    const token=response.data.token
-    localStorage.getItem('token', token)
+    const token = res.data.token
+    localStorage.setItem('token', token)
     response = res;
   }).catch((e) => {
     response = e;
