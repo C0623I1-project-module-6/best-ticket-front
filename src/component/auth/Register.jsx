@@ -106,7 +106,6 @@ function Register() {
                                 name="phoneNumber"
                                 value={user.phoneNumber}
                                 onChange={handleChange}
-                                required
                                 type="text"
                                 autoComplete="phoneNumber"
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm
