@@ -3,7 +3,7 @@ import React from "react";
 function UserFooter(props) {
     return (
         <>
-            <div className=" bg-[#383E4D]">
+            <div className=" bg-gray-300">
                 <footer className="flex font text-xs py-10 px-4">
                     <div className="ft-left w-1/3  ">
                         <h4 className="font-bold text-[#c9c9c9]">Holine</h4>
