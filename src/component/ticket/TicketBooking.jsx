@@ -4,6 +4,7 @@ import UserFooter from "../footer/UserFooter.jsx";
 import {TicketBookingStep1} from "./TicketBookingStep1.jsx";
 import {useLocation} from "react-router-dom";
 import {TicketBookingStep3} from "./TicketBookingStep3.jsx";
+import TicketBookingStep2 from "./TicketBookingStep2.jsx";
 
 
 function TicketBooking() {
@@ -41,7 +42,7 @@ function TicketBooking() {
                     <Step title="Hoàn tất" />
                 </Steps>
                 {current === 0 && <TicketBookingStep1 />}
-                {/*{current === 1 && <TicketBookingStep1 />}*/}
+                {current === 1 && <TicketBookingStep2 />}
                 {current === 2 && <TicketBookingStep3 />}
             </div>
             <UserFooter/>

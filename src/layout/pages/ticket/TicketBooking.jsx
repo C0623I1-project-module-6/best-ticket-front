@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Divider, Steps } from "antd";
-import TicketPayment from "../../../component/ticket/TicketPayment";
+import TicketBookingStep2 from "../../../component/ticket/TicketBookingStep2.jsx";
 // import UserFooter from "../../../component/footer/UserFooter";
 
 function TicketBooking() {
@@ -46,7 +46,7 @@ function TicketBooking() {
         />
         <Divider />
       </div>
-          <TicketPayment />
+          <TicketBookingStep2 />
       {/* <UserFooter /> */}
     </div>
   );
