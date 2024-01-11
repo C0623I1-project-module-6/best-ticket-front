@@ -1,7 +1,7 @@
 import {CiBank, CiCreditCard1} from "react-icons/ci";
 
 
-export default function TicketPayment() {
+export default function TicketBookingStep2() {
 
     return (
         <>
