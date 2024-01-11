@@ -11,6 +11,7 @@ import Search from "../component/event/Search.jsx";
 import AdminTable from "../component/table/AdminTable.jsx";
 import TicketBooking from "../component/ticket/TicketBooking.jsx";
 import CreateEvent from "../component/event/CreateEvent.jsx";
+import TicketPayment from "../component/ticket/TicketPayment.jsx";
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
@@ -24,5 +25,6 @@ export const ROUT_DATA = [
     {path: "/admin/:param", element: AdminTable, layout: AdminLayout},
     {path: "/search", element: Search, layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
+    {path: "/event/id/ticket-booking/id/2", element: TicketPayment, layout: UserLayout},
     {path: "/event/create", element: CreateEvent}
 ];
