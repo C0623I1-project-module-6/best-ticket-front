@@ -11,7 +11,7 @@ function TicketDetails(props) {
     console.log(tickets.data)
     const showTicketFinished = async () => {
 
-        dispatch(getTicketsByStatusFinished('Pending'));
+        dispatch(getTicketsByStatusFinished(''));
     };
 
     useEffect(() => {
