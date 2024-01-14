@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
-import { useEffect } from "react";
-import { loginUser, selectLoginSuccess, selectUserLogin } from "../../features/UserSlice.js";
-import { useDispatch, useSelector } from "react-redux";
+import {useEffect} from "react";
+import {loginUser, selectLoginSuccess, selectUserLogin} from "../../features/UserSlice.js";
+import {useDispatch, useSelector} from "react-redux";
 
 function Login() {
     const dispatch = useDispatch();
@@ -21,22 +21,21 @@ function Login() {
     }
     useEffect(() => {
         console.log(user)
-        if (loginSuccess && user && user.token) {
-            localStorage.setItem('token', user.token);
+        if (loginSuccess) {
             navigate("/");
         }
-    }, [loginSuccess, navigate, user]);
+    }, [loginSuccess, navigate]);
     return (
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
         dark:bg-black dark:text-white
         ">
-            <AuthHeader name={"Login"} />
+            <AuthHeader name={"Login"}/>
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="email"
-                                className="block text-sm font-medium leading-6 text-gray-900
+                                   className="block text-sm font-medium leading-6 text-gray-900
                                        hover:text-gray-500 cursor-pointer
                                        dark:text-white
                                        ">
@@ -62,7 +61,7 @@ function Login() {
                     <div>
                         <div className="flex items-center justify-between m-0">
                             <label htmlFor="password"
-                                className="block text-sm font-medium leading-6 text-gray-900
+                                   className="block text-sm font-medium leading-6 text-gray-900
                                        hover:text-gray-500 cursor-pointer
                                        dark:text-white
                                        ">
@@ -99,7 +98,7 @@ function Login() {
                                 Don't have account ?
                             </span>
                             <span className="cursor-pointer hover:text-gray-500 font-bold text-blue-500"
-                                onClick={() => navigate("/register")}>Register</span>
+                                  onClick={() => navigate("/register")}>Register</span>
                         </div>
                     </div>
                 </form>
