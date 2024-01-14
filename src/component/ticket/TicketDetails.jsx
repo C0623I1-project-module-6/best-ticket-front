@@ -1,18 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getTicketsByStatusFinished, getTicketsByStatusUpcoming, selectShowTicket,} from "../../features/TicketSlice.js";
+import {getTicketsByStatusFinished, getTicketsByStatusUpcoming, selectShowTicket} from "../../features/TicketSlice.js";
 import JsBarcode from "jsbarcode";
 
 
 function TicketDetails(props) {
     const [keyword, setKeyword] = useState(props.value);
     const [time, setTime] = useState(props.time);
-    console.log(props.time)
     const dispatch = useDispatch();
     const tickets = useSelector(selectShowTicket);
 
     const showTicket = async () => {
-        console.log(time)
         if (time === 'finished') {
             dispatch(getTicketsByStatusFinished(keyword));
         } else if (time === 'upcoming') {
@@ -59,8 +57,7 @@ function TicketDetails(props) {
 
             ))}
 
-        </div>
-    );
+        </div>);
 }
 
 export default TicketDetails;
