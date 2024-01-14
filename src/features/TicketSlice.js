@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {showAllTicketFinished} from "../api/TicketApi";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {showAllTicketFinished, showAllTicketUpcoming} from "../api/TicketApi";
 
 const initialState = {
     tickets: [],
@@ -11,9 +11,16 @@ const initialState = {
 
 
 export const getTicketsByStatusFinished = createAsyncThunk(
-    "tickets/byStatus",
+    "tickets/showAllTicketFinished",
     async (status) => {
         const response = await showAllTicketFinished(status);
+        return response.data;
+    }
+);
+export const getTicketsByStatusUpcoming = createAsyncThunk(
+    "tickets/showAllTicketUpcoming",
+    async (status) => {
+        const response = await showAllTicketUpcoming(status);
         return response.data;
     }
 );
@@ -50,16 +57,19 @@ export const TicketSlice = createSlice({
             state.success = action.payload;
         },
     },
-    extraReducers:(builder)=>{
+    extraReducers: (builder) => {
         builder
             .addCase(getTicketsByStatusFinished.pending, handlePending)
             .addCase(getTicketsByStatusFinished.rejected, handleRejected)
             .addCase(getTicketsByStatusFinished.fulfilled, handleFulfilled)
+
+            .addCase(getTicketsByStatusUpcoming.pending, handlePending)
+            .addCase(getTicketsByStatusUpcoming.rejected, handleRejected)
+            .addCase(getTicketsByStatusUpcoming.fulfilled, handleFulfilled)
     }
 });
-export const { setLoading, setError, setSuccess } = TicketSlice.actions;
+export const {setLoading, setError, setSuccess} = TicketSlice.actions;
 
-export const selectShowTicketUpcoming = (state) => state.ticket.tickets;
-export const selectShowTicketFinished = (state) => state.ticket.tickets;
+export const selectShowTicket = (state) => state.ticket.tickets;
 
 export default TicketSlice.reducer;

@@ -2,10 +2,15 @@ import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getPageBookings, getPageEvents,
-    getPageUsers, selectBookingsSuccess,
-    selectTotalElementsOfBooking, selectTotalElementsOfUser,
-    selectTotalPageOfBooking, selectTotalPageOfUser, selectUsersSuccess,
+    getPageBookings,
+    getPageEvents,
+    getPageUsers,
+    selectBookingsSuccess,
+    selectTotalElementsOfBooking,
+    selectTotalElementsOfUser,
+    selectTotalPageOfBooking,
+    selectTotalPageOfUser,
+    selectUsersSuccess,
     setBookings,
     setUsers
 } from "../../features/AdminSlice.js";
