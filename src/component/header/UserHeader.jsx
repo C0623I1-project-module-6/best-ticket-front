@@ -148,14 +148,8 @@ const UserHeader = () => {
     }
 
     const logout = () => {
-        dispatch(logoutUser())
+        dispatch(logoutUser(user))
     }
-    useEffect(()=>{
-        if (logoutSuccess){
-            localStorage.removeItem('token')
-            navigate("/");
-        }
-    },[logoutSuccess]);
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">

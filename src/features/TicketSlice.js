@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {showAllTicketFinished, showAllTicketUpcoming} from "../api/TicketApi";
 
+
 const initialState = {
     tickets: [],
     ticket: null,
@@ -15,8 +16,8 @@ export const getTicketsByStatusFinished = createAsyncThunk(
     async (status) => {
         const response = await showAllTicketFinished(status);
         return response.data;
-    }
-);
+    })
+
 export const getTicketsByStatusUpcoming = createAsyncThunk(
     "tickets/showAllTicketUpcoming",
     async (status) => {
@@ -50,22 +51,16 @@ export const TicketSlice = createSlice({
         setLoading: (state, action) => {
             state.loading = action.payload;
         },
-        setError: (state, action) => {
-            state.error = action.payload;
-        },
-        setSuccess: (state, action) => {
-            state.success = action.payload;
-        },
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(getTicketsByStatusFinished.pending, handlePending)
-            .addCase(getTicketsByStatusFinished.rejected, handleRejected)
-            .addCase(getTicketsByStatusFinished.fulfilled, handleFulfilled)
+        extraReducers: (builder) => {
+            builder
+                .addCase(getTicketsByStatusFinished.pending, handlePending)
+                .addCase(getTicketsByStatusFinished.rejected, handleRejected)
+                .addCase(getTicketsByStatusFinished.fulfilled, handleFulfilled)
 
-            .addCase(getTicketsByStatusUpcoming.pending, handlePending)
-            .addCase(getTicketsByStatusUpcoming.rejected, handleRejected)
-            .addCase(getTicketsByStatusUpcoming.fulfilled, handleFulfilled)
+                .addCase(getTicketsByStatusUpcoming.pending, handlePending)
+                .addCase(getTicketsByStatusUpcoming.rejected, handleRejected)
+                .addCase(getTicketsByStatusUpcoming.fulfilled, handleFulfilled)
+        }
     }
 });
 export const {setLoading, setError, setSuccess} = TicketSlice.actions;

@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { login, loginGoogle, logout, register } from "../api/UserApi.js";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {login, loginGoogle, logout, register} from "../api/UserApi.js";
 
 const initialState = {
   value: null,
@@ -14,7 +14,7 @@ const initialState = {
 
 export const loginUser = createAsyncThunk(
   "login",
-  async (loginData, { rejectWithValue }) => {
+  async (loginData, {rejectWithValue}) => {
     const response = await login(loginData);
     if (response.status !== 200) {
       console.log(response)
@@ -27,7 +27,7 @@ export const loginUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
   "logout",
-  async (logoutData, { rejectWithValue }) => {
+  async (logoutData, {rejectWithValue}) => {
     const response = await logout(logoutData);
     if (response.status !== 200) {
       console.log(response)
@@ -40,7 +40,7 @@ export const logoutUser = createAsyncThunk(
 
 export const loginWithGoogle = createAsyncThunk(
   "loginGoogle",
-  async (loginData, { rejectWithValue }) => {
+  async (loginData, {rejectWithValue}) => {
     const response = await loginGoogle(loginData);
     if (response.status !== 200) {
       console.log(response)
@@ -52,7 +52,7 @@ export const loginWithGoogle = createAsyncThunk(
 
 export const registerUser = createAsyncThunk(
   "register",
-  async (registerData, { rejectWithValue }) => {
+  async (registerData, {rejectWithValue}) => {
     const response = await register(registerData);
     if (response.status !== 200) {
       console.log(response)
@@ -92,7 +92,7 @@ export const userSlice = createSlice(
       setLogoutError: (state, action) => {
         state.logoutError = action.payload;
       },
-      
+
       setValue: (state, action) => {
         state.value = action.payload;
       },
@@ -132,6 +132,7 @@ export const userSlice = createSlice(
           state.loading = false;
           state.value = action.payload.data;
           state.loginError = false;
+          localStorage.setItem("token",action.payload.data.token)
         })
 
 
@@ -168,6 +169,7 @@ export const userSlice = createSlice(
           state.loading = false;
           state.value = action.payload.data;
           state.logoutError = false;
+          localStorage.removeItem("token")
         })
     }
 
@@ -189,6 +191,6 @@ export const selectLoginSuccess = (state) => state.user.loginSuccess;
 export const selectUserLogin = (state) => state.user.value;
 export const selectRegisterSusccess = (state) => state.user.registerSuccess;
 export const selectUserRegister = (state) => state.user.value;
-export const selectLogoutSuccess= (state)=> state.user.logoutSuccess;
-export const selectUserLogout= (state)=> state.user.value;
+export const selectLogoutSuccess = (state) => state.user.logoutSuccess;
+export const selectUserLogout = (state) => state.user.value;
 export default userSlice.reducer;
