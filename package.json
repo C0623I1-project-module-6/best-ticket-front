@@ -20,6 +20,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.12.8",
     "axios": "^1.6.2",
+    "jsbarcode": "^3.11.6",
     "pikaday": "^1.8.2",
     "preline": "^2.0.3",
     "react": "^18.2.0",
