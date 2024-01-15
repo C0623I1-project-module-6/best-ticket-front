@@ -29,7 +29,7 @@ function getStyles(eventType, selectedEventTypes, theme) {
     };
 }
 
-export default function MultipleSelectChip({eventTypes}) {
+export default function MultipleSelectChip({eventTypes,callback}) {
     const theme = useTheme();
     const [selectedEventTypes, setSelectedEventTypes] = useState([]);
     const handleChange = (event) => {
@@ -39,8 +39,11 @@ export default function MultipleSelectChip({eventTypes}) {
         setSelectedEventTypes(
             typeof value === 'string' ? value.split(',') : value,
         );
-    };
 
+    };
+    useEffect(() => {
+        callback(selectedEventTypes);
+    }, [selectedEventTypes]);
     return (
         <div className="w-[80%] p-5 mx-auto">
             <FormControl sx={{ width: '100%' }}>

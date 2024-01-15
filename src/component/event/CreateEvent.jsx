@@ -1,23 +1,25 @@
 import CreateEventSideBar from "./partials/CreateEventSideBar.jsx";
-import {Button, Input} from "@material-tailwind/react";
+import {Input} from "@material-tailwind/react";
 import React, {useEffect, useState} from "react";
 import { ProvincesApi } from "../../api/ProvincesApi.js";
 import { Select, Option } from "@material-tailwind/react";
 import {findAllEventType} from "../../api/EventTypeApi.js";
 import banner from "../../assets/img/cover-event.jpg"
-import {FcCheckmark} from "react-icons/fc";
-import {IoListOutline} from "react-icons/io5";
 import SelectEvent from "./partials/SelectEvent.jsx";
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs from "dayjs";
+
 export default function CreateEvent(){
     const [email, setEmail] = useState("");
     const onChange = ({ target }) => setEmail(target.value);
-    const [eventTypes, setEventTypes] = useState([]);
+    const [eventTypes, setEventTypes] = useState([]); // object
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [selectedProvince,setSelectedProvince] = useState("");
     const [selectedDistrict,setSelectedDistrict] = useState("");
-    const [selectedEventTypes,setSelectedEventTypes] = useState([])
-
+    const [selectedEventTypes,setSelectedEventTypes] = useState([]) //string
+    const [startDate, setStartDate] = useState(dayjs());
+    const [endDate, setEndDate] = useState(dayjs());
     const fetchApiEventTypes = async () => {
         try {
             const result = await findAllEventType();
@@ -37,12 +39,19 @@ export default function CreateEvent(){
         fetchProvinceData();
     }, []);
     const selectedData = (data) =>{
-        setEventTypes(data);
+        setSelectedEventTypes(data);
     }
+    const handleStarDateChange = (date) => {
+        setStartDate(date);
+    };
+    const handleEndDateChange = (date) => {
+        setEndDate(date);
+    };
+    console.log(startDate.valueOf(),endDate)
     return(
         <div className="flex h-screen  ">
             <CreateEventSideBar/>
-            <div className="w-full overflow-y-auto ">
+            <div className="w-[75vw] overflow-y-auto ">
                 <div className=" mx-auto">
                     <div className="relative overflow-hidden">
                         <img src={banner}  className="w-full  object-cover"  alt=""/>
@@ -90,7 +99,7 @@ export default function CreateEvent(){
                     <div className="w-[80%] p-5 mx-auto">
                         <Input label="Địa chỉ chi tiết" />
                     </div>
-                    <SelectEvent eventTypes={eventTypes} handleData={selectedData}/>
+                    <SelectEvent eventTypes={eventTypes} callback={selectedData}/>
                     <div className="w-[80%] flex gap-5 mx-auto">
                         <div className="p-4 w-full">
                             <label htmlFor="EventDetail" className="block text-sm font-medium text-gray-700">
@@ -100,8 +109,28 @@ export default function CreateEvent(){
                                 id="EventDetail"
                                 name="EventDetail"
                                 rows="4"
-                                className="mt-1 p-2 border rounded-md w-full"
+                                className="mt-1 p-2 border rounded-md w-full border-gray-400"
                                 placeholder="Chi tiết về sự kiện..."
+                            />
+                        </div>
+                    </div>
+                    <div className="w-[80%] flex  p-5 mx-auto gap-5">
+                        <div className="flex-1">
+                            <DateTimePicker
+                                className="w-full"
+                                label="Ngày và giờ bắt đầu sự kiện"
+                                disablePast
+                                value={startDate}
+                                onChange={handleStarDateChange}
+                            />
+                        </div>
+                        <div className="flex-1">
+                            <DateTimePicker
+                                className="w-full"
+                                label="Ngày và giờ kết thúc sự kiện"
+                                minDate={startDate}
+                                value={endDate}
+                                onChange={handleEndDateChange}
                             />
                         </div>
                     </div>
@@ -110,6 +139,7 @@ export default function CreateEvent(){
                             Tạo Event
                         </button>
                     </div>
+
                 </div>
             </div>
         </div>
