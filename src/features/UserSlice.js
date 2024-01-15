@@ -34,8 +34,6 @@ export const logoutUser = createAsyncThunk(
       console.log(response)
       return rejectWithValue(response.data.message);
     }
-    console.log(response)
-    return response.data;
   }
 )
 
@@ -47,22 +45,20 @@ export const loginWithGoogle = createAsyncThunk(
       console.log(response)
       return rejectWithValue(response.data.message);
     }
-    return response.data;
   }
 )
 
 export const registerUser = createAsyncThunk(
-  "register",
-  async (registerData, {rejectWithValue}) => {
-    const response = await register(registerData);
-    if (response.status !== 200) {
-      console.log(response)
-      return rejectWithValue(response.data.message);
+    "register",
+    async (registerData, {rejectWithValue}) => {
+      const response = await register(registerData);
+      if (response.status !== 200) {
+        console.log(response)
+        return rejectWithValue(response.data.message);
+      }
     }
-    console.log(response.data)
-    return response.data;
-  }
-);
+  )
+;
 
 export const userSlice = createSlice(
   {
@@ -79,22 +75,22 @@ export const userSlice = createSlice(
       setLoginSuccess: (state, action) => {
         state.loginSuccess = action.payload;
       },
+
       setRegisterSuccess: (state, action) => {
         state.registerSuccess = action.payload;
       },
       setRegisterError: (state, action) => {
         state.registerError = action.payload;
       },
+
       setLogoutSuccess: (state, action) => {
         state.logoutSuccess = action.payload;
       },
       setLogoutError: (state, action) => {
         state.logoutError = action.payload;
       },
+
       setValue: (state, action) => {
-        state.value = action.payload;
-      },
-      setIsAdmin: (state, action) => {
         state.value = action.payload;
       },
     },
@@ -116,6 +112,8 @@ export const userSlice = createSlice(
           state.value = action.payload.data;
           state.registerError = false;
         })
+
+
         .addCase(loginUser.pending, (state) => {
           state.loginSuccess = false;
           state.loading = true;
@@ -130,13 +128,9 @@ export const userSlice = createSlice(
           state.loginSuccess = true;
           state.loading = false;
           state.value = action.payload.data;
-          state.listRole = action.payload.data.listRole;
+          localStorage.setItem("token", action.payload.data.token);
           state.loginError = false;
-          localStorage.setItem("token", action.payload.data.token)
-          localStorage.setItem("user", JSON.stringify(action.payload.data))
         })
-
-
         .addCase(loginWithGoogle.pending, (state) => {
           state.loginSuccess = false;
           state.loading = true;
@@ -169,10 +163,12 @@ export const userSlice = createSlice(
           state.logoutSuccess = true;
           state.loading = false;
           state.value = action.payload.data;
+          localStorage.removeItem("token");
           state.logoutError = false;
-          localStorage.removeItem("token")
+
         })
     }
+
 
   }
 )
@@ -184,14 +180,13 @@ export const {
   setRegisterError,
   setLogoutSuccess,
   setLogoutError,
-  setIsAdmin,
   setValue,
 
 } = userSlice.actions;
 
 export const selectLoginSuccess = (state) => state.user.loginSuccess;
 export const selectUserLogin = (state) => state.user.value;
-export const selectRegisterSusccess = (state) => state.user.registerSuccess;
+export const selectRegisterSuccess = (state) => state.user.registerSuccess;
 export const selectUserRegister = (state) => state.user.value;
 export const selectLogoutSuccess = (state) => state.user.logoutSuccess;
 export const selectUserLogout = (state) => state.user.value;

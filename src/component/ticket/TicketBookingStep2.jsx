@@ -1,11 +1,12 @@
 import {CiBank, CiCreditCard1} from "react-icons/ci";
+import {FaUser} from "react-icons/fa6";
 
 
 export default function TicketBookingStep2() {
 
     return (
         <>
-            <div className="w-4/5 mx-56 text-black">
+            <div className="mx-56 text-black">
                 <div className="flex gap-10 items-center justify-center bg-neutral-400">
                     <div className="w-3/5 flex-col">
                         <p className="m-7">THÔNG TIN NGƯỜI NHẬN VÉ</p>
@@ -62,9 +63,15 @@ export default function TicketBookingStep2() {
                     </div>
                     <div className="w-2/5 mx-5">
                         <div className="bg-white px-5">
-                            <h4 className="text-black pt-3 pb-1">THÔNG TIN ĐẶT VÉ</h4>
+                            <h4 className="text-black pt-3 pb-1">THÔNG TIN NGƯỜI ĐẶT VÉ</h4>
                             <hr className="border-2 border-solid"/>
-                            <div className="pt-3 pb-12">Vui lòng chọn vé</div>
+                            <div className="flex">
+                                <div className="w-1/2">
+                                    <span><FaUser /></span>
+                                    <span></span>
+                                </div>
+                                <div className="w-1/2">a</div>
+                            </div>
                         </div>
 
                         <div className="pl-5 bg-[#666666] py-4 flex text-white">
