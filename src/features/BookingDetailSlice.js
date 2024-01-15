@@ -11,8 +11,12 @@ const initialState = {
 };
 
 export const getAllBookingDetailsByBookingId = createAsyncThunk("bookingDetails/byBookingId", async (bookingId) => {
-    const response = await findAllBookingDetailsByBookingId(bookingId);
-    return response.data;
+    try {
+        const response = await findAllBookingDetailsByBookingId(bookingId);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
 });
 
 const handlePending = (state) => {
@@ -24,11 +28,13 @@ const handlePending = (state) => {
     state.loading = false;
     state.error = action.error;
 }, handleFulfilled = (state, action) => {
-    state.success = true;
-    state.loading = false;
-    state.bookings = action.payload.data;
-    state.totalPages=action.payload.totalPages;
-    state.error = false;
+    if (action.payload) {
+        state.success = true;
+        state.loading = false;
+        state.bookingDetails = action.payload;
+        state.totalPages = action.payload.totalPages;
+        state.error = false;
+    }
 };
 
 export const BookingDetailSlice = createSlice({

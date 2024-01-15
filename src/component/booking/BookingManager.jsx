@@ -1,9 +1,9 @@
 import {CiSearch} from "react-icons/ci";
-import BookingManagerTable from "./BookingManagerTable.jsx";
+import BookingManagerOrderTable from "./BookingManagerOrderTable.jsx";
 import BookingManagerSidebar from "./BookingManagerSidebar.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {getEventById} from "../../features/EventSlice.js";
 
 export function BookingManager() {
@@ -13,6 +13,12 @@ export function BookingManager() {
     useEffect(() => {
         dispatch(getEventById(eventId))
     }, [dispatch, eventId]);
+
+    const [activeTab, setActiveTab] = useState("order");
+
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+    };
 
     return (
         <>
@@ -27,51 +33,25 @@ export function BookingManager() {
                         <hr className="my-5 border-0.5px border-black"/>
                         <div className="my-6">
                             <button
-                                className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                                className={`${
+                                    activeTab === "order" ? "bg-black" : "bg-gray-400"
+                                } hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2`}
+                                onClick={() => handleTabClick("order")}
+                            >
                                 Đơn hàng
                             </button>
-                            <button className="bg-gray-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <button
+                                className={`${
+                                    activeTab === "tickets" ? "bg-black" : "bg-gray-400"
+                                } hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
+                                onClick={() => handleTabClick("tickets")}
+                            >
                                 Vé
                             </button>
                         </div>
-                        <div className="border bg-gray-100 flex py-1">
-                            <div className="w-1/2 m-1 flex">
-                                <div>
-                                    <select className="bg-gray-300 rounded m-2">
-                                        <option>Tất cả</option>
-                                        <option>Vip</option>
-                                        <option>Nhà nghèo</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select className="bg-gray-300 rounded m-2">
-                                        <option>Tất cả đơn hàng</option>
-                                        <option>Hoàn tất</option>
-                                        <option>Đang xử lý</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <select className="bg-gray-300 rounded m-2">
-                                        <option>Mới nhất</option>
-                                        <option>Cũ nhất</option>
-                                        <option>A - Z</option>
-                                        <option>Z - A</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="w-1/2 m-2">
-                                <form className="text-right mr-2">
-                                    <span className="">
-                                        <input type="text" value="" className="bg-white"
-                                               placeholder="Name/Email/PhoneNumber"/>
-                                        <button type="submit" className="px-2"><CiSearch/></button>
-                                    </span>
-                                </form>
-                            </div>
-                        </div>
-                        <div className="-4 bg-white rounded-lg shadow-md">
-                            <BookingManagerTable/>
-                        </div>
+                        {/* Conditional rendering based on activeTab */}
+                        {activeTab === "order" && <BookingManagerOrderTable/>}
+                        {activeTab === "tickets" && <div>Render something else for tickets</div>}
                     </div>
                 </div>
             </div>
