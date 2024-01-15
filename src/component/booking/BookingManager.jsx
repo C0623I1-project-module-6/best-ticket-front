@@ -3,7 +3,7 @@ import BookingManagerTable from "./BookingManagerTable.jsx";
 import BookingManagerSidebar from "./BookingManagerSidebar.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {getEventById} from "../../features/EventSlice.js";
 
 export function BookingManager() {
@@ -16,12 +16,12 @@ export function BookingManager() {
 
     return (
         <>
-            <div className="flex text-black">
-                <div>
+            <div className="flex">
+                <div className="w-[42%] text-white">
                     <BookingManagerSidebar/>
                 </div>
                 <div className="w-full bg-white">
-                    <div className="w-[80%] mx-[10%] my-[5%]">
+                    <div className="w-[80%] mx-[10%] my-[5%] text-black">
                         <div className="w-[80%] text-2xl">{event.name}</div>
                         <div className="w-[80%]">{event.duration}</div>
                         <hr className="my-5 border-0.5px border-black"/>

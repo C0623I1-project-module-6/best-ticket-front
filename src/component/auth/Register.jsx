@@ -39,7 +39,7 @@ function Register() {
                                        hover:text-gray-500 cursor-pointer
                                        dark:text-white
                                        ">
-                                Uesrname
+                                Username
                             </label>
                         </div>
                         <div className="mt-2">

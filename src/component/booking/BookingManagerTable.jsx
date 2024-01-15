@@ -1,16 +1,22 @@
-import {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {getAllBookingsByEventId} from '../../features/BookingSlice.js';
 import {useParams} from 'react-router-dom';
+import {getAllEvent} from "../../features/EventSlice.js";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
 
 const BookingManagerTable = () => {
     const dispatch = useDispatch();
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId = useParams().eventId;
+    const totalPages = useSelector(state => state.event.totalPages);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getAllBookingsByEventId(eventId));
-    }, [dispatch, eventId]);
+        dispatch(getAllBookingsByEventId(eventId, currentPage - 1));
+    }, [dispatch, eventId, currentPage]);
+
 
     return (
         <div className="p-4">
@@ -49,6 +55,18 @@ const BookingManagerTable = () => {
                 ))}
                 </tbody>
             </table>
+            <div className="flex items-center justify-center h-20">
+                <Stack
+                    spacing={2}
+                >
+                    <Pagination
+                        count={totalPages || 0}
+                        color="primary"
+                        page={currentPage}
+                        onChange={(event, value) => setCurrentPage(value)}
+                    />
+                </Stack>
+            </div>
         </div>
     );
 };

@@ -38,5 +38,5 @@ export const ROUT_DATA = [
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
     {path: "/event/create", element: CreateEvent},
 
-    {path: "/event/:eventId", element: BookingManager}
+    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManager}
 ];

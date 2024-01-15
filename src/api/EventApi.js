@@ -5,7 +5,6 @@ export const findAllEvents = async (currentPage)=>{
     let result = null;
     try {
         result = await axios.get(`${BEST_TICKET_API}events?page=${currentPage}&pageSize=20`);
-        console.log(result.data)
     } catch (e) {
         console.log("Find events API error: " + e);
     }
@@ -31,13 +30,3 @@ export const findEventsByEventTypes = async (eventTypeNames,currentPage) => {
     }
     return result;
 };
-
-export const findEventById = async (eventId)=>{
-    let result = null;
-    try {
-        result = await axios.get(`${BEST_TICKET_API}events/${eventId}`);
-    } catch (e) {
-        console.log("Find events API error: " + e);
-    }
-    return result;
-}
