@@ -7,8 +7,8 @@ import {useDispatch, useSelector} from "react-redux";
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = useSelector(selectUserLogin)
-    const loginSuccess = useSelector(selectLoginSuccess)
+    const user = useSelector(selectUserLogin);
+    const loginSuccess = useSelector(selectLoginSuccess);
     const handleSubmit = (e) => {
         e.preventDefault()
         const user = {
@@ -22,6 +22,7 @@ function Login() {
     useEffect(() => {
         console.log(user)
         if (loginSuccess) {
+            alert("Login Successfully!!!")
             navigate("/");
         }
     }, [loginSuccess, navigate]);

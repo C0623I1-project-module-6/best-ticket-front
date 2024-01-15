@@ -11,10 +11,12 @@ function Register() {
     const userRegister = useSelector(selectUserRegister);
 
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch(registerUser(user));
         setUser(userRegister);
+        alert("Register Successfully!!!")
         navigate("/login")
     }
 
