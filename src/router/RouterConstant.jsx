@@ -18,6 +18,9 @@ import NotFoundPage from "../layout/pages/errors/NotFoundPage.jsx";
 import InternalServerErrorPage from "../layout/pages/errors/InternalServerErrorPage.jsx";
 import BadGatewayPage from "../layout/pages/errors/BadGatewayPage.jsx";
 import ServiceUnavailablePage from "../layout/pages/errors/ServiceUnavailablePage.jsx";
+import AddCustomerProfile from "../component/user/AddCustomerProfile.jsx";
+import AddOrganizerProfile from "../component/user/AddOrganizerProfile.jsx";
+import OrganizerLayout from "../layout/OrganizerLayout.jsx";
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
@@ -36,6 +39,9 @@ export const ROUT_DATA = [
     {path: "/admin/:param", element: AdminTable, layout: AdminLayout},
     {path: "/search", element: Search, layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
+    {path: "/profile/add", element: AddCustomerProfile, layout: UserLayout},
+    {path: "/organizer/profile", element: AddOrganizerProfile, layout: OrganizerLayout},
     {path: "/event/id/ticket-booking/id/2", element: TicketBookingStep2, layout: UserLayout},
     {path: "/event/create", element: CreateEvent},
+
 ];

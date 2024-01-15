@@ -1,8 +1,8 @@
-import { useNavigate, useParams } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { registerUser, selectRegisterSusccess, selectUserRegister } from "../../features/UserSlice.js";
+import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {registerUser, selectUserRegister} from "../../features/UserSlice.js";
 
 function Register() {
     const navigate = useNavigate();
@@ -11,10 +11,12 @@ function Register() {
     const userRegister = useSelector(selectUserRegister);
 
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch(registerUser(user));
         setUser(userRegister);
+        alert("Register Successfully!!!")
         navigate("/login")
     }
 
@@ -29,13 +31,13 @@ function Register() {
         <div className="flex bg-white rounded-lg items-center  flex-1 flex-col justify-center lg:px-8
         dark:bg-black dark:text-white
         ">
-            <AuthHeader name={"Registration"} />
+            <AuthHeader name={"Registration"}/>
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="username"
-                                className="block text-sm font-medium leading-6 text-gray-900
+                                   className="block text-sm font-medium leading-6 text-gray-900
                                        hover:text-gray-500 cursor-pointer
                                        dark:text-white
                                        ">
@@ -61,7 +63,7 @@ function Register() {
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="email"
-                                className="block text-sm font-medium leading-6 text-gray-900
+                                   className="block text-sm font-medium leading-6 text-gray-900
                                        hover:text-gray-500 cursor-pointer
                                        dark:text-white
                                        ">
@@ -87,7 +89,7 @@ function Register() {
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="phoneNumber"
-                                className="block text-sm font-medium leading-6 text-gray-900
+                                   className="block text-sm font-medium leading-6 text-gray-900
                                        hover:text-gray-500 cursor-pointer
                                        dark:text-white
                                        ">
@@ -113,7 +115,7 @@ function Register() {
                     <div>
                         <div className="flex items-center justify-between m-0">
                             <label htmlFor="password"
-                                className="block text-sm font-medium leading-6 text-gray-900
+                                   className="block text-sm font-medium leading-6 text-gray-900
                                        hover:text-gray-500 cursor-pointer
                                        dark:text-white
                                        ">
@@ -139,7 +141,7 @@ function Register() {
                     <div>
                         <div className="flex items-center justify-between m-0">
                             <label htmlFor="confirmPassword"
-                                className="block text-sm font-medium leading-6 text-gray-900
+                                   className="block text-sm font-medium leading-6 text-gray-900
                                        hover:text-gray-500 cursor-pointer
                                        dark:text-white
                                        ">
@@ -167,7 +169,8 @@ function Register() {
                         <div className="w-full ">
                             <div className="w-full">
                                 <button type="submit" className="w-full btn btn-outline btn-primary dark:btn-info"
-                                >Register</button>
+                                >Register
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -177,7 +180,7 @@ function Register() {
                                 Have account ?
                             </span>
                             <span className="cursor-pointer hover:text-gray-500 font-bold text-blue-500"
-                                onClick={() => navigate("/login")}>Login</span>
+                                  onClick={() => navigate("/login")}>Login</span>
                         </div>
                     </div>
                 </form>
