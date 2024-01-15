@@ -7,13 +7,44 @@ import React, {useEffect, useState} from "react";
 import {getAllBookingDetailsByBookingId} from "../../features/BookingDetailSlice.js";
 import {CiSearch} from "react-icons/ci";
 
+const sortingOptions = [
+    { label: "Mới nhất", value: "newest" },
+    { label: "Cũ nhất", value: "oldest" },
+    { label: "A - Z", value: "az" },
+    { label: "Z - A", value: "za" },
+];
+
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId1 = useParams().eventId;
     const totalPages = useSelector(state => state.event.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
-    const [bookingDetails, setBookingDetails] = useState([]);
+    const [bookingDetails, setBookingDetails] = useState([])
+    const [selectedSorting, setSelectedSorting] = useState("");
+
+    const handleSortingChange = (event) => {
+        setSelectedSorting(event.target.value);
+        // Perform the sorting operation based on the selected option
+        // You can add your sorting logic here
+        switch (event.target.value) {
+            case "newest":
+                // Sort by newest
+                break;
+            case "oldest":
+                // Sort by oldest
+                break;
+            case "az":
+                // Sort A - Z
+                break;
+            case "za":
+                // Sort Z - A
+                break;
+            default:
+                // Handle default case
+                break;
+        }
+    };
 
     const bookingsMemo = React.useMemo(() => {
         return bookings;
@@ -58,17 +89,33 @@ const BookingManagerOrderTable = () => {
                     </div>
                     <div>
                         <select className="bg-gray-300 rounded m-2">
-                            <option>Tất cả đơn hàng</option>
-                            <option>Hoàn tất</option>
-                            <option>Đang xử lý</option>
+                            <option value="">Tất cả đơn hàng</option>
+                            {bookings.map((booking, index) => (
+                                <React.Fragment key={index}>
+                                    <option value="ACTIVE" selected={booking.status === "ACTIVE"}>
+                                        Đang hiệu lực
+                                    </option>
+                                    <option value="PENDING" selected={booking.status === "PENDING"}>
+                                        Đang xử lý
+                                    </option>
+                                    <option value="INACTIVE" selected={booking.status === "INACTIVE"}>
+                                        Không còn hiệu lực
+                                    </option>
+                                </React.Fragment>
+                            ))}
                         </select>
                     </div>
                     <div>
-                        <select className="bg-gray-300 rounded m-2">
-                            <option>Mới nhất</option>
-                            <option>Cũ nhất</option>
-                            <option>A - Z</option>
-                            <option>Z - A</option>
+                        <select
+                            className="bg-gray-300 rounded m-2"
+                            value={selectedSorting}
+                            onChange={handleSortingChange}
+                        >
+                            {sortingOptions.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
