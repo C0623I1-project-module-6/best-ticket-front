@@ -18,14 +18,12 @@ function Login() {
             password: e.target[1].value
         }
         dispatch(loginUser(user))
+        alert("Login Successfully!!!")
+        navigate("/");
     }
     useEffect(() => {
         console.log(user)
-        if (loginSuccess) {
-            alert("Login Successfully!!!")
-            navigate("/");
-        }
-    }, [loginSuccess, navigate]);
+    }, [loginSuccess]);
     return (
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
         dark:bg-black dark:text-white
