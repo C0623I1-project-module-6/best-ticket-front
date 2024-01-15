@@ -10,6 +10,7 @@ const UserLayout = ({children}) => {
                 <div className="relative md:flex max-h-full h-screen">
                     {children}
                 </div>
+
             </div>
         </>
 

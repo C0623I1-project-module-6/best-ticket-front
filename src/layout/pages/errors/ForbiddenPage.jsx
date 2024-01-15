@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 const ForbiddenPage = () => {
     return (
+        // eslint-disable-next-line no-undef
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <div className="text-5xl font-bold mb-4 text-red-500">
                 4<span className="text-gray-500">0</span>3

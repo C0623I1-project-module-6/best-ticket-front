@@ -1,7 +1,6 @@
 import img from "../../assets/img/cover-event.jpg"
 import {FaFacebookF} from "react-icons/fa";
 import {CiCalendarDate} from "react-icons/ci";
-import "../../assets/css/ticket.css"
 export const TicketBookingStep3 = () => {
     return (
         <>
