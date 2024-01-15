@@ -37,15 +37,8 @@ function AdminSidebar() {
             await setTheme("dark")
         }
     }
-    const changeThemeButton = () => {
-        return (
-            <>
-            </>
-        )
-    }
 
     const itemDashboard = [
-
         {icon: <FaHome size={25}/>, label: "Dashboard", path: "/admin",current: param.param === undefined},
         {icon: <FaUsers size={25}/>, label: " Users", path: "/admin/users",current: param.param === 'users'},
         {icon: <FaFileContract size={25}/>, label: " Bookings", path: "/admin/bookings",current: param.param === 'bookings'},
@@ -95,7 +88,8 @@ function AdminSidebar() {
                     itemDashboard.map(({icon, label, path,current}, index) => (
                         <div
                             key={index}
-                            className={classNames(
+                            className={
+                            classNames(
                                 current ?
                                     "flex gap-5 items-center p-2 justify-items-start" +
                                     "cursor-pointer text-sm" +

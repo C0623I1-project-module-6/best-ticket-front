@@ -1,5 +1,3 @@
-import UserHeader from "../component/header/UserHeader.jsx";
-
 function OrganizesLayout({children}) {
     return (
         <>

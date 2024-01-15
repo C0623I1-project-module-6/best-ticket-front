@@ -20,7 +20,6 @@ function Login() {
         dispatch(loginUser(user))
     }
     useEffect(() => {
-        console.log(user)
         if (loginSuccess && user && user.token) {
             localStorage.setItem('token', user.token);
             navigate("/");

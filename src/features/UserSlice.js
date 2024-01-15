@@ -10,6 +10,8 @@ const initialState = {
   registerError: null,
   logoutSuccess: false,
   logoutError: null,
+  listRole: null,
+  isAdmin: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -20,7 +22,6 @@ export const loginUser = createAsyncThunk(
       console.log(response)
       return rejectWithValue(response.data.message);
     }
-    console.log(response.data.data)
     return response.data;
   }
 );
@@ -78,22 +79,22 @@ export const userSlice = createSlice(
       setLoginSuccess: (state, action) => {
         state.loginSuccess = action.payload;
       },
-
       setRegisterSuccess: (state, action) => {
         state.registerSuccess = action.payload;
       },
       setRegisterError: (state, action) => {
         state.registerError = action.payload;
       },
-
       setLogoutSuccess: (state, action) => {
         state.logoutSuccess = action.payload;
       },
       setLogoutError: (state, action) => {
         state.logoutError = action.payload;
       },
-
       setValue: (state, action) => {
+        state.value = action.payload;
+      },
+      setIsAdmin: (state, action) => {
         state.value = action.payload;
       },
     },
@@ -115,8 +116,6 @@ export const userSlice = createSlice(
           state.value = action.payload.data;
           state.registerError = false;
         })
-
-
         .addCase(loginUser.pending, (state) => {
           state.loginSuccess = false;
           state.loading = true;
@@ -131,8 +130,10 @@ export const userSlice = createSlice(
           state.loginSuccess = true;
           state.loading = false;
           state.value = action.payload.data;
+          state.listRole = action.payload.data.listRole;
           state.loginError = false;
-          localStorage.setItem("token",action.payload.data.token)
+          localStorage.setItem("token", action.payload.data.token)
+          localStorage.setItem("user", JSON.stringify(action.payload.data))
         })
 
 
@@ -183,6 +184,7 @@ export const {
   setRegisterError,
   setLogoutSuccess,
   setLogoutError,
+  setIsAdmin,
   setValue,
 
 } = userSlice.actions;
@@ -193,4 +195,6 @@ export const selectRegisterSusccess = (state) => state.user.registerSuccess;
 export const selectUserRegister = (state) => state.user.value;
 export const selectLogoutSuccess = (state) => state.user.logoutSuccess;
 export const selectUserLogout = (state) => state.user.value;
+export const selectUserRole = (state) => state.user.listRole;
+export const selectIsAdmin = (state) => state.user.isAdmin;
 export default userSlice.reducer;
