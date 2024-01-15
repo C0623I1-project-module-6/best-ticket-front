@@ -8,8 +8,8 @@ function TicketDetails(props) {
     const [keyword, setKeyword] = useState(props.value);
     const [time, setTime] = useState(props.time);
     const dispatch = useDispatch();
-    const tickets = useSelector(selectShowTicket);
-
+    const tickets = useSelector(selectShowTicket)
+    console.log(tickets)
     const showTicket = async () => {
         if (time === 'finished') {
             dispatch(getTicketsByStatusFinished(keyword));
@@ -47,9 +47,8 @@ function TicketDetails(props) {
                         </div>
                         <div className="center-bottom ">Hình ảnh gì đó</div>
                     </div>
-                    <div className="right w-2/12 border-l">
-                        <div className=""></div>
-                        <svg className="h-full w-full" key={ticket.id}
+                    <div className="right w-2/12 border-l flex">
+                        <svg className="h-full w-full ml-2" key={ticket.id}
                              id={`barcode-${ticket.ticketCode}`}>{ticket.ticketCode}</svg>
                     </div>
                     <hr/>
