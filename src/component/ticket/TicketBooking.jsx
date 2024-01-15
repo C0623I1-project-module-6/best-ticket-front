@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Divider, Steps} from 'antd';
+import { Steps} from 'antd';
 import UserFooter from "../footer/UserFooter.jsx";
 import {TicketBookingStep1} from "./TicketBookingStep1.jsx";
 import {useLocation} from "react-router-dom";

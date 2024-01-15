@@ -14,11 +14,11 @@ function UserFooter(props) {
                         <p className="text-green-800 font-black	leading-6">
                             1900.6408
                         </p>
-                        <br />
+                        <br/>
 
                         <h4 className="font-bold text-[#c9c9c9]">Email</h4>
                         <p className="leading-6	"> support@ticketbox.vn</p>
-                        <br />
+                        <br/>
                         <h4 className="font-bold text-[#c9c9c9]">Văn phòng</h4>
                         <p className="leading-6	">
                             52 Út Tịch, Phường 4, Quận Tân Bình, TP. Hồ Chí Minh
@@ -29,7 +29,7 @@ function UserFooter(props) {
                             Dành cho Ban Tổ chức
                         </h4>
                         <p className="leading-6	">Hợp tác với chúng tôi</p>
-                        <br />
+                        <br/>
                         <h4 className="font-bold text-[#c9c9c9]">
                             Về công ty chúng tôi
                         </h4>
@@ -39,19 +39,19 @@ function UserFooter(props) {
                         <p className="leading-6	">
                             Cơ chế giải quyết tranh chấp/ khiếu nại
                         </p>
-                        <br />
+                        <br/>
                     </div>
                     <div className="ft-right w-1/3">
                         <h4 className="font-bold text-[#c9c9c9]">
                             Dành cho Khách hàng
                         </h4>
                         <p className="leading-6	">Hướng dẫn mua vé</p>
-                        <br />
+                        <br/>
                         <h4 className="font-bold text-[#c9c9c9]">
                             Trung tâm hỗ trợ
                         </h4>
                         <p className="leading-6	">Câu hỏi thường gặp</p>
-                        <br />
+                        <br/>
                         <h4 className="font-bold text-[#c9c9c9] mb-2">
                             Đăng ký nhận email về các sự kiện hot nhất
                         </h4>
@@ -65,7 +65,7 @@ function UserFooter(props) {
                             />
                         </div>
                     </div>
-                    <br />
+                    <br/>
                 </footer>
                 <div
                     style={{
@@ -155,13 +155,19 @@ function UserFooter(props) {
                         <p>
                             Hệ thống quản lý và phân phối vé sự kiện hàng đầu
                             Việt Nam
-                            <br />
+                            <br/>
                             TicketBox Co. Ltd. © 2016
                         </p>
                     </p>
                 </div>
                 <div className="w-3/5">
-                    <p></p>
+                    <p>Công ty TNHH Ticketbox
+                        Đại diện theo pháp luật: Trần Ngọc Thái Sơn
+                        Địa chỉ: Tầng 3, Tháp A, Tòa nhà Viettel, 285 Cách Mạng Tháng Tám, Phường 12, Quận 10, TP. Hồ
+                        Chí Minh
+                        Hotline: 1900.6408 - Email: support@ticketbox.vn
+                        Giấy chứng nhận đăng ký doanh nghiệp số: 0313605444, cấp lần đầu ngày 07/01/2016 bởi Sở Kế Hoạch
+                        và Đầu Tư TP. Hồ Chí Minh</p>
 
                 </div>
             </div>
