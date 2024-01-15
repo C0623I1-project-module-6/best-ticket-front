@@ -11,6 +11,7 @@ import Search from "../component/event/Search.jsx";
 import AdminTable from "../component/table/AdminTable.jsx";
 import TicketBooking from "../component/ticket/TicketBooking.jsx";
 import CreateEvent from "../component/event/CreateEvent.jsx";
+import TicketBookingStep2 from "../component/ticket/TicketBookingStep2.jsx";
 import ForbiddenPage from "../layout/pages/errors/ForbiddenPage.jsx";
 import ErrorLayout from "../layout/ErrorLayout.jsx";
 import NotFoundPage from "../layout/pages/errors/NotFoundPage.jsx";
@@ -33,10 +34,14 @@ export const ROUT_DATA = [
     {path: "/event", element: EventHomePage, layout: UserLayout},
     {path: "/my-ticket", element: TicketHistory, layout: UserLayout},
     {path: "/admin", element: AdminHomePage, layout: AdminLayout},
+    {path: "/admin/user", element: AdminTable, layout: AdminLayout},
+    {path: "/admin/ticket", element: AdminTable, layout: AdminLayout},
     {path: "/admin/:param", element: AdminTable, layout: AdminLayout},
     {path: "/search", element: Search, layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
-    {path: "/event/create", element: CreateEvent},
     {path: "/profile/add", element: AddCustomerProfile, layout: UserLayout},
     {path: "/organizer/profile", element: AddOrganizerProfile, layout: OrganizerLayout},
+    {path: "/event/id/ticket-booking/id/2", element: TicketBookingStep2, layout: UserLayout},
+    {path: "/event/create", element: CreateEvent}
+
 ];

@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { findAllBookings } from "../api/BookingApi.js";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {findAllBookings} from "../api/BookingApi.js";
 
 const initialState = {
   bookings: [],

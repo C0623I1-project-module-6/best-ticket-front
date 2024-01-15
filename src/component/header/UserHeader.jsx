@@ -86,7 +86,8 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2   items-center justify-start w-full
                                     border-2 cursor-pointer
-                                    " onClick={logout}>
+                                    "
+                                 onClick={logout}>
                                 <div className="w-[20px]">
                                     <FaSignOutAlt/>
                                 </div>
@@ -149,12 +150,10 @@ const UserHeader = () => {
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
+      alert("Logout Successfully!!!")
+        navigate("/");
     }
-    useEffect(() => {
-        if (logoutSuccess) {
-            navigate("/");
-        }
-    }, [logoutSuccess, navigate]);
+    
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">

@@ -13,57 +13,48 @@ const initialState = {
 };
 
 export const loginUser = createAsyncThunk(
-    "login",
-    async (loginData, {rejectWithValue}) => {
-        const response = await login(loginData);
-        if (response.status !== 200) {
-            console.log(response)
-            return rejectWithValue(response.data.message);
-        }
-        console.log(response.data.data)
-        return response.data;
+  "login",
+  async (loginData, {rejectWithValue}) => {
+    const response = await login(loginData);
+    if (response.status !== 200) {
+      console.log(response)
+      return rejectWithValue(response.data.message);
     }
 );
 
 export const logoutUser = createAsyncThunk(
-    "logout",
-    async (logoutData, {rejectWithValue}) => {
-        const response = await logout(logoutData);
-        if (response.status !== 200) {
-            console.log(response)
-            return rejectWithValue(response.data.message);
-        }
-        console.log(response)
-        return response.data;
+  "logout",
+  async (logoutData, {rejectWithValue}) => {
+    const response = await logout(logoutData);
+    if (response.status !== 200) {
+      console.log(response)
+      return rejectWithValue(response.data.message);
     }
 )
 
 export const loginWithGoogle = createAsyncThunk(
-    "loginGoogle",
-    async (loginData, {rejectWithValue}) => {
-        const response = await loginGoogle(loginData);
-        if (response.status !== 200) {
-            console.log(response)
-            return rejectWithValue(response.data.message);
-        }
-        return response.data;
+  "loginGoogle",
+  async (loginData, {rejectWithValue}) => {
+    const response = await loginGoogle(loginData);
+    if (response.status !== 200) {
+      console.log(response)
+      return rejectWithValue(response.data.message);
     }
 )
 
 export const registerUser = createAsyncThunk(
-    "register",
-    async (registerData, {rejectWithValue}) => {
-        const response = await register(registerData);
-        if (response.status !== 201) {
-            console.log(response)
-            return rejectWithValue(response.data.message);
-        }
-        console.log(response.data)
-        return response.data;
+  "register",
+  async (registerData, {rejectWithValue}) => {
+    const response = await register(registerData);
+    if (response.status !== 200) {
+      console.log(response)
+      return rejectWithValue(response.data.message);
+
     }
 );
 
 export const userSlice = createSlice(
+
     {
         name: "user",
         initialState,
@@ -173,6 +164,7 @@ export const userSlice = createSlice(
 
                 })
         }
+
 
     }
 )

@@ -59,22 +59,23 @@ export async function loginGoogle(user) {
 }
 
 export async function logout(user) {
-    let response = null;
-    let token = localStorage.getItem("token");
-    await axios({
-        url: `${BEST_TICKET_API}auth/logout`,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        method: "POST",
-        data: user
-    }).then((res) => {
-        response = res;
-    }).catch((e) => {
-        response = e;
-    })
-    console.log(response)
-    return response;
+  let response = null;
+  let token = localStorage.getItem('token');
+  await axios({
+    url: `${BEST_TICKET_API}auth/logout`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    method: "POST",
+    data: user
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  console.log(response)
+  return response;
+
 }
 

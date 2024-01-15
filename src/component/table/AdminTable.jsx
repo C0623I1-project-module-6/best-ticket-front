@@ -1,15 +1,15 @@
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getPageBookings,
+    getPageBookings, getPageEvents,
     getPageUsers, selectBookingsSuccess,
     selectTotalElementsOfBooking, selectTotalElementsOfUser,
     selectTotalPageOfBooking, selectTotalPageOfUser, selectUsersSuccess,
     setBookings,
     setUsers
 } from "../../features/AdminSlice.js";
-import {TABLE_HEAD_BOOKING, TABLE_HEAD_USER} from "../../ultility/AppConstant.js";
+import {TABLE_HEAD_BOOKING, TABLE_HEAD_EVENT, TABLE_HEAD_USER} from "../../ultility/AppConstant.js";
 import TableContent from "./TableContent.jsx";
 import Pagination from '@mui/material/Pagination';
 
@@ -54,7 +54,11 @@ export default function AdminTable() {
             dispatch(setUsers(null))
             dispatch(getPageBookings())
             setDataHeader(TABLE_HEAD_BOOKING)
-
+        }else if (param.param ==="events"){
+            dispatch(setBookings(null))
+            dispatch(setUsers(null))
+            dispatch(getPageEvents())
+            setDataHeader(TABLE_HEAD_EVENT)
         }
     }, [param]);
     useEffect(() => {
@@ -87,7 +91,7 @@ export default function AdminTable() {
                             {
                                 dataHeader.map((data, index) => (
                                     <th scope="col" key={index}
-                                        className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+                                        className="px-4 py-3 text-start text-xs font-bold font-sans uppercase">
                                         {data}
                                     </th>
                                 ))
