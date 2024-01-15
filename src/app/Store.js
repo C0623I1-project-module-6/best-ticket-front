@@ -3,7 +3,7 @@ import UserSlice from "../features/UserSlice.js";
 import EventSlice from "../features/EventSlice.js";
 import AdminSlice from "../features/AdminSlice.js";
 import TicketSlice from "../features/TicketSlice.js";
-
+import CustomerSlice from "../features/CustomerSlice.js";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = configureStore(
     {
@@ -11,7 +11,8 @@ export const store = configureStore(
             user: UserSlice,
             event: EventSlice,
             ticket: TicketSlice,
-            admin: AdminSlice
+            admin: AdminSlice,
+            customer: CustomerSlice,
         },
     },
         composeEnhancers(applyMiddleware())
