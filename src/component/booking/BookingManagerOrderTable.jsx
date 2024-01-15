@@ -32,13 +32,11 @@ const BookingManagerOrderTable = () => {
             const results = await Promise.all(promises);
             const updatedBookingDetails = results.map(data => data.payload); // Extracting payload from the results
 
-            setBookingDetails(prevBookingDetails => [
-                ...prevBookingDetails,
-                ...updatedBookingDetails
-            ]);
+            setBookingDetails(updatedBookingDetails);
         };
 
         if (bookingsMemo.length > 0) {
+            setBookingDetails([]); // Clear the booking details state
             fetchData().then(() => {
                 console.log('Data fetched successfully');
             });
@@ -94,7 +92,7 @@ const BookingManagerOrderTable = () => {
                             </th>
                             <th className="px-4 py-2 text-left">ĐƠN HÀNG</th>
                             <th className="px-4 py-2 text-left">VÉ</th>
-                            <th className="px-4 py-2 text-left">TỔNG CỘNG</th>
+                            <th className="px-4 py-2 text-left">TỔNG CỘNG (VNĐ)</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -112,16 +110,26 @@ const BookingManagerOrderTable = () => {
                                 </td>
                                 <td className="px-4 py-2 border-x-0">
                                     {bookingDetails && bookingDetails.length > 0 ? (
-                                        bookingDetails[0].data.flatMap(detail =>
-                                            detail.tickets.map((ticket, index) => (
-                                                <div key={index}>
-                                                    <span>{ticket.eventTime}</span>
-                                                    <br/>
-                                                    <span>{ticket.seat}</span>
-                                                    {/* Render other ticket properties */}
-                                                </div>
-                                            ))
-                                        )
+                                        <>
+                                            {bookingDetails.flatMap((detail) =>
+                                                detail.data.flatMap((detailData) =>
+                                                    detailData.tickets.map((ticket, index) => {
+                                                        return (
+                                                            <div key={index}>
+                                                                <div>{bookingDetails.flatMap((detail) =>
+                                                                    detail.data.flatMap((detailData) =>
+                                                                        detailData.tickets
+                                                                    )
+                                                                ).length}</div>
+                                                                <span>{ticket.seat}</span>
+
+                                                                {/* Render other ticket properties */}
+                                                            </div>
+                                                        );
+                                                    })
+                                                )
+                                            )}
+                                        </>
                                     ) : (
                                         <span>No booking details available</span>
                                     )}
