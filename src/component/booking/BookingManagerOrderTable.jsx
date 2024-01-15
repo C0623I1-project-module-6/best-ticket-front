@@ -90,9 +90,9 @@ const BookingManagerOrderTable = () => {
                             <th className="px-4 py-2 text-left border-b border-black">
                                 <input type="checkbox" className="bg-white"/>
                             </th>
-                            <th className="px-4 py-2 text-left">ĐƠN HÀNG</th>
-                            <th className="px-4 py-2 text-left">VÉ</th>
-                            <th className="px-4 py-2 text-left">TỔNG CỘNG (VNĐ)</th>
+                            <th className="px-4 py-2 text-left border-b border-black">ĐƠN HÀNG</th>
+                            <th className="px-4 py-2 text-left border-b border-black">VÉ</th>
+                            <th className="px-4 py-2 text-left border-b border-black">TỔNG CỘNG (VNĐ)</th>
                         </tr>
                         </thead>
                         <tbody>

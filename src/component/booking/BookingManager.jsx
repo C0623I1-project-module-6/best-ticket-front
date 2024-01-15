@@ -1,10 +1,11 @@
-import {CiSearch} from "react-icons/ci";
 import BookingManagerOrderTable from "./BookingManagerOrderTable.jsx";
 import BookingManagerSidebar from "./BookingManagerSidebar.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {getEventById} from "../../features/EventSlice.js";
+import BookingManagerTicketTable from "./BookingManagerTicketTable.jsx";
+import UserFooter from "../footer/UserFooter.jsx"
 
 export function BookingManager() {
     const dispatch = useDispatch();
@@ -51,10 +52,14 @@ export function BookingManager() {
                         </div>
                         {/* Conditional rendering based on activeTab */}
                         {activeTab === "order" && <BookingManagerOrderTable/>}
-                        {activeTab === "tickets" && <div>Render something else for tickets</div>}
+                        {activeTab === "tickets" && <BookingManagerTicketTable/>}
+                    </div>
+                    <div>
+                        <UserFooter/>
                     </div>
                 </div>
             </div>
+
         </>
     )
 }
