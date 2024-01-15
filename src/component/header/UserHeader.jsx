@@ -149,12 +149,9 @@ const UserHeader = () => {
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
+        alert("Logout Successfully!!!")
+        navigate("/");
     }
-    useEffect(() => {
-        if (logoutSuccess) {
-            navigate("/");
-        }
-    }, [logoutSuccess, navigate]);
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">
