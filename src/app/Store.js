@@ -6,6 +6,7 @@ import TicketSlice from "../features/TicketSlice.js";
 import BookingSlice from "../features/BookingSlice.js";
 import BookingDetailSlice from "../features/BookingDetailSlice.js";
 
+import CustomerSlice from "../features/CustomerSlice.js";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = configureStore(
     {
@@ -16,6 +17,7 @@ export const store = configureStore(
             admin: AdminSlice,
             booking: BookingSlice,
             bookingDetail: BookingDetailSlice
+            customer: CustomerSlice,
         },
     },
         composeEnhancers(applyMiddleware())

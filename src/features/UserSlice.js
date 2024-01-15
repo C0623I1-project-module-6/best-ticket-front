@@ -10,6 +10,8 @@ const initialState = {
   registerError: null,
   logoutSuccess: false,
   logoutError: null,
+  listRole: null,
+  isAdmin: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -20,7 +22,6 @@ export const loginUser = createAsyncThunk(
       console.log(response)
       return rejectWithValue(response.data.message);
     }
-    console.log(response.data.data)
     return response.data;
   }
 );
@@ -33,8 +34,6 @@ export const logoutUser = createAsyncThunk(
       console.log(response)
       return rejectWithValue(response.data.message);
     }
-    console.log(response)
-    return response.data;
   }
 )
 
@@ -46,22 +45,20 @@ export const loginWithGoogle = createAsyncThunk(
       console.log(response)
       return rejectWithValue(response.data.message);
     }
-    return response.data;
   }
 )
 
 export const registerUser = createAsyncThunk(
-  "register",
-  async (registerData, {rejectWithValue}) => {
-    const response = await register(registerData);
-    if (response.status !== 200) {
-      console.log(response)
-      return rejectWithValue(response.data.message);
+    "register",
+    async (registerData, {rejectWithValue}) => {
+      const response = await register(registerData);
+      if (response.status !== 200) {
+        console.log(response)
+        return rejectWithValue(response.data.message);
+      }
     }
-    console.log(response.data)
-    return response.data;
-  }
-);
+  )
+;
 
 export const userSlice = createSlice(
   {
@@ -131,11 +128,9 @@ export const userSlice = createSlice(
           state.loginSuccess = true;
           state.loading = false;
           state.value = action.payload.data;
+          localStorage.setItem("token", action.payload.data.token);
           state.loginError = false;
-          localStorage.setItem("token",action.payload.data.token)
         })
-
-
         .addCase(loginWithGoogle.pending, (state) => {
           state.loginSuccess = false;
           state.loading = true;
@@ -168,10 +163,12 @@ export const userSlice = createSlice(
           state.logoutSuccess = true;
           state.loading = false;
           state.value = action.payload.data;
+          localStorage.removeItem("token");
           state.logoutError = false;
-          localStorage.removeItem("token")
+
         })
     }
+
 
   }
 )
@@ -189,8 +186,10 @@ export const {
 
 export const selectLoginSuccess = (state) => state.user.loginSuccess;
 export const selectUserLogin = (state) => state.user.value;
-export const selectRegisterSusccess = (state) => state.user.registerSuccess;
+export const selectRegisterSuccess = (state) => state.user.registerSuccess;
 export const selectUserRegister = (state) => state.user.value;
 export const selectLogoutSuccess = (state) => state.user.logoutSuccess;
 export const selectUserLogout = (state) => state.user.value;
+export const selectUserRole = (state) => state.user.listRole;
+export const selectIsAdmin = (state) => state.user.isAdmin;
 export default userSlice.reducer;
