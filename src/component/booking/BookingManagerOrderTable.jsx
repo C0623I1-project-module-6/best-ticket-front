@@ -97,7 +97,7 @@ const BookingManagerOrderTable = () => {
                         </thead>
                         <tbody>
                         {bookings.map((booking, index) => (
-                            <tr key={index} className="border-x-0">
+                            <tr key={index} className="border border-black border-x-0">
                                 <th className="px-4 py-2 text-left border-b border-black">
                                     <input type="checkbox"/>
                                 </th>

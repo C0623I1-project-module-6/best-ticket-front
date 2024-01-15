@@ -16,7 +16,7 @@ export const store = configureStore(
             ticket: TicketSlice,
             admin: AdminSlice,
             booking: BookingSlice,
-            bookingDetail: BookingDetailSlice
+            bookingDetail: BookingDetailSlice,
             customer: CustomerSlice,
         },
     },
