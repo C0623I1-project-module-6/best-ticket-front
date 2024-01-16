@@ -1,17 +1,8 @@
-import {useEffect, useState} from "react";
 import {ADMIN} from "../AppConstant.js";
+import {useSelector} from "react-redux";
+import {selectUserRole} from "../../features/UserSlice.js";
 
 export const useAuthor = () => {
-  const userRole = JSON.parse(localStorage.getItem("user")).listRole;
-  const [isAdmin, setIsAdmin] = useState(false);
-  useEffect(() => {
-    userRole.forEach((e) => {
-      if (e === ADMIN) {
-        setIsAdmin(true)
-        console.log(isAdmin)
-      }
-    })
-  }, [isAdmin]);
-  console.log(isAdmin)
-  return isAdmin;
+  const userRole = useSelector(selectUserRole);
+  return userRole?.includes(ADMIN);
 }

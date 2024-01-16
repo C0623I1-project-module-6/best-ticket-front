@@ -7,7 +7,6 @@ import {useEffect, useState} from "react";
 import {GoogleLogin} from "@react-oauth/google";
 import {useDispatch} from "react-redux";
 import {loginWithGoogle} from "../../features/UserSlice.js";
-import {ToastContainer} from "react-toastify";
 
 function AuthHeader(props) {
     const navigate = useNavigate();
@@ -34,7 +33,6 @@ function AuthHeader(props) {
     return (
         <>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm m-0">
-                <ToastContainer />
                 <Tooltip content="Back Home">
                     <img
                         className="mx-auto h-[150px] w-[200px] cursor-pointer"

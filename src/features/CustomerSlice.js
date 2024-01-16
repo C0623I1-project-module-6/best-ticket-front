@@ -67,7 +67,7 @@ export const {
 } = customerSlice.actions;
 
 export const selectAddProfileSuccess = (state) => state.customer.addProfileSuccess;
-export const selectProfileAdded = (state) => state.customer.addProfileSuccess;
+export const selectProfileAdded = (state) => state.customer.value;
 export default customerSlice.reducer;
 
 

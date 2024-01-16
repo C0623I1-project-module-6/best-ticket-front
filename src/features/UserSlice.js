@@ -15,6 +15,7 @@ const initialState = {
 };
 
 export const loginUser = createAsyncThunk(
+
   "login",
   async (loginData, {rejectWithValue}) => {
     const response = await login(loginData);
@@ -26,36 +27,41 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+
 export const logoutUser = createAsyncThunk(
-  "logout",
-  async (logoutData, {rejectWithValue}) => {
-    const response = await logout(logoutData);
-    if (response.status !== 200) {
-      console.log(response)
-      return rejectWithValue(response.data.message);
-    }
+    "logout",
+    async (logoutData, {rejectWithValue}) => {
+        const response = await logout(logoutData);
+        if (response.status !== 200) {
+            console.log(response)
+            return rejectWithValue(response.data.message);
+        }
+    return response.data
   }
 )
 
 export const loginWithGoogle = createAsyncThunk(
-  "loginGoogle",
-  async (loginData, {rejectWithValue}) => {
-    const response = await loginGoogle(loginData);
-    if (response.status !== 200) {
-      console.log(response)
-      return rejectWithValue(response.data.message);
+    "loginGoogle",
+    async (loginData, {rejectWithValue}) => {
+        const response = await loginGoogle(loginData);
+        if (response.status !== 200) {
+            console.log(response)
+            return rejectWithValue(response.data.message);
+        }
+      return response.data;
     }
-  }
 )
 
 export const registerUser = createAsyncThunk(
     "register",
     async (registerData, {rejectWithValue}) => {
+
       const response = await register(registerData);
       if (response.status !== 200) {
         console.log(response)
         return rejectWithValue(response.data.message);
       }
+      return response.data;
     }
   )
 ;
@@ -128,6 +134,7 @@ export const userSlice = createSlice(
           state.loginSuccess = true;
           state.loading = false;
           state.value = action.payload.data;
+          state.listRole = action.payload.data.listRole;
           localStorage.setItem("token", action.payload.data.token);
           state.loginError = false;
         })
@@ -147,8 +154,6 @@ export const userSlice = createSlice(
           state.value = action.payload.data;
           state.loginError = false;
         })
-
-
         .addCase(logoutUser.pending, (state) => {
           state.logoutSuccess = false;
           state.loading = true;
@@ -161,16 +166,20 @@ export const userSlice = createSlice(
         })
         .addCase(logoutUser.fulfilled, (state, action) => {
           state.logoutSuccess = true;
+          state.loginSuccess = false;
+          state.user = null;
+          state.listRole = null;
           state.loading = false;
           state.value = action.payload.data;
           localStorage.removeItem("token");
+          localStorage.removeItem("user");
           state.logoutError = false;
-
         })
     }
 
 
   }
+
 )
 export const {
   setLoading,

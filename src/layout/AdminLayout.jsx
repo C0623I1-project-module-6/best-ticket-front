@@ -2,10 +2,6 @@ import AdminSidebar from "../component/sidebar/AdminSidebar.jsx";
 import AdminHeader from "../component/header/AdminHeader.jsx";
 import {Navigate} from "react-router-dom";
 import {useAuthor} from "../ultility/customHook/useAuthor.js";
-import {useSelector} from "react-redux";
-import {selectUserRole} from "../features/UserSlice.js";
-import {useEffect, useState} from "react";
-import {ADMIN} from "../ultility/AppConstant.js";
 
 
 const AdminLayout = ({children}) => {

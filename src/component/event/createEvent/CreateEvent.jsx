@@ -1,8 +1,7 @@
 import CreateEventSideBar from "../partials/CreateEventSideBar.jsx";
-import {Button, Input} from "@material-tailwind/react";
+import {Input, Option, Select} from "@material-tailwind/react";
 import React, {useEffect, useState} from "react";
 import {ProvincesApi} from "../../../api/ProvincesApi.js";
-import {Select, Option} from "@material-tailwind/react";
 import {findAllEventType} from "../../../api/EventTypeApi.js";
 import banner from "../../../assets/img/cover-event.jpg"
 import {FcCheckmark} from "react-icons/fc";
@@ -175,7 +174,7 @@ export default function CreateEvent() {
                     </div>
                 </div>
 
-                <CreateEventStep2 />
+                <CreateEventStep2/>
             </div>
 
         </div>
