@@ -43,10 +43,12 @@ export const BookingSlice = createSlice({
         builder
             .addCase(getAllBookings.pending, handlePending)
             .addCase(getAllBookings.rejected, handleRejected)
+
             .addCase(getAllBookings.fulfilled, handleFulfilled)
             .addCase(getAllBookingsByEventId.pending, handlePending)
             .addCase(getAllBookingsByEventId.rejected, handleRejected)
             .addCase(getAllBookingsByEventId.fulfilled, handleFulfilled);
+
     },
 });
 

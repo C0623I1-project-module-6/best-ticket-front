@@ -30,6 +30,7 @@ export const getEventById = createAsyncThunk("events/byEventId", async (eventId)
     console.log(response.data)
 
     return response.data;
+
 })
 
 // set action for slice
@@ -71,11 +72,13 @@ export const EventSlice = createSlice({
             // find by EventType
             .addCase(getEventsByEventTypes.pending, handlePending)
             .addCase(getEventsByEventTypes.rejected, handleRejected)
+
             .addCase(getEventsByEventTypes.fulfilled, handleFulfilled)
             //find by EventId
             .addCase(getEventById.pending, handlePending)
             .addCase(getEventById.rejected, handleRejected)
             .addCase(getEventById.fulfilled, handleFulfilled);
+
     },
 })
 
