@@ -77,7 +77,7 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2 border-2 items-center justify-start w-full
                                      cursor-pointer
-                                    " onClick={()=>navigate("/organizer/profile")}>
+                                    " onClick={() => navigate("/organizer/profile")}>
                                 <div className="w-[20px]">
                                     <FaUser/>
                                 </div>
@@ -85,7 +85,8 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2   items-center justify-start w-full
                                     border-2 cursor-pointer
-                                    " onClick={logout}>
+                                    "
+                                 onClick={logout}>
                                 <div className="w-[20px]">
                                     <FaSignOutAlt/>
                                 </div>
