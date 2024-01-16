@@ -7,7 +7,7 @@ import {GrUserManager} from "react-icons/gr";
 
 const BookingManagerSidebar = () => {
     return (<div className="fixed w-[29.6%] h-full border-r shadow-md">
-        <nav className="">
+        <nav className="bg-[#303B46] h-full">
             <ul className="text-left">
                 <li>
                     <div className="text-center p-2 flex bg-[#262F38]">
@@ -37,7 +37,7 @@ const BookingManagerSidebar = () => {
                     </a>
                 </li>
                 <li>
-                    <a href="#" className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
+                    <a href="/my-event/event/:eventId/RSVPs/bookings" className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
                             <div className="m-1"><RiGroupLine/></div>
                             RSVPs
@@ -69,12 +69,12 @@ const BookingManagerSidebar = () => {
                     </a>
                 </li>
             </ul>
+            <div className="py-[75%] text-center flex">
+                <a className="w-full  border-none rounded-xl bg-[#57616A] m-10" href="/">
+                    <div className="m-3">Câu hỏi thường gặp</div>
+                </a>
+            </div>
         </nav>
-        <div className="py-[75%] text-center flex">
-            <a className="w-full  border-none rounded-xl bg-[#57616A] m-10" href="/">
-                <div className="m-3">Câu hỏi thường gặp</div>
-            </a>
-        </div>
     </div>);
 };
 

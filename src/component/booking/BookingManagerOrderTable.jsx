@@ -200,6 +200,16 @@ const BookingManagerOrderTable = () => {
                             />
                         </Stack>
                     </div>
+                    <div className="rounded-l bg-[#F6F6F6] flex">
+                        <div className="m-auto text-center flex">
+                            <div className="m-3">
+                                Gửi mail đến
+                            </div>
+                            <div className="m-auto">
+                                <button className="border-0 border-black rounded bg-[#C2DEA3]"><div className="m-2">Tất cả</div></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
