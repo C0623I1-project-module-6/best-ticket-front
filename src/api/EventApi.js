@@ -30,3 +30,13 @@ export const findEventsByEventTypes = async (eventTypeNames,currentPage) => {
     }
     return result;
 };
+
+export const findEventById = async (eventId)=>{
+    let result = null;
+    try {
+        result = await axios.get(`${BEST_TICKET_API}events/${eventId}`);
+    } catch (e) {
+        console.log("Find events API error: " + e);
+    }
+    return result;
+}

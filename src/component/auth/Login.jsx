@@ -22,8 +22,11 @@ function Login() {
         navigate("/");
     }
     useEffect(() => {
-        console.log(user)
-    }, [loginSuccess]);
+        if (loginSuccess && user && user.token) {
+            localStorage.setItem('token', user.token);
+            navigate("/");
+        }
+    }, [loginSuccess, navigate, user]);
     return (
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
         dark:bg-black dark:text-white

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {findAllEvents, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
+import {findAllEvents, findEventById, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
 
 const initialState = {
     events: [],
@@ -23,6 +23,14 @@ export const getEventsByEventTypes = createAsyncThunk("events/eventTypes", async
     console.log(response.data)
 
     return response.data;
+})
+
+export const getEventById = createAsyncThunk("events/byEventId", async (eventId) => {
+    const response = await findEventById(eventId);
+    console.log(response.data)
+
+    return response.data;
+
 })
 
 // set action for slice
@@ -64,7 +72,13 @@ export const EventSlice = createSlice({
             // find by EventType
             .addCase(getEventsByEventTypes.pending, handlePending)
             .addCase(getEventsByEventTypes.rejected, handleRejected)
-            .addCase(getEventsByEventTypes.fulfilled, handleFulfilled);
+
+            .addCase(getEventsByEventTypes.fulfilled, handleFulfilled)
+            //find by EventId
+            .addCase(getEventById.pending, handlePending)
+            .addCase(getEventById.rejected, handleRejected)
+            .addCase(getEventById.fulfilled, handleFulfilled);
+
     },
 })
 

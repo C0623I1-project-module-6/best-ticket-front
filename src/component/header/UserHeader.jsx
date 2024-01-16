@@ -11,6 +11,7 @@ import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {logoutUser, selectLogoutSuccess, selectUserLogin, selectUserLogout} from "../../features/UserSlice.js";
 import avatar from "../../assets/img/User.png"
+import {ADMIN} from "../../ultility/AppConstant.js";
 
 
 const UserHeader = () => {

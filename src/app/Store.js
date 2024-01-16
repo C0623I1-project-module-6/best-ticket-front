@@ -3,6 +3,9 @@ import UserSlice from "../features/UserSlice.js";
 import EventSlice from "../features/EventSlice.js";
 import AdminSlice from "../features/AdminSlice.js";
 import TicketSlice from "../features/TicketSlice.js";
+import BookingSlice from "../features/BookingSlice.js";
+import BookingDetailSlice from "../features/BookingDetailSlice.js";
+
 import CustomerSlice from "../features/CustomerSlice.js";
 import OrganizerSlice from "../features/OrganizerSlice.js";
 
@@ -14,6 +17,8 @@ export const store = configureStore(
             event: EventSlice,
             ticket: TicketSlice,
             admin: AdminSlice,
+            booking: BookingSlice,
+            bookingDetail: BookingDetailSlice
             customer: CustomerSlice,
             organizer: OrganizerSlice,
         },
