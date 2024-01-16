@@ -2,6 +2,8 @@ import Seat from "./Seat.jsx";
 import React from "react";
 
 export const TicketBookingStep1 = () => {
+
+
     return (
         <>
             <div className="mx-40 my-5 flex justify-between	">

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {showAllTicketFinished, showAllTicketUpcoming} from "../api/TicketApi";
+import {showAllTicket, showAllTicketFinished, showAllTicketUpcoming, showTicketById} from "../api/TicketApi";
 
 const initialState = {
     tickets: [],
@@ -24,6 +24,21 @@ export const getTicketsByStatusUpcoming = createAsyncThunk(
         return response.data;
     }
 );
+export const getTickets = createAsyncThunk(
+    "tickets/showAllTicket",
+    async () => {
+        const response = await showAllTicket();
+        return response.data;
+    }
+);
+export const getTicket = createAsyncThunk(
+    "tickets/showTicketById",
+    async (id) => {
+        const response = await showTicketById(id);
+        console.log(response.data)
+        return response.data;
+    }
+);
 const handlePending = (state) => {
     state.success = false;
     state.loading = true;
@@ -40,6 +55,8 @@ const handleFulfilled = (state, action) => {
     state.success = true;
     state.loading = false;
     state.tickets = action.payload;
+    state.ticket = action.payload;
+    console.log(state.ticket);
     state.error = false;
 };
 
@@ -66,10 +83,22 @@ export const TicketSlice = createSlice({
             .addCase(getTicketsByStatusUpcoming.pending, handlePending)
             .addCase(getTicketsByStatusUpcoming.rejected, handleRejected)
             .addCase(getTicketsByStatusUpcoming.fulfilled, handleFulfilled)
+
+            .addCase(getTickets.pending, handlePending)
+            .addCase(getTickets.rejected, handleRejected)
+            .addCase(getTickets.fulfilled, handleFulfilled)
+
+            .addCase(getTicket.pending, handlePending)
+            .addCase(getTicket.rejected, handleRejected)
+            .addCase(getTicket.fulfilled, handleFulfilled)
+
+
     }
 });
 export const {setLoading, setError, setSuccess} = TicketSlice.actions;
 
 export const selectShowTicket = (state) => state.ticket.tickets;
+
+export const selectShowTicketById = (state) => state.ticket.ticket;
 
 export default TicketSlice.reducer;
