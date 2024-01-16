@@ -4,6 +4,8 @@ import {store} from "./app/Store.js";
 import AppRoutes from "./router/AppRoutes.jsx";
 import {BrowserRouter} from "react-router-dom";
 import {ThemeProvider} from "@material-tailwind/react";
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
     return (
@@ -12,10 +14,12 @@ function App() {
                 <ThemeProvider>
                     <BrowserRouter>
                         <AppRoutes/>
+                        <ToastContainer autoClose={3000} />
                     </BrowserRouter>
                 </ThemeProvider>
             </Provider>
         </>
     )
 }
+
 export default App

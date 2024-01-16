@@ -34,6 +34,7 @@ export const logoutUser = createAsyncThunk(
       console.log(response)
       return rejectWithValue(response.data.message);
     }
+    return response.data
   }
 )
 
@@ -128,6 +129,7 @@ export const userSlice = createSlice(
           state.loginSuccess = true;
           state.loading = false;
           state.value = action.payload.data;
+          state.listRole = action.payload.data.listRole;
           localStorage.setItem("token", action.payload.data.token);
           state.loginError = false;
         })
@@ -147,8 +149,6 @@ export const userSlice = createSlice(
           state.value = action.payload.data;
           state.loginError = false;
         })
-
-
         .addCase(logoutUser.pending, (state) => {
           state.logoutSuccess = false;
           state.loading = true;
@@ -161,11 +161,14 @@ export const userSlice = createSlice(
         })
         .addCase(logoutUser.fulfilled, (state, action) => {
           state.logoutSuccess = true;
+          state.loginSuccess = false;
+          state.user = null;
+          state.listRole = null;
           state.loading = false;
           state.value = action.payload.data;
           localStorage.removeItem("token");
+          localStorage.removeItem("user");
           state.logoutError = false;
-
         })
     }
 

@@ -3,6 +3,10 @@ import {Link} from "react-router-dom";
 export default function OrganizerSidebar() {
     const steps = [
         {
+            title: "Trang chủ",
+            url: "/"
+        },
+        {
             title: "Hồ sơ ban tổ chức",
             url: "/organizer/profile"
         },

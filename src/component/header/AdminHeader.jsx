@@ -1,7 +1,10 @@
 import {Fragment} from 'react'
 import {Disclosure, Menu, Transition} from '@headlessui/react'
 import {HiBars3, HiBell, HiXMark} from "react-icons/hi2";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {logoutUser, selectUserLogout} from "../../features/UserSlice.js";
+import {Bounce, toast} from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
 
 
 function classNames(...classes) {
@@ -10,6 +13,9 @@ function classNames(...classes) {
 
 export default function AdminHeader() {
     const param = useParams();
+    const dispatch = useDispatch();
+    const userLogout = useSelector(selectUserLogout);
+    const navigate = useNavigate();
     const navigation = [
         {name: 'Dashboard', href: '/admin', current: param.param === undefined},
         {name: 'Users', href: '/admin/users', current: param.param === 'users'},
@@ -17,6 +23,22 @@ export default function AdminHeader() {
         {name: 'Events', href: '/admin/events', current: param.param === 'events'},
         {name: 'Tickets', href: '/admin/tickets', current: param.param === 'tickets'},
     ]
+
+    const logout = () => {
+        dispatch(logoutUser(userLogout));
+        toast('🦄 Logout success!', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+        navigate("/");
+    }
     return (
         <Disclosure as="nav" className="bg-deep-purple-700 dark:bg-blue-gray-400">
             {({open}) => (
@@ -94,32 +116,30 @@ export default function AdminHeader() {
                                             className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <Menu.Item>
                                                 {({active}) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                    <span
+                                                        className={classNames(active ? 'bg-gray-100' : '', 'cursor-pointer block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Your Profile
-                                                    </a>
+                                                    </span>
                                                 )}
                                             </Menu.Item>
                                             <Menu.Item>
                                                 {({active}) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                    <span
+                                                        className={classNames(active ? 'bg-gray-100 ' : '', 'cursor-pointer block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Settings
-                                                    </a>
+                                                    </span>
                                                 )}
                                             </Menu.Item>
                                             <Menu.Item>
                                                 {({active}) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                    <span
+                                                        className={classNames(active ? 'bg-gray-100 ' : '', ' cursor-pointer block px-4 py-2 text-sm text-gray-700')}
+                                                        onClick={() => logout()}
                                                     >
                                                         Sign out
-                                                    </a>
+                                                    </span>
                                                 )}
                                             </Menu.Item>
                                         </Menu.Items>

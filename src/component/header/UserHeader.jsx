@@ -9,9 +9,16 @@ import logoVie from "../../assets/img/logo/Flag_of_Vietnam.svg"
 import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
-import {logoutUser, selectLogoutSuccess, selectUserLogin, selectUserLogout} from "../../features/UserSlice.js";
+import {
+    logoutUser,
+    selectLogoutSuccess,
+    selectUserLogin,
+    selectUserLogout,
+    selectUserRole
+} from "../../features/UserSlice.js";
 import avatar from "../../assets/img/User.png"
 import {ADMIN} from "../../ultility/AppConstant.js";
+import {Bounce, toast} from "react-toastify";
 
 
 const UserHeader = () => {
@@ -23,6 +30,7 @@ const UserHeader = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const logoutSuccess = useSelector(selectLogoutSuccess);
     const userLogout = useSelector(selectUserLogout);
+    const userRole = useSelector(selectUserRole);
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -45,6 +53,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
+    useEffect(() => {
+        if (userRole !== null && userRole.includes(ADMIN)) {
+            navigate("/admin");
+        }
+    }, [userRole]);
     const loginButton = () => {
         return (
             !user ?
@@ -64,14 +77,14 @@ const UserHeader = () => {
                     <PopoverContent className="w-48 p-1">
                         <div className="flex-col w-full gap-3">
                             <div className="flex-col bg-blue-gray-50 text-center items-center justify-items-center justify-center  w-full
-                                      border-2 cursor-pointer" onClick={() => navigate("/profile/add")}>
+                                      border-2 cursor-pointer">
                                 <div>Hello</div>
                                 <div
                                     className="font-bold text-xl">{user.fullName !== null ? user.fullName : user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
                                       cursor-pointer
-                                    ">
+                                    " onClick={() => navigate("/profile/add")}>
                                 <div className="w-[20px]">
                                     <FaCog/>
                                 </div>
@@ -79,7 +92,7 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2 border-2 items-center justify-start w-full
                                      cursor-pointer
-                                    " onClick={()=>navigate("/organizer/add")}>
+                                    " onClick={() => navigate("/organizer/profile")}>
                                 <div className="w-[20px]">
                                     <FaUser/>
                                 </div>
@@ -151,10 +164,20 @@ const UserHeader = () => {
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
-      alert("Logout Successfully!!!")
+        toast('🦄 Logout success!', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
         navigate("/");
     }
-    
+
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">
@@ -195,6 +218,7 @@ const UserHeader = () => {
                         {loginButton()}
                         {changeLanguageButton()}
                         {changeThemeButton()}
+
                     </div>
                 </div>
             </div>
