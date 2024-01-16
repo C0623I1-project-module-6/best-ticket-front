@@ -15,6 +15,7 @@ const initialState = {
 };
 
 export const loginUser = createAsyncThunk(
+
   "login",
   async (loginData, {rejectWithValue}) => {
     const response = await login(loginData);
@@ -26,37 +27,41 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+
 export const logoutUser = createAsyncThunk(
-  "logout",
-  async (logoutData, {rejectWithValue}) => {
-    const response = await logout(logoutData);
-    if (response.status !== 200) {
-      console.log(response)
-      return rejectWithValue(response.data.message);
-    }
+    "logout",
+    async (logoutData, {rejectWithValue}) => {
+        const response = await logout(logoutData);
+        if (response.status !== 200) {
+            console.log(response)
+            return rejectWithValue(response.data.message);
+        }
     return response.data
   }
 )
 
 export const loginWithGoogle = createAsyncThunk(
-  "loginGoogle",
-  async (loginData, {rejectWithValue}) => {
-    const response = await loginGoogle(loginData);
-    if (response.status !== 200) {
-      console.log(response)
-      return rejectWithValue(response.data.message);
+    "loginGoogle",
+    async (loginData, {rejectWithValue}) => {
+        const response = await loginGoogle(loginData);
+        if (response.status !== 200) {
+            console.log(response)
+            return rejectWithValue(response.data.message);
+        }
+      return response.data;
     }
-  }
 )
 
 export const registerUser = createAsyncThunk(
     "register",
     async (registerData, {rejectWithValue}) => {
+
       const response = await register(registerData);
       if (response.status !== 200) {
         console.log(response)
         return rejectWithValue(response.data.message);
       }
+      return response.data;
     }
   )
 ;
@@ -174,6 +179,7 @@ export const userSlice = createSlice(
 
 
   }
+
 )
 export const {
   setLoading,

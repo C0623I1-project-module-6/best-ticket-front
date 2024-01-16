@@ -83,8 +83,7 @@ const UserHeader = () => {
                                     className="font-bold text-xl">{user.fullName !== null ? user.fullName : user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
-                                      cursor-pointer
-                                    " onClick={() => navigate("/profile/add")}>
+                                      cursor-pointer" onClick={() => navigate("/customer/profile")}>
                                 <div className="w-[20px]">
                                     <FaCog/>
                                 </div>
@@ -177,7 +176,6 @@ const UserHeader = () => {
         });
         navigate("/");
     }
-
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">
