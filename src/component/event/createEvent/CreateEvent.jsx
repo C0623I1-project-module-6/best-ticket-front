@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import {addEvent} from "../../../features/EventSlice.js";
 import {CalculateDuration} from "../../../ultility/CalculateDuration.js";
+import { toast } from 'react-toastify';
 
 export default function CreateEvent(){
     const [eventTypes, setEventTypes] = useState([]); // object
@@ -65,10 +66,21 @@ export default function CreateEvent(){
             district : selectedDistrict,
             address  : address,
             startDateTime : startDate.valueOf(),
-            eventTypeNamesDTO : selectedEventTypes
+            eventTypeNames : selectedEventTypes
         };
-        dispatch(addEvent(eventRequest));
-        console.log(eventRequest)
+        dispatch(addEvent(eventRequest))
+            .then((response) => {
+                console.log(response)
+                toast.success('Event created successfully', {
+                    position: toast.POSITION.TOP_CENTER,
+                });
+            })
+            .catch((error) => {
+                console.error('Error creating event:', error);
+                toast.error('Error creating event', {
+                    position: toast.POSITION.TOP_CENTER,
+                });
+            });
     }
 
     return(
