@@ -64,9 +64,9 @@ export default function MultipleSelectChip({eventTypes,callback}) {
                     )}
                     MenuProps={MenuProps}
                 >
-                    {eventTypes.map((eventType,index) => (
+                    {eventTypes.map((eventType) => (
                         <MenuItem
-                            key={index}
+                            key={eventType.id}
                             value={eventType.name}
                             style={getStyles(eventType, selectedEventTypes, theme)}
                         >

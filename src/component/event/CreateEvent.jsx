@@ -8,17 +8,22 @@ import banner from "../../assets/img/cover-event.jpg"
 import SelectEvent from "./partials/SelectEvent.jsx";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
+import {addEvent} from "../../features/EventSlice.js";
+import {CalculateDuration} from "../../ultility/CalculateDuration.js";
 
 export default function CreateEvent(){
     const [eventTypes, setEventTypes] = useState([]); // object
     const [provinces, setProvinces] = useState([]);
     const [selectedProvince,setSelectedProvince] = useState("");
     const [selectedDistrict,setSelectedDistrict] = useState("");
+    const [address,setAddress] = useState("");
     const [selectedEventTypes,setSelectedEventTypes] = useState([]) //string
     const [startDate, setStartDate] = useState(dayjs());
     const [endDate, setEndDate] = useState(dayjs());
     const [eventName,setEventName] = useState("");
     const [eventDescription,setEventDescription] = useState("")
+    const dispatch = useDispatch();
 
     const fetchApiEventTypes = async () => {
         try {
@@ -42,28 +47,30 @@ export default function CreateEvent(){
         setSelectedEventTypes(data);
     }
 
-    const createEvent = () =>{
-        const eventDTO = {
+    const handleCreateEvent = () =>{
+        const dateTimeFormat = "YYYY-MM-DDTHH:mm:ss";
+        const startDateTime = dayjs(startDate, { dateFormat: dateTimeFormat });
+        const endDateTime = dayjs(endDate, { dateFormat: dateTimeFormat });
+        const duration = CalculateDuration(startDateTime,endDateTime)
+
+        console.log(duration);
+
+        const eventRequest = {
             name : eventName,
-            description: {},
-            image : "https://images.fpt.shop/unsafe/filters:quality(5)/fptshop.com.vn/uploads/images/tin-tuc/168134/Originals/cach-tao-dang-chup-anh-tet%20(1).jpg"
-        }
-        const locationDTO = {
+            description: eventDescription,
+            status: 'PENDING_APPROVAL',
+            duration: duration,
+            image : "https://images.fpt.shop/unsafe/filters:quality(5)/fptshop.com.vn/uploads/images/tin-tuc/168134/Originals/cach-tao-dang-chup-anh-tet%20(1).jpg",
             province : selectedProvince,
             district : selectedDistrict,
-            address  : {}
-        }
-        const eventTypesDTO=selectedEventTypes;
-
-        const timeDTO = {
-            startDate : startDate.valueOf(),
-            endDate : endDate.valueOf()
-        }
+            address  : address,
+            startDateTime : startDate.valueOf(),
+            eventTypeNamesDTO : selectedEventTypes
+        };
+        dispatch(addEvent(eventRequest));
+        console.log(eventRequest)
     }
-    const handleCreate = (createEvent) => {
 
-    }
-    console.log(eventDescription)
     return(
         <div className="flex h-screen  ">
             <CreateEventSideBar/>
@@ -107,7 +114,7 @@ export default function CreateEvent(){
                                     }}
                                 >
                                     {province.districts.map((district) => (
-                                        <Option key={district.code} value={district.code}>
+                                        <Option key={district.code} value={district.name}>
                                             {district.name}
                                         </Option>
                                     ))}
@@ -116,7 +123,11 @@ export default function CreateEvent(){
                         })}
                     </div>
                     <div className="w-[80%] p-5 mx-auto">
-                        <Input label="Địa chỉ chi tiết" />
+                        <Input
+                            label="Địa chỉ chi tiết"
+                            value={address}
+                            onChange={(e)=>{setAddress(e.target.value)}}
+                        />
                     </div>
                     <SelectEvent eventTypes={eventTypes} callback={selectedData}/>
                     <div className="w-[80%] flex gap-5 mx-auto">
@@ -160,7 +171,9 @@ export default function CreateEvent(){
                         </div>
                     </div>
                     <div className="w-[80%] flex items-center justify-center p-5 mx-auto ">
-                        <button className="border-black rounded-lg bg-green-400 py-2 px-5">
+                        <button className="border-black rounded-lg bg-green-400 py-2 px-5"
+                                onClick={handleCreateEvent}
+                        >
                             Tạo Event
                         </button>
                     </div>
