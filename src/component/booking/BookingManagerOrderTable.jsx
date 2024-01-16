@@ -7,13 +7,44 @@ import React, {useEffect, useState} from "react";
 import {getAllBookingDetailsByBookingId} from "../../features/BookingDetailSlice.js";
 import {CiSearch} from "react-icons/ci";
 
+const sortingOptions = [
+    { label: "Mới nhất", value: "newest" },
+    { label: "Cũ nhất", value: "oldest" },
+    { label: "A - Z", value: "az" },
+    { label: "Z - A", value: "za" },
+];
+
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId1 = useParams().eventId;
     const totalPages = useSelector(state => state.event.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
-    const [bookingDetails, setBookingDetails] = useState([]);
+    const [bookingDetails, setBookingDetails] = useState([])
+    const [selectedSorting, setSelectedSorting] = useState("");
+
+    const handleSortingChange = (event) => {
+        setSelectedSorting(event.target.value);
+        // Perform the sorting operation based on the selected option
+        // You can add your sorting logic here
+        switch (event.target.value) {
+            case "newest":
+                // Sort by newest
+                break;
+            case "oldest":
+                // Sort by oldest
+                break;
+            case "az":
+                // Sort A - Z
+                break;
+            case "za":
+                // Sort Z - A
+                break;
+            default:
+                // Handle default case
+                break;
+        }
+    };
 
     const bookingsMemo = React.useMemo(() => {
         return bookings;
@@ -32,13 +63,11 @@ const BookingManagerOrderTable = () => {
             const results = await Promise.all(promises);
             const updatedBookingDetails = results.map(data => data.payload); // Extracting payload from the results
 
-            setBookingDetails(prevBookingDetails => [
-                ...prevBookingDetails,
-                ...updatedBookingDetails
-            ]);
+            setBookingDetails(updatedBookingDetails);
         };
 
         if (bookingsMemo.length > 0) {
+            setBookingDetails([]); // Clear the booking details state
             fetchData().then(() => {
                 console.log('Data fetched successfully');
             });
@@ -60,17 +89,33 @@ const BookingManagerOrderTable = () => {
                     </div>
                     <div>
                         <select className="bg-gray-300 rounded m-2">
-                            <option>Tất cả đơn hàng</option>
-                            <option>Hoàn tất</option>
-                            <option>Đang xử lý</option>
+                            <option value="">Tất cả đơn hàng</option>
+                            {bookings.map((booking, index) => (
+                                <React.Fragment key={index}>
+                                    <option value="ACTIVE" selected={booking.status === "ACTIVE"}>
+                                        Đang hiệu lực
+                                    </option>
+                                    <option value="PENDING" selected={booking.status === "PENDING"}>
+                                        Đang xử lý
+                                    </option>
+                                    <option value="INACTIVE" selected={booking.status === "INACTIVE"}>
+                                        Không còn hiệu lực
+                                    </option>
+                                </React.Fragment>
+                            ))}
                         </select>
                     </div>
                     <div>
-                        <select className="bg-gray-300 rounded m-2">
-                            <option>Mới nhất</option>
-                            <option>Cũ nhất</option>
-                            <option>A - Z</option>
-                            <option>Z - A</option>
+                        <select
+                            className="bg-gray-300 rounded m-2"
+                            value={selectedSorting}
+                            onChange={handleSortingChange}
+                        >
+                            {sortingOptions.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
@@ -92,14 +137,14 @@ const BookingManagerOrderTable = () => {
                             <th className="px-4 py-2 text-left border-b border-black">
                                 <input type="checkbox" className="bg-white"/>
                             </th>
-                            <th className="px-4 py-2 text-left">ĐƠN HÀNG</th>
-                            <th className="px-4 py-2 text-left">VÉ</th>
-                            <th className="px-4 py-2 text-left">TỔNG CỘNG</th>
+                            <th className="px-4 py-2 text-left border-b border-black">ĐƠN HÀNG</th>
+                            <th className="px-4 py-2 text-left border-b border-black">VÉ</th>
+                            <th className="px-4 py-2 text-left border-b border-black">TỔNG CỘNG (VNĐ)</th>
                         </tr>
                         </thead>
                         <tbody>
                         {bookings.map((booking, index) => (
-                            <tr key={index} className="border-x-0">
+                            <tr key={index} className="border border-black border-x-0">
                                 <th className="px-4 py-2 text-left border-b border-black">
                                     <input type="checkbox"/>
                                 </th>
@@ -112,16 +157,26 @@ const BookingManagerOrderTable = () => {
                                 </td>
                                 <td className="px-4 py-2 border-x-0">
                                     {bookingDetails && bookingDetails.length > 0 ? (
-                                        bookingDetails[0].data.flatMap(detail =>
-                                            detail.tickets.map((ticket, index) => (
-                                                <div key={index}>
-                                                    <span>{ticket.eventTime}</span>
-                                                    <br/>
-                                                    <span>{ticket.seat}</span>
-                                                    {/* Render other ticket properties */}
-                                                </div>
-                                            ))
-                                        )
+                                        <>
+                                            {bookingDetails.flatMap((detail) =>
+                                                detail.data.flatMap((detailData) =>
+                                                    detailData.tickets.map((ticket, index) => {
+                                                        return (
+                                                            <div key={index}>
+                                                                <div>{bookingDetails.flatMap((detail) =>
+                                                                    detail.data.flatMap((detailData) =>
+                                                                        detailData.tickets
+                                                                    )
+                                                                ).length}</div>
+                                                                <span>{ticket.seat}</span>
+
+                                                                {/* Render other ticket properties */}
+                                                            </div>
+                                                        );
+                                                    })
+                                                )
+                                            )}
+                                        </>
                                     ) : (
                                         <span>No booking details available</span>
                                     )}
