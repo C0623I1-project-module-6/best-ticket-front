@@ -10,16 +10,16 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from "dayjs";
 
 export default function CreateEvent(){
-    const [email, setEmail] = useState("");
-    const onChange = ({ target }) => setEmail(target.value);
     const [eventTypes, setEventTypes] = useState([]); // object
     const [provinces, setProvinces] = useState([]);
-    const [districts, setDistricts] = useState([]);
     const [selectedProvince,setSelectedProvince] = useState("");
     const [selectedDistrict,setSelectedDistrict] = useState("");
     const [selectedEventTypes,setSelectedEventTypes] = useState([]) //string
     const [startDate, setStartDate] = useState(dayjs());
     const [endDate, setEndDate] = useState(dayjs());
+    const [eventName,setEventName] = useState("");
+    const [eventDescription,setEventDescription] = useState("")
+
     const fetchApiEventTypes = async () => {
         try {
             const result = await findAllEventType();
@@ -41,13 +41,29 @@ export default function CreateEvent(){
     const selectedData = (data) =>{
         setSelectedEventTypes(data);
     }
-    const handleStarDateChange = (date) => {
-        setStartDate(date);
-    };
-    const handleEndDateChange = (date) => {
-        setEndDate(date);
-    };
-    console.log(startDate.valueOf(),endDate)
+
+    const createEvent = () =>{
+        const eventDTO = {
+            name : eventName,
+            description: {},
+            image : "https://images.fpt.shop/unsafe/filters:quality(5)/fptshop.com.vn/uploads/images/tin-tuc/168134/Originals/cach-tao-dang-chup-anh-tet%20(1).jpg"
+        }
+        const locationDTO = {
+            province : selectedProvince,
+            district : selectedDistrict,
+            address  : {}
+        }
+        const eventTypesDTO=selectedEventTypes;
+
+        const timeDTO = {
+            startDate : startDate.valueOf(),
+            endDate : endDate.valueOf()
+        }
+    }
+    const handleCreate = (createEvent) => {
+
+    }
+    console.log(eventDescription)
     return(
         <div className="flex h-screen  ">
             <CreateEventSideBar/>
@@ -63,7 +79,10 @@ export default function CreateEvent(){
                     </div>
                     <h1 className="text-center mt-5 text-2xl font-bold">Thông tin sự kiện</h1>
                     <div className="w-[80%] p-5 mx-auto">
-                        <Input label="Event Name" />
+                        <Input
+                            label="Event Name"
+                            value={eventName}
+                            onChange={(e)=>{setEventName(e.target.value)}} />
                     </div>
                     <div className="w-[80%] flex flex-col md:flex-row gap-5 p-5 mx-auto">
                         <Select
@@ -108,9 +127,11 @@ export default function CreateEvent(){
                             <textarea
                                 id="EventDetail"
                                 name="EventDetail"
-                                rows="4"
+                                rows="5"
                                 className="mt-1 p-2 border rounded-md w-full border-gray-400"
                                 placeholder="Chi tiết về sự kiện..."
+                                value={eventDescription}
+                                onChange={(e)=>{setEventDescription(e.target.value)}}
                             />
                         </div>
                     </div>
@@ -121,7 +142,9 @@ export default function CreateEvent(){
                                 label="Ngày và giờ bắt đầu sự kiện"
                                 disablePast
                                 value={startDate}
-                                onChange={handleStarDateChange}
+                                onChange={(date) => {
+                                    setStartDate(date);
+                                }}
                             />
                         </div>
                         <div className="flex-1">
@@ -130,7 +153,9 @@ export default function CreateEvent(){
                                 label="Ngày và giờ kết thúc sự kiện"
                                 minDate={startDate}
                                 value={endDate}
-                                onChange={handleEndDateChange}
+                                onChange={(date) => {
+                                    setEndDate(date);
+                                }}
                             />
                         </div>
                     </div>
