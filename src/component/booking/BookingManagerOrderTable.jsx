@@ -6,13 +6,7 @@ import Pagination from "@mui/material/Pagination";
 import React, {useEffect, useState} from "react";
 import {getAllBookingDetailsByBookingId} from "../../features/BookingDetailSlice.js";
 import {CiSearch} from "react-icons/ci";
-
-const sortingOptions = [
-    { label: "Mới nhất", value: "newest" },
-    { label: "Cũ nhất", value: "oldest" },
-    { label: "A - Z", value: "az" },
-    { label: "Z - A", value: "za" },
-];
+import {sortingOptions} from "../../ultility/AppConstant.js";
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
@@ -76,6 +70,7 @@ const BookingManagerOrderTable = () => {
 
     console.log(bookingDetails)
 
+    let sortingOptions;
     return (
         <>
             <div className="border bg-gray-100 flex py-1">
