@@ -1,12 +1,12 @@
-import {FaFacebook, FaGithub, FaGoogle} from "react-icons/fa6";
+import {FaFacebook} from "react-icons/fa6";
 import {Tooltip} from "@material-tailwind/react";
 import logoLight from "../../assets/img/logo/logo-auth-header-light.svg";
 import logoDark from "../../assets/img/logo/logo-auth-header-dark.svg";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {GoogleLogin} from "@react-oauth/google";
-import {useDispatch, useSelector} from "react-redux";
-import {loginWithGoogle, selectUserLogin} from "../../features/UserSlice.js";
+import {useDispatch} from "react-redux";
+import {loginWithGoogle} from "../../features/UserSlice.js";
 
 function AuthHeader(props) {
     const navigate = useNavigate();
@@ -25,9 +25,10 @@ function AuthHeader(props) {
         }
     }, [theme]);
 
-    const loginGoogle = (res) =>{
+    const loginGoogle = (res) => {
         dispatch(loginWithGoogle(res))
     }
+
 
     return (
         <>

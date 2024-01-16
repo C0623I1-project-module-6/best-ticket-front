@@ -1,85 +1,43 @@
-import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useLocation, useParams} from "react-router-dom";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getPageBookings, selectBookings} from "../../features/AdminSlice.js";
-import Pagination from "../Pagination.jsx";
-import {FaCheckCircle} from "react-icons/fa";
-import {GiCancel} from "react-icons/gi";
+import {
+    getPageBookings,
+    getPageEvents,
+    getPageUsers,
+    selectBookingsSuccess,
+    selectTotalElementsOfBooking,
+    selectTotalElementsOfUser,
+    selectTotalPageOfBooking,
+    selectTotalPageOfUser,
+    selectUsersSuccess,
+    setBookings,
+    setUsers
+} from "../../features/AdminSlice.js";
+import {TABLE_HEAD_BOOKING, TABLE_HEAD_EVENT, TABLE_HEAD_USER} from "../../ultility/AppConstant.js";
+import TableContent from "./TableContent.jsx";
+import Pagination from '@mui/material/Pagination';
 
-const TABS = [
-    {
-        label: "All",
-        value: "all",
-    },
-    {
-        label: "Monitored",
-        value: "monitored",
-    },
-    {
-        label: "Unmonitored",
-        value: "unmonitored",
-    },
-];
-
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
-
-const TABLE_ROWS = [
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-        name: "John Michael",
-        email: "john@creative-tim .com",
-        job: "Manager",
-        org: "Organization",
-        online: true,
-        date: "23/04/18",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-        name: "Alexa Liras",
-        email: "alexa@creative-tim.com",
-        job: "Programator",
-        org: "Developer",
-        online: false,
-        date: "23/04/18",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-        name: "Laurent Perrier",
-        email: "laurent@creative-tim.com",
-        job: "Executive",
-        org: "Projects",
-        online: false,
-        date: "19/09/17",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-        name: "Michael Levi",
-        email: "michael@creative-tim.com",
-        job: "Programator",
-        org: "Developer",
-        online: true,
-        date: "24/12/08",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-        name: "Richard Gran",
-        email: "richard@creative-tim.com",
-        job: "Manager",
-        org: "Executive",
-        online: false,
-        date: "04/10/21",
-    },
-];
 
 export default function AdminTable() {
+    const [currentPage, setCurrentPage] = useState(1);
     const param = useParams();
     const dispatch = useDispatch();
-    const bookings = useSelector(selectBookings);
-    const [data, setData] = useState([]);
     const [dataHeader, setDataHeader] = useState([]);
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
-    console.log(param.param)
-
+    const totalElementOfBooking = useSelector(selectTotalElementsOfBooking)
+    const totalElementOfUser = useSelector(selectTotalElementsOfUser);
+    const totalPagesOfBookings = useSelector(selectTotalPageOfBooking);
+    const totalPageOfUser = useSelector(selectTotalPageOfUser)
+    const [totalPages, setTotalPages] = useState(0);
+    const selectUserSuccess = useSelector(selectUsersSuccess);
+    const selectBookingSuccess = useSelector(selectBookingsSuccess)
+    useEffect(() => {
+        setTotalPages(totalPageOfUser)
+    }, [selectUserSuccess]);
+    useEffect(() => {
+        setTotalPages(totalPagesOfBookings)
+    }, [selectBookingSuccess]);
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -93,23 +51,31 @@ export default function AdminTable() {
         }
     }, [theme]);
     useEffect(() => {
-        if (param.param === "bookings") {
-            if (bookings === null) {
-                dispatch(getPageBookings())
-            } else {
-                setData(bookings)
-                setDataHeader([])
-            }
-            for (let key in data[0]) {
-                dataHeader.push(key)
-            }
-            console.log(data)
+        if (param.param === "users") {
+            dispatch(setBookings(null))
+            dispatch(getPageUsers())
+            setDataHeader(TABLE_HEAD_USER);
+        } else if (param.param === "bookings") {
+            dispatch(setUsers(null))
+            dispatch(getPageBookings())
+            setDataHeader(TABLE_HEAD_BOOKING)
+        }else if (param.param ==="events"){
+            dispatch(setBookings(null))
+            dispatch(setUsers(null))
+            dispatch(getPageEvents())
+            setDataHeader(TABLE_HEAD_EVENT)
         }
-    }, [bookings]);
-    console.log(data)
+    }, [param]);
+    useEffect(() => {
+        if (param.param === "bookings") {
+            dispatch(getPageBookings(currentPage - 1));
+        }else  if (param.param === "users") {
+            dispatch(getPageUsers(currentPage-1))
+        }
+    }, [currentPage]);
     return (
         <>
-            <div className="flex-col items-center justify-center justify-items-center">
+            <div className="flex-col items-center justify-center justify-items-center ">
                 <div className="flex justify-center gap-4 items-center bg-amber-500">
                     <div>Right</div>
                     <div>Header</div>
@@ -118,72 +84,51 @@ export default function AdminTable() {
                 <div className="flex justify-center mt-3 ">
                     <div className="uppercase font-bold text-3xl">{param.param}</div>
                 </div>
-                <div className="flex justify-center mt-3 ">
-                    <table className="table-lg table-zebra-zebra rounded-full border-2">
+                <div className="flex  items-center justify-center mt-3">
+                    <input id="search" type="text" placeholder="Search"
+                           className="input input-sm input-bordered input-primary w-full max-w-xs"/>
+                </div>
+                <div className="flex justify-center mt-3 px-20">
+                    <table className="table-fixed  table-zebra-zebra rounded-full w-full ">
                         <thead className="bg-amber-500
                         dark:text-white dark:bg-black">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                STT
+                            {
+                                dataHeader.map((data, index) => (
+                                    <th scope="col" key={index}
+                                        className="px-4 py-3 text-start text-xs font-bold font-sans uppercase">
+                                        {data}
+                                    </th>
+                                ))
+                            }
+                            <th scope="col"
+                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
+
                             </th>
                             <th scope="col"
                                 className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Username
+
                             </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Email
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Name
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Customer
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Organizer
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-                                Status
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
-                            <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
                         </tr>
                         </thead>
-                        <tbody className="bg-white dark:bg-blue-gray-400">
-                        <tr>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">1</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">thinhlord</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">thinhlord@gmail.com</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">Thinh</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-white">
-                                <FaCheckCircle className="mx-auto" color={"blue"}/></td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                {/*<FaCheckCircle className="mx-auto" color={"blue"}/>*/}
-                                <GiCancel className="mx-auto" color={"red"}/>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                {/*<button type="button" className="btn btn-outline btn-sm btn-active btn-info">Active*/}
-                                {/*</button>*/}
-                                <button type="button"
-                                        className="btn btn-outline btn-sm btn-disabled btn-info dark:btn-accent">Inactive
-                                </button>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                <button type="button" className="btn btn-outline btn-sm btn-warning">Edit</button>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                <button type="button" className="btn btn-outline btn-sm btn-error">Delete</button>
-                            </td>
-                        </tr>
-                        </tbody>
+                        <TableContent content={param}/>
+
                     </table>
                 </div>
-                <Pagination/>
+                <div className="flex items-center justify-center border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                        <div>
+                            <Pagination
+                                count={totalPages || 0}
+                                color="secondary"
+                                showFirstButton
+                                showLastButton
+                                size="large"
+                                variant="outlined"
+                                page={currentPage}
+                                onChange={(event, value) => setCurrentPage(value)}
+                            />
+                        </div>
+                </div>
             </div>
 
         </>

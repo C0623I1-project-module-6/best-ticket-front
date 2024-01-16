@@ -2,29 +2,35 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {createEvent, findAllEvents, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
 
 const initialState = {
-    events : [],
-    event : null,
+    events: [],
+    event: null,
     totalPages: null,
     loading: false,
     success: false,
     error: null,
 };
-export const getEventsByName = createAsyncThunk("events/byName", async ({ searchTerm, currentPage }) => {
+export const getEventsByName = createAsyncThunk("events/byName", async ({searchTerm, currentPage}) => {
     const response = await findEventsByName(searchTerm, currentPage);
     return response.data;
 });
-export const getAllEvent = createAsyncThunk("events",async (currentPage)=>{
+export const getAllEvent = createAsyncThunk("events", async (currentPage) => {
     const response = await findAllEvents(currentPage);
+    return response.data;
+})
+
+export const getEventsByEventTypes = createAsyncThunk("events/eventTypes", async ({eventTypeNames, currentPage}) => {
+    const response = await findEventsByEventTypes(eventTypeNames, currentPage);
     console.log(response.data)
 
     return response.data;
 })
 
-export const getEventsByEventTypes = createAsyncThunk("events/eventTypes",async ({ eventTypeNames, currentPage })=>{
-    const response = await findEventsByEventTypes(eventTypeNames,currentPage);
+export const getEventById = createAsyncThunk("events/byEventId", async (eventId) => {
+    const response = await findEventById(eventId);
     console.log(response.data)
 
     return response.data;
+
 })
 
 export const addEvent = createAsyncThunk("event/create",async (eventRequest)=>{
@@ -51,15 +57,14 @@ const handleFulfilled = (state, action) => {
     state.success = true;
     state.loading = false;
     state.events = action.payload.data;
-    state.totalPages=action.payload.totalPages;
+    state.totalPages = action.payload.totalPages;
     state.error = false;
 };
 
 export const EventSlice = createSlice({
     name: "Event",
     initialState,
-    reducers: {
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             // find by name
@@ -92,6 +97,7 @@ export const EventSlice = createSlice({
                 state.error = false;
                 state.event = action.payload;
             })
+
 
     },
 })

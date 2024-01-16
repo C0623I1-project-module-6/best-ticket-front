@@ -1,16 +1,16 @@
-import CreateEventSideBar from "./partials/CreateEventSideBar.jsx";
+import CreateEventSideBar from "../partials/CreateEventSideBar.jsx";
 import {Input} from "@material-tailwind/react";
 import React, {useEffect, useState} from "react";
-import { ProvincesApi } from "../../api/ProvincesApi.js";
+import { ProvincesApi } from "../../../api/ProvincesApi.js";
 import { Select, Option } from "@material-tailwind/react";
-import {findAllEventType} from "../../api/EventTypeApi.js";
-import banner from "../../assets/img/cover-event.jpg"
-import SelectEvent from "./partials/SelectEvent.jsx";
+import {findAllEventType} from "../../../api/EventTypeApi.js";
+import banner from "../../../assets/img/cover-event.jpg"
+import SelectEvent from "../partials/SelectEvent.jsx";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
-import {addEvent} from "../../features/EventSlice.js";
-import {CalculateDuration} from "../../ultility/CalculateDuration.js";
+import {addEvent} from "../../../features/EventSlice.js";
+import {CalculateDuration} from "../../../ultility/CalculateDuration.js";
 
 export default function CreateEvent(){
     const [eventTypes, setEventTypes] = useState([]); // object
