@@ -63,14 +63,13 @@ const UserHeader = () => {
                     <PopoverContent className="w-48 p-1">
                         <div className="flex-col w-full gap-3">
                             <div className="flex-col bg-blue-gray-50 text-center items-center justify-items-center justify-center  w-full
-                                      border-2 cursor-pointer" onClick={() => navigate("/profile/add")}>
+                                      border-2 cursor-pointer">
                                 <div>Hello</div>
                                 <div
                                     className="font-bold text-xl">{user.fullName !== null ? user.fullName : user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
-                                      cursor-pointer
-                                    ">
+                                      cursor-pointer" onClick={() => navigate("/customer/profile")}>
                                 <div className="w-[20px]">
                                     <FaCog/>
                                 </div>
@@ -78,7 +77,7 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2 border-2 items-center justify-start w-full
                                      cursor-pointer
-                                    " onClick={()=>navigate("/organizer/add")}>
+                                    " onClick={()=>navigate("/organizer/profile")}>
                                 <div className="w-[20px]">
                                     <FaUser/>
                                 </div>
@@ -149,7 +148,6 @@ const UserHeader = () => {
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
-        alert("Logout Successfully!!!")
         navigate("/");
     }
     return (
