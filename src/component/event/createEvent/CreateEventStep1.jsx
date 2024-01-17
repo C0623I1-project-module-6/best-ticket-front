@@ -3,10 +3,12 @@ import {DatePicker, Space} from "antd";
 import React from "react";
 import {MdDelete} from "react-icons/md";
 
-export const CreateEventStep2 = () => {
+export const CreateEventStep1 = () => {
 
 
     return (
-        <div></div>
+        <div>
+
+        </div>
     )
 }
