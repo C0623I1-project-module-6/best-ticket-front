@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {login, loginGoogle, logout, register} from "../api/UserApi.js";
+import {login, loginGoogle,loginWithToken, logout, register} from "../api/UserApi.js";
 
 const initialState = {
   value: null,
@@ -26,6 +26,16 @@ export const loginUser = createAsyncThunk(
     return response.data;
   }
 );
+export const reLoginWithToken = createAsyncThunk(
+  "loginWithToken",
+  async (loginData,{rejectWithValue}) => {
+    const response = await loginWithToken();
+    if (response.status !== 200) {
+      return rejectWithValue(response.data.message);
+    }
+    return response.data;
+  }
+);
 
 
 export const logoutUser = createAsyncThunk(
@@ -45,7 +55,6 @@ export const loginWithGoogle = createAsyncThunk(
     async (loginData, {rejectWithValue}) => {
         const response = await loginGoogle(loginData);
         if (response.status !== 200) {
-            console.log(response)
             return rejectWithValue(response.data.message);
         }
       return response.data;
@@ -58,7 +67,6 @@ export const registerUser = createAsyncThunk(
 
       const response = await register(registerData);
       if (response.status !== 200) {
-        console.log(response)
         return rejectWithValue(response.data.message);
       }
       return response.data;
@@ -118,8 +126,6 @@ export const userSlice = createSlice(
           state.value = action.payload.data;
           state.registerError = false;
         })
-
-
         .addCase(loginUser.pending, (state) => {
           state.loginSuccess = false;
           state.loading = true;
@@ -131,6 +137,24 @@ export const userSlice = createSlice(
           state.loginError = action.payload;
         })
         .addCase(loginUser.fulfilled, (state, action) => {
+          state.loginSuccess = true;
+          state.loading = false;
+          state.value = action.payload.data;
+          state.listRole = action.payload.data.listRole;
+          localStorage.setItem("token", action.payload.data.token);
+          state.loginError = false;
+        })
+        .addCase(reLoginWithToken.pending, (state) => {
+          state.loginSuccess = false;
+          state.loading = true;
+          state.loginError = false;
+        })
+        .addCase(reLoginWithToken.rejected, (state, action) => {
+          state.loginSuccess = false;
+          state.loading = false;
+          state.loginError = action.payload;
+        })
+        .addCase(reLoginWithToken.fulfilled, (state, action) => {
           state.loginSuccess = true;
           state.loading = false;
           state.value = action.payload.data;
@@ -172,7 +196,6 @@ export const userSlice = createSlice(
           state.loading = false;
           state.value = action.payload.data;
           localStorage.removeItem("token");
-          localStorage.removeItem("user");
           state.logoutError = false;
         })
     }

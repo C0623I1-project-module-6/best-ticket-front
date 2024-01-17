@@ -48,13 +48,7 @@ export const ROUT_DATA = [
     {path: "/event/create", element: CreateEvent},
     {path: "/customer/profile", element: AddCustomerProfile, layout: UserLayout},
     {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
-
-
-
     {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManager},
-
-    
-
     {path: "/event/id/ticket-booking/id/2", element: TicketBookingStep2, layout: UserLayout},
    
 ];
