@@ -24,19 +24,19 @@ export const findEventsByEventTypes = async (eventTypeNames, currentPage) => {
     let result = null;
     try {
         result = await axios.get(`${BEST_TICKET_API}events/eventTypeNames?eventTypeNames=${eventTypeNames}&page=${currentPage}&pageSize=20`);
-        console.log(eventTypeNames)
     } catch (e) {
         console.log("Find events API error: " + e);
     }
     return result;
 };
 
-export const findEventById = async (eventId) => {
+export const createEvent = async (eventRequest) =>{
     let result = null;
     try {
-        result = await axios.get(`${BEST_TICKET_API}events/${eventId}`);
+        result = await axios.post(`${BEST_TICKET_API}events/create`, eventRequest);
     } catch (e) {
-        console.log("Find events API error: " + e);
+        console.log("Create event API error: " + e);
     }
     return result;
+
 }
