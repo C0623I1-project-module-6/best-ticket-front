@@ -15,7 +15,7 @@ function TicketDetails(props) {
 
     const arg = {
         customerId: customerId,
-        status: keyword
+        status: props.value
     }
 
 
@@ -50,6 +50,7 @@ function TicketDetails(props) {
                     < /button>
                 </div>
                 {tickets.data?.map((ticket, index) => (
+
                     <div style={{border: "1px solid black"}} className="flex py-3 px-5 h-full"
                          key={ticket.id}>
                         <div className="left w-2/12 border-r ">

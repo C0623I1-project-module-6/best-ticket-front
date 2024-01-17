@@ -13,16 +13,14 @@ const initialState = {
 export const getTicketsByStatusFinished = createAsyncThunk(
     "tickets/showAllTicketFinished",
     async (data) => {
-        console.log(data);
         const response = await showAllTicketFinished(data);
-        console.log(response);
         return response.data;
     }
 );
 export const getTicketsByStatusUpcoming = createAsyncThunk(
     "tickets/showAllTicketUpcoming",
-    async (status) => {
-        const response = await showAllTicketUpcoming(status);
+    async data => {
+        const response = await showAllTicketUpcoming(data);
         return response.data;
     }
 );
