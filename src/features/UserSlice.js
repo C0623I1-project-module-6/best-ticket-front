@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {login, loginGoogle,loginWithToken, logout, register} from "../api/UserApi.js";
+import {login, loginGoogle, loginWithToken, logout, register} from "../api/UserApi.js";
 
 const initialState = {
   value: null,
@@ -15,7 +15,6 @@ const initialState = {
 };
 
 export const loginUser = createAsyncThunk(
-
   "login",
   async (loginData, {rejectWithValue}) => {
     const response = await login(loginData);
@@ -28,7 +27,7 @@ export const loginUser = createAsyncThunk(
 );
 export const reLoginWithToken = createAsyncThunk(
   "loginWithToken",
-  async (loginData,{rejectWithValue}) => {
+  async (loginData, {rejectWithValue}) => {
     const response = await loginWithToken();
     if (response.status !== 200) {
       return rejectWithValue(response.data.message);
@@ -39,41 +38,38 @@ export const reLoginWithToken = createAsyncThunk(
 
 
 export const logoutUser = createAsyncThunk(
-    "logout",
-    async (logoutData, {rejectWithValue}) => {
-        const response = await logout(logoutData);
-        if (response.status !== 200) {
-            console.log(response)
-            return rejectWithValue(response.data.message);
-        }
+  "logout",
+  async (logoutData, {rejectWithValue}) => {
+    const response = await logout(logoutData);
+    if (response.status !== 200) {
+      console.log(response)
+      return rejectWithValue(response.data.message);
+    }
     return response.data
   }
 )
 
 export const loginWithGoogle = createAsyncThunk(
-    "loginGoogle",
-    async (loginData, {rejectWithValue}) => {
-        const response = await loginGoogle(loginData);
-        if (response.status !== 200) {
-            return rejectWithValue(response.data.message);
-        }
-      return response.data;
+  "loginGoogle",
+  async (loginData, {rejectWithValue}) => {
+    const response = await loginGoogle(loginData);
+    if (response.status !== 200) {
+      return rejectWithValue(response.data.message);
     }
+    return response.data;
+  }
 )
 
 export const registerUser = createAsyncThunk(
-    "register",
-    async (registerData, {rejectWithValue}) => {
-
-      const response = await register(registerData);
-      if (response.status !== 200) {
-        return rejectWithValue(response.data.message);
-      }
-      return response.data;
+  "register",
+  async (registerData, {rejectWithValue}) => {
+    const response = await register(registerData);
+    if (response.status !== 200) {
+      return rejectWithValue(response.data.message);
     }
-  )
-;
-
+    return response.data;
+  }
+);
 export const userSlice = createSlice(
   {
     name: "user",
@@ -103,7 +99,6 @@ export const userSlice = createSlice(
       setLogoutError: (state, action) => {
         state.logoutError = action.payload;
       },
-
       setValue: (state, action) => {
         state.value = action.payload;
       },
@@ -199,10 +194,7 @@ export const userSlice = createSlice(
           state.logoutError = false;
         })
     }
-
-
   }
-
 )
 export const {
   setLoading,
