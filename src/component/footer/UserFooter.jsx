@@ -1,4 +1,6 @@
 import React from "react";
+import img from "../../assets/img/logo/logo-auth-header-light.svg"
+import imgFooter from "../../assets/img/footer/logo-footer.jpg"
 
 function UserFooter(props) {
     return (
@@ -142,34 +144,51 @@ function UserFooter(props) {
                     </div>
                 </footer>
             </div>
-            <div className="bg-[#1D1D1D] flex">
-                <div className="w-2/5 flex">
-                    <div className="w-1/5">
-                        <img
-                            className="w-32 h-32"
-                            src="/src/assets/img/logo/best-ticket-logo-v1.svg"
-                            alt=""
-                        />
-                    </div>
-                    <p className="w-4/5 m-auto">
-                        <p>
-                            Hệ thống quản lý và phân phối vé sự kiện hàng đầu
-                            Việt Nam
-                            <br/>
-                            TicketBox Co. Ltd. © 2016
+            <div className="bg-[#1D1D1D] pt-10 pb-32">
+                <div className="flex mx-10 gap-10">
+                    <div className="w-2/5 flex">
+                        <div className="w-1/5">
+                            <img
+                                className="w-32 h-32"
+                                src={img}
+                                alt=""
+                            />
+                        </div>
+                        <p className="w-4/5 m-auto">
+                            <p>
+                                Hệ thống quản lý và phân phối vé sự kiện hàng đầu
+                                Việt Nam
+                                <br/>
+                                TicketBox Co. Ltd. © 2016
+                            </p>
                         </p>
-                    </p>
-                </div>
-                <div className="w-3/5">
-                    <p>Công ty TNHH Ticketbox
-                        Đại diện theo pháp luật: Trần Ngọc Thái Sơn
-                        Địa chỉ: Tầng 3, Tháp A, Tòa nhà Viettel, 285 Cách Mạng Tháng Tám, Phường 12, Quận 10, TP. Hồ
-                        Chí Minh
-                        Hotline: 1900.6408 - Email: support@ticketbox.vn
-                        Giấy chứng nhận đăng ký doanh nghiệp số: 0313605444, cấp lần đầu ngày 07/01/2016 bởi Sở Kế Hoạch
-                        và Đầu Tư TP. Hồ Chí Minh</p>
+                    </div>
+                    <div className="w-3/5 flex items-center">
+                        <div>
+                            <p>Công ty TNHH Ticketbox</p>
+                            <p>
+                                Đại diện theo pháp luật: Trần Ngọc Thái Sơn
+                            </p>
+                            <p>Địa chỉ: Tầng 3, Tháp A, Tòa nhà Viettel, 285 Cách Mạng Tháng Tám, Phường 12, Quận
+                                10,</p>
+                            <p>TP.Hồ Chí Minh</p>
+                            <p>
 
+                                Hotline: 1900.6408 - Email: support@ticketbox.vn
+                            </p>
+                            <p>Giấy chứng nhận đăng ký doanh nghiệp số: 0313605444, cấp lần đầu ngày 07/01/2016 bởi Sở
+                                Kế
+                                Hoạch
+                                và Đầu Tư TP. Hồ Chí Minh</p>
+                        </div>
+                        <div>
+                            <img src={imgFooter} alt=""/>
+                        </div>
+
+
+                    </div>
                 </div>
+
             </div>
         </>
     );

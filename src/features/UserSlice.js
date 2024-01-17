@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {login, loginGoogle, logout, register} from "../api/UserApi.js";
+import {login, loginGoogle, loginWithToken, logout, register} from "../api/UserApi.js";
 
 const initialState = {
   value: null,
@@ -15,7 +15,6 @@ const initialState = {
 };
 
 export const loginUser = createAsyncThunk(
-
   "login",
   async (loginData, {rejectWithValue}) => {
     const response = await login(loginData);
@@ -26,46 +25,51 @@ export const loginUser = createAsyncThunk(
     return response.data;
   }
 );
+export const reLoginWithToken = createAsyncThunk(
+  "loginWithToken",
+  async (loginData, {rejectWithValue}) => {
+    const response = await loginWithToken();
+    if (response.status !== 200) {
+      return rejectWithValue(response.data.message);
+    }
+    return response.data;
+  }
+);
 
 
 export const logoutUser = createAsyncThunk(
-    "logout",
-    async (logoutData, {rejectWithValue}) => {
-        const response = await logout(logoutData);
-        if (response.status !== 200) {
-            console.log(response)
-            return rejectWithValue(response.data.message);
-        }
+  "logout",
+  async (logoutData, {rejectWithValue}) => {
+    const response = await logout(logoutData);
+    if (response.status !== 200) {
+      console.log(response)
+      return rejectWithValue(response.data.message);
+    }
     return response.data
   }
 )
 
 export const loginWithGoogle = createAsyncThunk(
-    "loginGoogle",
-    async (loginData, {rejectWithValue}) => {
-        const response = await loginGoogle(loginData);
-        if (response.status !== 200) {
-            console.log(response)
-            return rejectWithValue(response.data.message);
-        }
-      return response.data;
+  "loginGoogle",
+  async (loginData, {rejectWithValue}) => {
+    const response = await loginGoogle(loginData);
+    if (response.status !== 200) {
+      return rejectWithValue(response.data.message);
     }
+    return response.data;
+  }
 )
 
 export const registerUser = createAsyncThunk(
-    "register",
-    async (registerData, {rejectWithValue}) => {
-
-      const response = await register(registerData);
-      if (response.status !== 200) {
-        console.log(response)
-        return rejectWithValue(response.data.message);
-      }
-      return response.data;
+  "register",
+  async (registerData, {rejectWithValue}) => {
+    const response = await register(registerData);
+    if (response.status !== 200) {
+      return rejectWithValue(response.data.message);
     }
-  )
-;
-
+    return response.data;
+  }
+);
 export const userSlice = createSlice(
   {
     name: "user",
@@ -95,7 +99,6 @@ export const userSlice = createSlice(
       setLogoutError: (state, action) => {
         state.logoutError = action.payload;
       },
-
       setValue: (state, action) => {
         state.value = action.payload;
       },
@@ -118,8 +121,6 @@ export const userSlice = createSlice(
           state.value = action.payload.data;
           state.registerError = false;
         })
-
-
         .addCase(loginUser.pending, (state) => {
           state.loginSuccess = false;
           state.loading = true;
@@ -131,6 +132,24 @@ export const userSlice = createSlice(
           state.loginError = action.payload;
         })
         .addCase(loginUser.fulfilled, (state, action) => {
+          state.loginSuccess = true;
+          state.loading = false;
+          state.value = action.payload.data;
+          state.listRole = action.payload.data.listRole;
+          localStorage.setItem("token", action.payload.data.token);
+          state.loginError = false;
+        })
+        .addCase(reLoginWithToken.pending, (state) => {
+          state.loginSuccess = false;
+          state.loading = true;
+          state.loginError = false;
+        })
+        .addCase(reLoginWithToken.rejected, (state, action) => {
+          state.loginSuccess = false;
+          state.loading = false;
+          state.loginError = action.payload;
+        })
+        .addCase(reLoginWithToken.fulfilled, (state, action) => {
           state.loginSuccess = true;
           state.loading = false;
           state.value = action.payload.data;
@@ -172,14 +191,10 @@ export const userSlice = createSlice(
           state.loading = false;
           state.value = action.payload.data;
           localStorage.removeItem("token");
-          localStorage.removeItem("user");
           state.logoutError = false;
         })
     }
-
-
   }
-
 )
 export const {
   setLoading,
