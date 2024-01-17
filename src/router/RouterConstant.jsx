@@ -11,7 +11,6 @@ import Search from "../component/event/Search.jsx";
 import AdminTable from "../component/table/AdminTable.jsx";
 import TicketBooking from "../component/ticket/TicketBooking.jsx";
 
-import CreateEvent from "../component/event/createEvent/CreateEvent.jsx";
 import TicketBookingStep2 from "../component/ticket/TicketBookingStep2.jsx";
 
 import ForbiddenPage from "../layout/pages/errors/ForbiddenPage.jsx";
@@ -24,6 +23,10 @@ import {BookingManager} from "../component/booking/BookingManager.jsx";
 import AddCustomerProfile from "../component/user/AddCustomerProfile.jsx";
 import RegisterOrganizerProfile from "../component/user/RegisterOrganizerProfile.jsx";
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
+import CreateEventPage from "../layout/pages/event/CreateEventPage.jsx";
+import CreateEventStep1 from "../component/event/createEvent/CreateEventStep1.jsx";
+import CreateEventStep2 from "../component/event/createEvent/CreateEventStep2.jsx";
+import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.jsx";
 
 
 
@@ -44,7 +47,11 @@ export const ROUT_DATA = [
     {path: "/admin/:param", element: AdminTable, layout: AdminLayout},
     {path: "/search", element: Search, layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
-    {path: "/event/create", element: CreateEvent },
+    {path: "/event/create", element: CreateEventPage, children : [
+            {path: "", element: CreateEventStep1 },
+            {path: "step2", element: CreateEventStep2 },
+            {path: "step3", element: CreateEventStep3 },
+        ] },
     {path: "/customer/profile", element: AddCustomerProfile, layout: UserLayout},
     {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
 
