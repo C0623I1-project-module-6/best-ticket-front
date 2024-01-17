@@ -33,7 +33,7 @@ export const findEventsByEventTypes = async (eventTypeNames,currentPage) => {
 export const createEvent = async (eventRequest) =>{
     let result = null;
     try {
-        result = await axios.post(`${BEST_TICKET_API}events/create`, eventRequest);
+        result = await axios.post(`${BEST_TICKET_API}events`, eventRequest);
     } catch (e) {
         console.log("Create event API error: " + e);
     }
