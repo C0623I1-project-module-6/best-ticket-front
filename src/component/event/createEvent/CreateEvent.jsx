@@ -14,7 +14,7 @@ import {CalculateDuration} from "../../../ultility/CalculateDuration.js";
 import { toast } from 'react-toastify';
 
 export default function CreateEvent(){
-    const [eventTypes, setEventTypes] = useState([]); // object
+    const [eventTypes, setEventTypes] = useState([]);
     const [provinces, setProvinces] = useState([]);
     const [selectedProvince,setSelectedProvince] = useState("");
     const [selectedDistrict,setSelectedDistrict] = useState("");
@@ -25,6 +25,12 @@ export default function CreateEvent(){
     const [eventName,setEventName] = useState("");
     const [eventDescription,setEventDescription] = useState("")
     const dispatch = useDispatch();
+    // validate
+    const [errorName, setErrorName] = useState(false);
+    const [errorAddress, setErrorAddress] = useState(false);
+    const [errorProvince, setErrorProvince] = useState(false);
+    const [errorDistrict, setErrorDistrict] = useState(false);
+    const [errorEventTypes, setErrorEventTypes] = useState(false);
 
     const fetchApiEventTypes = async () => {
         try {
@@ -49,6 +55,11 @@ export default function CreateEvent(){
     }
 
     const handleCreateEvent = () =>{
+        if (!eventName || !address || !selectedProvince || !selectedDistrict || !selectedEventTypes) {
+            return (
+                alert("Vui liền điền đầy đủ các trường")
+            );
+        }
         const dateTimeFormat = "YYYY-MM-DDTHH:mm:ss";
         const startDateTime = dayjs(startDate, { dateFormat: dateTimeFormat });
         const endDateTime = dayjs(endDate, { dateFormat: dateTimeFormat });
@@ -65,7 +76,7 @@ export default function CreateEvent(){
             province : selectedProvince,
             district : selectedDistrict,
             address  : address,
-            startDateTime : startDate.valueOf(),
+            startDateTime :startDateTime.format(dateTimeFormat),
             eventTypeNames : selectedEventTypes
         };
         dispatch(addEvent(eventRequest))
@@ -100,6 +111,7 @@ export default function CreateEvent(){
                     <div className="w-[80%] p-5 mx-auto">
                         <Input
                             label="Event Name"
+                            required
                             value={eventName}
                             onChange={(e)=>{setEventName(e.target.value)}} />
                     </div>
@@ -186,7 +198,7 @@ export default function CreateEvent(){
                         <button className="border-black rounded-lg bg-green-400 py-2 px-5"
                                 onClick={handleCreateEvent}
                         >
-                            Tạo Event
+                            Lưu Event
                         </button>
                     </div>
 

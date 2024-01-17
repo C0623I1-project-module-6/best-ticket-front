@@ -18,14 +18,13 @@ import NotFoundPage from "../layout/pages/errors/NotFoundPage.jsx";
 import InternalServerErrorPage from "../layout/pages/errors/InternalServerErrorPage.jsx";
 import BadGatewayPage from "../layout/pages/errors/BadGatewayPage.jsx";
 import ServiceUnavailablePage from "../layout/pages/errors/ServiceUnavailablePage.jsx";
-
 import {BookingManager} from "../component/booking/BookingManager.jsx";
-
 import AddCustomerProfile from "../component/user/AddCustomerProfile.jsx";
 import RegisterOrganizerProfile from "../component/user/RegisterOrganizerProfile.jsx";
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
 import EventDetail from "../component/event/EventDetail.jsx";
 import TicketBookingStep2 from "../component/ticket/TicketBookingStep2.jsx";
+
 
 
 
@@ -50,7 +49,7 @@ export const ROUT_DATA = [
     {path: "/profile/add", element: AddCustomerProfile, layout: UserLayout},
     {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
-    {path: "/event/create", element: CreateEvent},
+    {path: "/event/create", element: CreateEvent },
     {path: "/customer/profile", element: AddCustomerProfile, layout: UserLayout},
     {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
     {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManager},
