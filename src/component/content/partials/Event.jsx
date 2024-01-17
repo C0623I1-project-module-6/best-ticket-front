@@ -3,6 +3,7 @@ import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import {CiLocationOn} from "react-icons/ci";
 import {GiDuration} from "react-icons/gi";
+import {NavLink} from "react-router-dom";
 
 export default function Event({event}) {
 
@@ -15,7 +16,7 @@ export default function Event({event}) {
     }, []);
 
     return (
-        <div className="relative group flex flex-col items-center justify-center rounded-md overflow-hidden
+        <NavLink to={`/event/${event.id}`} className="relative group flex flex-col items-center justify-center rounded-md overflow-hidden
         gap-x-4 bg-amber-100 cursor-pointer hover:scale-105 hover:bg-amber-50 transition p-3
          dark:bg-amber-300 dark:text-black dark:hover:text-black
         ">
@@ -41,6 +42,6 @@ export default function Event({event}) {
                 </div>
 
             </div>
-        </div>
+        </NavLink>
     );
 }
