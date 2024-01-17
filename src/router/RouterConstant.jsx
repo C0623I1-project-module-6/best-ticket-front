@@ -20,12 +20,13 @@ import NotFoundPage from "../layout/pages/errors/NotFoundPage.jsx";
 import InternalServerErrorPage from "../layout/pages/errors/InternalServerErrorPage.jsx";
 import BadGatewayPage from "../layout/pages/errors/BadGatewayPage.jsx";
 import ServiceUnavailablePage from "../layout/pages/errors/ServiceUnavailablePage.jsx";
-
-import {BookingManager} from "../component/booking/BookingManager.jsx";
-
 import AddCustomerProfile from "../component/user/AddCustomerProfile.jsx";
 import RegisterOrganizerProfile from "../component/user/RegisterOrganizerProfile.jsx";
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
+import OrganizerBookingManagerLayout from "../layout/OrganizerBookingManagerLayout.jsx";
+
+import {BookingManagerEventBookings} from "../component/booking/BookingManagerEventBookings.jsx";
+import {BookingManagerModeratorList} from "../component/booking/BookingMangerModeratorList.jsx";
 
 
 export const ROUT_DATA = [
@@ -50,9 +51,11 @@ export const ROUT_DATA = [
     {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
 
 
-
-    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManager},
-
+    {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/moderators", element: BookingManagerModeratorList, layout: OrganizerBookingManagerLayout},
     
 
     {path: "/event/id/ticket-booking/id/2", element: TicketBookingStep2, layout: UserLayout},

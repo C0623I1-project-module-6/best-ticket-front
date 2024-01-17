@@ -30,7 +30,6 @@ export const getEventById = createAsyncThunk("events/byEventId", async (eventId)
     console.log(response.data)
 
     return response.data;
-
 })
 
 // set action for slice
