@@ -18,17 +18,15 @@ export const getAllEvent = createAsyncThunk("events", async (currentPage) => {
     return response.data;
 })
 
-export const getEventById = createAsyncThunk("events/id", async (id) => {
-    const response = await findEventById(id);
-    console.log(response.data)
+export const getEventsByEventTypes = createAsyncThunk("events/eventTypes", async ({eventTypeNames, currentPage}) => {
+    const response = await findEventsByEventTypes(eventTypeNames, currentPage);
     return response.data;
 })
 
-export const getEventsByEventTypes = createAsyncThunk("events/eventTypes", async ({eventTypeNames, currentPage}) => {
-    const response = await findEventsByEventTypes(eventTypeNames, currentPage);
-    console.log(response.data)
-
+export const getEventById = createAsyncThunk("events/byEventId", async (eventId) => {
+    const response = await findEventById(eventId);
     return response.data;
+
 })
 
 // set action for slice
@@ -75,7 +73,9 @@ export const EventSlice = createSlice({
             // find by EventById
             .addCase(getEventById.pending, handlePending)
             .addCase(getEventById.rejected, handleRejected)
-            .addCase(getEventById.fulfilled, handleFulfilled);
+            .addCase(getEventById.fulfilled, handleFulfilled)
+
+
     },
 })
 

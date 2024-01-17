@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {selectBookings, selectBookingsSuccess, selectUsers, selectUsersSuccess} from "../../features/AdminSlice.js";
 import {GiCancel} from "react-icons/gi";
 import {FaCheckCircle} from "react-icons/fa";
-import {formatDate} from "../../ultility/customHook/FormatDate.js";
+import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
 
 function TableContent(props) {
     const [data, setData] = useState([]);
@@ -83,7 +83,7 @@ function TableContent(props) {
                     data !== null ? data.map((booking, index) => (
                             <tr key={index}>
                                 <td className="px-4 py-3 whitespace text-sm font-medium text-gray-800">{index + 1}</td>
-                                <td className="px-4 py-3 whitespace text-sm font-medium text-gray-800 truncate hover:text-clip">{formatDate(booking.createdAt)}</td>
+                                <td className="px-4 py-3 whitespace text-sm font-medium text-gray-800 truncate hover:text-clip">{useFormatDate(booking.createdAt)}</td>
                                 <td className="px-4 py-3 whitespace text-sm font-medium text-gray-800 truncate hover:text-clip">
                                     {booking.customerName}
                                 </td>

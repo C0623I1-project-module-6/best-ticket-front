@@ -1,5 +1,5 @@
 import {FaArrowAltCircleRight, FaCalendarPlus, FaRegSave} from "react-icons/fa";
-import {Space, DatePicker} from "antd";
+import {DatePicker, Space} from "antd";
 import React from "react";
 import {MdDelete} from "react-icons/md";
 
@@ -19,7 +19,7 @@ export const CreateEventStep2 = () => {
                 <div className="flex items-center text-2xl">
                     <div className="my-4 text-white w-3/4 ">Ngày sự kiện</div>
                     <span className=" w-1/4 flex justify-end">
-                        <MdDelete />
+                        <MdDelete/>
                     </span>
                 </div>
                 <div>

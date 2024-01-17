@@ -7,16 +7,11 @@ import {useState} from "react";
 
 function TicketHistory() {
     const [keyword, setKeyword] = useState("");
-    const [time, setTime] = useState("");
     const [activeButton, setActiveButton] = useState("");
-    const [activeButton1, setActiveButton1] = useState("");
+
     const sendKeyword = (data) => {
         setActiveButton(data);
         setKeyword(data)
-    }
-    const sendTime = (data) => {
-        setActiveButton1(data);
-        setTime(data)
     }
 
     return (
@@ -104,23 +99,9 @@ function TicketHistory() {
                                 Cancelled
                             </div>
                         </div>
-                        <div className="flex items-center justify-center gap-5">
-                            <button type="button" className={`btn btn-xs btn-outline rounded-full ${
-                                activeButton1 === 'upcoming' ? 'bg-[#2DC275] text-black' : 'bg-[#5D616A] text-black'
-                            }`}
-                                    onClick={() => sendTime('upcoming')}
-                            >Upcoming
-                            </button>
-                            <button type="button" className={`btn btn-xs btn-outline rounded-full ${
-                                activeButton1 === 'finished' ? 'bg-[#2DC275] text-black' : 'bg-[#5D616A] text-black'
-                            }`}
-                                    onClick={() => sendTime('finished')}
-                            >
-                                Finished
-                            </button>
-                        </div>
+
                         <div className="flex items-center justify-center overflow-y-auto overflow-x-hidden pb-20">
-                            <TicketDetails value={keyword} time={time}/>
+                            <TicketDetails value={keyword}/>
                         </div>
                     </div>
                 </div>

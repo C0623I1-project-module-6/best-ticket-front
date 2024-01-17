@@ -10,6 +10,7 @@ import TicketHistory from "../component/ticket/TicketHistory.jsx";
 import Search from "../component/event/Search.jsx";
 import AdminTable from "../component/table/AdminTable.jsx";
 import TicketBooking from "../component/ticket/TicketBooking.jsx";
+
 import CreateEvent from "../component/event/createEvent/CreateEvent.jsx";
 import ForbiddenPage from "../layout/pages/errors/ForbiddenPage.jsx";
 import ErrorLayout from "../layout/ErrorLayout.jsx";
@@ -17,10 +18,15 @@ import NotFoundPage from "../layout/pages/errors/NotFoundPage.jsx";
 import InternalServerErrorPage from "../layout/pages/errors/InternalServerErrorPage.jsx";
 import BadGatewayPage from "../layout/pages/errors/BadGatewayPage.jsx";
 import ServiceUnavailablePage from "../layout/pages/errors/ServiceUnavailablePage.jsx";
+
+import {BookingManager} from "../component/booking/BookingManager.jsx";
+
 import AddCustomerProfile from "../component/user/AddCustomerProfile.jsx";
-import AddOrganizerProfile from "../component/user/AddOrganizerProfile.jsx";
+import RegisterOrganizerProfile from "../component/user/RegisterOrganizerProfile.jsx";
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
 import EventDetail from "../component/event/EventDetail.jsx";
+
+
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
@@ -32,7 +38,7 @@ export const ROUT_DATA = [
     {path: "/503", element: ServiceUnavailablePage, layout: ErrorLayout},
     {path: "/", element: UserHomePage, layout: UserLayout},
     {path: "/event", element: EventHomePage, layout: UserLayout},
-    {path: "/my-ticket", element: TicketHistory, layout: UserLayout},
+    {path: "/my-ticket/:customerId", element: TicketHistory, layout: UserLayout},
     {path: "/admin", element: AdminHomePage, layout: AdminLayout},
     {path: "/admin/user", element: AdminTable, layout: AdminLayout},
     {path: "/admin/ticket", element: AdminTable, layout: AdminLayout},
@@ -41,7 +47,17 @@ export const ROUT_DATA = [
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
     {path: "/profile/add", element: AddCustomerProfile, layout: UserLayout},
-    {path: "/organizer/profile", element: AddOrganizerProfile, layout: OrganizerLayout},
+    {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
+    {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
     {path: "/event/create", element: CreateEvent},
+    {path: "/customer/profile", element: AddCustomerProfile, layout: UserLayout},
+    {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
+
+
+
+    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManager},
+
+    
+
 
 ];

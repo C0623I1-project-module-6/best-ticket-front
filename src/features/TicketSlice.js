@@ -12,8 +12,10 @@ const initialState = {
 
 export const getTicketsByStatusFinished = createAsyncThunk(
     "tickets/showAllTicketFinished",
-    async (status) => {
-        const response = await showAllTicketFinished(status);
+    async (data) => {
+        console.log(data);
+        const response = await showAllTicketFinished(data);
+        console.log(response);
         return response.data;
     }
 );

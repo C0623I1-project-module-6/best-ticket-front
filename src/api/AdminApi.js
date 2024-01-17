@@ -10,6 +10,7 @@ export async function showBookings(currentPage) {
     },
     method: "GET",
   }).then((res) => {
+    console.log(res)
     response = res;
   }).catch((e) => {
     response = e;

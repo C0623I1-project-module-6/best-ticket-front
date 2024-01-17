@@ -20,7 +20,6 @@ export async function login(user) {
     console.log(response)
     return response;
 }
-
 export async function register(user) {
     let response = null;
     await axios({

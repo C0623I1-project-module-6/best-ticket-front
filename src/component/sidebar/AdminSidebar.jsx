@@ -5,6 +5,9 @@ import {ImTicket} from "react-icons/im";
 import {useNavigate, useParams} from "react-router-dom";
 import {Avatar} from "@material-tailwind/react";
 import {useEffect, useRef, useState} from "react";
+import {logoutUser, selectUserLogout} from "../../features/UserSlice.js";
+import {Bounce, toast} from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -14,7 +17,9 @@ function AdminSidebar() {
     const navigate = useNavigate();
     const param = useParams();
     const inputRef = useRef();
-    const [theme, setTheme] = useState(localStorage.getItem("theme"))
+    const [theme, setTheme] = useState(localStorage.getItem("theme"));
+    const dispatch = useDispatch();
+    const userLogout = useSelector(selectUserLogout);
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -37,24 +42,27 @@ function AdminSidebar() {
             await setTheme("dark")
         }
     }
-    const changeThemeButton = () => {
-        return (
-            <>
-            </>
-        )
-    }
 
     const itemDashboard = [
-
-        {icon: <FaHome size={25}/>, label: "Dashboard", path: "/admin",current: param.param === undefined},
-        {icon: <FaUsers size={25}/>, label: " Users", path: "/admin/users",current: param.param === 'users'},
-        {icon: <FaFileContract size={25}/>, label: " Bookings", path: "/admin/bookings",current: param.param === 'bookings'},
-        {icon: <MdEventAvailable size={25}/>, label: " Events", path: "/admin/events",current: param.param === 'events'},
-        {icon: <ImTicket size={25}/>, label: " Tickets", path: "/admin/tickets",current: param.param === 'tickets'},
+        {icon: <FaHome size={25}/>, label: "Dashboard", path: "/admin", current: param.param === undefined},
+        {icon: <FaUsers size={25}/>, label: " Users", path: "/admin/users", current: param.param === 'users'},
+        {
+            icon: <FaFileContract size={25}/>,
+            label: " Bookings",
+            path: "/admin/bookings",
+            current: param.param === 'bookings'
+        },
+        {
+            icon: <MdEventAvailable size={25}/>,
+            label: " Events",
+            path: "/admin/events",
+            current: param.param === 'events'
+        },
+        {icon: <ImTicket size={25}/>, label: " Tickets", path: "/admin/tickets", current: param.param === 'tickets'},
     ]
     const itemFooter = [
         {icon: <FaCogs size={25}/>, label: "Setting", path: "/admin"},
-        {icon: <FaSignOutAlt size={25}/>, label: "Log out", path: "/admin"},
+        {icon: <FaSignOutAlt size={25} onClick={()=>logout()}/>, label: "Log out", path: "/admin"},
         {
             label: <input type="checkbox" className="toggle toggle-warning" ref={inputRef} onClick={changeTheme}/>
             , icon: <div>
@@ -66,6 +74,22 @@ function AdminSidebar() {
             </div>, path: ""
         },
     ]
+
+    const logout = () => {
+        dispatch(logoutUser(userLogout));
+        toast('🦄 Logout success!', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+        navigate("/");
+    }
     return (
         <>
             <div className="w-full text-center h-screen max-h-full flex-col overflow-y-auto bg-deep-purple-700
@@ -75,7 +99,7 @@ function AdminSidebar() {
                 <div className="flex w-[250px] gap-2 h-[100px]
                 items-center justify-center
                 cursor-pointer text-2xl font-bold text-white font-serif
-                ">
+                " onClick={() => navigate("/")}>
                     <Avatar
                         size="lg"
                         alt="avatar"
@@ -92,24 +116,25 @@ function AdminSidebar() {
                 </div>
                 <hr/>
                 {
-                    itemDashboard.map(({icon, label, path,current}, index) => (
+                    itemDashboard.map(({icon, label, path, current}, index) => (
                         <div
                             key={index}
-                            className={classNames(
-                                current ?
-                                    "flex gap-5 items-center p-2 justify-items-start" +
-                                    "cursor-pointer text-sm" +
-                                    "text-center" +
-                                    "transition-transform transform-gpu " +
-                                    "bg-white text-black hover:bg-white hover:text-black"
-                                    :
-                                    "flex gap-5 items-center p-2 justify-items-start " +
-                                    "                        cursor-pointer text-sm " +
-                                    "                        text-white text-center" +
-                                    "                        transition-transform transform-gpu" +
-                                    "                        hover:bg-white hover:text-black"
-
-                            )}
+                            className={
+                                classNames(
+                                    current ?
+                                        "flex gap-5 items-center p-2 justify-items-start" +
+                                        "cursor-pointer text-sm" +
+                                        "text-center" +
+                                        "transition-transform transform-gpu " +
+                                        "bg-white text-black hover:bg-white hover:text-black"
+                                        :
+                                        "flex gap-5 items-center p-2 " +
+                                        "justify-items-start " +
+                                        "cursor-pointer text-sm " +
+                                        "text-white text-center" +
+                                        "transition-transform transform-gpu" +
+                                        "hover:bg-white hover:text-black"
+                                )}
                             onClick={() => navigate(path)}>
                             <div>
                                 {icon}

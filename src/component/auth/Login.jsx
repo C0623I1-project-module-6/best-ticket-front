@@ -3,13 +3,27 @@ import AuthHeader from "../header/AuthHeader.jsx";
 import {useEffect} from "react";
 import {loginUser, selectLoginSuccess, selectUserLogin} from "../../features/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
+import {Bounce, toast} from "react-toastify";
 
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
-    const handleSubmit = (e) => {
+    const showToastMessage = () => {
+        toast('🦄 Login successfully!', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+    };
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const user = {
             username: e.target[0].value,
@@ -18,17 +32,23 @@ function Login() {
             password: e.target[1].value
         }
         dispatch(loginUser(user))
-        alert("Login Successfully!!!")
-        navigate("/");
     }
     useEffect(() => {
-        console.log(user)
+        if (loginSuccess && user && user.token) {
+            localStorage.setItem('token', user.token);
+            showToastMessage()
+            navigate("/");
+        }
+
     }, [loginSuccess]);
     return (
+
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
         dark:bg-black dark:text-white
         ">
+
             <AuthHeader name={"Login"}/>
+
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
                     <div>

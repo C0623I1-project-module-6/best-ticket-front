@@ -20,7 +20,6 @@ export const TABLE_HEAD_BOOKING = [
 export const TABLE_HEAD_TICKET = [
   "stt"
 ];
-
 export const TABLE_HEAD_EVENT = [
   "stt",
   "event name",
@@ -30,3 +29,6 @@ export const TABLE_HEAD_EVENT = [
   "event type",
   "location",
 ];
+ export const ADMIN = "ADMIN";
+ export const ORGANIZER = "ORGANIZER";
+ export const CUSTOMER = "CUSTOMER";
