@@ -10,8 +10,7 @@ import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    loginUser,
-    logoutUser, reLoginWithToken,
+    logoutUser,
     selectLogoutSuccess,
     selectUserLogin,
     selectUserLogout,
@@ -20,10 +19,10 @@ import {
 import avatar from "../../assets/img/User.png"
 import {ADMIN} from "../../ultility/AppConstant.js";
 import {Bounce, toast} from "react-toastify";
-import {loginWithToken} from "../../api/UserApi.js";
 
 
 const UserHeader = () => {
+
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const user = useSelector(selectUserLogin);
@@ -211,7 +210,7 @@ const UserHeader = () => {
                         </span>
                     </div>
                     <div className="cursor-pointer flex items-center gap-3 hover:text-amber-400"
-                         onClick={() => navigate("/my-ticket")}>
+                         onClick={() => navigate(`/my-ticket/${user.id}`)}>
                         <FaTicket size={30}/>
                         <span>My ticket</span>
                     </div>

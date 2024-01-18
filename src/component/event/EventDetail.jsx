@@ -8,22 +8,38 @@ import img from '../../assets/img/image/event.png'
 import imgOrganizerLogo from '../../assets/img/image/organizerlogo.jpg'
 import {IoIosArrowForward, IoMdMail} from "react-icons/io";
 import {IoTicket} from "react-icons/io5";
+import {getTicketByEventId} from "../../features/TicketSlice.js";
+import {getTicketTypes, selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
+import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
 
 const EventDetail = () => {
     const dispatch = useDispatch();
     const eventId = useParams().id;
     const location = useLocation();
     const event = useSelector(selectEventById);
-    // const ticket = useSelector(selectTic)
-    console.log(location)
+    const ticketTypes = useSelector(selectShowTicketTypes);
+    const times = useSelector(selectShowTimeByEventId)
+    let isFirstRender = true;
+    console.log(ticketTypes)
     console.log(event)
+    console.log(times)
     const showEventById = () => {
-        console.log(eventId)
         dispatch(getEventById(eventId));
     }
-
+    const showTicketByEventId = () => {
+        dispatch(getTicketByEventId(eventId));
+    }
+    const showTicketType = () => {
+        dispatch(getTicketTypes())
+    }
+    const showTimeByEventId = () => {
+        dispatch(getTimeByEventId(eventId))
+    }
     useEffect(() => {
         showEventById(eventId);
+        showTicketByEventId(eventId);
+        showTicketType();
+        showTimeByEventId(eventId);
     }, []);
     return (
         <>
@@ -35,21 +51,25 @@ const EventDetail = () => {
                         <div className=" flex mt-10">
                             <div className="w-4/6 flex">
                                 <div className="w-1/6 mr-8">
-                                    <div className="text-center border border-solid border-black">
-                                        <p className="bg-[#EB1212] text-white">Tháng 1</p>
-                                        <p className="text-black">20</p>
-                                        <p className="text-black">Thứ 7</p>
-                                    </div>
+                                    {times.data?.content !== undefined ? (times.data?.content.map((time, index) => (
+                                        <div className="text-center border border-solid border-black" key={index}>
+                                            <p className="bg-[#EB1212] text-white">{time.time}</p>
+                                        </div>))) : (<div> Sự kiện này chưa có lịch chiếu</div>)
+                                    }
+
                                 </div>
                                 <div className="w-5/6">
-                                    <div className="text-black text-xl" >[Nhà Hát Kịch IDECAF] Chuyện Thần Tiên 5: CUỘC PHIÊU LƯU CỦA CẬU BÉ BÚP BÊ
+                                    <div className="text-black text-xl">{event.name}
                                     </div>
-                                    <div className="flex items-center  text-black"><FaClock className="mr-2"/> Thứ 7, 20 Tháng 1
-                                        2024
-                                        (03:00
-                                        PM - 06:00 PM) + 9 ngày khác
-                                    </div>
-                                    <div className="flex items-center text-black"><FaLocationDot className="mr-2"/> Nhà Văn hoá
+                                    {times.data?.content.map((time, index) => (
+                                        <div className="flex items-center text-black" key={index}><FaClock
+                                            className="mr-2"/>
+                                            {time.time}
+                                        </div>
+                                    ))}
+
+                                    <div className="flex items-center text-black"><FaLocationDot className="mr-2"/> Nhà
+                                        Văn hoá
                                         Thanh
                                         niên
                                         Thành phố Hồ Chí Minh
@@ -63,34 +83,37 @@ const EventDetail = () => {
                             <div className="font-bold text-xl border-dashed border-b border-black py-3">
                                 <p className="text-black px-3">Thông tin vé</p>
                             </div>
-                            <div className="flex w-full border-dashed border-b border-black py-3 px-4">
-                                <div className="w-5/6">Vé Vip</div>
-                                <div className="w-1/6 text-right">270.000VNĐ</div>
-                            </div>
-                            <div className="flex w-full border-dashed border-b border-black py-3 px-4">
-                                <div className="w-5/6">Vé Vip</div>
-                                <div className="w-1/6 text-right">270.000VNĐ</div>
-                            </div>
-                            <div className="flex w-full py-3 px-4">
-                                <div className="w-5/6">Vé Vip</div>
-                                <div className="w-1/6 text-right">270.000VNĐ</div>
-                            </div>
-                        </div>
 
+                            {ticketTypes.data?.map((ticketType, index) => (
+                                <div className="flex w-full border-dashed border-b border-black py-3 px-4" key={index}>
+                                    <div className="w-5/6">{ticketType.name}</div>
+                                    <div className="w-1/6 text-right">{ticketType.price} VND</div>
+                                </div>
+                            ))}
+                        </div>
                         <div className="bg-white mt-10">
                             <div className="font-bold text-xl border-dashed border-b border-black py-3">
                                 <p className="text-black px-3">Lịch sự kiện</p>
                             </div>
                             <div className="flex w-full border-dashed border-b border-black py-3 px-4">
-                                <div className="w-5/6">
-                                    <p className="text-black">Thứ 7, 20 Tháng 1 2024</p>
-                                    <p>03:00 PM - 06:00 PM</p>
-                                </div>
-                                <div className="w-1/6 flex text-right justify-end items-center">
-                                    <NavLink to={`${location.pathname}/ticket-booking/${event.id}`} className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua vé
-                                        ngay
-                                    </NavLink>
-                                </div>
+                                {times.data?.content.map((time, index) => (
+                                    <div className="w-5/6" key={index}>
+
+                                        <p className="text-black">{time.time}</p>
+                                        {/*<p>03:00 PM - 06:00 PM</p>*/}
+                                    </div>
+                                ))}
+
+                                {times.data?.content.map((time, index) => (
+                                    <div className="w-1/6 flex text-right justify-end items-center" key={index}>
+                                        <NavLink to={`${location.pathname}/ticket-booking/${time.id}`}
+                                                 className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua
+                                            vé
+                                            ngay
+                                        </NavLink>
+                                    </div>
+                                ))}
+
                             </div>
                         </div>
 
@@ -121,7 +144,8 @@ const EventDetail = () => {
                                         dàn dựng chương trình "Chuyện ngày xưa". Hơn 20 năm hoạt động, Idecaf đã đạt
                                         5.000 suất diễn quả là một con số không nhỏ khi tình hình sân khấu nói chung
                                         đang trong tình trạng kén chọn khán giả.</p>
-                                    <div className="flex items-center py-3 px-5 border w-2/6 text-[#9DC52F] border-[#9DC52F]">
+                                    <div
+                                        className="flex items-center py-3 px-5 border w-2/6 text-[#9DC52F] border-[#9DC52F]">
                                         <span className="mr-2"><IoMdMail/></span>
                                         <span>Liên hệ nhà tổ chức</span>
                                     </div>
@@ -137,8 +161,10 @@ const EventDetail = () => {
                         </div>
                         <div className="flex w-full">
                             <div className="text-center w-1/2 py-2 border border-solid border-black flex">
-                                    <span className="text-center mx-auto flex items-center"><FaFacebook
-                                        className="mr-2"/>Chia sẻ </span>
+                                    <span className="text-center mx-auto flex items-center">
+                                        <FaFacebook
+                                            className="mr-2"/>Chia sẻ
+                                    </span>
                             </div>
                             <div className="text-center w-1/2 py-2 border border-solid border-black flex">
                                 <span className="text-center mx-auto flex items-center"><FaHeart className="mr-2"/>Quan tâm</span>
@@ -148,13 +174,15 @@ const EventDetail = () => {
                         </div>
 
                         <div className="sticky top-0 w-[80%] bg-white">
-                            <p className="p-3 text-black text-xl">[Nhà Hát Kịch IDECAF] Chuyện Thần Tiên 5: CUỘC PHIÊU LƯU CỦA CẬU BÉ BÚP
-                                BÊ</p>
+                            <p className="p-3 text-black text-xl">{event.name}</p>
                             <hr/>
-                            <p className="flex items-center mb-3 p-3">
-                                <span className="mr-3"><FaClock/></span>
-                                <span>03:00 PM - 06:00 PM</span>
-                            </p>
+                            {times.data?.content.map((time, index) => (
+                                <p className="flex items-center mb-3 p-3" key={index}>
+                                    <span className="mr-3"><FaClock/></span>
+                                    <span>{time.time}</span>
+                                </p>
+                            ))}
+
                             <p className="flex p-3 mb-3">
                                 <span className="mr-3"><FaLocationDot/></span>
                                 <span>
@@ -165,14 +193,33 @@ const EventDetail = () => {
                             </p>
                             <hr/>
                             <p className="flex items-center py-2 px-4">
-                                <span className="w-3/4 flex items-center t"><IoTicket className="mr-3"/>Từ <span
-                                    className="text-black ml-1">170.000 VND</span> </span>
-                                <span className="w-1/4 flex justify-end"><IoIosArrowForward/></span>
+                                {ticketTypes.data?.map((ticketType, index) => {
+                                    if (isFirstRender) {
+                                        isFirstRender = false;
+                                        return (
+                                            <>
+        <span className="w-3/4 flex items-center" key={index}>
+          <IoTicket className="mr-3"/>
+           Từ <span className="text-black ml-1">{ticketType.price} VNĐ</span>
+        </span>
+                                                <span className="w-1/4 flex justify-end">
+          <IoIosArrowForward/>
+        </span>
+                                            </>
+                                        );
+                                    }
+                                    return null;
+                                })}
                             </p>
                             <div className="bg-red-700 text-center py-2 px-6 text-xl text-white">Chọn lịch diễn</div>
                             <div className="flex border border-solid border-black">
-                                <div className="bg-red w-1/2 flex justify-center items-center py-2 border-r border-solid border-black"><FaFacebook  className="mr-1 "/> Chia sẻ</div>
-                                <div className="bg-red w-1/2 flex justify-center items-center py-2"><FaHeart  className="mr-1"/> Quan tâm</div>
+                                <div
+                                    className="bg-red w-1/2 flex justify-center items-center py-2 border-r border-solid border-black">
+                                    <FaFacebook className="mr-1 "/> Chia sẻ
+                                </div>
+                                <div className="bg-red w-1/2 flex justify-center items-center py-2"><FaHeart
+                                    className="mr-1"/> Quan tâm
+                                </div>
                             </div>
                         </div>
 
