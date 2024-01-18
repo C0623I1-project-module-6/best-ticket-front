@@ -52,6 +52,7 @@ const handleFulfilled = (state, action) => {
     state.loading = false;
     state.events = action.payload.data;
     state.totalPages = action.payload.totalPages;
+    state.event = action.payload.data;
     state.error = false;
 };
 
@@ -74,6 +75,12 @@ export const EventSlice = createSlice({
             .addCase(getEventsByEventTypes.pending, handlePending)
             .addCase(getEventsByEventTypes.rejected, handleRejected)
             .addCase(getEventsByEventTypes.fulfilled, handleFulfilled)
+
+            // find by EventById
+            .addCase(getEventById.pending, handlePending)
+            .addCase(getEventById.rejected, handleRejected)
+            .addCase(getEventById.fulfilled, handleFulfilled)
+
             //create event
             .addCase(addEvent.pending, (state)=>{
                 state.success = false;
@@ -92,9 +99,9 @@ export const EventSlice = createSlice({
                 state.event = action.payload;
             })
 
-
     },
 })
 
 // export const selectEvents = (State)=> State.event.events
+export const selectEventById = (state) => state.event.event;
 export default EventSlice.reducer
