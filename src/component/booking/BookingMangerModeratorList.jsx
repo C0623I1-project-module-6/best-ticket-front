@@ -41,8 +41,8 @@ export function BookingManagerModeratorList() {
                     {event.organizer === undefined ? (
                         <tr className="bg-[#F6F6F6]">
                             <td><div>Organizer information is not available</div></td>
-                            <td></td>
-                            <td></td>
+                            <td>N/A</td>
+                            <td>N/A</td>
                         </tr>
                     ) : (
                         <tr className="bg-[#F6F6F6]">

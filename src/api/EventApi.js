@@ -10,6 +10,18 @@ export const findAllEvents = async (currentPage) => {
     }
     return result;
 }
+
+export const findEventById = async (eventId) => {
+    let result = null;
+    try {
+        result = await axios.get(`${BEST_TICKET_API}events/${eventId}`);
+        console.log(result)
+    } catch (e) {
+        console.log("Find events API error: " + e);
+    }
+    return result;
+};
+
 export const findEventsByName = async (searchTerm, currentPage) => {
     let result = null;
     try {
@@ -38,5 +50,6 @@ export const createEvent = async (eventRequest) =>{
         console.log("Create event API error: " + e);
     }
     return result;
+
 
 }

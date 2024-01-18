@@ -3,10 +3,10 @@ import BookingManagerSidebar from "../component/booking/BookingManagerSidebar.js
 function OrganizerBookingManagerLayout({children}) {
     return (
         <div className="flex">
-            <div className="w-[40%] text-white">
+            <div className="w-2/6 text-white">
                 <BookingManagerSidebar/>
             </div>
-            <div className="w-3/4 bg-white">
+            <div className="bg-white">
                 {
                     children
                 }

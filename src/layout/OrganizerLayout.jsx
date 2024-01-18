@@ -1,4 +1,3 @@
-import UserHeader from "../component/header/UserHeader.jsx";
 import OrganizerSidebar from "../component/sidebar/OrganizerSidebar.jsx";
 
 function OrganizerLayout({children}) {

@@ -22,3 +22,13 @@ export const findAllBookingsByEventId = async (eventId) => {
   }
   return result;
 };
+
+export const searchBookingByKeyword = async (eventId, keyword) => {
+  let result = null;
+  try {
+    result = await axios.get(`${BEST_TICKET_API}bookings/event/${eventId}/search?keyword=${keyword}`);
+  } catch (e) {
+    console.log("Find bookings API error: " + e);
+  }
+  return result;
+};

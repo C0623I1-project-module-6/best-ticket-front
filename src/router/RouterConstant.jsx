@@ -21,7 +21,6 @@ import OrganizerBookingManagerLayout from "../layout/OrganizerBookingManagerLayo
 import {BookingManagerEventBookings} from "../component/booking/BookingManagerEventBookings.jsx";
 import {BookingManagerModeratorList} from "../component/booking/BookingMangerModeratorList.jsx";
 
-import {BookingManager} from "../component/booking/BookingManager.jsx";
 import AddCustomerProfile from "../component/user/AddCustomerProfile.jsx";
 import RegisterOrganizerProfile from "../component/user/RegisterOrganizerProfile.jsx";
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
@@ -58,8 +57,8 @@ export const ROUT_DATA = [
             {path: "step3", element: CreateEventStep3 },
         ] },
     {path: "/customer/profile", element: AddCustomerProfile, layout: UserLayout},
-    {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
 
+    {path: "/my-event/legal", element: RegisterOrganizerProfile, layout: OrganizerLayout},
     {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
     {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
     {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},

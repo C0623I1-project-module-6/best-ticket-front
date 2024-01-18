@@ -5,11 +5,13 @@ import {GrAnnounce} from "react-icons/gr";
 import {BiSolidDiscount} from "react-icons/bi";
 import {GrUserManager} from "react-icons/gr";
 import {useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
+    const navigate = useNavigate();
     return (
-        <div className="fixed w-[34.8%] border-r shadow-md">
+        <div className="fixed w-[26%] border-r shadow-md">
             <nav className="bg-[#303B46] h-screen">
                 <ul className="text-left">
                     <li>
@@ -24,7 +26,7 @@ const BookingManagerSidebar = () => {
                         </div>
                     </li>
                     <li>
-                        <a href="/" className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
+                        <a onClick={() => {navigate(`/404`)}} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><GiReturnArrow/></div>
                                 Quay lại trang sự kiện của tôi
@@ -32,7 +34,7 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a href={`/my-event/event/${eventId}/`}
+                        <a onClick={() => {navigate(`/404`)}}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><BsGraphUpArrow/></div>
@@ -41,7 +43,7 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a href={`/my-event/event/${eventId}/RSVPs/bookings`}
+                        <a onClick={() => {navigate(`/my-event/event/${eventId}/RSVPs/bookings`)}}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><RiGroupLine/></div>
@@ -50,7 +52,7 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a href={`/my-event/event/${eventId}/promote`}
+                        <a onClick={() => {navigate(`/404`)}}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><GrAnnounce/></div>
@@ -59,7 +61,7 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a href={`/my-event/event/${eventId}/discount-codes`}
+                        <a onClick={() => {navigate(`/404`)}}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><BiSolidDiscount/></div>
@@ -68,7 +70,7 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a href={`/my-event/event/${eventId}/moderators`}
+                        <a onClick={() => {navigate(`/my-event/event/${eventId}/moderators`)}}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><GrUserManager/></div>
@@ -79,7 +81,8 @@ const BookingManagerSidebar = () => {
                 </ul>
                 <div className="h-screen">
                     <div className="text-center flex">
-                        <a className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[90%]" href="/">
+                        <a onClick={() => {navigate(`/404`)}}
+                            className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[70%]">
                             <div className="m-3">Câu hỏi thường gặp</div>
                         </a>
                     </div>
