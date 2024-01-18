@@ -66,32 +66,35 @@ const BookingManagerTicketTable = () => {
                             <td className="p-2 border border-black">{booking.customer.fullName}</td>
                             <td className="p-2 border border-black">{booking.userEmail}</td>
                             <td className="p-2 border border-black">{booking.customer.phoneNumber}</td>
-                            <td className="p-2 border border-black"></td>
-                            <td className="p-2 border border-black"> {bookingDetails && bookingDetails.length > 0 ? (
+                            <td className="p-2 border border-black">N/A</td>
+                            {bookingDetails && bookingDetails.length > 0 ? (
                                 <>
-                                    {/*{bookingDetails.flatMap((detail) =>*/}
-                                    {/*    detail.data.flatMap((detailData) =>*/}
-                                    {/*        detailData.tickets.map((ticket, index) => {*/}
-                                    {/*            return (*/}
-                                    {/*                <div key={index}>*/}
-                                    {/*                    <div>{bookingDetails.flatMap((detail) =>*/}
-                                    {/*                        detail.data.flatMap((detailData) =>*/}
-                                    {/*                            detailData.tickets*/}
-                                    {/*                        )*/}
-                                    {/*                    ).length}</div>*/}
-                                    {/*                    <span>{ticket.seat}</span>*/}
-
-                                    {/*                    /!* Render other ticket properties *!/*/}
-                                    {/*                </div>*/}
-                                    {/*            );*/}
-                                    {/*        })*/}
-                                    {/*    )*/}
-                                    {/*)}*/}
+                                    {bookingDetails.map((detail) =>
+                                        detail.data.map((detailData) => {
+                                            return detailData.ticketInBookingDetailResponses.map((ticket, index) => {
+                                                if (detailData.booking.id === booking.id) {
+                                                    if (ticket.bookingDetail.id !== detailData.id) {
+                                                        return <div key={index}></div>;
+                                                    } else {
+                                                        return (
+                                                            <>
+                                                                <td className="p-2 border border-black">
+                                                                    <div key={index}>{ticket.ticketTypeName}</div>
+                                                                </td>
+                                                                <td className="p-2 border border-black">
+                                                                    <div key={index}>{ticket.ticketTypePrice}</div>
+                                                                </td>
+                                                            </>
+                                                        );
+                                                    }
+                                                }
+                                            });
+                                        })
+                                    )}
                                 </>
                             ) : (
                                 <span>No booking details available</span>
-                            )}</td>
-                            <td className="p-2 border border-black"></td>
+                            )}
                             <td className="p-2 border border-black">{booking.totalAmount}</td>
                         </tr>
                     );
@@ -108,7 +111,7 @@ const BookingManagerTicketTable = () => {
             <div className="flex items-center justify-center h-20">
                 <Stack spacing={2}>
                     <Pagination
-                        count={totalPages || 0}
+                        count={totalPages || Math.ceil(bookingDetails.length / 10)}
                         color="primary"
                         page={currentPage}
                         onChange={(event, value) => setCurrentPage(value)}
@@ -119,7 +122,8 @@ const BookingManagerTicketTable = () => {
                 <div className="m-auto text-center flex">
                     <div className="my-2"><ImInfo/></div>
                     <div className="my-auto">
-                    Thông tin của khách chọn hình thức giao vé và thu tiền tận nơi sẽ được cập nhật sau khi khách thanh
+                        Thông tin của khách chọn hình thức giao vé và thu tiền tận nơi sẽ được cập nhật sau khi khách
+                        thanh
                         toán xong
                     </div>
                 </div>
