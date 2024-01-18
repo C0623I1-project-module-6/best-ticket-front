@@ -58,53 +58,49 @@ const BookingManagerTicketTable = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {bookings.map((booking, index) => {
-                    const count = index + 1;
-                    return (
-                        <tr key={index}>
-                            <td className="p-2 border border-black">{count}</td>
-                            <td className="p-2 border border-black">{booking.customer.fullName}</td>
-                            <td className="p-2 border border-black">{booking.userEmail}</td>
-                            <td className="p-2 border border-black">{booking.customer.phoneNumber}</td>
-                            <td className="p-2 border border-black">N/A</td>
-                            {bookingDetails && bookingDetails.length > 0 ? (
-                                <>
-                                    {bookingDetails.map((detail) =>
+                {bookings.length === 0 || bookings.length === undefined ? (
+                    <tr>
+                        <td colSpan="4">No booking available for this event</td>
+                    </tr>
+                ) : (
+                    bookings.map((booking, index) => {
+                        const count = index + 1;
+                        return (
+                            <tr key={index}>
+                                <td className="p-2 border border-black">{count}</td>
+                                <td className="p-2 border border-black">{booking.customer.fullName}</td>
+                                <td className="p-2 border border-black">{booking.userEmail}</td>
+                                <td className="p-2 border border-black">{booking.customer.phoneNumber}</td>
+                                <td className="p-2 border border-black">N/A</td>
+                                {bookingDetails && bookingDetails.length > 0 ? (
+                                    bookingDetails.map((detail) =>
                                         detail.data.map((detailData) => {
                                             return detailData.ticketInBookingDetailResponses.map((ticket, index) => {
                                                 if (detailData.booking.id === booking.id) {
                                                     if (ticket.bookingDetail.id !== detailData.id) {
-                                                        return <div key={index}></div>;
+                                                        return null; // Use null instead of <div></div> for an empty element
                                                     } else {
                                                         return (
-                                                            <>
-                                                                <td className="p-2 border border-black">
-                                                                    <div key={index}>{ticket.ticketTypeName}</div>
-                                                                </td>
-                                                                <td className="p-2 border border-black">
-                                                                    <div key={index}>{ticket.ticketTypePrice}</div>
-                                                                </td>
-                                                            </>
+                                                            <React.Fragment key={index}> {/* Use React.Fragment instead of empty tags <> </> */}
+                                                                <td className="p-2 border border-black">{ticket.ticketTypeName}</td>
+                                                                <td className="p-2 border border-black">{ticket.ticketTypePrice}</td>
+                                                            </React.Fragment>
                                                         );
                                                     }
                                                 }
+                                                return null; // Add a return statement for the outer map functions
                                             });
                                         })
-                                    )}
-                                </>
-                            ) : (
-                                <span>No booking details available</span>
-                            )}
-                            <td className="p-2 border border-black">{booking.totalAmount}</td>
-                        </tr>
-                    );
-                })}
-                {bookings.length === 0 && (
-                    <tr>
-                        <td colSpan="8" className="p-2 border border-black">
-                            No bookings available
-                        </td>
-                    </tr>
+                                    )
+                                ) : (
+                                    <tr>
+                                        <td colSpan="2">No booking details available</td>
+                                    </tr>
+                                )}
+                                <td className="p-2 border border-black">{booking.totalAmount}</td>
+                            </tr>
+                        );
+                    })
                 )}
                 </tbody>
             </table>
