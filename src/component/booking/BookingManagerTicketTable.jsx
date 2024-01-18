@@ -111,7 +111,7 @@ const BookingManagerTicketTable = () => {
             <div className="flex items-center justify-center h-20">
                 <Stack spacing={2}>
                     <Pagination
-                        count={totalPages || bookingDetails.length / 10}
+                        count={totalPages || Math.ceil(bookingDetails.length / 10)}
                         color="primary"
                         page={currentPage}
                         onChange={(event, value) => setCurrentPage(value)}
