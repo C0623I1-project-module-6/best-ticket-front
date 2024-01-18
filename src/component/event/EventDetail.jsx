@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {getEventById, selectEventById} from "../../features/EventSlice.js";
-import {useParams} from "react-router-dom";
+import {NavLink, useLocation, useParams} from "react-router-dom";
 import {useEffect} from "react";
 import {FaClock, FaHeart} from "react-icons/fa";
 import {FaFacebook, FaLocationDot} from "react-icons/fa6";
@@ -12,8 +12,10 @@ import {IoTicket} from "react-icons/io5";
 const EventDetail = () => {
     const dispatch = useDispatch();
     const eventId = useParams().id;
-
+    const location = useLocation();
     const event = useSelector(selectEventById);
+    // const ticket = useSelector(selectTic)
+    console.log(location)
     console.log(event)
     const showEventById = () => {
         console.log(eventId)
@@ -85,9 +87,9 @@ const EventDetail = () => {
                                     <p>03:00 PM - 06:00 PM</p>
                                 </div>
                                 <div className="w-1/6 flex text-right justify-end items-center">
-                                    <div className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua vé
+                                    <NavLink to={`${location.pathname}/ticket-booking/${event.id}`} className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua vé
                                         ngay
-                                    </div>
+                                    </NavLink>
                                 </div>
                             </div>
                         </div>
