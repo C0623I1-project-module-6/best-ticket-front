@@ -1,7 +1,7 @@
 import axios from "axios";
 import {BEST_TICKET_API} from "../ultility/AppConstant.js"
 
-export const findAllEvents = async (currentPage) => {
+export const findAllEvents = async (currentPage)=>{
     let result = null;
     try {
         result = await axios.get(`${BEST_TICKET_API}events?page=${currentPage}&pageSize=20`);
@@ -10,19 +10,7 @@ export const findAllEvents = async (currentPage) => {
     }
     return result;
 }
-
-export const findEventById = async (eventId) => {
-    let result = null;
-    try {
-        result = await axios.get(`${BEST_TICKET_API}events/${eventId}`);
-        console.log(result)
-    } catch (e) {
-        console.log("Find events API error: " + e);
-    }
-    return result;
-};
-
-export const findEventsByName = async (searchTerm, currentPage) => {
+export const findEventsByName = async (searchTerm,currentPage) => {
     let result = null;
     try {
         result = await axios.get(`${BEST_TICKET_API}events/search?text=${searchTerm}&page=${currentPage}&pageSize=20`);
@@ -32,24 +20,22 @@ export const findEventsByName = async (searchTerm, currentPage) => {
     return result;
 };
 
-export const findEventsByEventTypes = async (eventTypeNames, currentPage) => {
+export const findEventsByEventTypes = async (eventTypeNames,currentPage) => {
     let result = null;
     try {
         result = await axios.get(`${BEST_TICKET_API}events/eventTypeNames?eventTypeNames=${eventTypeNames}&page=${currentPage}&pageSize=20`);
+        console.log(eventTypeNames)
     } catch (e) {
         console.log("Find events API error: " + e);
     }
     return result;
 };
-
-export const createEvent = async (eventRequest) =>{
+export const findEventById = async (eventId)=>{
     let result = null;
     try {
-        result = await axios.post(`${BEST_TICKET_API}events`, eventRequest);
+        result = await axios.get(`${BEST_TICKET_API}events/${eventId}`);
     } catch (e) {
-        console.log("Create event API error: " + e);
+        console.log("Find events API error: " + e);
     }
     return result;
-
-
 }

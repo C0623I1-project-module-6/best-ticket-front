@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createEvent, findAllEvents, findEventById, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
+import { findAllEvents, findEventById, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
 
 const initialState = {
     events: [],
@@ -23,13 +23,13 @@ export const getEventsByEventTypes = createAsyncThunk("events/eventTypes", async
     return response.data;
 })
 
-export const addEvent = createAsyncThunk("event/create",async (eventRequest)=>{
-    const response = await createEvent(eventRequest);
+export const getEventById = createAsyncThunk("events/byEventId", async (eventId) => {
+    const response = await findEventById(eventId);
     return response.data;
 })
 
-export const getEventById = createAsyncThunk("events/byEventId", async (eventId) => {
-    const response = await findEventById(eventId);
+export const addEvent = createAsyncThunk("event/create",async (eventRequest)=>{
+    const response = await createEvent(eventRequest);
     return response.data;
 })
 
@@ -103,4 +103,5 @@ export const EventSlice = createSlice({
 
 // export const selectEvents = (State)=> State.event.events
 export const selectEventById = (state) => state.event.event;
+export const selectEvents = (state) => state.event.events;
 export default EventSlice.reducer
