@@ -3,11 +3,31 @@ import {useNavigate} from "react-router-dom";
 import {Avatar} from "@material-tailwind/react";
 import avatar from "../../../assets/img/User.png";
 import {useSelector} from "react-redux";
+import { useLocation } from 'react-router-dom';
+import { twMerge } from 'tailwind-merge';
 
 export default function CreateEventSideBar(){
+    const location = useLocation();
+    const pathname = location.pathname;
     const user = useSelector((state) => state.user.value);
     const navigate = useNavigate();
-    const steps = ["Thông tin sự kiện","Thời gian & loại vé","Cài đặt","Thông tin thanh toán"]
+    const steps = [
+        {
+            label : "Thông tin sự kiện" ,
+            active: pathname === '/event/create',
+            href : '/event/create'
+        },
+        {
+            label : "Thời gian & loại vé" ,
+            active: pathname === '/event/create/step2',
+            href : '/event/create/step2'
+        },
+        {
+            label : "Thông tin thanh toán" ,
+            active: pathname === '/event/create/step3',
+            href : '/event/create/step3'
+        }
+    ]
     return(
         <div className="w-[25vw] bg-blue-gray-800  text-white text-xl ">
             <div className="flex gap-5 items-center p-5  justify-between  bg-blue-gray-900">
@@ -24,12 +44,18 @@ export default function CreateEventSideBar(){
 
                 </div>
             </div>
-            {steps.map((step,index)=>(
-                <div key={index} className="flex gap-5 items-center hover:bg-white hover:text-black p-5 ">
-                    <span className="rounded-full bg-green-400 h-10 w-10 flex items-center justify-center" >{index+1}</span>
-                    <p>{step}</p>
-                </div>
-            ))}
+            <div className="px-3 py-3 flex-row space-y-2">
+                {steps.map((step,index)=>(
+                    <div
+                        key={index}
+                        className={twMerge('cursor-pointer flex gap-5 items-center  p-5',step.active && 'bg-blue-200 text-black rounded-lg')}
+                        onClick={()=>{navigate(step.href)}}>
+                        <span className="rounded-full bg-green-400 h-10 w-10 flex items-center justify-center" >{index+1}</span>
+                        <p>{step.label}</p>
+                    </div>
+                ))}
+            </div>
+
 
         </div>
     )
