@@ -26,7 +26,6 @@ export const getEventsByEventTypes = createAsyncThunk("events/eventTypes", async
 export const getEventById = createAsyncThunk("events/byEventId", async (eventId) => {
     const response = await findEventById(eventId);
     return response.data;
-
 })
 
 export const addEvent = createAsyncThunk("event/create",async (eventRequest)=>{

@@ -6,13 +6,8 @@ import Pagination from "@mui/material/Pagination";
 import React, {useEffect, useState} from "react";
 import {getAllBookingDetailsByBookingId} from "../../features/BookingDetailSlice.js";
 import {CiSearch} from "react-icons/ci";
+import {sortingOptions} from "../../ultility/AppConstant.js";
 
-const sortingOptions = [
-    { label: "Mới nhất", value: "newest" },
-    { label: "Cũ nhất", value: "oldest" },
-    { label: "A - Z", value: "az" },
-    { label: "Z - A", value: "za" },
-];
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
@@ -44,7 +39,20 @@ const BookingManagerOrderTable = () => {
                 // Handle default case
                 break;
         }
-    };
+    }
+
+    function getStatusLabel(status) {
+        switch (status) {
+            case "ACTIVE":
+                return "Đang hiệu lực";
+            case "PENDING":
+                return "Đang xử lý";
+            case "INACTIVE":
+                return "Không còn hiệu lực";
+            default:
+                return "";
+        }
+    }
 
     const bookingsMemo = React.useMemo(() => {
         return bookings;
@@ -74,36 +82,51 @@ const BookingManagerOrderTable = () => {
         }
     }, [bookingsMemo, dispatch]);
 
-    console.log(bookingDetails)
-
     return (
         <>
             <div className="border bg-gray-100 flex py-1">
                 <div className="w-1/2 m-1 flex">
+                    {bookings.length === undefined ? (
+                        <div></div>
+                    ) : (
+                        <div>
+                            <select className="bg-gray-300 rounded m-2" onChange={handleSortingChange}>
+                                <option value="">Tất cả</option>
+                                {bookingDetails && bookingDetails.length > 0 ? (
+                                    bookingDetails.map((detail) =>
+                                        detail.data.map((detailData) =>
+                                            detailData.ticketInBookingDetailResponses
+                                                .sort((a, b) => a.ticketTypeName.localeCompare(b.ticketTypeName)) // Sort options alphabetically
+                                                .map((ticket, index) => (
+                                                    <option key={index} value={ticket.ticketTypeName}>
+                                                        {ticket.ticketTypeName}
+                                                    </option>
+                                                ))
+                                        )
+                                    )
+                                ) : (
+                                    <option value="">No booking details available</option>
+                                )}
+                            </select>
+                        </div>
+                    )}
                     <div>
-                        <select className="bg-gray-300 rounded m-2">
-                            <option>Tất cả</option>
-                            <option>Vip</option>
-                            <option>Nhà nghèo</option>
-                        </select>
-                    </div>
-                    <div>
-                        <select className="bg-gray-300 rounded m-2">
-                            <option value="">Tất cả đơn hàng</option>
-                            {bookings.map((booking, index) => (
-                                <React.Fragment key={index}>
-                                    <option value="ACTIVE" selected={booking.status === "ACTIVE"}>
-                                        Đang hiệu lực
+                        {bookings.length === undefined ? (
+                            <div></div>
+                        ) : (
+                            <select className="bg-gray-300 rounded m-2">
+                                <option value="">Tất cả đơn hàng</option>
+                                {bookings.map((booking, index) => (
+                                    <option
+                                        key={index}
+                                        value={booking.status}
+                                        selected={booking.status === "ACTIVE" || booking.status === "PENDING" || booking.status === "INACTIVE"}
+                                    >
+                                        {getStatusLabel(booking.status)}
                                     </option>
-                                    <option value="PENDING" selected={booking.status === "PENDING"}>
-                                        Đang xử lý
-                                    </option>
-                                    <option value="INACTIVE" selected={booking.status === "INACTIVE"}>
-                                        Không còn hiệu lực
-                                    </option>
-                                </React.Fragment>
-                            ))}
-                        </select>
+                                ))}
+                            </select>
+                        )}
                     </div>
                     <div>
                         <select
@@ -129,7 +152,7 @@ const BookingManagerOrderTable = () => {
                     </form>
                 </div>
             </div>
-            <div className="-4 bg-white rounded-lg shadow-md">
+            <div className="my-2 bg-white rounded-lg shadow-md">
                 <div className="p-4">
                     <table className="w-full mt-4">
                         <thead>
@@ -143,7 +166,9 @@ const BookingManagerOrderTable = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {bookings.map((booking, index) => (
+                        {bookings.length === undefined ? (
+                            <div>No booking available for this event</div>
+                        ) : (bookings.map((booking, index) => (
                             <tr key={index} className="border border-black border-x-0">
                                 <th className="px-4 py-2 text-left border-b border-black">
                                     <input type="checkbox"/>
@@ -158,21 +183,22 @@ const BookingManagerOrderTable = () => {
                                 <td className="px-4 py-2 border-x-0">
                                     {bookingDetails && bookingDetails.length > 0 ? (
                                         <>
-                                            {bookingDetails.flatMap((detail) =>
-                                                detail.data.flatMap((detailData) =>
-                                                    detailData.tickets.map((ticket, index) => {
-                                                        return (
-                                                            <div key={index}>
-                                                                <div>{bookingDetails.flatMap((detail) =>
-                                                                    detail.data.flatMap((detailData) =>
-                                                                        detailData.tickets
-                                                                    )
-                                                                ).length}</div>
-                                                                <span>{ticket.seat}</span>
-
-                                                                {/* Render other ticket properties */}
-                                                            </div>
-                                                        );
+                                            {bookingDetails.map((detail) =>
+                                                detail.data.map((detailData) =>
+                                                    detailData.ticketInBookingDetailResponses.map((ticket, index) => {
+                                                        if (detailData.booking.id === booking.id)
+                                                            if (ticket.bookingDetail.id !== detailData.id) {
+                                                                return <div key={index}></div>;
+                                                            } else {
+                                                                return (
+                                                                    <div key={index}>
+                                                                        <span>{ticket.ticketTypeName}</span>
+                                                                        <br/>
+                                                                        <span>Giá 1 vé: {ticket.ticketTypePrice}</span>
+                                                                        {/* Render other ticket properties */}
+                                                                    </div>
+                                                                );
+                                                            }
                                                     })
                                                 )
                                             )}
@@ -185,7 +211,7 @@ const BookingManagerOrderTable = () => {
                                     {booking.totalAmount}
                                 </td>
                             </tr>
-                        ))}
+                        )))}
                         </tbody>
                     </table>
                     <div className="flex items-center justify-center h-20">
@@ -199,6 +225,24 @@ const BookingManagerOrderTable = () => {
                                 onChange={(event, value) => setCurrentPage(value)}
                             />
                         </Stack>
+                    </div>
+                    <div className="rounded-l bg-[#F6F6F6] flex">
+                        <div className="m-auto text-center flex">
+                            {bookings.length === undefined ? (
+                                <div></div>
+                            ) : (
+                                <div>
+                                    <div className="m-3">
+                                        Gửi mail đến
+                                    </div>
+                                    <div className="m-auto">
+                                        <button className="border-0 border-black rounded bg-[#C2DEA3]">
+                                            <div className="m-2">Tất cả</div>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
