@@ -1,5 +1,11 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {showAllTicket, showAllTicketFinished, showAllTicketUpcoming, showTicketById} from "../api/TicketApi";
+import {
+    showAllTicket,
+    showAllTicketFinished,
+    showAllTicketUpcoming,
+    showTicketByEventId,
+    showTicketById
+} from "../api/TicketApi";
 
 const initialState = {
     tickets: [],
@@ -13,16 +19,14 @@ const initialState = {
 export const getTicketsByStatusFinished = createAsyncThunk(
     "tickets/showAllTicketFinished",
     async (data) => {
-        console.log(data);
         const response = await showAllTicketFinished(data);
-        console.log(response);
         return response.data;
     }
 );
 export const getTicketsByStatusUpcoming = createAsyncThunk(
     "tickets/showAllTicketUpcoming",
-    async (status) => {
-        const response = await showAllTicketUpcoming(status);
+    async data => {
+        const response = await showAllTicketUpcoming(data);
         return response.data;
     }
 );
@@ -37,6 +41,14 @@ export const getTicket = createAsyncThunk(
     "tickets/showTicketById",
     async (id) => {
         const response = await showTicketById(id);
+        console.log(response.data)
+        return response.data;
+    }
+);
+export const getTicketByEventId = createAsyncThunk(
+    "tickets/showTicketByEventId",
+    async (eventId) => {
+        const response = await showTicketByEventId(eventId);
         console.log(response.data)
         return response.data;
     }
@@ -94,6 +106,10 @@ export const TicketSlice = createSlice({
             .addCase(getTicket.rejected, handleRejected)
             .addCase(getTicket.fulfilled, handleFulfilled)
 
+            .addCase(getTicketByEventId.pending, handlePending)
+            .addCase(getTicketByEventId.rejected, handleRejected)
+            .addCase(getTicketByEventId.fulfilled, handleFulfilled)
+
 
     }
 });
@@ -101,6 +117,6 @@ export const {setLoading, setError, setSuccess} = TicketSlice.actions;
 
 export const selectShowTicket = (state) => state.ticket.tickets;
 
-export const selectShowTicketById = (state) => state.ticket.ticket;
+export const selectShowTicketByEventId = (state) => state.ticket.ticket;
 
 export default TicketSlice.reducer;

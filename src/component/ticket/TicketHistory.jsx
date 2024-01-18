@@ -4,11 +4,14 @@ import {FaCalendar, FaTicket, FaUser} from "react-icons/fa6";
 import {Link} from "react-router-dom";
 import TicketDetails from "./TicketDetails.jsx";
 import {useState} from "react";
+import {useSelector} from "react-redux";
+import {selectUserLogin} from "../../features/UserSlice.js";
 
 function TicketHistory() {
     const [keyword, setKeyword] = useState("");
     const [activeButton, setActiveButton] = useState("");
-
+    const user = useSelector(selectUserLogin)
+    console.log(user)
     const sendKeyword = (data) => {
         setActiveButton(data);
         setKeyword(data)
@@ -35,7 +38,7 @@ function TicketHistory() {
                             </div>
                             <div className="flex-col space-y-0">
                                 <div>Account of</div>
-                                <div>Ha Bao An</div>
+                                <div>{user.username}</div>
                             </div>
                         </div>
                         <div className="flex-col items-center space-y-3 justify-items-center justify-center">
