@@ -74,15 +74,15 @@ const BookingManagerTicketTable = () => {
                                             return detailData.ticketInBookingDetailResponses.map((ticket, index) => {
                                                 if (detailData.booking.id === booking.id) {
                                                     if (ticket.bookingDetail.id !== detailData.id) {
-                                                        return <div></div>;
+                                                        return <div key={index}></div>;
                                                     } else {
                                                         return (
                                                             <>
                                                                 <td className="p-2 border border-black">
-                                                                    <div>{ticket.ticketTypeName}</div>
+                                                                    <div key={index}>{ticket.ticketTypeName}</div>
                                                                 </td>
                                                                 <td className="p-2 border border-black">
-                                                                    <div>{ticket.ticketTypePrice}</div>
+                                                                    <div key={index}>{ticket.ticketTypePrice}</div>
                                                                 </td>
                                                             </>
                                                         );
