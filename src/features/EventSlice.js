@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {findAllEvents, findEventById, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
+import {createEvent, findAllEvents, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
 
 const initialState = {
     events: [],
@@ -26,7 +26,11 @@ export const getEventsByEventTypes = createAsyncThunk("events/eventTypes", async
 export const getEventById = createAsyncThunk("events/byEventId", async (eventId) => {
     const response = await findEventById(eventId);
     return response.data;
+})
 
+export const addEvent = createAsyncThunk("event/create",async (eventRequest)=>{
+    const response = await createEvent(eventRequest);
+    return response.data;
 })
 
 // set action for slice
@@ -70,11 +74,29 @@ export const EventSlice = createSlice({
             .addCase(getEventsByEventTypes.pending, handlePending)
             .addCase(getEventsByEventTypes.rejected, handleRejected)
             .addCase(getEventsByEventTypes.fulfilled, handleFulfilled)
+
             // find by EventById
             .addCase(getEventById.pending, handlePending)
             .addCase(getEventById.rejected, handleRejected)
             .addCase(getEventById.fulfilled, handleFulfilled)
 
+            //create event
+            .addCase(addEvent.pending, (state)=>{
+                state.success = false;
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(addEvent.rejected, (state,action)=>{
+                state.success = false;
+                state.loading = false;
+                state.error = action.error;
+            })
+            .addCase(addEvent.fulfilled, (state,action)=>{
+                state.success = true;
+                state.loading = false;
+                state.error = false;
+                state.event = action.payload;
+            })
 
     },
 })

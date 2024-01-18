@@ -16,6 +16,7 @@ export const getAllBookings = createAsyncThunk("bookings", async () => {
 });
 export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async (eventId) => {
     const response = await findAllBookingsByEventId(eventId);
+    console.log(response)
     return response.data;
 });
 
@@ -43,7 +44,6 @@ export const BookingSlice = createSlice({
         builder
             .addCase(getAllBookings.pending, handlePending)
             .addCase(getAllBookings.rejected, handleRejected)
-
             .addCase(getAllBookings.fulfilled, handleFulfilled)
             .addCase(getAllBookingsByEventId.pending, handlePending)
             .addCase(getAllBookingsByEventId.rejected, handleRejected)

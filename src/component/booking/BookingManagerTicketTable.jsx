@@ -64,29 +64,29 @@ const BookingManagerTicketTable = () => {
                         <tr key={index}>
                             <td className="p-2 border border-black">{count}</td>
                             <td className="p-2 border border-black">{booking.customer.fullName}</td>
-                            <td className="p-2 border border-black"></td>
+                            <td className="p-2 border border-black">{booking.userEmail}</td>
                             <td className="p-2 border border-black">{booking.customer.phoneNumber}</td>
                             <td className="p-2 border border-black"></td>
                             <td className="p-2 border border-black"> {bookingDetails && bookingDetails.length > 0 ? (
                                 <>
-                                    {bookingDetails.flatMap((detail) =>
-                                        detail.data.flatMap((detailData) =>
-                                            detailData.tickets.map((ticket, index) => {
-                                                return (
-                                                    <div key={index}>
-                                                        <div>{bookingDetails.flatMap((detail) =>
-                                                            detail.data.flatMap((detailData) =>
-                                                                detailData.tickets
-                                                            )
-                                                        ).length}</div>
-                                                        <span>{ticket.seat}</span>
+                                    {/*{bookingDetails.flatMap((detail) =>*/}
+                                    {/*    detail.data.flatMap((detailData) =>*/}
+                                    {/*        detailData.tickets.map((ticket, index) => {*/}
+                                    {/*            return (*/}
+                                    {/*                <div key={index}>*/}
+                                    {/*                    <div>{bookingDetails.flatMap((detail) =>*/}
+                                    {/*                        detail.data.flatMap((detailData) =>*/}
+                                    {/*                            detailData.tickets*/}
+                                    {/*                        )*/}
+                                    {/*                    ).length}</div>*/}
+                                    {/*                    <span>{ticket.seat}</span>*/}
 
-                                                        {/* Render other ticket properties */}
-                                                    </div>
-                                                );
-                                            })
-                                        )
-                                    )}
+                                    {/*                    /!* Render other ticket properties *!/*/}
+                                    {/*                </div>*/}
+                                    {/*            );*/}
+                                    {/*        })*/}
+                                    {/*    )*/}
+                                    {/*)}*/}
                                 </>
                             ) : (
                                 <span>No booking details available</span>
