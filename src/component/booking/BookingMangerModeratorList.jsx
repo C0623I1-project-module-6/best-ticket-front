@@ -17,7 +17,6 @@ export function BookingManagerModeratorList() {
         return <div>Loading...</div>;
     }
 
-    console.log(event)
     return (
         <>
             <div className="w-[80%] mx-[10%] my-[5%] text-black">

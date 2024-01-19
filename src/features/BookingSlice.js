@@ -18,9 +18,9 @@ export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", as
     const response = await findAllBookingsByEventId(eventId);
     return response.data;
 });
-export const getAllBookingsByKeyword = createAsyncThunk("bookings/byEventId/search", async ({eventId, keyword}) => {
+export const getAllBookingsByKeyword = createAsyncThunk("bookings/byEventId/byKeyword", async ({ eventId, keyword }) => {
     const response = await searchBookingByKeyword(eventId, keyword);
-    return response.data.length > 0 ? response.data : null;
+    return response.data.data;
 });
 
 const handlePending = (state) => {
@@ -34,9 +34,15 @@ const handlePending = (state) => {
 }, handleFulfilled = (state, action) => {
     state.success = true;
     state.loading = false;
-    state.bookings = action.payload.data;
-    state.booking = action.payload.data;
-    state.totalPages = action.payload.totalPages;
+    if (action.payload && action.payload.data) {
+        state.bookings = action.payload.data;
+        state.booking = action.payload;
+        state.totalPages = action.payload.totalPages;
+    } else {
+        state.bookings = action.payload;
+        state.booking = null;
+        state.totalPages = null;
+    }
     state.error = false;
 };
 
