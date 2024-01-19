@@ -22,6 +22,7 @@ import {Bounce, toast} from "react-toastify";
 
 
 const UserHeader = () => {
+
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const user = useSelector(selectUserLogin);
@@ -58,6 +59,7 @@ const UserHeader = () => {
             navigate("/admin");
         }
     }, [userRole]);
+
     const loginButton = () => {
         return (
             !user ?
@@ -208,7 +210,7 @@ const UserHeader = () => {
                         </span>
                     </div>
                     <div className="cursor-pointer flex items-center gap-3 hover:text-amber-400"
-                         onClick={() => navigate("/my-ticket")}>
+                         onClick={() => navigate(`/my-ticket/${user.id}`)}>
                         <FaTicket size={30}/>
                         <span>My ticket</span>
                     </div>

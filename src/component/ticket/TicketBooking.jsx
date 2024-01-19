@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import { Steps} from 'antd';
+import React, {useState} from 'react';
+import {Steps} from 'antd';
 import UserFooter from "../footer/UserFooter.jsx";
 import {TicketBookingStep1} from "./TicketBookingStep1.jsx";
-import {useLocation} from "react-router-dom";
 import {TicketBookingStep3} from "./TicketBookingStep3.jsx";
 import TicketBookingStep2 from "./TicketBookingStep2.jsx";
 
@@ -10,8 +9,7 @@ import TicketBookingStep2 from "./TicketBookingStep2.jsx";
 function TicketBooking() {
     const { Step } = Steps;
 
-    let location = useLocation();
-    console.log(location.pathname)
+
     const [current, setCurrent] = useState(0);
     const handleStepClick = (step) => {
         setCurrent(step);

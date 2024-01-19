@@ -1,13 +1,15 @@
 import {CiBank, CiCreditCard1} from "react-icons/ci";
-import {FaUser} from "react-icons/fa6";
+import {FaPencil, FaUser} from "react-icons/fa6";
+import {MdEmail} from "react-icons/md";
+import {FaPhone} from "react-icons/fa";
 
 
 export default function TicketBookingStep2() {
 
     return (
         <>
-            <div className="mx-56 text-black">
-                <div className="flex gap-10 items-center justify-center bg-neutral-400">
+            <div className="mx-56 text-black py-5">
+                <div className="flex gap-10 items-center justify-center bg-neutral-400 py-5">
                     <div className="w-3/5 flex-col">
                         <p className="m-7">THÔNG TIN NGƯỜI NHẬN VÉ</p>
                         <div className="flex mx-2">
@@ -63,14 +65,63 @@ export default function TicketBookingStep2() {
                     </div>
                     <div className="w-2/5 mx-5">
                         <div className="bg-white px-5">
-                            <h4 className="text-black pt-3 pb-1">THÔNG TIN NGƯỜI ĐẶT VÉ</h4>
+                            <h4 className="text-black pt-3 pb-1 font-bold text-x">THÔNG TIN NGƯỜI NHẬN VÉ</h4>
                             <hr className="border-2 border-solid"/>
-                            <div className="flex">
-                                <div className="w-1/2">
-                                    <span><FaUser /></span>
-                                    <span></span>
+
+                            <div className="flex py-1 ">
+                                <div className="w-1/2 flex items-center">
+                                    <span className="mr-3"><FaUser/></span>
+                                    <span>Họ Tên: </span>
                                 </div>
-                                <div className="w-1/2">a</div>
+                                <div className="w-1/2 text-right">Test</div>
+                            </div>
+                            <hr className="border-2 border-dashed"/>
+
+                            <div className="flex py-1 ">
+                                <div className="w-1/2 flex items-center">
+                                    <span className="mr-3"><MdEmail/></span>
+                                    <span>Email: </span>
+                                </div>
+                                <div className="w-1/2 text-right">Test</div>
+                            </div>
+                            <hr className="border-2 border-dashed"/>
+
+                            <div className="flex py-1 ">
+                                <div className="w-1/2 flex items-center">
+                                    <span className="mr-3"><FaPhone/></span>
+                                    <span>Điện thoại : </span>
+                                </div>
+                                <div className="w-1/2 text-right">Test</div>
+                            </div>
+
+                            <div className="font-bold">HÌNH THỨC THANH TOÁN</div>
+                            <hr className="border-2 border-solid"/>
+                            <div>Chờ</div>
+
+                            <div className="flex justify-between">
+                                <div className="font-bold">THÔNG TIN ĐẶT VÉ</div>
+                                <div className="flex ">
+                                    <span><FaPencil/></span>
+                                    <span>Sửa</span>
+                                </div>
+                            </div>
+                            <hr className="border-2 border-solid"/>
+
+                            <div className="flex justify-between">
+                                <span>Loại vé</span>
+                                <span>Số lượng</span>
+                            </div>
+                            <hr className="border border-dashed"/>
+                            <div className="flex justify-between py-2">
+                                <div className="w-2/3 ">
+                                    <p>Loại vé</p>
+                                    <p>Giá</p>
+                                    <p>Ghế</p>
+                                </div>
+                                <div className="w-1/3 text-right">
+                                    <p>Số lượng</p>
+                                    <p>Giá</p>
+                                </div>
                             </div>
                         </div>
 
@@ -78,7 +129,8 @@ export default function TicketBookingStep2() {
                             <span className="w-4/5 ">Tổng cộng: </span>
                             <span>0 VND</span>
                         </div>
-                        <button className="bg-[#7CA629] py-3 px-2 w-full text-white mt-10" type="button">Tiếp tục
+                        <p className="text-xs text-center italic py-4">Vui lòng kiểm tra kỹ đơn hàng trước khi hoàn tất</p>
+                        <button className="bg-[#7CA629] py-3 px-2 w-full text-white " type="button">Tiếp tục
                         </button>
                     </div>
                 </div>

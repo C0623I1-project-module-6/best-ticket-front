@@ -1,72 +1,25 @@
-import {FaArrowAltCircleRight, FaCalendarPlus, FaRegSave} from "react-icons/fa";
-import {DatePicker, Space} from "antd";
 import React from "react";
-import {MdDelete} from "react-icons/md";
+import {FaRegSave} from "react-icons/fa";
+import {IoMdArrowRoundForward} from "react-icons/io";
+import {useNavigate} from "react-router-dom";
 
-export const CreateEventStep2 = () => {
-
-
-    return (<>
-        <div className="mx-auto w-[80%] my-7">
-            <div className="my-4">Thời gian</div>
-            <div className="border-2 border-dashed ">
-                <div className=" flex p-4 justify-center text-2xl">
-                    <span className="my-auto mr-2"><FaCalendarPlus/></span>
-                    <span>Tạo suất diễn/ thời gian</span>
+const CreateEventStep2 = () => {
+    const navigate = useNavigate();
+    return (
+        <div className="w-[75vw] overflow-y-auto ">
+            <div className="w-[80%] flex items-center justify-center p-5 mx-auto gap-5 ">
+                <div className="cursor-pointer gap-2 flex-1 bg-green-600 flex items-center justify-center p-2 text-2xl text-white rounded-lg"
+                     >
+                    <FaRegSave size={30} />
+                    <p>Lưu lại</p>
                 </div>
-            </div>
-            <div>
-                <div className="flex items-center text-2xl">
-                    <div className="my-4 text-white w-3/4 ">Ngày sự kiện</div>
-                    <span className=" w-1/4 flex justify-end">
-                        <MdDelete/>
-                    </span>
+                <div className="cursor-pointer gap-2 flex-1 bg-green-600 flex items-center justify-center p-2 text-2xl text-white rounded-lg"
+                     onClick={() => navigate('/event/create/step3')}>
+                    <IoMdArrowRoundForward size={30}/>
+                    <p>Tiếp tục</p>
                 </div>
-                <div>
-                        <span>
-                            <span className="mr-4">Từ</span>
-                            <Space direction="vertical">
-                                <DatePicker/>
-                            </Space>
-                        </span>
-
-                    <span>
-                            <span className="mx-4">Giờ</span>
-                            <Space direction="vertical">
-                                <DatePicker/>
-                            </Space>
-                        </span>
-
-                </div>
-                <div>
-                        <span>
-                            <span className="mr-4">Đến</span>
-                            <Space direction="vertical">
-                                <DatePicker/>
-                            </Space>
-                        </span>
-
-                    <span>
-                            <span className="mx-4">Giờ</span>
-                            <Space direction="vertical">
-                                <DatePicker/>
-                            </Space>
-                        </span>
-
-                </div>
-            </div>
-
-
-            <div className="flex my-8 ">
-                <button className="bg-[#9EC74B] text-white w-1/2 py-4 flex items-center mr-4 justify-center"
-                        type="button "><FaRegSave className="text-3xl mr-3"/>
-                    LƯU LẠI
-                </button>
-                <button className="bg-[#9EC74B] text-white w-1/2 py-4 flex items-center justify-center"
-                        type="button"><FaArrowAltCircleRight className="text-3xl mr-3"/>
-                    TIẾP TỤC
-                </button>
             </div>
         </div>
-    </>)
+    )
 }
+export default CreateEventStep2

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {findAllBookings, findAllBookingsByEventId} from "../api/BookingApi.js";
+import {findAllBookings, findAllBookingsByEventId, searchBookingByKeyword} from "../api/BookingApi.js";
 
 const initialState = {
     bookings: [],
@@ -18,6 +18,10 @@ export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", as
     const response = await findAllBookingsByEventId(eventId);
     return response.data;
 });
+export const getAllBookingsByKeyword = createAsyncThunk("bookings/byEventId/search", async ({eventId, keyword}) => {
+    const response = await searchBookingByKeyword(eventId, keyword);
+    return response.data.length > 0 ? response.data : null;
+});
 
 const handlePending = (state) => {
     state.success = false;
@@ -31,7 +35,8 @@ const handlePending = (state) => {
     state.success = true;
     state.loading = false;
     state.bookings = action.payload.data;
-    state.totalPages=action.payload.totalPages;
+    state.booking = action.payload.data;
+    state.totalPages = action.payload.totalPages;
     state.error = false;
 };
 
@@ -43,12 +48,13 @@ export const BookingSlice = createSlice({
         builder
             .addCase(getAllBookings.pending, handlePending)
             .addCase(getAllBookings.rejected, handleRejected)
-
             .addCase(getAllBookings.fulfilled, handleFulfilled)
             .addCase(getAllBookingsByEventId.pending, handlePending)
             .addCase(getAllBookingsByEventId.rejected, handleRejected)
-            .addCase(getAllBookingsByEventId.fulfilled, handleFulfilled);
-
+            .addCase(getAllBookingsByEventId.fulfilled, handleFulfilled)
+            .addCase(getAllBookingsByKeyword.pending, handlePending)
+            .addCase(getAllBookingsByKeyword.rejected, handleRejected)
+            .addCase(getAllBookingsByKeyword.fulfilled, handleFulfilled);
     },
 });
 

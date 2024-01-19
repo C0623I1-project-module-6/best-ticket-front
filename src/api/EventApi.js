@@ -30,7 +30,6 @@ export const findEventsByEventTypes = async (eventTypeNames,currentPage) => {
     }
     return result;
 };
-
 export const findEventById = async (eventId)=>{
     let result = null;
     try {
