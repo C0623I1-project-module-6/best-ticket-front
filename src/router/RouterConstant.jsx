@@ -50,7 +50,6 @@ export const ROUT_DATA = [
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
     {path: "/profile/add", element: AddCustomerProfile, layout: UserLayout},
     {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
-    {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
     {
         path: "/event/create", element: CreateEventPage, children: [
             {path: "", element: CreateEventStep1},
