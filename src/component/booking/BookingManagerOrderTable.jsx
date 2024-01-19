@@ -10,6 +10,7 @@ import {ImSearch} from 'react-icons/im';
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const totalPages = useSelector(state => state.event.totalPages);
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId1 = useParams().eventId;
     const [currentPage, setCurrentPage] = useState(1);
@@ -175,6 +176,7 @@ const BookingManagerOrderTable = () => {
                     <div className="flex items-center justify-center h-20">
                         <Stack spacing={2}>
                             <Pagination
+                                count={totalPages || Math.ceil(bookings.length/10)}
                                 color="primary"
                                 page={currentPage}
                                 onChange={(event, value) => setCurrentPage(value)}

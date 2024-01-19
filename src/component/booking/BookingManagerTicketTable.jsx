@@ -10,6 +10,7 @@ const BookingManagerTicketTable = () => {
     const dispatch = useDispatch();
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId = useParams().eventId;
+    const totalPages = useSelector(state => state.event.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
     const [bookingDetails, setBookingDetails] = useState([]);
 
@@ -105,6 +106,7 @@ const BookingManagerTicketTable = () => {
             <div className="flex items-center justify-center h-20">
                 <Stack spacing={2}>
                     <Pagination
+                        count={totalPages || Math.ceil(bookings.length/10)}
                         color="primary"
                         page={currentPage}
                         onChange={(event, value) => setCurrentPage(value)}
