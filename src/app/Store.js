@@ -26,7 +26,7 @@ export const store = configureStore(
             bookingDetail: BookingDetailSlice,
             customer: CustomerSlice,
             organizer: OrganizerSlice,
-            exists: ExistsUserSlice,
+            existsUsers: ExistsUserSlice,
         },
     },
     composeEnhancers(applyMiddleware())

@@ -4,22 +4,19 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {registerUser, selectRegisterSuccess, selectUserRegister} from "../../features/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
-import {
-    getExistsUsers,
-    selectCustomerPhoneNumbers,
-    selectUserEmails,
-    selectUsernames
-} from "../../features/ExistsUserSlice.js";
+import {getExistsUsers, selectExistsUsers, selectUsernames} from "../../features/ExistsUserSlice.js";
 
 function Register() {
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const userRegister = useSelector(selectUserRegister);
     const registerSuccess = useSelector(selectRegisterSuccess);
     const [user, setUser] = useState({confirmPassword: ""});
+
     const usernames = useSelector(selectUsernames);
-    const emails = useSelector(selectUserEmails);
-    const phoneNumbers = useSelector(selectCustomerPhoneNumbers);
+    console.log(usernames)
+    const emails = useSelector(selectExistsUsers);
+    const phoneNumbers = useSelector(selectExistsUsers);
     const regexPassword = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
     const regexPhoneNumber = /^\d{10}$/;
     const toastOptions = {
@@ -36,9 +33,8 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!user.phoneNumber) {
-            user.phoneNumber = null;
-        }
+
+
         const errors = validateInput(user);
         if (errors.length > 0) {
             errors.forEach((error) => {
@@ -46,6 +42,7 @@ function Register() {
             });
             return;
         }
+
         dispatch(registerUser(user));
         setUser(userRegister);
         if (registerSuccess && user) {
@@ -72,8 +69,10 @@ function Register() {
             errors.push("🦄 Mật khẩu gồm số và chữ cái!");
         } else if (phoneNumbers.includes(user.phoneNumber)) {
             errors.push("🦄 Số điện thoại đã được đăng ký!");
+        } else if (!user.phoneNumber) {
+            user.phoneNumber = null;
         } else if (!regexPhoneNumber.test(user.phoneNumber)) {
-            errors.push("🦄 Số điện thoại phải đủ 10 số!")
+            errors.push("🦄 Số điện thoại phải đủ 10 số!");
         } else if (user.confirmPassword !== user.password) {
             errors.push("🦄 Mật khẩu xác thục không chính xác!");
         }
