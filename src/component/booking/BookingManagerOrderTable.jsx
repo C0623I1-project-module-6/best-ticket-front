@@ -87,7 +87,7 @@ const BookingManagerOrderTable = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {bookings.length === 0 || false ? (
+                        {bookings.length === 0 || booking.length === undefined ? (
                             <tr>
                                 <td colSpan="4">No booking available for this event</td>
                             </tr>
