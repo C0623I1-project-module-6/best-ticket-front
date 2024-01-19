@@ -1,23 +1,36 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import FormCompany from "./FormCompany.jsx";
 import FormPersonal from "./FormPersonal.jsx";
 import {
     registerProfile,
     selectOrganizerRegister,
-    selectRegisterProfileError,
-    selectRegisterProfileSuccess
+    selectError,
+    selectSuccess
 } from "../../features/OrganizerSlice.js";
+import {Bounce, toast} from "react-toastify";
 
-function RegisterOrganizerProfile() {
+function EditOrganizerProfile() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [selected, setSelected] = useState("0");
     const organizerAdded = useSelector(selectOrganizerRegister);
-    const registerSuccess = useSelector(selectRegisterProfileSuccess);
-    const registerError = useSelector(selectRegisterProfileError);
-
+    const editSuccess = useSelector(selectSuccess);
+    const editError = useSelector(selectError);
+const showToastMessage=(content)=>{
+    toast("🦄", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+    })
+}
     const [organizer, setOrganizer] = useState({
         name: "",
         businessCode: "",
@@ -28,10 +41,12 @@ function RegisterOrganizerProfile() {
         idCard: "",
         taxCode: "",
     });
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch(registerProfile(organizer));
         setOrganizer(organizerAdded);
+        showToastMessage("Register successfully!")
         navigate("/")
     }
 
@@ -42,7 +57,7 @@ function RegisterOrganizerProfile() {
 
     return (
         <div className="h-screen size-full overflow-y-auto ">
-            <form className="p-5 max-w-full" onSubmit={handleSubmit}>
+            <form  className="p-5 max-w-full" onSubmit={handleSubmit}>
                 <h2 className="font-semibold text-4xl p-5">
                     Đơn đăng ký ban tổ chức
                 </h2>
@@ -82,4 +97,4 @@ function RegisterOrganizerProfile() {
     );
 }
 
-export default RegisterOrganizerProfile;
+export default EditOrganizerProfile;

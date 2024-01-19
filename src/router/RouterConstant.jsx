@@ -23,8 +23,8 @@ import ServiceUnavailablePage from "../layout/pages/errors/ServiceUnavailablePag
 
 import {BookingManager} from "../component/booking/BookingManager.jsx";
 
-import AddCustomerProfile from "../component/user/AddCustomerProfile.jsx";
-import RegisterOrganizerProfile from "../component/user/RegisterOrganizerProfile.jsx";
+import EditCustomerProfile from "../component/user/EditCustomerProfile.jsx";
+import EditOrganizerProfile from "../component/user/EditOrganizerProfile.jsx";
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
 
 
@@ -46,15 +46,9 @@ export const ROUT_DATA = [
     {path: "/search", element: Search, layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
     {path: "/event/create", element: CreateEvent},
-    {path: "/customer/profile", element: AddCustomerProfile, layout: UserLayout},
-    {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
-
-
-
+    {path: "/profile", element: EditCustomerProfile, layout: UserLayout},
+    {path: "/my-event/legal", element: EditOrganizerProfile, layout: OrganizerLayout},
     {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManager},
-
-    
-
     {path: "/event/id/ticket-booking/id/2", element: TicketBookingStep2, layout: UserLayout},
    
 ];

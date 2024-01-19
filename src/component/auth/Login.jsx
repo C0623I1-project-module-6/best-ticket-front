@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {useEffect} from "react";
-import {loginUser, selectLoginSuccess, selectUserLogin} from "../../features/UserSlice.js";
+import {loginUser, selectLoginError, selectLoginSuccess, selectUserLogin} from "../../features/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import {Bounce, toast} from "react-toastify";
 
@@ -10,19 +10,8 @@ function Login() {
     const navigate = useNavigate();
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
-    const showToastMessage = () => {
-        toast('🦄 Login successfully!', {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        });
-    };
+    const loginError = useSelector(selectLoginError);
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const user = {
@@ -31,16 +20,35 @@ function Login() {
             phoneNumber: e.target[0].value,
             password: e.target[1].value
         }
-        dispatch(loginUser(user))
-    }
-    useEffect(() => {
+        dispatch(loginUser(user));
         if (loginSuccess && user && user.token) {
             localStorage.setItem('token', user.token);
-            showToastMessage()
+            toast("🦄 Login successfully!", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
             navigate("/");
+        } else {
+            toast("🦄 Invalid username or email or password!", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
         }
-
-    }, [loginSuccess]);
+    }
     return (
 
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8

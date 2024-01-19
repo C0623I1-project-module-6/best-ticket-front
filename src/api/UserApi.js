@@ -75,6 +75,7 @@ export async function logout(user) {
   })
   console.log(response)
   return response;
-
 }
+
+
 
