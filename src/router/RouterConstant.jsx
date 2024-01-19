@@ -58,8 +58,8 @@ export const ROUT_DATA = [
         ]
     },
     {path: "/customer/profile", element: AddCustomerProfile, layout: UserLayout},
-    {path: "/organizer/profile", element: RegisterOrganizerProfile, layout: OrganizerLayout},
 
+    {path: "/my-event/legal", element: RegisterOrganizerProfile, layout: OrganizerLayout},
     {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
     {
         path: "/my-event/event/:eventId/RSVPs/bookings",

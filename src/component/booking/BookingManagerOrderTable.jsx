@@ -1,66 +1,36 @@
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllBookingsByEventId} from '../../features/BookingSlice.js';
-import {useParams} from 'react-router-dom';
-import Stack from "@mui/material/Stack";
-import Pagination from "@mui/material/Pagination";
-import React, {useEffect, useState} from "react";
-import {getAllBookingDetailsByBookingId} from "../../features/BookingDetailSlice.js";
-import {CiSearch} from "react-icons/ci";
-import {sortingOptions} from "../../ultility/AppConstant.js";
-
+import {getAllBookingsByEventId, getAllBookingsByKeyword} from '../../features/BookingSlice.js';
+import {getAllBookingDetailsByBookingId} from '../../features/BookingDetailSlice.js';
+import {useNavigate, useParams} from 'react-router-dom';
+import Stack from '@mui/material/Stack';
+import Pagination from '@mui/material/Pagination';
+import {ImSearch} from 'react-icons/im';
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId1 = useParams().eventId;
-    const totalPages = useSelector(state => state.event.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
-    const [bookingDetails, setBookingDetails] = useState([])
-    const [selectedSorting, setSelectedSorting] = useState("");
-
-    const handleSortingChange = (event) => {
-        setSelectedSorting(event.target.value);
-        // Perform the sorting operation based on the selected option
-        // You can add your sorting logic here
-        switch (event.target.value) {
-            case "newest":
-                // Sort by newest
-                break;
-            case "oldest":
-                // Sort by oldest
-                break;
-            case "az":
-                // Sort A - Z
-                break;
-            case "za":
-                // Sort Z - A
-                break;
-            default:
-                // Handle default case
-                break;
-        }
-    }
-
-    function getStatusLabel(status) {
-        switch (status) {
-            case "ACTIVE":
-                return "Đang hiệu lực";
-            case "PENDING":
-                return "Đang xử lý";
-            case "INACTIVE":
-                return "Không còn hiệu lực";
-            default:
-                return "";
-        }
-    }
-
-    const bookingsMemo = React.useMemo(() => {
-        return bookings;
-    }, [bookings]);
+    const [bookingDetails, setBookingDetails] = useState([]);
+    const [keyword, setKeyword] = useState('');
+    const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const [checkboxesChecked, setCheckboxesChecked] = useState([]);
 
     useEffect(() => {
         dispatch(getAllBookingsByEventId(eventId1, currentPage - 1));
     }, [dispatch, eventId1, currentPage]);
+
+    const searchBookingByKeyword = async (e) => {
+        e.preventDefault();
+        dispatch(getAllBookingsByKeyword({ eventId: eventId1, keyword: keyword }));
+    };
+
+
+    const bookingsMemo = React.useMemo(() => {
+        return bookings;
+    }, [bookings]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -70,7 +40,6 @@ const BookingManagerOrderTable = () => {
 
             const results = await Promise.all(promises);
             const updatedBookingDetails = results.map(data => data.payload); // Extracting payload from the results
-
             setBookingDetails(updatedBookingDetails);
         };
 
@@ -80,75 +49,45 @@ const BookingManagerOrderTable = () => {
                 console.log('Data fetched successfully');
             });
         }
-    }, [bookingsMemo, dispatch]);
+    }, [bookings, bookingsMemo, dispatch])
+
+    const toggleSelectAll = (e) => {
+        setSelectAllChecked(e.target.checked);
+        if (e.target.checked) {
+            const allBookingIds = bookings.map((booking) => booking.id);
+            setCheckboxesChecked(allBookingIds);
+        } else {
+            setCheckboxesChecked([]);
+        }
+    };
+
+    const toggleCheckbox = (checkedBookingId) => {
+        if (checkboxesChecked.includes(checkedBookingId)) {
+            setCheckboxesChecked(checkboxesChecked.filter((id) => id !== checkedBookingId));
+        } else {
+            setCheckboxesChecked([...checkboxesChecked, checkedBookingId]);
+        }
+    };
+
 
     return (
         <>
             <div className="border bg-gray-100 flex py-1">
                 <div className="w-1/2 m-1 flex">
-                    {bookings.length === undefined ? (
-                        <div></div>
-                    ) : (
-                        <div>
-                            <select className="bg-gray-300 rounded m-2" onChange={handleSortingChange}>
-                                <option value="">Tất cả</option>
-                                {bookingDetails && bookingDetails.length > 0 ? (
-                                    bookingDetails.map((detail) =>
-                                        detail.data.map((detailData) =>
-                                            detailData.ticketInBookingDetailResponses
-                                                .sort((a, b) => a.ticketTypeName.localeCompare(b.ticketTypeName)) // Sort options alphabetically
-                                                .map((ticket, index) => (
-                                                    <option key={index} value={ticket.ticketTypeName}>
-                                                        {ticket.ticketTypeName}
-                                                    </option>
-                                                ))
-                                        )
-                                    )
-                                ) : (
-                                    <option value="">No booking details available</option>
-                                )}
-                            </select>
-                        </div>
-                    )}
-                    <div>
-                        {bookings.length === undefined ? (
-                            <div></div>
-                        ) : (
-                            <select className="bg-gray-300 rounded m-2">
-                                <option value="">Tất cả đơn hàng</option>
-                                {bookings.map((booking, index) => (
-                                    <option
-                                        key={index}
-                                        value={booking.status}
-                                        selected={booking.status === "ACTIVE" || booking.status === "PENDING" || booking.status === "INACTIVE"}
-                                    >
-                                        {getStatusLabel(booking.status)}
-                                    </option>
-                                ))}
-                            </select>
-                        )}
-                    </div>
-                    <div>
-                        <select
-                            className="bg-gray-300 rounded m-2"
-                            value={selectedSorting}
-                            onChange={handleSortingChange}
-                        >
-                            {sortingOptions.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+
                 </div>
                 <div className="w-1/2 m-2">
-                    <form className="text-right mr-2">
-                                    <span className="">
-                                        <input type="text" value="" className="bg-white"
-                                               placeholder="Name/Email/PhoneNumber"/>
-                                        <button type="submit" className="px-2"><CiSearch/></button>
-                                    </span>
+                    <form className="text-right mr-2" onSubmit={searchBookingByKeyword}>
+                        <input
+                            className="bg-white"
+                            type="text"
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
+                            placeholder="Name/Email/PhoneNumber"
+                        />
+                        <button type="submit" className="p-3">
+                            <ImSearch/>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -158,7 +97,12 @@ const BookingManagerOrderTable = () => {
                         <thead>
                         <tr className="border-x-0">
                             <th className="px-4 py-2 text-left border-b border-black">
-                                <input type="checkbox" className="bg-white"/>
+                                <input
+                                    type="checkbox"
+                                    className="bg-white"
+                                    checked={selectAllChecked}
+                                    onChange={toggleSelectAll}
+                                />
                             </th>
                             <th className="px-4 py-2 text-left border-b border-black">ĐƠN HÀNG</th>
                             <th className="px-4 py-2 text-left border-b border-black">VÉ</th>
@@ -166,60 +110,71 @@ const BookingManagerOrderTable = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {bookings.length === undefined ? (
-                            <div>No booking available for this event</div>
-                        ) : (bookings.map((booking, index) => (
-                            <tr key={index} className="border border-black border-x-0">
-                                <th className="px-4 py-2 text-left border-b border-black">
-                                    <input type="checkbox"/>
-                                </th>
-                                <td className="px-4 py-2 border-x-0">
-                                    {booking.customer.fullName}
-                                    <br/>
-                                    {booking.customer.phoneNumber}
-                                    <br/>
-                                    Ordered at {booking.createdAt}
-                                </td>
-                                <td className="px-4 py-2 border-x-0">
-                                    {bookingDetails && bookingDetails.length > 0 ? (
-                                        <>
-                                            {bookingDetails.map((detail) =>
-                                                detail.data.map((detailData) =>
-                                                    detailData.ticketInBookingDetailResponses.map((ticket, index) => {
-                                                        if (detailData.booking.id === booking.id)
-                                                            if (ticket.bookingDetail.id !== detailData.id) {
-                                                                return <div key={index}></div>;
-                                                            } else {
-                                                                return (
-                                                                    <div key={index}>
-                                                                        <span>{ticket.ticketTypeName}</span>
-                                                                        <br/>
-                                                                        <span>Giá 1 vé: {ticket.ticketTypePrice}</span>
-                                                                        {/* Render other ticket properties */}
-                                                                    </div>
-                                                                );
-                                                            }
-                                                    })
-                                                )
-                                            )}
-                                        </>
-                                    ) : (
-                                        <span>No booking details available</span>
-                                    )}
-                                </td>
-                                <td className="px-4 py-2 border-x-0">
-                                    {booking.totalAmount}
-                                </td>
+                        {bookings.length === 0 || bookings.length === undefined ? (
+                            <tr>
+                                <td colSpan="4">No booking available for this event</td>
                             </tr>
-                        )))}
+                        ) : (bookings.map((booking, index) => (
+                                <tr key={index} className="border border-black border-x-0">
+                                    <th className="px-4 py-2 text-left border-b border-black">
+                                        <input
+                                            type="checkbox"
+                                            className="bg-white"
+                                            checked={checkboxesChecked.includes(booking.id)}
+                                            onChange={() => toggleCheckbox(booking.id)}
+                                        />
+                                    </th>
+                                    <td className="px-4 py-2 border-x-0">
+                                        {booking.customer.fullName}
+                                        <br/>
+                                        {booking.userEmail}
+                                        <br/>
+                                        {booking.customer.phoneNumber}
+                                        <br/>
+                                        Ordered at {booking.createdAt}
+                                    </td>
+                                    <td className="px-4 py-2 border-x-0">
+                                        {bookingDetails && bookingDetails.length > 0 ? (
+                                            <>
+                                                {bookingDetails.map((detail) =>
+                                                    detail.data.map((detailData) => {
+                                                        let ticketCount = 0;
+                                                        return detailData.ticketInBookingDetailResponses.map((ticket, index) => {
+                                                            if (detailData.booking.id === booking.id) {
+                                                                if (ticket.bookingDetail.id !== detailData.id) {
+                                                                    return <div key={index}></div>;
+                                                                } else {
+                                                                    ticketCount++;
+                                                                    return (
+                                                                        <div key={index}>
+                                                                            <span>{ticketCount}</span>
+                                                                            <br/>
+                                                                            <span>{ticket.ticketTypeName}</span>
+                                                                            <br/>
+                                                                            {/* Render other ticket properties */}
+                                                                        </div>
+                                                                    );
+                                                                }
+                                                            }
+                                                        });
+                                                    })
+                                                )}
+                                            </>
+                                        ) : (
+                                            <span>No booking details available</span>
+                                        )}
+                                    </td>
+                                    <td className="px-4 py-2 border-x-0">
+                                        {booking.totalAmount}
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                         </tbody>
                     </table>
                     <div className="flex items-center justify-center h-20">
-                        <Stack
-                            spacing={2}
-                        >
+                        <Stack spacing={2}>
                             <Pagination
-                                count={totalPages || 0}
                                 color="primary"
                                 page={currentPage}
                                 onChange={(event, value) => setCurrentPage(value)}
@@ -236,7 +191,9 @@ const BookingManagerOrderTable = () => {
                                         Gửi mail đến
                                     </div>
                                     <div className="m-auto">
-                                        <button className="border-0 border-black rounded bg-[#C2DEA3]">
+                                        <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                                            navigate(`/503`)
+                                        }}>
                                             <div className="m-2">Tất cả</div>
                                         </button>
                                     </div>
