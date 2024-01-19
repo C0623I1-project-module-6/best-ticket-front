@@ -1,8 +1,12 @@
 import Seat from "./Seat.jsx";
-import React from "react";
+import React, {useState} from "react";
 
 export const TicketBookingStep1 = () => {
-
+    const [dataFromSeat, setDataFromSeat] = useState();
+    const getDataFormSeat = (data) => {
+        setDataFromSeat(data)
+        console.log(data)
+    }
 
     return (
         <>
@@ -65,7 +69,7 @@ export const TicketBookingStep1 = () => {
                         </div>
                     </div>
                     <div>
-                        <Seat/>
+                        <Seat dataFormSeat={getDataFormSeat}/>
                     </div>
 
                 </div>
@@ -78,8 +82,8 @@ export const TicketBookingStep1 = () => {
                     </div>
 
                     <div className="pl-5 bg-[#666666] py-4 flex text-white">
-                        <span className="w-4/5 ">Tổng cộng: </span>
-                        <span>0 VND</span>
+                        <span className="w-3/5 ">Tổng cộng:  </span>
+                        <span>{dataFromSeat} VND</span>
                     </div>
                     <button className="bg-[#7CA629] py-3 px-2 w-full text-white mt-10" type="button">Tiếp tục</button>
                 </div>
