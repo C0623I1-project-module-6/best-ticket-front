@@ -10,7 +10,6 @@ const BookingManagerTicketTable = () => {
     const dispatch = useDispatch();
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId = useParams().eventId;
-    const totalPages = useSelector((state) => state.event.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
     const [bookingDetails, setBookingDetails] = useState([]);
 
@@ -81,7 +80,8 @@ const BookingManagerTicketTable = () => {
                                                         return null; // Use null instead of <div></div> for an empty element
                                                     } else {
                                                         return (
-                                                            <React.Fragment key={index}> {/* Use React.Fragment instead of empty tags <> </> */}
+                                                            <React.Fragment
+                                                                key={index}> {/* Use React.Fragment instead of empty tags <> </> */}
                                                                 <td className="p-2 border border-black">{ticket.ticketTypeName}</td>
                                                                 <td className="p-2 border border-black">{ticket.ticketTypePrice}</td>
                                                             </React.Fragment>
@@ -93,8 +93,7 @@ const BookingManagerTicketTable = () => {
                                         })
                                     )
                                 ) : (
-                                        <td colSpan="2">No booking details available</td>
-
+                                    <td colSpan="2">No booking details available</td>
                                 )}
                                 <td className="p-2 border border-black">{booking.totalAmount}</td>
                             </tr>
@@ -106,7 +105,6 @@ const BookingManagerTicketTable = () => {
             <div className="flex items-center justify-center h-20">
                 <Stack spacing={2}>
                     <Pagination
-                        count={totalPages || Math.ceil(bookingDetails.length / 10)}
                         color="primary"
                         page={currentPage}
                         onChange={(event, value) => setCurrentPage(value)}

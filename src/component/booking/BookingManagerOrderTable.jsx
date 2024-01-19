@@ -23,7 +23,6 @@ const BookingManagerOrderTable = () => {
     const searchBookingByKeyword = async (e) => {
         e.preventDefault();
         dispatch(getAllBookingsByKeyword({ eventId: eventId1, keyword: keyword }));
-        console.log(bookings)
     };
 
 
@@ -39,7 +38,6 @@ const BookingManagerOrderTable = () => {
 
             const results = await Promise.all(promises);
             const updatedBookingDetails = results.map(data => data.payload); // Extracting payload from the results
-            console.log(bookings)
             setBookingDetails(updatedBookingDetails);
         };
 
@@ -145,7 +143,6 @@ const BookingManagerOrderTable = () => {
                     <div className="flex items-center justify-center h-20">
                         <Stack spacing={2}>
                             <Pagination
-                                // count={parseInt(totalPages) || Math.ceil(bookings.length / 10)}
                                 color="primary"
                                 page={currentPage}
                                 onChange={(event, value) => setCurrentPage(value)}
