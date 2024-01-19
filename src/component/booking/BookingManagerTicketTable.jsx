@@ -67,10 +67,6 @@ const BookingManagerTicketTable = () => {
                         return (
                             <tr key={index}>
                                 <td className="p-2 border border-black">{count}</td>
-                                <td className="p-2 border border-black">{booking.customer.fullName}</td>
-                                <td className="p-2 border border-black">{booking.userEmail}</td>
-                                <td className="p-2 border border-black">{booking.customer.phoneNumber}</td>
-                                <td className="p-2 border border-black">N/A</td>
                                 {bookingDetails && bookingDetails.length > 0 ? (
                                     bookingDetails.map((detail) =>
                                         detail.data.map((detailData) => {
@@ -82,6 +78,10 @@ const BookingManagerTicketTable = () => {
                                                         return (
                                                             <React.Fragment
                                                                 key={index}> {/* Use React.Fragment instead of empty tags <> </> */}
+                                                                <td className="p-2 border border-black">{booking.customer.fullName}</td>
+                                                                <td className="p-2 border border-black">{booking.userEmail}</td>
+                                                                <td className="p-2 border border-black">{booking.customer.phoneNumber}</td>
+                                                                <td className="p-2 border border-black">N/A</td>
                                                                 <td className="p-2 border border-black">{ticket.ticketTypeName}</td>
                                                                 <td className="p-2 border border-black">{ticket.ticketTypePrice}</td>
                                                             </React.Fragment>
