@@ -15,6 +15,8 @@ const BookingManagerOrderTable = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [bookingDetails, setBookingDetails] = useState([]);
     const [keyword, setKeyword] = useState('');
+    const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const [checkboxesChecked, setCheckboxesChecked] = useState([]);
 
     useEffect(() => {
         dispatch(getAllBookingsByEventId(eventId1, currentPage - 1));
@@ -47,13 +49,33 @@ const BookingManagerOrderTable = () => {
                 console.log('Data fetched successfully');
             });
         }
-    }, [bookings, bookingsMemo, dispatch]);
+    }, [bookings, bookingsMemo, dispatch])
+
+    const toggleSelectAll = (e) => {
+        setSelectAllChecked(e.target.checked);
+        if (e.target.checked) {
+            const allBookingIds = bookings.map((booking) => booking.id);
+            setCheckboxesChecked(allBookingIds);
+        } else {
+            setCheckboxesChecked([]);
+        }
+    };
+
+    const toggleCheckbox = (checkedBookingId) => {
+        if (checkboxesChecked.includes(checkedBookingId)) {
+            setCheckboxesChecked(checkboxesChecked.filter((id) => id !== checkedBookingId));
+        } else {
+            setCheckboxesChecked([...checkboxesChecked, checkedBookingId]);
+        }
+    };
 
 
     return (
         <>
             <div className="border bg-gray-100 flex py-1">
-                <div className="w-1/2 m-1 flex"></div>
+                <div className="w-1/2 m-1 flex">
+
+                </div>
                 <div className="w-1/2 m-2">
                     <form className="text-right mr-2" onSubmit={searchBookingByKeyword}>
                         <input
@@ -75,7 +97,12 @@ const BookingManagerOrderTable = () => {
                         <thead>
                         <tr className="border-x-0">
                             <th className="px-4 py-2 text-left border-b border-black">
-                                <input type="checkbox" className="bg-white"/>
+                                <input
+                                    type="checkbox"
+                                    className="bg-white"
+                                    checked={selectAllChecked}
+                                    onChange={toggleSelectAll}
+                                />
                             </th>
                             <th className="px-4 py-2 text-left border-b border-black">ĐƠN HÀNG</th>
                             <th className="px-4 py-2 text-left border-b border-black">VÉ</th>
@@ -90,7 +117,12 @@ const BookingManagerOrderTable = () => {
                         ) : (bookings.map((booking, index) => (
                                 <tr key={index} className="border border-black border-x-0">
                                     <th className="px-4 py-2 text-left border-b border-black">
-                                        <input type="checkbox"/>
+                                        <input
+                                            type="checkbox"
+                                            className="bg-white"
+                                            checked={checkboxesChecked.includes(booking.id)}
+                                            onChange={() => toggleCheckbox(booking.id)}
+                                        />
                                     </th>
                                     <td className="px-4 py-2 border-x-0">
                                         {booking.customer.fullName}
