@@ -192,7 +192,7 @@ const BookingManagerOrderTable = () => {
                                     </div>
                                     <div className="m-auto">
                                         <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
-                                            navigate(`/404`)
+                                            navigate(`/503`)
                                         }}>
                                             <div className="m-2">Tất cả</div>
                                         </button>
