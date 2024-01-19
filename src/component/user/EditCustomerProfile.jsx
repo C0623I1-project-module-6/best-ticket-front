@@ -1,23 +1,33 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
-import {addProfile, selectProfileAdded} from "../../features/CustomerSlice.js";
+import {useEffect, useState} from "react";
+import {addProfile, selectAddProfileSuccess, selectProfileAdded} from "../../features/CustomerSlice.js";
+import {Bounce, toast} from "react-toastify";
 
-function AddCustomerProfile() {
+function EditCustomerProfile() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [customer, setCustomer] = useState({});
     const profileAdded = useSelector(selectProfileAdded);
-    const {customerId} = useParams();
-    const isCreate = !customerId;
+    const addSuccess = useSelector(selectAddProfileSuccess);
+    const showToastMessage=(content)=>{
+        toast("🦄", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(addProfile(customer));
         setCustomer(profileAdded);
-        alert(
-            `${isCreate ? "Add" : "Edit"} product
-             ${JSON.stringify(customer)} successfully!!!`
-        );
+        showToastMessage("Register successfully!");
         navigate("/");
     }
     const handleChange = (e) => {
@@ -26,6 +36,7 @@ function AddCustomerProfile() {
             [e.target.name]: e.target.value
         });
     }
+
     return (
         <div className="w-full size-full bg-white overflow-auto">
             <form className=" p-20 rounded-lg shadow-md space-y-6 " method="POST"
@@ -198,4 +209,4 @@ function AddCustomerProfile() {
     );
 }
 
-export default AddCustomerProfile;
+export default EditCustomerProfile;
