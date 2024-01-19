@@ -187,7 +187,7 @@ const BookingManagerOrderTable = () => {
                                 <div></div>
                             ) : (
                                 <div>
-                                    <div className="m-3">
+                                    <div className="m-2">
                                         Gửi mail đến
                                     </div>
                                     <div className="m-auto">
