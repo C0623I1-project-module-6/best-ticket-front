@@ -26,7 +26,7 @@ const BookingManagerSidebar = () => {
                         </div>
                     </li>
                     <li>
-                        <a onClick={() => {navigate(`/404`)}} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
+                        <a onClick={() => {navigate(`/my-event/legal`)}} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><GiReturnArrow/></div>
                                 Quay lại trang sự kiện của tôi

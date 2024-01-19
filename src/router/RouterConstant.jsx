@@ -52,7 +52,9 @@ export const ROUT_DATA = [
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
 
+
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
+
     {
         path: "/event/create", element: CreateEventPage, children: [
             {path: "", element: CreateEventStep1},
