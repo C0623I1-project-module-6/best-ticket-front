@@ -93,9 +93,8 @@ const BookingManagerTicketTable = () => {
                                         })
                                     )
                                 ) : (
-                                    <tr>
                                         <td colSpan="2">No booking details available</td>
-                                    </tr>
+
                                 )}
                                 <td className="p-2 border border-black">{booking.totalAmount}</td>
                             </tr>
