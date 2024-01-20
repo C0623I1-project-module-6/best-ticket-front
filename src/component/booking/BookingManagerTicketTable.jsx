@@ -10,6 +10,7 @@ const BookingManagerTicketTable = () => {
     const dispatch = useDispatch();
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId = useParams().eventId;
+    const totalPages = useSelector(state => state.event.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
     const [bookingDetails, setBookingDetails] = useState([]);
 
@@ -67,10 +68,6 @@ const BookingManagerTicketTable = () => {
                         return (
                             <tr key={index}>
                                 <td className="p-2 border border-black">{count}</td>
-                                <td className="p-2 border border-black">{booking.customer.fullName}</td>
-                                <td className="p-2 border border-black">{booking.userEmail}</td>
-                                <td className="p-2 border border-black">{booking.customer.phoneNumber}</td>
-                                <td className="p-2 border border-black">N/A</td>
                                 {bookingDetails && bookingDetails.length > 0 ? (
                                     bookingDetails.map((detail) =>
                                         detail.data.map((detailData) => {
@@ -82,6 +79,10 @@ const BookingManagerTicketTable = () => {
                                                         return (
                                                             <React.Fragment
                                                                 key={index}> {/* Use React.Fragment instead of empty tags <> </> */}
+                                                                <td className="p-2 border border-black">{booking.customer.fullName}</td>
+                                                                <td className="p-2 border border-black">{booking.userEmail}</td>
+                                                                <td className="p-2 border border-black">{booking.customer.phoneNumber}</td>
+                                                                <td className="p-2 border border-black">N/A</td>
                                                                 <td className="p-2 border border-black">{ticket.ticketTypeName}</td>
                                                                 <td className="p-2 border border-black">{ticket.ticketTypePrice}</td>
                                                             </React.Fragment>
@@ -105,6 +106,7 @@ const BookingManagerTicketTable = () => {
             <div className="flex items-center justify-center h-20">
                 <Stack spacing={2}>
                     <Pagination
+                        count={totalPages || Math.ceil(bookings.length/10)}
                         color="primary"
                         page={currentPage}
                         onChange={(event, value) => setCurrentPage(value)}

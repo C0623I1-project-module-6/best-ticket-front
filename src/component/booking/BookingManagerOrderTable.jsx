@@ -6,10 +6,12 @@ import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import {ImSearch} from 'react-icons/im';
+import {MdEmail} from "react-icons/md";
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const totalPages = useSelector(state => state.event.totalPages);
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId1 = useParams().eventId;
     const [currentPage, setCurrentPage] = useState(1);
@@ -24,9 +26,8 @@ const BookingManagerOrderTable = () => {
 
     const searchBookingByKeyword = async (e) => {
         e.preventDefault();
-        dispatch(getAllBookingsByKeyword({ eventId: eventId1, keyword: keyword }));
+        dispatch(getAllBookingsByKeyword({eventId: eventId1, keyword: keyword}));
     };
-
 
     const bookingsMemo = React.useMemo(() => {
         return bookings;
@@ -37,7 +38,6 @@ const BookingManagerOrderTable = () => {
             const promises = bookingsMemo
                 .filter(booking => !booking.bookingDetails)
                 .map(booking => dispatch(getAllBookingDetailsByBookingId(booking.id)));
-
             const results = await Promise.all(promises);
             const updatedBookingDetails = results.map(data => data.payload); // Extracting payload from the results
             setBookingDetails(updatedBookingDetails);
@@ -68,7 +68,6 @@ const BookingManagerOrderTable = () => {
             setCheckboxesChecked([...checkboxesChecked, checkedBookingId]);
         }
     };
-
 
     return (
         <>
@@ -175,6 +174,7 @@ const BookingManagerOrderTable = () => {
                     <div className="flex items-center justify-center h-20">
                         <Stack spacing={2}>
                             <Pagination
+                                count={totalPages || Math.ceil(bookings.length / 10)}
                                 color="primary"
                                 page={currentPage}
                                 onChange={(event, value) => setCurrentPage(value)}
@@ -187,8 +187,9 @@ const BookingManagerOrderTable = () => {
                                 <div></div>
                             ) : (
                                 <div>
-                                    <div className="m-3">
-                                        Gửi mail đến
+                                    <div className="m-2 flex text-xl">
+                                        <div className="py-1 px-1 text-xl"><MdEmail /></div>
+                                        <div>Gửi mail đến</div>
                                     </div>
                                     <div className="m-auto">
                                         <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
