@@ -3,12 +3,8 @@ import {Link} from "react-router-dom";
 export default function OrganizerSidebar() {
     const steps = [
         {
-            title: "Trang chủ",
-            url: "/"
-        },
-        {
             title: "Hồ sơ ban tổ chức",
-            url: "/organizer/profile"
+            url: "/my-event/legal"
         },
         {
             title: "Sự kiện đã tạo",
@@ -25,7 +21,7 @@ export default function OrganizerSidebar() {
     ]
     return (
 
-        <div className="fixed w-1/4 h-full text-white font-semibold bg-gray-800 pt-10 pl-5">
+        <div className="fixed w-1/4 h-full text-white font-serif bg-gray-800 pt-10 pl-5">
             {steps.map((step, index) => (
                 <div key={index} className="flex gap-5 items-center hover:bg-gray-400 hover:text-black
                py-3 px-5 mb-2">

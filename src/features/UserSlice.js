@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {login, loginGoogle, loginWithToken, logout, register} from "../api/UserApi.js";
+import {getUser, login, loginGoogle, loginWithToken, logout, register} from "../api/UserApi.js";
 
 const initialState = {
     value: null,
@@ -12,6 +12,8 @@ const initialState = {
     logoutError: null,
     listRole: null,
     isAdmin: false,
+    user:{},
+
 };
 
 export const loginUser = createAsyncThunk(
@@ -61,12 +63,24 @@ export const loginWithGoogle = createAsyncThunk(
     }
 );
 
+export const fetchGetUser = createAsyncThunk(
+    "profile",
+    async (userId, {rejectWithValue}) => {
+        const response = await getUser(userId);
+        if (response.status !== 201) {
+            console.log(response)
+            return rejectWithValue(response.data.message);
+        }
+        return response.data;
+    }
+);
+
 export const registerUser = createAsyncThunk(
     "register",
     async (registerData, {rejectWithValue}) => {
 
         const response = await register(registerData);
-        if (response.status !== 200) {
+        if (response.status !== 201) {
             console.log(response)
             return rejectWithValue(response.data.message);
         }
@@ -97,7 +111,6 @@ export const userSlice = createSlice(
                 state.registerError = action.payload;
             },
 
-
             setLogoutSuccess: (state, action) => {
                 state.logoutSuccess = action.payload;
             },
@@ -107,6 +120,9 @@ export const userSlice = createSlice(
             setValue: (state, action) => {
                 state.value = action.payload;
             },
+            setUser:(state,action)=>{
+                state.user=action.payload;
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -198,6 +214,9 @@ export const userSlice = createSlice(
                     localStorage.removeItem("token");
                     state.logoutError = false;
                 })
+                .addCase(fetchGetUser.fulfilled, (state, action) => {
+                    state.value = action.payload.data;
+                })
         }
     }
 )
@@ -210,6 +229,7 @@ export const {
     setLogoutSuccess,
     setLogoutError,
     setValue,
+    setUser,
 
 } = userSlice.actions;
 
@@ -223,4 +243,5 @@ export const selectLogoutSuccess = (state) => state.user.logoutSuccess;
 export const selectUserLogout = (state) => state.user.value;
 export const selectUserRole = (state) => state.user.listRole;
 export const selectIsAdmin = (state) => state.user.isAdmin;
+export const selectUser=(state)=>state.user.user;
 export default userSlice.reducer;

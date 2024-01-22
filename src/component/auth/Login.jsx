@@ -11,7 +11,17 @@ function Login() {
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
-
+    const toastOptions = {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+    };
     const handleSubmit = async (e) => {
         e.preventDefault()
         const user = {
@@ -21,32 +31,12 @@ function Login() {
             password: e.target[1].value
         }
         dispatch(loginUser(user));
-        if (loginSuccess && user && user.token) {
+        if (loginSuccess) {
             localStorage.setItem('token', user.token);
-            toast("🦄 Login successfully!", {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-            });
+            toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             navigate("/");
         } else {
-            toast("🦄 Invalid username or email or password!", {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-            });
+            toast("🦄 Tên đăng nhập hoặc mật khẩu không đúng!",toastOptions );
         }
     }
     return (
