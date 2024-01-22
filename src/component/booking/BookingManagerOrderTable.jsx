@@ -24,7 +24,7 @@ const BookingManagerOrderTable = () => {
 
     const searchBookingByKeyword = async (e) => {
         e.preventDefault();
-        dispatch(getAllBookingsByKeyword({ eventId: eventId1, keyword: keyword }));
+        dispatch(getAllBookingsByKeyword({eventId: eventId1, keyword: keyword}));
     };
 
 

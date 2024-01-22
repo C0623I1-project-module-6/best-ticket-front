@@ -5,13 +5,14 @@ import logoDark from "../../assets/img/logo/logo-auth-header-dark.svg";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {GoogleLogin} from "@react-oauth/google";
-import {useDispatch} from "react-redux";
-import {loginWithGoogle} from "../../features/UserSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {loginWithGoogle, selectIsLogin} from "../../features/UserSlice.js";
 
 function AuthHeader(props) {
     const navigate = useNavigate();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const dispatch = useDispatch();
+    const isLogin = useSelector(selectIsLogin)
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -24,6 +25,9 @@ function AuthHeader(props) {
             document.documentElement.classList.remove('dark')
         }
     }, [theme]);
+    useEffect(() => {
+
+    }, []);
 
     const loginGoogle = (res) => {
         dispatch(loginWithGoogle(res))

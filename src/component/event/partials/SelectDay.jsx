@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { FaRegCalendarAlt } from "react-icons/fa";
+import {FaRegCalendarAlt} from "react-icons/fa";
 
 const EventFilter = () => {
     const [startDate, setStartDate] = useState(null);
@@ -32,8 +32,8 @@ const EventFilter = () => {
         <div className="relative z-10 w-[250px] ">
             <div className="flex  border-2 border-gray-300 rounded-lg gap-2 cursor-pointer p-2"
                  onClick={() => setShowOptions(!showOptions)}>
-                <FaRegCalendarAlt size={23} />
-                <div  >
+                <FaRegCalendarAlt size={23}/>
+                <div>
                     {selectOption}
                 </div>
             </div>
@@ -42,7 +42,7 @@ const EventFilter = () => {
                 <div className="absolute top-12 bg-white w-full rounded-lg">
                     {options.map((option, index) => (
                         <div key={index} onClick={() => setSelectOption(option)}
-                            className="cursor-pointer hover:bg-green-200 p-2 rounded-lg ">
+                             className="cursor-pointer hover:bg-green-200 p-2 rounded-lg ">
                             {option}
                         </div>
                     ))}

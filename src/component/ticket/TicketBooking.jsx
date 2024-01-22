@@ -4,7 +4,6 @@ import UserFooter from "../footer/UserFooter.jsx";
 import {TicketBookingStep1} from "./TicketBookingStep1.jsx";
 import {TicketBookingStep2} from "./TicketBookingStep2.jsx";
 import {TicketBookingStep3} from "./TicketBookingStep3.jsx";
-import {useParams} from "react-router-dom";
 
 
 function TicketBooking() {

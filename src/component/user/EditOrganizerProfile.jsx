@@ -1,14 +1,9 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import FormCompany from "./FormCompany.jsx";
 import FormPersonal from "./FormPersonal.jsx";
-import {
-    registerProfile,
-    selectOrganizerRegister,
-    selectError,
-    selectSuccess
-} from "../../features/OrganizerSlice.js";
+import {registerProfile, selectError, selectOrganizerRegister, selectSuccess} from "../../features/OrganizerSlice.js";
 import {Bounce, toast} from "react-toastify";
 
 function EditOrganizerProfile() {
@@ -18,19 +13,19 @@ function EditOrganizerProfile() {
     const organizerAdded = useSelector(selectOrganizerRegister);
     const editSuccess = useSelector(selectSuccess);
     const editError = useSelector(selectError);
-const showToastMessage=(content)=>{
-    toast("🦄", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-    })
-}
+    const showToastMessage = (content) => {
+        toast("🦄", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        })
+    }
     const [organizer, setOrganizer] = useState({
         name: "",
         businessCode: "",
@@ -57,7 +52,7 @@ const showToastMessage=(content)=>{
 
     return (
         <div className="h-screen size-full overflow-y-auto ">
-            <form  className="p-5 max-w-full" onSubmit={handleSubmit}>
+            <form className="p-5 max-w-full" onSubmit={handleSubmit}>
                 <h2 className="font-semibold text-4xl p-5">
                     Đơn đăng ký ban tổ chức
                 </h2>

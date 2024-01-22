@@ -21,6 +21,8 @@ function Login() {
             password: e.target[1].value
         }
         dispatch(loginUser(user));
+    }
+    useEffect(() => {
         if (loginSuccess && user && user.token) {
             localStorage.setItem('token', user.token);
             toast("🦄 Login successfully!", {
@@ -36,6 +38,11 @@ function Login() {
             });
             navigate("/");
         } else {
+
+        }
+    }, [user]);
+    useEffect(() => {
+        if (loginError) {
             toast("🦄 Invalid username or email or password!", {
                 position: "top-right",
                 autoClose: 2000,
@@ -48,7 +55,7 @@ function Login() {
                 transition: Bounce,
             });
         }
-    }
+    }, [loginError]);
     return (
 
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8

@@ -12,9 +12,7 @@ function Register() {
     const userRegister = useSelector(selectUserRegister);
     const registerSuccess = useSelector(selectRegisterSuccess);
     const [user, setUser] = useState({confirmPassword: ""});
-
     const usernames = useSelector(selectUsernames);
-    console.log(usernames)
     const emails = useSelector(selectExistsUsers);
     const phoneNumbers = useSelector(selectExistsUsers);
     const regexPassword = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;

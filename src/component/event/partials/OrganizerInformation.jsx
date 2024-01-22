@@ -1,14 +1,14 @@
 import {Button, Input} from "@material-tailwind/react";
 
-export default function OrganizerInformation(){
-    return(
+export default function OrganizerInformation() {
+    return (
         <div className="w-[40vh] ">
             <div>
                 <h1>Thông tin nhà tổ chức sự kiện</h1>
             </div>
             <div>
                 <div className="w-72 p-5">
-                    <Input label="Nhà tổ chức" />
+                    <Input label="Nhà tổ chức"/>
                 </div>
                 <div>
                     <h2>Thông tin liên lạc</h2>

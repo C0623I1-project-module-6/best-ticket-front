@@ -65,8 +65,6 @@ function Seat({dataFormSeat}) {
     // Tạo danh sách ghế
 
 
-
-
     // Render danh sách ghế
     const renderSeats = () => {
         return seats.map((seat) => (

@@ -12,7 +12,7 @@ import iconEventHN from '../../assets/icon/iconHN.png';
 import {FaBuildingColumns, FaQuestion} from "react-icons/fa6";
 import {FiUsers} from "react-icons/fi";
 import {BsExclamationOctagon} from "react-icons/bs";
-import {FaBuilding, FaRegBuilding} from "react-icons/fa";
+import {FaRegBuilding} from "react-icons/fa";
 import {PiShieldStarDuotone} from "react-icons/pi";
 import {IoShieldCheckmarkOutline} from "react-icons/io5";
 import {LuPackageSearch} from "react-icons/lu";
@@ -20,7 +20,6 @@ import {LiaShippingFastSolid} from "react-icons/lia";
 import {RiContactsBookLine} from "react-icons/ri";
 import {TbBooks} from "react-icons/tb";
 import {MdOutlinePayment} from "react-icons/md";
-import {Link} from "react-router-dom";
 
 const UserSideBar = () => {
     const pathname = window.location.pathname;
@@ -77,7 +76,7 @@ const UserSideBar = () => {
                     dark:hover:bg-gray-800
                     ">
                         {icon}
-                        <span >{label}</span>
+                        <span>{label}</span>
                     </li>
                 ))}
             </ul>

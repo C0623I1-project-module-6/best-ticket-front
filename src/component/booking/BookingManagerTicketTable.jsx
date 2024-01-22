@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllBookingsByEventId} from '../../features/BookingSlice';
 import {getAllBookingDetailsByBookingId} from '../../features/BookingDetailSlice';
 import {useParams} from 'react-router-dom';
-import {Stack, Pagination} from '@mui/material';
+import {Pagination, Stack} from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import {ImInfo} from "react-icons/im";
 

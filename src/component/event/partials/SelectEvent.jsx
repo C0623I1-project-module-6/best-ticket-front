@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useTheme } from '@mui/material/styles';
+import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -29,12 +29,12 @@ function getStyles(eventType, selectedEventTypes, theme) {
     };
 }
 
-export default function MultipleSelectChip({eventTypes,callback}) {
+export default function MultipleSelectChip({eventTypes, callback}) {
     const theme = useTheme();
     const [selectedEventTypes, setSelectedEventTypes] = useState([]);
     const handleChange = (event) => {
         const {
-            target: { value },
+            target: {value},
         } = event;
         setSelectedEventTypes(
             typeof value === 'string' ? value.split(',') : value,
@@ -46,7 +46,7 @@ export default function MultipleSelectChip({eventTypes,callback}) {
     }, [selectedEventTypes]);
     return (
         <div className="w-[80%] p-5 mx-auto">
-            <FormControl sx={{ width: '100%' }}>
+            <FormControl sx={{width: '100%'}}>
                 <InputLabel id="demo-multiple-chip-label">Loại sự kiện </InputLabel>
                 <Select
                     labelId="demo-multiple-chip-label"
@@ -54,11 +54,11 @@ export default function MultipleSelectChip({eventTypes,callback}) {
                     multiple
                     value={selectedEventTypes}
                     onChange={handleChange}
-                    input={<OutlinedInput id="select-multiple-chip" label="Loại sự kiện" />}
+                    input={<OutlinedInput id="select-multiple-chip" label="Loại sự kiện"/>}
                     renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                             {selected.map((value) => (
-                                <Chip key={value} label={value} />
+                                <Chip key={value} label={value}/>
                             ))}
                         </Box>
                     )}

@@ -17,6 +17,7 @@ export async function showBookings(currentPage) {
   })
   return response;
 }
+
 export async function showTickets() {
   let response = null;
   await axios({
@@ -32,6 +33,7 @@ export async function showTickets() {
   })
   return response;
 }
+
 export async function showUsers(currentPage) {
   let response = null;
   await axios({
@@ -47,6 +49,7 @@ export async function showUsers(currentPage) {
   })
   return response;
 }
+
 export async function showEvents(currentPage) {
   let response = null;
   await axios({

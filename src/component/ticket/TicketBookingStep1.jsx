@@ -1,6 +1,5 @@
 import Seat from "./Seat.jsx";
 import React, {useState} from "react";
-import {useParams} from "react-router-dom";
 
 export const TicketBookingStep1 = () => {
     const [dataFromSeat, setDataFromSeat] = useState();

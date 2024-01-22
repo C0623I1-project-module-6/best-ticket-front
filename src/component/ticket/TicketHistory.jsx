@@ -43,7 +43,7 @@ function TicketHistory() {
                         </div>
                         <div className="flex-col items-center space-y-3 justify-items-center justify-center">
                             <NavLink to={"/customer/profile"}
-                                className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
+                                     className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
                                 <FaUser/>
                                 My Account
                             </NavLink>
@@ -60,14 +60,14 @@ function TicketHistory() {
                                     <FaCalendar/>
                                     My Created Event
                                 </div>
-                                )}
+                            )}
 
                         </div>
 
                     </div>
                     <div
                         className="flex-col items-center space-y-3 justify-items-center justify-center font-bold w-3/4">
-                    <div>
+                        <div>
                             My Tickets
                         </div>
                         <div>

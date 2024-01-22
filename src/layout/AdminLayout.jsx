@@ -1,4 +1,4 @@
- import AdminSidebar from "../component/sidebar/AdminSidebar.jsx";
+import AdminSidebar from "../component/sidebar/AdminSidebar.jsx";
 import AdminHeader from "../component/header/AdminHeader.jsx";
 import {Navigate} from "react-router-dom";
 import {useAuthor} from "../ultility/customHook/useAuthor.js";

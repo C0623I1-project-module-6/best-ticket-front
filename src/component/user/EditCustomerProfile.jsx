@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {addProfile, selectAddProfileSuccess, selectProfileAdded} from "../../features/CustomerSlice.js";
 import {Bounce, toast} from "react-toastify";
 
@@ -10,7 +10,7 @@ function EditCustomerProfile() {
     const [customer, setCustomer] = useState({});
     const profileAdded = useSelector(selectProfileAdded);
     const addSuccess = useSelector(selectAddProfileSuccess);
-    const showToastMessage=(content)=>{
+    const showToastMessage = (content) => {
         toast("🦄", {
             position: "top-right",
             autoClose: 2000,

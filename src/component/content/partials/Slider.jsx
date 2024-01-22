@@ -1,5 +1,5 @@
 export default function Slider({img}) {
-    return(
+    return (
         <div>
             <img src={img} alt="" className="rounded-lg"/>
         </div>
