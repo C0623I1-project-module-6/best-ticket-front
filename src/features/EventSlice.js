@@ -78,7 +78,12 @@ export const EventSlice = createSlice({
             // find by EventById
             .addCase(getEventById.pending, handlePending)
             .addCase(getEventById.rejected, handleRejected)
-            .addCase(getEventById.fulfilled, handleFulfilled)
+            .addCase(getEventById.fulfilled, (state,action)=>{
+                state.success = true;
+                state.loading = false;
+                state.error = false;
+                state.event = action.payload;
+            })
 
             //create event
             .addCase(addEvent.pending, (state)=>{

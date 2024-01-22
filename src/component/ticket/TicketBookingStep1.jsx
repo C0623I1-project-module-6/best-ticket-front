@@ -1,8 +1,10 @@
 import Seat from "./Seat.jsx";
 import React, {useState} from "react";
+import {useParams} from "react-router-dom";
 
 export const TicketBookingStep1 = () => {
     const [dataFromSeat, setDataFromSeat] = useState();
+
     const getDataFormSeat = (data) => {
         setDataFromSeat(data)
         console.log(data)
@@ -23,6 +25,7 @@ export const TicketBookingStep1 = () => {
             <div className="flex mx-40">
                 <div className="w-4/6  mr-3">
                     <div className="bg-[#E3E3E3]">
+
                         <div className="flex p-3">
                             <div className="w-1/2">
                                 <div className="flex ">

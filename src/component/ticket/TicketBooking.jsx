@@ -2,25 +2,20 @@ import React, {useState} from 'react';
 import {Steps} from 'antd';
 import UserFooter from "../footer/UserFooter.jsx";
 import {TicketBookingStep1} from "./TicketBookingStep1.jsx";
+import {TicketBookingStep2} from "./TicketBookingStep2.jsx";
 import {TicketBookingStep3} from "./TicketBookingStep3.jsx";
-import TicketBookingStep2 from "./TicketBookingStep2.jsx";
-import {createBrowserHistory} from 'history';
+import {useParams} from "react-router-dom";
 
 
 function TicketBooking() {
     const {Step} = Steps;
-    const history = createBrowserHistory();
-    const [dataFromChild,setDataFromChild] = useState();
-    console.log(history)
 
     const [current, setCurrent] = useState(0);
     const handleStepClick = (step) => {
         setCurrent(step);
         console.log(step)
     };
-    const getDataFromChild = (data) =>{
-        setDataFromChild(data)
-    }
+
 
     return (
         <div className="w-full bg-[#F1F1F1] overflow-y-auto">
@@ -44,7 +39,7 @@ function TicketBooking() {
                     <Step title="Thanh toán"/>
                     <Step title="Hoàn tất"/>
                 </Steps>
-                {current === 0 && <TicketBookingStep1 />}
+                {current === 0 && <TicketBookingStep1/>}
                 {current === 1 && <TicketBookingStep2/>}
                 {current === 2 && <TicketBookingStep3/>}
             </div>

@@ -8,7 +8,6 @@ import img from '../../assets/img/image/event.png'
 import imgOrganizerLogo from '../../assets/img/image/organizerlogo.jpg'
 import {IoIosArrowForward, IoMdMail} from "react-icons/io";
 import {IoTicket} from "react-icons/io5";
-import {getTicketByEventId} from "../../features/TicketSlice.js";
 import {getTicketTypes, selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
 import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
 
@@ -20,53 +19,47 @@ const EventDetail = () => {
     const ticketTypes = useSelector(selectShowTicketTypes);
     const times = useSelector(selectShowTimeByEventId)
     let isFirstRender = true;
-    console.log(ticketTypes)
-    console.log(event)
-    console.log(times)
+
     const showEventById = () => {
         dispatch(getEventById(eventId));
     }
-    const showTicketByEventId = () => {
-        dispatch(getTicketByEventId(eventId));
-    }
+
     const showTicketType = () => {
         dispatch(getTicketTypes())
     }
     const showTimeByEventId = () => {
         dispatch(getTimeByEventId(eventId))
     }
+
     useEffect(() => {
         showEventById(eventId);
-        showTicketByEventId(eventId);
         showTicketType();
         showTimeByEventId(eventId);
     }, []);
     return (
         <>
             <div className="w-full overflow-y-auto pb-52">
-                <img className="w-full h-96" src={event.image} alt=""/>
+                <img className="w-full h-96" src={event.data?.image} alt=""/>
 
                 <div className="flex mx-60 gap-20">
                     <div className="w-4/6">
                         <div className=" flex mt-10">
                             <div className="w-4/6 flex">
-                                <div className="w-1/6 mr-8">
-                                    {times.data?.content !== undefined ? (times.data?.content.map((time, index) => (
-                                        <div className="text-center border border-solid border-black" key={index}>
-                                            <p className="bg-[#EB1212] text-white">{time.time}</p>
-                                        </div>))) : (<div> Sự kiện này chưa có lịch chiếu</div>)
-                                    }
-
-                                </div>
-                                <div className="w-5/6">
-                                    <div className="text-black text-xl">{event.name}
+                                <div className="">
+                                    <div className="text-black text-xl">{event.data?.name}
                                     </div>
-                                    {times.data?.content.map((time, index) => (
-                                        <div className="flex items-center text-black" key={index}><FaClock
-                                            className="mr-2"/>
-                                            {time.time}
-                                        </div>
-                                    ))}
+                                    {times.data?.content.map((time, index) => {
+                                        if (isFirstRender) {
+                                            isFirstRender = false;
+                                            return (
+                                                <div className="flex items-center text-black" key={index}><FaClock
+                                                    className="mr-2"/>
+                                                    {time.time}
+                                                </div>
+                                            )
+                                        }
+                                    })}
+
 
                                     <div className="flex items-center text-black"><FaLocationDot className="mr-2"/> Nhà
                                         Văn hoá
@@ -95,16 +88,15 @@ const EventDetail = () => {
                             <div className="font-bold text-xl border-dashed border-b border-black py-3">
                                 <p className="text-black px-3">Lịch sự kiện</p>
                             </div>
-                            <div className="flex w-full border-dashed border-b border-black py-3 px-4">
-                                {times.data?.content.map((time, index) => (
+                            {times.data?.content.map((time, index) => (
+
+                                <div className="flex w-full border-dashed border-b border-black py-3 px-4">
+
                                     <div className="w-5/6" key={index}>
 
                                         <p className="text-black">{time.time}</p>
                                         {/*<p>03:00 PM - 06:00 PM</p>*/}
                                     </div>
-                                ))}
-
-                                {times.data?.content.map((time, index) => (
                                     <div className="w-1/6 flex text-right justify-end items-center" key={index}>
                                         <NavLink to={`${location.pathname}/ticket-booking/${time.id}`}
                                                  className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua
@@ -112,9 +104,9 @@ const EventDetail = () => {
                                             ngay
                                         </NavLink>
                                     </div>
-                                ))}
+                                </div>
+                            ))}
 
-                            </div>
                         </div>
 
                         <div className="mt-10 ">
@@ -133,14 +125,20 @@ const EventDetail = () => {
                                     <p className="text-black text-xl font-bold">NHÀ HÁT KỊCH IDECAF.</p>
                                     <p className="py-5">Sân khấu kịch Idecaf ra đời vào tháng 09.1997 với vở "Khoảng
                                         khắc tình yêu" đã
-                                        nhanh chóng gây tiếng vang bởi chất lượng nghệ thuật, nội dung kịch bản sâu sắc,
-                                        dàn diễn viên nổi tiếng và quan trọng nhất là thái độ phục vụ, tôn trọng khán
-                                        giả của nhân viên phục vụ lẫn diễn viên của vở. Chỉ sau một thời gian ra mắt,
+                                        nhanh chóng gây tiếng vang bởi chất lượng nghệ thuật, nội dung kịch bản sâu
+                                        sắc,
+                                        dàn diễn viên nổi tiếng và quan trọng nhất là thái độ phục vụ, tôn trọng
+                                        khán
+                                        giả của nhân viên phục vụ lẫn diễn viên của vở. Chỉ sau một thời gian ra
+                                        mắt,
                                         sân khấu Idecaf trở thành một địa chỉ quen thụôc của khán giả mê kịch.</p>
 
-                                    <p>Sau 20 năm hoạt động (tính đến hết tháng 12.2016), Idecaf đã dàn dựng hơn 100 vở
-                                        kịch dành cho người lớn, 30 vở kịch rối thiếu nhi, 29 chương trình ca múa nhạc
-                                        kịch thiếu nhi "Ngày xửa... ngày xưa" và phối hợp với với Đài truyền hình TP.HCM
+                                    <p>Sau 20 năm hoạt động (tính đến hết tháng 12.2016), Idecaf đã dàn dựng hơn 100
+                                        vở
+                                        kịch dành cho người lớn, 30 vở kịch rối thiếu nhi, 29 chương trình ca múa
+                                        nhạc
+                                        kịch thiếu nhi "Ngày xửa... ngày xưa" và phối hợp với với Đài truyền hình
+                                        TP.HCM
                                         dàn dựng chương trình "Chuyện ngày xưa". Hơn 20 năm hoạt động, Idecaf đã đạt
                                         5.000 suất diễn quả là một con số không nhỏ khi tình hình sân khấu nói chung
                                         đang trong tình trạng kén chọn khán giả.</p>
@@ -176,12 +174,16 @@ const EventDetail = () => {
                         <div className="sticky top-0 w-[80%] bg-white">
                             <p className="p-3 text-black text-xl">{event.name}</p>
                             <hr/>
-                            {times.data?.content.map((time, index) => (
-                                <p className="flex items-center mb-3 p-3" key={index}>
-                                    <span className="mr-3"><FaClock/></span>
-                                    <span>{time.time}</span>
-                                </p>
-                            ))}
+                            {times.data?.content.map((time, index) => {
+                                if (isFirstRender) {
+                                    isFirstRender = false;
+                                    return (
+                                        <p className="flex items-center mb-3 p-3" key={index}>
+                                            <span className="mr-3"><FaClock/></span>
+                                            <span>{time.time}</span>
+                                        </p>)
+                                }
+                            })}
 
                             <p className="flex p-3 mb-3">
                                 <span className="mr-3"><FaLocationDot/></span>
@@ -198,20 +200,20 @@ const EventDetail = () => {
                                         isFirstRender = false;
                                         return (
                                             <>
-        <span className="w-3/4 flex items-center" key={index}>
-          <IoTicket className="mr-3"/>
-           Từ <span className="text-black ml-1">{ticketType.price} VNĐ</span>
-        </span>
+                                                <span className="w-3/4 flex items-center" key={index}>
+                                                  <IoTicket className="mr-3"/>
+                                                   Từ <span className="text-black ml-1">{ticketType.price} VNĐ</span>
+                                                </span>
                                                 <span className="w-1/4 flex justify-end">
-          <IoIosArrowForward/>
-        </span>
+                                                  <IoIosArrowForward/>
+                                                </span>
                                             </>
                                         );
                                     }
-                                    return null;
                                 })}
                             </p>
-                            <div className="bg-red-700 text-center py-2 px-6 text-xl text-white">Chọn lịch diễn</div>
+                            <div className="bg-red-700 text-center py-2 px-6 text-xl text-white">Chọn lịch diễn
+                            </div>
                             <div className="flex border border-solid border-black">
                                 <div
                                     className="bg-red w-1/2 flex justify-center items-center py-2 border-r border-solid border-black">
