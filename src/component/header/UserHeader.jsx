@@ -29,7 +29,6 @@ const UserHeader = () => {
     const dispatch = useDispatch();
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
-    const logoutSuccess = useSelector(selectLogoutSuccess);
     const userLogout = useSelector(selectUserLogout);
     const userRole = useSelector(selectUserRole);
     useEffect(() => {
@@ -54,11 +53,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    useEffect(() => {
-        if (userRole !== null && userRole.includes(ADMIN)) {
-            navigate("/admin");
-        }
-    }, [userRole]);
+    // useEffect(() => {
+    //     if (userRole !== null && userRole.includes(ADMIN)) {
+    //         navigate("/admin");
+    //     }
+    // }, [userRole]);
 
   const loginButton = () => {
         return (
@@ -66,7 +65,7 @@ const UserHeader = () => {
                 <span onClick={() => navigate("/login")} className="hover:text-amber-400">
                     Login | Register
                 </span>
-                : <Popover placement="bottom-end">
+                : <Popover placement="bottom-end" dismiss={true}>
                     <PopoverHandler>
                         <Avatar
                             size="sm"

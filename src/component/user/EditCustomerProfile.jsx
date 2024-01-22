@@ -134,6 +134,7 @@ function EditCustomerProfile({customer,}) {
                                             ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-0 focus:ring-inset
                                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl font-serif
                                             sm:text-1xl sm:leading-6"/>
+
                                     </div>
                                 </div>
                                 <div>
@@ -152,6 +153,7 @@ function EditCustomerProfile({customer,}) {
                                             required
                                             disabled={customer?.idCard}
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
+
                                             ring-inset ring-gray-300 placeholder:text-gray-900  focus:ring-0 focus:ring-inset
                                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl font-serif
                                             sm:text-1xl sm:leading-6"/>
@@ -174,6 +176,7 @@ function EditCustomerProfile({customer,}) {
                                             onChange={handleChange}
                                             disabled={!isEditMode}
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
+
                                             ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-0 focus:ring-inset
                                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl font-serif
                                             sm:text-1xl sm:leading-6"/>

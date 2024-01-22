@@ -77,19 +77,8 @@ function AdminSidebar() {
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
-        toast('🦄 Logout success!', {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        });
-        navigate("/");
     }
+
     return (
         <>
             <div className="w-full text-center h-screen max-h-full flex-col overflow-y-auto bg-deep-purple-700
@@ -99,7 +88,7 @@ function AdminSidebar() {
                 <div className="flex w-[250px] gap-2 h-[100px]
                 items-center justify-center
                 cursor-pointer text-2xl font-bold text-white font-serif
-                " onClick={() => navigate("/")}>
+                " onClick={() => navigate("/admin")}>
                     <Avatar
                         size="lg"
                         alt="avatar"
