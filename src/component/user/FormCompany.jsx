@@ -25,7 +25,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                             id="name"
                             name="name"
                             autoComplete="name"
-                            value={organizer.name}
+                            // value={organizer.name}
                             onChange={handleChange}
                             required
                             className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -47,7 +47,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                             id="businessCode"
                             name="businessCode"
                             autoComplete="businessCode"
-                            value={organizer.businessCode}
+                            // value={organizer.businessCode}
                             onChange={handleChange}
                             required
                             className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -69,7 +69,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                             id="dateRange"
                             name="dateRange"
                             autoComplete="dateRange"
-                            value={organizer.dateRange}
+                            // value={organizer.dateRange}
                             onChange={handleChange}
                             required
                             className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -89,7 +89,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                                id="issuedBy"
                                name="issuedBy"
                                autoComplete="issuedBy"
-                               value={organizer.issuedBy}
+                            // value={organizer.issuedBy}
                                onChange={handleChange}
                                required
                                className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -115,7 +115,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                                id="phoneNumber"
                                name="phoneNumber"
                                autoComplete="phoneNumber"
-                               value={organizer.phoneNumber}
+                            // value={organizer.phoneNumber}
                                onChange={handleChange}
                                required
                                className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -136,7 +136,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                                id="email"
                                name="email"
                                autoComplete="email"
-                               value={organizer.email}
+                            // value={organizer.email}
                                onChange={handleChange}
                                required
                                className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -145,6 +145,11 @@ export default function FormCompany({organizer, setOrganizer}) {
                                placeholder="bestticket@example.com"/>
                     </div>
                 </div>
+            </div>
+            <div className="w-full text-right">
+                <button className="m-10 border rounded-2xl bg-[#58CA58]">
+                    <div className="m-2 px-20 text-2xl font-semibold">Lưu thông tin</div>
+                </button>
             </div>
         </>
     );

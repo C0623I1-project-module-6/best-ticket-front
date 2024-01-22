@@ -20,15 +20,15 @@ import ServiceUnavailablePage from "../layout/pages/errors/ServiceUnavailablePag
 import OrganizerBookingManagerLayout from "../layout/OrganizerBookingManagerLayout.jsx";
 import {BookingManagerEventBookings} from "../component/booking/BookingManagerEventBookings.jsx";
 import {BookingManagerModeratorList} from "../component/booking/BookingMangerModeratorList.jsx";
-import EditOrganizerProfile from "../component/user/EditOrganizerProfile.jsx";
+
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
 import CreateEventPage from "../layout/pages/event/CreateEventPage.jsx";
 import CreateEventStep1 from "../component/event/createEvent/CreateEventStep1.jsx";
 import CreateEventStep2 from "../component/event/createEvent/CreateEventStep2.jsx";
 import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.jsx";
 import EventDetail from "../component/event/EventDetail.jsx";
-import CustomerProfile from "../component/user/CustomerProfile.jsx";
-import EditCustomerProfile from "../component/user/EditCustomerProfile.jsx";
+
+import {RegisterOrganizerProfile} from "../component/user/RegisterOrganizerProfile.jsx"
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
@@ -46,18 +46,10 @@ export const ROUT_DATA = [
     {path: "/admin/ticket", element: AdminTable, layout: AdminLayout},
     {path: "/admin/:param", element: AdminTable, layout: AdminLayout},
     {path: "/search", element: Search, layout: UserLayout},
-    {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
-    {path: "/profile", element: CustomerProfile, layout: UserLayout},
-    {path: "/profile/edit", element: EditCustomerProfile, layout: UserLayout},
-
-
-    {path: "/my-event/legal", element: EditOrganizerProfile, layout: OrganizerLayout},
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
-
-
+    {path: "/profile/add", element: "AddCustomerProfile", layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
-
     {
         path: "/event/create", element: CreateEventPage, children: [
             {path: "", element: CreateEventStep1},
@@ -65,19 +57,13 @@ export const ROUT_DATA = [
             {path: "step3", element: CreateEventStep3},
         ]
     },
+    {path: "/customer/profile", element: "AddCustomerProfile", layout: UserLayout},
 
+    {path: "/my-event/legal", element: RegisterOrganizerProfile, layout: OrganizerLayout},
     {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/RSVPs/bookings",
-        element: BookingManagerEventBookings,
-        layout: OrganizerBookingManagerLayout
-    },
+    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
     {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
     {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/moderators",
-        element: BookingManagerModeratorList,
-        layout: OrganizerBookingManagerLayout
-    },
+    {path: "/my-event/event/:eventId/moderators", element: BookingManagerModeratorList, layout: OrganizerBookingManagerLayout},
 
 ];
