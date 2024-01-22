@@ -25,7 +25,7 @@ function AddCustomerProfile() {
         e.preventDefault();
         dispatch(addProfile(customer));
         toast.success("🦄 Cập nhật thông tin thành công!");
-        navigate("/");
+        navigate("/profile");
     }
     const handleChange = (e) => {
         setCustomer({
