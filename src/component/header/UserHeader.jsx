@@ -60,7 +60,7 @@ const UserHeader = () => {
         }
     }, [userRole]);
 
-    const loginButton = () => {
+  const loginButton = () => {
         return (
             !user ?
                 <span onClick={() => navigate("/login")} className="hover:text-amber-400">

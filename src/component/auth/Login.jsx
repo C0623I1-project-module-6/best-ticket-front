@@ -11,7 +11,17 @@ function Login() {
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
-
+    const toastOptions = {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+    };
     const handleSubmit = async (e) => {
         e.preventDefault()
         const user = {
@@ -21,41 +31,17 @@ function Login() {
             password: e.target[1].value
         }
         dispatch(loginUser(user));
-    }
-    useEffect(() => {
-        if (loginSuccess && user && user.token) {
-            localStorage.setItem('token', user.token);
-            toast("🦄 Login successfully!", {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-            });
-            navigate("/");
-        } else {
 
-        }
-    }, [user]);
-    useEffect(() => {
-        if (loginError) {
-            toast("🦄 Invalid username or email or password!", {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-            });
-        }
-    }, [loginError]);
+        useEffect(() => {
+            if (loginSuccess && user && user.token) {
+                localStorage.setItem('token', user.token);
+                toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
+                navigate("/");
+            } else {
+                toast("🦄 Tên đăng nhập hoặc mật khẩu không đúng!", toastOptions);
+            }
+        }, [user]);
+    }
     return (
 
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
