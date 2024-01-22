@@ -1,12 +1,21 @@
-
-import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {editProfile} from "../../features/CustomerSlice.js";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {editProfile, selectEditProfileError, selectEditProfileSuccess} from "../../features/CustomerSlice.js";
 import {Bounce, toast} from "react-toastify";
+import {selectUserEdit} from "../../features/UserSlice.js";
+import {useNavigate} from "react-router-dom";
 
-function EditCustomerProfile({customer}) {
+function EditCustomerProfile({customer,}) {
+    const navigate = useNavigate();
     const [editCustomer, setEditCustomer] = useState({customer});
+    const [gender, setGender] = useState(customer?.gender);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [idCardEntered, setIdCardEntered] = useState(false);
+    const editCustomerSuccess = useSelector(selectEditProfileSuccess);
+    const editCustomerError = useSelector(selectEditProfileError);
+    const userEdit = useSelector(selectUserEdit);
     const dispatch = useDispatch();
+
     const toastOptions =
         {
             position: "top-right",
@@ -19,17 +28,34 @@ function EditCustomerProfile({customer}) {
             theme: "light",
             transition: Bounce,
         }
-
+    const toggleEditMode = () => {
+        setIsEditMode(prev => !prev);
+    }
+    const handleGenderChange = (e) => {
+        setGender(e.target.value);
+    }
     const handleChange = (e) => {
+
         setEditCustomer({
             ...editCustomer,
             [e.target.name]: e.target.value
         });
     }
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         dispatch(editProfile(editCustomer));
-        toast.success("🦄 Cập nhật thông tin thành công", toastOptions);
+        setIsEditMode(false)
+        if (editCustomerSuccess) {
+            toast.success("🦄 Cập nhật thông tin thành công", toastOptions);
+        }
     }
+
+    useEffect(() => {
+        if (editCustomerError) {
+            toast.error("🦄 Cập nhật thông tin thất bại", toastOptions)
+        }
+    }, []);
+
     return (
         <div className="flex">
             <form className=" " method="POST"
@@ -78,14 +104,15 @@ function EditCustomerProfile({customer}) {
                                             name="fullName"
                                             id="fullName"
                                             autoComplete="fullName"
-                                            value={customer?.fullName || ""}
+                                            placeholder={customer?.fullName || "Vui lòng nhập họ và tên"}
                                             onChange={handleChange}
                                             required
+                                            disabled={!isEditMode}
                                             className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                                            ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
-                                            focus:ring-indigo-600 placeholder:font-serif
-                                            sm:text-sm sm:leading-6"
-                                            placeholder="Vui lòng nhập họ và tên"/>
+                                            ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-0 focus:ring-inset
+                                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl font-serif
+                                            sm:text-1xl sm:leading-6"
+                                        />
                                     </div>
                                 </div>
                                 <div>
@@ -99,14 +126,14 @@ function EditCustomerProfile({customer}) {
                                             name="phoneNumber"
                                             id="phoneNumber"
                                             autoComplete="phoneNumber"
-                                            value={customer?.phoneNumber || ""}
+                                            placeholder={customer?.phoneNumber || "Vui lòng nhập số điện thoại"}
                                             onChange={handleChange}
                                             required
+                                            disabled={!isEditMode}
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                                            ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
-                                            focus:ring-indigo-600 placeholder:font-serif
-                                            sm:text-sm sm:leading-6"
-                                            placeholder="Vui lòng nhập số điện thoại"/>
+                                            ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-0 focus:ring-inset
+                                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl font-serif
+                                            sm:text-1xl sm:leading-6"/>
                                     </div>
                                 </div>
                                 <div>
@@ -120,15 +147,14 @@ function EditCustomerProfile({customer}) {
                                             name="idCard"
                                             id="idCard"
                                             autoComplete="idCard"
-                                            value={customer.idCard}
+                                            placeholder={customer?.idCard || "Vui lòng nhập số CMND/CCCD/Hộ chiếu"}
                                             onChange={handleChange}
                                             required
+                                            disabled={customer?.idCard}
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                                            ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
-                                            focus:ring-indigo-600 placeholder:font-serif
-                                            sm:text-sm sm:leading-6"
-                                            placeholder="Vui lòng nhập số CMND/CCCD/Hộ chiếu"
-                                            disabled/>
+                                            ring-inset ring-gray-300 placeholder:text-gray-900  focus:ring-0 focus:ring-inset
+                                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl font-serif
+                                            sm:text-1xl sm:leading-6"/>
                                     </div>
                                     <p className=" mt-2 text-green-700">* Thông tin này chỉ được nhập 1 lần và không thể
                                         chỉnh sửa sau khi xác nhận.</p>
@@ -144,13 +170,13 @@ function EditCustomerProfile({customer}) {
                                             name="email"
                                             id="email"
                                             autoComplete="email"
-                                            value={customer?.email || ""}
+                                            placeholder={userEdit?.email || "besttick@example.com"}
                                             onChange={handleChange}
+                                            disabled={!isEditMode}
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                                            ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
-                                            focus:ring-indigo-600 placeholder:font-serif
-                                            sm:text-sm sm:leading-6"
-                                            placeholder="besttick@example.com"/>
+                                            ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-0 focus:ring-inset
+                                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl font-serif
+                                            sm:text-1xl sm:leading-6"/>
                                     </div>
                                     <p><a className="mt-2 text-green-700" href="#">* Click để gửi lại mail xác thực.</a>
                                     </p>
@@ -166,12 +192,13 @@ function EditCustomerProfile({customer}) {
                                             name="dateOfBirth"
                                             id="dateOfBirth"
                                             autoComplete="dateOfBirth"
-                                            value={customer?.dateOfBirth || ""}
+                                            value={customer?.dateOfBirth}
                                             onChange={handleChange}
+                                            disabled={!isEditMode}
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                                            ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
+                                            ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-0 focus:ring-inset
                                             focus:ring-indigo-600
-                                            sm:text-sm sm:leading-6"/>
+                                            sm:text-1xl sm:leading-6"/>
                                     </div>
                                 </div>
 
@@ -182,17 +209,23 @@ function EditCustomerProfile({customer}) {
                                     <div className="mt-2">
                                         <div className="flex items-center gap-x-3">
                                             <input id="gender" name="gender" type="radio"
-                                                   value="Male" onChange={handleChange}
+                                                   value="Male" onChange={handleGenderChange}
+                                                   checked={gender === "Male"}
+                                                   disabled={!isEditMode}
                                                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                                             <label htmlFor="gender"
                                                    className="block text-sm font-medium leading-6 text-gray-900">Nam</label>
                                             <input id="gender" name="gender" type="radio"
-                                                   value="Female" onChange={handleChange}
+                                                   value="Female" onChange={handleGenderChange}
+                                                   checked={gender === "Female"}
+                                                   disabled={!isEditMode}
                                                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                                             <label htmlFor="gender"
                                                    className="block text-sm font-medium leading-6 text-gray-900">Nữ</label>
                                             <input id="gender" name="gender" type="radio"
-                                                   value="Other" onChange={handleChange}
+                                                   value="Other" onChange={handleGenderChange}
+                                                   checked={gender === "Other"}
+                                                   disabled={!isEditMode}
                                                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                                             <label htmlFor="gender"
                                                    className="block text-sm font-medium leading-6 text-gray-900">Khác</label>
@@ -207,10 +240,10 @@ function EditCustomerProfile({customer}) {
                                     className="text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-500">
                                 Thoát
                             </button>
-                            <button type="submit" className="rounded-md bg-[#10b981] px-3 py-2 text-sm font-semibold
+                            <button onClick={toggleEditMode} type="submit" className="rounded-md bg-[#10b981] px-3 py-2 text-sm font-semibold
                             text-whiteshadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2
                             focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                Hoàn thành
+                                {isEditMode ? "Hoàn thành" : "Chỉnh sửa"}
                             </button>
                         </div>
                     </div>

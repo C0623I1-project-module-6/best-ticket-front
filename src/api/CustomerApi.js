@@ -29,7 +29,7 @@ export async function update(customer) {
             'Content-Type': 'application/json',
             'Authorization':`Bearer ${token}`,
         },
-        method: "POST",
+        method: "PUT",
         data: customer
     }).then((res) => {
         response = res;

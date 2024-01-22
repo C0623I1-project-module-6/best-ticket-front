@@ -13,7 +13,7 @@ const initialState = {
     listRole: null,
     isLogin: false,
     isAdmin: false,
-    user: {},
+    userEdit: null,
 
 };
 
@@ -68,7 +68,7 @@ export const fetchGetUser = createAsyncThunk(
     "profile",
     async (userId, {rejectWithValue}) => {
         const response = await getUser(userId);
-        if (response.status !== 201) {
+        if (response.status !== 200) {
             console.log(response)
             return rejectWithValue(response.data.message);
         }
@@ -215,7 +215,7 @@ export const userSlice = createSlice(
                     localStorage.removeItem("token");
                 })
                 .addCase(fetchGetUser.fulfilled, (state, action) => {
-                    state.value = action.payload.data;
+                    state.userEdit = action.payload.data;
                 })
         }
     }
@@ -243,7 +243,6 @@ export const selectLogoutSuccess = (state) => state.user.logoutSuccess;
 export const selectUserLogout = (state) => state.user.value;
 export const selectUserRole = (state) => state.user.listRole;
 export const selectIsAdmin = (state) => state.user.isAdmin;
-export const selectUser = (state) => state.user.user;
 export const selectIsLogin = (state) => state.user.isLogin;
-
+export const selectUserEdit = (state) => state.user.userEdit;
 export default userSlice.reducer;
