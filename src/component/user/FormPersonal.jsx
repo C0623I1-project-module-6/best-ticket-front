@@ -21,7 +21,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                    id="name"
                                    name="name"
                                    autoComplete="name"
-                                   value={organizer.name}
+                                   // value={organizer.name}
                                    onChange={handleChange}
                                    required
                                    className=" bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -38,7 +38,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                 id="taxCode"
                                 name="taxCode"
                                 autoComplete="taxCode"
-                                value={organizer.taxCode}
+                                // value={organizer.taxCode}
                                 onChange={handleChange}
                                 required
                                 type="text"
@@ -56,7 +56,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                    id="idCard"
                                    name="idCard"
                                    autoComplete="idCard"
-                                   value={organizer.idCard}
+                                   // value={organizer.idCard}
                                    onChange={handleChange}
                                    required
                                    className="bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -73,7 +73,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                    id="dateRange"
                                    name="dateRange"
                                    autoComplete="dateRange"
-                                   value={organizer.dateRange}
+                                   // value={organizer.dateRange}
                                    onChange={handleChange}
                                    required
                                    className="bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -90,7 +90,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                    id="issuedBy"
                                    name="issuedBy"
                                    autoComplete="issuedBy"
-                                   value={organizer.issuedBy}
+                                   // value={organizer.issuedBy}
                                    onChange={handleChange}
                                    required
                                    className="bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -114,7 +114,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                    id="phoneNumber"
                                    name="phoneNumber"
                                    autoComplete="phoneNumber"
-                                   value={organizer.phoneNumber}
+                                   // value={organizer.phoneNumber}
                                    onChange={handleChange}
                                    className=" bg-gray-200 block w-full rounded-md border border-solid border-black
                                         p-2 mt-2 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600
@@ -130,7 +130,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                    id="email"
                                    name="email"
                                    autoComplete="email"
-                                   value={organizer.email}
+                                   // value={organizer.email}
                                    onChange={handleChange}
                                    className="bg-gray-200 block w-full rounded-md border border-solid border-black
                                         p-2 mt-2 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600

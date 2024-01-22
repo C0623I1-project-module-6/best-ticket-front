@@ -8,7 +8,6 @@ export default function FormCompany({organizer, setOrganizer}) {
 
     return (
         <>
-
             <h4 className="font-serif text-3xl p-5">Thông tin cơ bản</h4>
             <div className="border border-solid border-black rounded-md py-5 px-5 bg-white">
                 <div className="border border-solid border-black rounded-md py-5 px-5 bg-white">
@@ -24,7 +23,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                                 id="name"
                                 name="name"
                                 autoComplete="name"
-                                value={organizer.name}
+                                // value={organizer.name}
                                 onChange={handleChange}
                                 required
                                 className=" bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -42,7 +41,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                                 id="businessCode"
                                 name="businessCode"
                                 autoComplete="businessCode"
-                                value={organizer.businessCode}
+                                // value={organizer.businessCode}
                                 onChange={handleChange}
                                 required
                                 className="bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -60,7 +59,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                                 id="dateRange"
                                 name="dateRange"
                                 autoComplete="dateRange"
-                                value={organizer.dateRange}
+                                // value={organizer.dateRange}
                                 onChange={handleChange}
                                 required
                                 className="bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -77,7 +76,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                                    id="issuedBy"
                                    name="issuedBy"
                                    autoComplete="issuedBy"
-                                   value={organizer.issuedBy}
+                                   // value={organizer.issuedBy}
                                    onChange={handleChange}
                                    required
                                    className="bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -97,11 +96,12 @@ export default function FormCompany({organizer, setOrganizer}) {
                                 className="block text-xl font-serif text-gray-700">
                                 Số điện thoại *
                             </label>
-                            <input type="number"
+                            <input type="tel"
+                                   pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                                    id="phoneNumber"
                                    name="phoneNumber"
                                    autoComplete="phoneNumber"
-                                   value={organizer.phoneNumber}
+                                   // value={organizer.phoneNumber}
                                    onChange={handleChange}
                                    required
                                    className=" bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -118,7 +118,7 @@ export default function FormCompany({organizer, setOrganizer}) {
                                    id="email"
                                    name="email"
                                    autoComplete="email"
-                                   value={organizer.email}
+                                   // value={organizer.email}
                                    onChange={handleChange}
                                    required
                                    className="bg-gray-200 block w-full rounded-md border border-solid border-black
@@ -127,6 +127,9 @@ export default function FormCompany({organizer, setOrganizer}) {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div>
+                <button className="" type="submit">Nutttttttt</button>
             </div>
         </>
     );
