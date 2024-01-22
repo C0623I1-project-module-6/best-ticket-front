@@ -1,13 +1,13 @@
 import Seat from "./Seat.jsx";
 import React, {useState} from "react";
-import {useParams} from "react-router-dom";
 
 export const TicketBookingStep1 = () => {
-    const [dataFromSeat, setDataFromSeat] = useState();
+    const [dataPrice, setDataPrice] = useState();
+    const [dataSeat, setDataSeat] = useState();
 
-    const getDataFormSeat = (data) => {
-        setDataFromSeat(data)
-        console.log(data)
+    const handleDataFromSeat = (price, seat) => {
+        setDataPrice(price);
+        setDataSeat(seat);
     }
 
     return (
@@ -72,7 +72,7 @@ export const TicketBookingStep1 = () => {
                         </div>
                     </div>
                     <div>
-                        <Seat dataFormSeat={getDataFormSeat}/>
+                        <Seat dataFormSeat={handleDataFromSeat}/>
                     </div>
 
                 </div>
@@ -81,12 +81,12 @@ export const TicketBookingStep1 = () => {
                     <div className="bg-white px-5">
                         <h4 className="text-black pt-3 pb-1">THÔNG TIN ĐẶT VÉ</h4>
                         <hr className="border-2 border-solid"/>
-                        <div className="pt-3 pb-12">Vui lòng chọn vé</div>
+                        <div className="pt-3 pb-12">{dataSeat ? dataSeat + " " : "Vui lòng chọn vé"}</div>
                     </div>
 
                     <div className="pl-5 bg-[#666666] py-4 flex text-white">
                         <span className="w-3/5 ">Tổng cộng:  </span>
-                        <span>{dataFromSeat} VND</span>
+                        <span>{dataPrice} VND</span>
                     </div>
                     <button className="bg-[#7CA629] py-3 px-2 w-full text-white mt-10" type="button">Tiếp tục</button>
                 </div>

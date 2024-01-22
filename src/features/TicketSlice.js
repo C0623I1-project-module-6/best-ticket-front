@@ -4,7 +4,8 @@ import {
     showAllTicketFinished,
     showAllTicketUpcoming,
     showTicketByEventId,
-    showTicketById, showTicketByTimeId
+    showTicketById,
+    showTicketByTimeId
 } from "../api/TicketApi";
 
 const initialState = {
@@ -58,7 +59,6 @@ export const getTicketByTimeId = createAsyncThunk(
     "tickets/showTicketByTimeId",
     async (timeId) => {
         const response = await showTicketByTimeId(timeId);
-        console.log(response.data)
         return response.data;
     }
 );
@@ -73,7 +73,6 @@ const handleRejected = (state, action) => {
     state.loading = false;
     state.error = action.error;
 };
-
 
 
 export const TicketSlice = createSlice({
