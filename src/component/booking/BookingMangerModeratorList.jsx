@@ -16,7 +16,7 @@ export function BookingManagerModeratorList() {
     if (!event) {
         return <div>Loading...</div>;
     }
-
+    console.log(event.organizer)
     return (
         <>
             <div className="w-[80%] mx-[10%] my-[5%] text-black">
@@ -48,8 +48,11 @@ export function BookingManagerModeratorList() {
                     ) : (
                         <tr className="bg-[#F6F6F6]">
                             <td className="flex">
-                                <div className="w-1/5">r</div>
-                                <div>{event.organizer.fullName}<br/>{event.organizer.email}</div>
+                                <div>
+                                    {event.organizer.name}
+                                    <br/>
+                                    {event.organizer.email}
+                                </div>
                             </td>
                             <td>Event Creator</td>
                             <td></td>
