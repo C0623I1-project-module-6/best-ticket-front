@@ -3,7 +3,6 @@ import {Disclosure, Menu, Transition} from '@headlessui/react'
 import {HiBars3, HiBell, HiXMark} from "react-icons/hi2";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {logoutUser, selectUserLogout} from "../../features/UserSlice.js";
-import {Bounce, toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 
 
@@ -26,18 +25,6 @@ export default function AdminHeader() {
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
-        toast('🦄 Logout success!', {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        });
-        navigate("/");
     }
     return (
         <Disclosure as="nav" className="bg-deep-purple-700 dark:bg-blue-gray-400">

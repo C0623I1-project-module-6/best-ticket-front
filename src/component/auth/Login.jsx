@@ -31,23 +31,23 @@ function Login() {
             password: e.target[1].value
         }
         dispatch(loginUser(user));
-
-        useEffect(() => {
-            if (loginSuccess && user && user.token) {
-                localStorage.setItem('token', user.token);
-                toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
-                navigate("/");
-            } else {
-                toast("🦄 Tên đăng nhập hoặc mật khẩu không đúng!", toastOptions);
-            }
-        }, [user]);
     }
+    useEffect(() => {
+        if (loginSuccess && user && user.token) {
+            toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
+            navigate("/");
+        }
+    }, [user]);
+    useEffect(() => {
+        console.log(loginError)
+        if (loginError) {
+            toast("🦄 Tên đăng nhập hoặc mật khẩu không đúng!", toastOptions);
+        }
+    }, [loginError]);
     return (
-
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
         dark:bg-black dark:text-white
         ">
-
             <AuthHeader name={"Login"}/>
 
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">

@@ -17,14 +17,12 @@ export async function login(user) {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }
 
 export async function loginWithToken() {
   let response = null;
   const token = localStorage.getItem("token");
-  console.log(token)
   await axios({
     url: `${BEST_TICKET_API}auth/login`,
     headers: {
@@ -34,12 +32,10 @@ export async function loginWithToken() {
     method: "POST",
     data: null,
   }).then((res) => {
-    console.log(res)
     response = res;
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }
 
@@ -57,7 +53,6 @@ export async function register(user) {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }
 
@@ -76,7 +71,6 @@ export async function loginGoogle(user) {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }
 
@@ -96,7 +90,6 @@ export async function logout(user) {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }
 
@@ -115,7 +108,6 @@ export async function getUser(userId) {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }
 

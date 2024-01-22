@@ -77,15 +77,14 @@ function EditCustomerProfile({customer}) {
                                             type="text"
                                             name="fullName"
                                             id="fullName"
-                                            autoComplete="fullName"
-                                            value={customer?.fullName || ""}
+                                            placeholder={customer?.fullName || "Vui lòng nhập họ và tên"}
                                             onChange={handleChange}
                                             required
                                             className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
                                             ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
                                             focus:ring-indigo-600 placeholder:font-serif
                                             sm:text-sm sm:leading-6"
-                                            placeholder="Vui lòng nhập họ và tên"/>
+                                            />
                                     </div>
                                 </div>
                                 <div>
@@ -99,14 +98,14 @@ function EditCustomerProfile({customer}) {
                                             name="phoneNumber"
                                             id="phoneNumber"
                                             autoComplete="phoneNumber"
-                                            value={customer?.phoneNumber || ""}
+                                            placeholder={customer?.phoneNumber || "Vui lòng nhập số điện thoại"}
                                             onChange={handleChange}
                                             required
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
                                             ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
                                             focus:ring-indigo-600 placeholder:font-serif
                                             sm:text-sm sm:leading-6"
-                                            placeholder="Vui lòng nhập số điện thoại"/>
+                                            />
                                     </div>
                                 </div>
                                 <div>
@@ -120,15 +119,15 @@ function EditCustomerProfile({customer}) {
                                             name="idCard"
                                             id="idCard"
                                             autoComplete="idCard"
-                                            value={customer.idCard}
+                                            placeholder={customer.idCard || "Vui lòng nhập số CMND/CCCD/Hộ chiếu"}
                                             onChange={handleChange}
                                             required
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
                                             ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
                                             focus:ring-indigo-600 placeholder:font-serif
                                             sm:text-sm sm:leading-6"
-                                            placeholder="Vui lòng nhập số CMND/CCCD/Hộ chiếu"
-                                            disabled/>
+
+                                        />
                                     </div>
                                     <p className=" mt-2 text-green-700">* Thông tin này chỉ được nhập 1 lần và không thể
                                         chỉnh sửa sau khi xác nhận.</p>
@@ -150,7 +149,7 @@ function EditCustomerProfile({customer}) {
                                             ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
                                             focus:ring-indigo-600 placeholder:font-serif
                                             sm:text-sm sm:leading-6"
-                                            placeholder="besttick@example.com"/>
+                                            placeholder=""/>
                                     </div>
                                     <p><a className="mt-2 text-green-700" href="#">* Click để gửi lại mail xác thực.</a>
                                     </p>
