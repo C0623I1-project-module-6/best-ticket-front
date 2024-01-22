@@ -37,7 +37,7 @@ export function BookingManagerModeratorList() {
                     </tr>
                     </thead>
                     <tbody>
-                    {event.organizer === undefined ? (
+                    {event.organizer === null ? (
                         <tr className="bg-[#F6F6F6]">
                             <td>
                                 <div>Organizer information is not available</div>
