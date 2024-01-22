@@ -4,7 +4,7 @@ import {MdEmail} from "react-icons/md";
 import {FaPhone} from "react-icons/fa";
 
 
-export default function TicketBookingStep2() {
+export const TicketBookingStep2 = () => {
 
     return (
         <>
@@ -129,7 +129,8 @@ export default function TicketBookingStep2() {
                             <span className="w-4/5 ">Tổng cộng: </span>
                             <span>0 VND</span>
                         </div>
-                        <p className="text-xs text-center italic py-4">Vui lòng kiểm tra kỹ đơn hàng trước khi hoàn tất</p>
+                        <p className="text-xs text-center italic py-4">Vui lòng kiểm tra kỹ đơn hàng trước khi hoàn
+                            tất</p>
                         <button className="bg-[#7CA629] py-3 px-2 w-full text-white " type="button">Tiếp tục
                         </button>
                     </div>

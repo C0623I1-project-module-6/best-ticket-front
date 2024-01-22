@@ -1,7 +1,7 @@
 import {Breadcrumbs} from "@material-tailwind/react";
 import image from "../../assets/img/User.png"
 import {FaCalendar, FaTicket, FaUser} from "react-icons/fa6";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import TicketDetails from "./TicketDetails.jsx";
 import {useState} from "react";
 import {useSelector} from "react-redux";
@@ -42,21 +42,26 @@ function TicketHistory() {
                             </div>
                         </div>
                         <div className="flex-col items-center space-y-3 justify-items-center justify-center">
-                            <div
-                                className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
+                            <NavLink to={"/customer/profile"}
+                                     className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
                                 <FaUser/>
                                 My Account
-                            </div>
+                            </NavLink>
                             <div
                                 className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
                                 <FaTicket/>
                                 My Tickets
                             </div>
-                            <div
-                                className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
-                                <FaCalendar/>
-                                My Created Event
-                            </div>
+                            {user.listRole.includes("CUSTOMER") ? (
+                                ""
+                            ) : (
+                                <div
+                                    className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
+                                    <FaCalendar/>
+                                    My Created Event
+                                </div>
+                            )}
+
                         </div>
 
                     </div>

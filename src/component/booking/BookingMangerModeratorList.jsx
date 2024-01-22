@@ -17,7 +17,6 @@ export function BookingManagerModeratorList() {
         return <div>Loading...</div>;
     }
 
-    console.log(event)
     return (
         <>
             <div className="w-[80%] mx-[10%] my-[5%] text-black">
@@ -40,7 +39,9 @@ export function BookingManagerModeratorList() {
                     <tbody>
                     {event.organizer === undefined ? (
                         <tr className="bg-[#F6F6F6]">
-                            <td><div>Organizer information is not available</div></td>
+                            <td>
+                                <div>Organizer information is not available</div>
+                            </td>
                             <td>N/A</td>
                             <td>N/A</td>
                         </tr>

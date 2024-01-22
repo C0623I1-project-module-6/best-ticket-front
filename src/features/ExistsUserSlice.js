@@ -2,38 +2,38 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {fetchExistsUsers} from "../api/ExistsUserApi.js";
 
 const initialState = {
-    existsUserList: [],
-    usernames:[],
+  existsUserList: [],
+  usernames: [],
 };
 export const getExistsUsers = createAsyncThunk(
-    "users/exists",
-    async (existsUsers, {rejectWithValue}) => {
-        const response = await fetchExistsUsers(existsUsers);
-        if (response.status !== 200) {
-            return rejectWithValue(response.data.message);
-        }
-        console.log(response)
-        return response.data;
+  "users/exists",
+  async (existsUsers, {rejectWithValue}) => {
+    const response = await fetchExistsUsers(existsUsers);
+    if (response.status !== 200) {
+      return rejectWithValue(response.data.message);
     }
+    console.log(response)
+    return response.data;
+  }
 )
 
 export const existsUserSlice = createSlice({
-    name: "existsUsers",
-    initialState,
-    reducers: {
-        setExistsUserList: (state, action) => {
-            state.existsUserList = action.payload.usernames;
-        }
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(getExistsUsers.fulfilled, (state, action) => {
-                state.existsUserList = action.payload.data;
-            })
+  name: "existsUsers",
+  initialState,
+  reducers: {
+    setExistsUserList: (state, action) => {
+      state.existsUserList = action.payload.usernames;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getExistsUsers.fulfilled, (state, action) => {
+        state.existsUserList = action.payload.data;
+      })
+  }
 });
 export const {
-    setExistsUserList,
+  setExistsUserList,
 } = existsUserSlice.actions;
 export const selectExistsUsers = (state) => state.existsUsers.existsUserList;
 export const selectUsernames = (state) => state.existsUsers.existsUserList;

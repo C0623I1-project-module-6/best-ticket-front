@@ -20,8 +20,6 @@ import ServiceUnavailablePage from "../layout/pages/errors/ServiceUnavailablePag
 import OrganizerBookingManagerLayout from "../layout/OrganizerBookingManagerLayout.jsx";
 import {BookingManagerEventBookings} from "../component/booking/BookingManagerEventBookings.jsx";
 import {BookingManagerModeratorList} from "../component/booking/BookingMangerModeratorList.jsx";
-
-import AddCustomerProfile from "../component/user/AddCustomerProfile.jsx";
 import EditOrganizerProfile from "../component/user/EditOrganizerProfile.jsx";
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
 import CreateEventPage from "../layout/pages/event/CreateEventPage.jsx";
@@ -57,7 +55,9 @@ export const ROUT_DATA = [
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
 
+
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
+
     {
         path: "/event/create", element: CreateEventPage, children: [
             {path: "", element: CreateEventStep1},

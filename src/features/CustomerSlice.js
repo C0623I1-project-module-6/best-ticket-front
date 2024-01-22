@@ -8,6 +8,7 @@ const initialState = {
     addProfileError: null,
     editProfileSuccess: false,
     editProfileError: null,
+
 };
 export const addProfile = createAsyncThunk(
     "customers/add",

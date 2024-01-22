@@ -1,10 +1,25 @@
+
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {editProfile} from "../../features/CustomerSlice.js";
+import {Bounce, toast} from "react-toastify";
 
 function EditCustomerProfile({customer}) {
     const [editCustomer, setEditCustomer] = useState({customer});
     const dispatch = useDispatch();
+    const toastOptions =
+        {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        }
+
     const handleChange = (e) => {
         setEditCustomer({
             ...editCustomer,
@@ -13,6 +28,7 @@ function EditCustomerProfile({customer}) {
     }
     const handleSubmit = () => {
         dispatch(editProfile(editCustomer));
+        toast.success("🦄 Cập nhật thông tin thành công", toastOptions);
     }
     return (
         <div className="flex">

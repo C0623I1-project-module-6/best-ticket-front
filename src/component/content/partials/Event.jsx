@@ -21,7 +21,7 @@ export default function Event({event}) {
          dark:bg-amber-300 dark:text-black dark:hover:text-black
         ">
             <div className="relative aspect-w-16 aspect-h-9 w-full h-full rounded-md overflow-hidden">
-                <img src={event.image} alt="" className="object-cover w-full h-[160px] " />
+                <img src={event.image} alt="" className="object-cover w-full h-[160px] "/>
             </div>
             <div className="flex flex-col items-start w-full pt-4 gap-y-1">
                 <p className="font-bold truncate w-full" ref={tooltipRef}>

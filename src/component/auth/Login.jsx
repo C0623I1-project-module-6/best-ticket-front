@@ -31,13 +31,16 @@ function Login() {
             password: e.target[1].value
         }
         dispatch(loginUser(user));
-        if (loginSuccess) {
-            localStorage.setItem('token', user.token);
-            toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
-            navigate("/");
-        } else {
-            toast("🦄 Tên đăng nhập hoặc mật khẩu không đúng!",toastOptions );
-        }
+
+        useEffect(() => {
+            if (loginSuccess && user && user.token) {
+                localStorage.setItem('token', user.token);
+                toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
+                navigate("/");
+            } else {
+                toast("🦄 Tên đăng nhập hoặc mật khẩu không đúng!", toastOptions);
+            }
+        }, [user]);
     }
     return (
 

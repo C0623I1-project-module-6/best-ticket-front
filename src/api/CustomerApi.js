@@ -39,3 +39,4 @@ export async function update(customer) {
     console.log(response)
     return response;
 }
+
