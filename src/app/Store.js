@@ -14,20 +14,20 @@ import TimeSlice from "../features/TimeSlice.js";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = configureStore(
-    {
-        reducer: {
-            user: UserSlice,
-            event: EventSlice,
-            ticket: TicketSlice,
-            ticketType: TicketTypeSlice,
-            time: TimeSlice,
-            admin: AdminSlice,
-            booking: BookingSlice,
-            bookingDetail: BookingDetailSlice,
-            customer: CustomerSlice,
-            organizer: OrganizerSlice,
-            existsUsers: ExistsUserSlice,
-        },
+  {
+    reducer: {
+      user: UserSlice,
+      event: EventSlice,
+      ticket: TicketSlice,
+      ticketType: TicketTypeSlice,
+      time: TimeSlice,
+      admin: AdminSlice,
+      booking: BookingSlice,
+      bookingDetail: BookingDetailSlice,
+      customer: CustomerSlice,
+      organizer: OrganizerSlice,
+      existsUsers: ExistsUserSlice,
     },
-    composeEnhancers(applyMiddleware())
+  },
+  composeEnhancers(applyMiddleware())
 );

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {login, loginGoogle, loginWithToken, logout, register} from "../api/UserApi.js";
+import {getUser, login, loginGoogle, loginWithToken, logout, register} from "../api/UserApi.js";
 
 const initialState = {
     value: null,
@@ -11,7 +11,10 @@ const initialState = {
     logoutSuccess: false,
     logoutError: null,
     listRole: null,
+    isLogin: false,
     isAdmin: false,
+    user: {},
+
 };
 
 export const loginUser = createAsyncThunk(
@@ -61,12 +64,23 @@ export const loginWithGoogle = createAsyncThunk(
     }
 );
 
+export const fetchGetUser = createAsyncThunk(
+    "profile",
+    async (userId, {rejectWithValue}) => {
+        const response = await getUser(userId);
+        if (response.status !== 201) {
+            console.log(response)
+            return rejectWithValue(response.data.message);
+        }
+        return response.data;
+    }
+);
+
 export const registerUser = createAsyncThunk(
     "register",
     async (registerData, {rejectWithValue}) => {
-
         const response = await register(registerData);
-        if (response.status !== 200) {
+        if (response.status !== 201) {
             console.log(response)
             return rejectWithValue(response.data.message);
         }
@@ -82,22 +96,18 @@ export const userSlice = createSlice(
             setLoading: (state, action) => {
                 state.loading = action.payload;
             },
-
             setLoginError: (state, action) => {
                 state.loginError = action.payload;
             },
             setLoginSuccess: (state, action) => {
                 state.loginSuccess = action.payload;
             },
-
             setRegisterSuccess: (state, action) => {
                 state.registerSuccess = action.payload;
             },
             setRegisterError: (state, action) => {
                 state.registerError = action.payload;
             },
-
-
             setLogoutSuccess: (state, action) => {
                 state.logoutSuccess = action.payload;
             },
@@ -107,6 +117,9 @@ export const userSlice = createSlice(
             setValue: (state, action) => {
                 state.value = action.payload;
             },
+            setUser: (state, action) => {
+                state.user = action.payload;
+            }
         },
         extraReducers: (builder) => {
             builder
@@ -143,6 +156,7 @@ export const userSlice = createSlice(
                     state.listRole = action.payload.data.listRole;
                     localStorage.setItem("token", action.payload.data.token);
                     state.loginError = false;
+                    state.isLogin = true;
                 })
                 .addCase(reLoginWithToken.pending, (state) => {
                     state.loginSuccess = false;
@@ -161,6 +175,7 @@ export const userSlice = createSlice(
                     state.listRole = action.payload.data.listRole;
                     localStorage.setItem("token", action.payload.data.token);
                     state.loginError = false;
+                    state.isLogin = true;
                 })
                 .addCase(loginWithGoogle.pending, (state) => {
                     state.loginSuccess = false;
@@ -191,17 +206,22 @@ export const userSlice = createSlice(
                 .addCase(logoutUser.fulfilled, (state, action) => {
                     state.logoutSuccess = true;
                     state.loginSuccess = false;
+                    state.isLogin = false;
                     state.user = null;
                     state.listRole = null;
                     state.loading = false;
                     state.value = action.payload.data;
-                    localStorage.removeItem("token");
                     state.logoutError = false;
+                    localStorage.removeItem("token");
+                })
+                .addCase(fetchGetUser.fulfilled, (state, action) => {
+                    state.value = action.payload.data;
                 })
         }
     }
 )
 export const {
+
     setLoading,
     setLoginError,
     setLoginSuccess,
@@ -210,7 +230,7 @@ export const {
     setLogoutSuccess,
     setLogoutError,
     setValue,
-
+    setUser,
 } = userSlice.actions;
 
 export const selectLoginSuccess = (state) => state.user.loginSuccess;
@@ -223,4 +243,7 @@ export const selectLogoutSuccess = (state) => state.user.logoutSuccess;
 export const selectUserLogout = (state) => state.user.value;
 export const selectUserRole = (state) => state.user.listRole;
 export const selectIsAdmin = (state) => state.user.isAdmin;
+export const selectUser = (state) => state.user.user;
+export const selectIsLogin = (state) => state.user.isLogin;
+
 export default userSlice.reducer;

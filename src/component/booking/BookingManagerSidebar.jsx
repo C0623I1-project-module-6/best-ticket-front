@@ -1,11 +1,9 @@
 import {RiGroupLine} from "react-icons/ri";
 import {BsGraphUpArrow} from "react-icons/bs";
 import {GiReturnArrow} from "react-icons/gi";
-import {GrAnnounce} from "react-icons/gr";
+import {GrAnnounce, GrUserManager} from "react-icons/gr";
 import {BiSolidDiscount} from "react-icons/bi";
-import {GrUserManager} from "react-icons/gr";
-import {useParams} from "react-router-dom";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
@@ -26,7 +24,9 @@ const BookingManagerSidebar = () => {
                         </div>
                     </li>
                     <li>
-                        <a onClick={() => {navigate(`/my-event/legal`)}} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
+                        <a onClick={() => {
+                            navigate(`/my-event/legal`)
+                        }} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><GiReturnArrow/></div>
                                 Quay lại trang sự kiện của tôi
@@ -34,7 +34,9 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a onClick={() => {navigate(`/404`)}}
+                        <a onClick={() => {
+                            navigate(`/404`)
+                        }}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><BsGraphUpArrow/></div>
@@ -43,7 +45,9 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a onClick={() => {navigate(`/my-event/event/${eventId}/RSVPs/bookings`)}}
+                        <a onClick={() => {
+                            navigate(`/my-event/event/${eventId}/RSVPs/bookings`)
+                        }}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><RiGroupLine/></div>
@@ -52,7 +56,9 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a onClick={() => {navigate(`/404`)}}
+                        <a onClick={() => {
+                            navigate(`/404`)
+                        }}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><GrAnnounce/></div>
@@ -61,7 +67,9 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a onClick={() => {navigate(`/404`)}}
+                        <a onClick={() => {
+                            navigate(`/404`)
+                        }}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><BiSolidDiscount/></div>
@@ -70,7 +78,9 @@ const BookingManagerSidebar = () => {
                         </a>
                     </li>
                     <li>
-                        <a onClick={() => {navigate(`/my-event/event/${eventId}/moderators`)}}
+                        <a onClick={() => {
+                            navigate(`/my-event/event/${eventId}/moderators`)
+                        }}
                            className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                             <div className="flex">
                                 <div className="m-1"><GrUserManager/></div>
@@ -81,8 +91,10 @@ const BookingManagerSidebar = () => {
                 </ul>
                 <div className="h-screen">
                     <div className="text-center flex">
-                        <a onClick={() => {navigate(`/404`)}}
-                            className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[70%]">
+                        <a onClick={() => {
+                            navigate(`/404`)
+                        }}
+                           className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[70%]">
                             <div className="m-3">Câu hỏi thường gặp</div>
                         </a>
                     </div>

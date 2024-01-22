@@ -1,35 +1,39 @@
-
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {editProfile} from "../../features/CustomerSlice.js";
+import {addProfile, selectAddProfileSuccess, selectProfileAdded} from "../../features/CustomerSlice.js";
 import {Bounce, toast} from "react-toastify";
 
-function EditCustomerProfile({customer}) {
-    const [editCustomer, setEditCustomer] = useState({customer});
+function AddCustomerProfile() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const toastOptions =
-        {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        }
-
+    const [customer, setCustomer] = useState({});
+    const profileAdded = useSelector(selectProfileAdded);
+    const addSuccess = useSelector(selectAddProfileSuccess);
+    const toastOptions = {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(addProfile(customer));
+        toast.success("🦄 Cập nhật thông tin thành công!");
+        navigate("/");
+    }
     const handleChange = (e) => {
-        setEditCustomer({
-            ...editCustomer,
+        setCustomer({
+            ...customer,
             [e.target.name]: e.target.value
         });
     }
-    const handleSubmit = () => {
-        dispatch(editProfile(editCustomer));
-        toast.success("🦄 Cập nhật thông tin thành công", toastOptions);
-    }
+
     return (
         <div className="flex">
             <form className=" " method="POST"
@@ -65,7 +69,7 @@ function EditCustomerProfile({customer}) {
                     <div className="w-3/4 p-10">
                         <div className="border border-solid shadow-lg rounded-md py-5 px-5 bg-white">
                             <h2 className=" flex justify-center text-2xl font-serif leading-7 text-gray-900">
-                                Thông tin cá nhân</h2>
+                               Thông tin cá nhân</h2>
                             <div className="grid grid-cols-2 gap-4 mt-4">
                                 <div>
                                     <label htmlFor="fullName"
@@ -78,7 +82,7 @@ function EditCustomerProfile({customer}) {
                                             name="fullName"
                                             id="fullName"
                                             autoComplete="fullName"
-                                            value={customer?.fullName || ""}
+                                            value={customer.fullName}
                                             onChange={handleChange}
                                             required
                                             className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -99,7 +103,7 @@ function EditCustomerProfile({customer}) {
                                             name="phoneNumber"
                                             id="phoneNumber"
                                             autoComplete="phoneNumber"
-                                            value={customer?.phoneNumber || ""}
+                                            value={customer.phoneNumber}
                                             onChange={handleChange}
                                             required
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -127,8 +131,7 @@ function EditCustomerProfile({customer}) {
                                             ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
                                             focus:ring-indigo-600 placeholder:font-serif
                                             sm:text-sm sm:leading-6"
-                                            placeholder="Vui lòng nhập số CMND/CCCD/Hộ chiếu"
-                                            disabled/>
+                                            placeholder="Vui lòng nhập số CMND/CCCD/Hộ chiếu"/>
                                     </div>
                                     <p className=" mt-2 text-green-700">* Thông tin này chỉ được nhập 1 lần và không thể
                                         chỉnh sửa sau khi xác nhận.</p>
@@ -144,7 +147,7 @@ function EditCustomerProfile({customer}) {
                                             name="email"
                                             id="email"
                                             autoComplete="email"
-                                            value={customer?.email || ""}
+                                            value={customer.email}
                                             onChange={handleChange}
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
                                             ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
@@ -166,7 +169,7 @@ function EditCustomerProfile({customer}) {
                                             name="dateOfBirth"
                                             id="dateOfBirth"
                                             autoComplete="dateOfBirth"
-                                            value={customer?.dateOfBirth || ""}
+                                            value={customer.dateOfBirth}
                                             onChange={handleChange}
                                             className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
                                             ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
@@ -220,4 +223,4 @@ function EditCustomerProfile({customer}) {
     );
 }
 
-export default EditCustomerProfile;
+export default AddCustomerProfile;

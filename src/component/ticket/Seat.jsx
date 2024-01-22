@@ -1,11 +1,29 @@
 import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {getTicketByTimeId, selectShowTicketByTimeId, selectTotalElements} from "../../features/TicketSlice.js";
+import {useParams} from "react-router-dom";
 
 function Seat({dataFormSeat}) {
     const [seats, setSeats] = useState([]);
+    console.log(seats)
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-    const totalRows = Math.ceil(150 / 15); // Tổng số hàng (làm tròn lên)
+    const dispatch = useDispatch();
+    const timeId = useParams().param;
+    const totalElementTicket = useSelector(selectTotalElements)
+    console.log(totalElementTicket)
+    const totalSeatOneRow = 15;
+    const tickets = useSelector(selectShowTicketByTimeId)
+    console.log(tickets)
 
+    const showTicketByTimeId = () => {
+        dispatch(getTicketByTimeId(timeId))
+    }
+    useEffect(() => {
+        showTicketByTimeId();
+    }, [])
+
+    const totalRows = Math.ceil(totalElementTicket / totalSeatOneRow); // Tổng số hàng (làm tròn lên)
 
     useEffect(() => {
         dataFormSeat(totalPrice);
@@ -14,11 +32,11 @@ function Seat({dataFormSeat}) {
         const updatedSeats = seats.map((seat) => {
             if (seat.seatNumber === seatNumber) {
                 if (seat.seatClass === "bg-[#FFD5CF]") {
-                    return {...seat, seatValue: 1700000 , seatClass: "bg-[#2E7D32]"};
+                    return {...seat, seatValue: 1700000, seatClass: "bg-[#2E7D32]"};
                 } else if (seat.seatClass === "bg-[#C4F1F2]") {
-                    return {...seat, seatValue: 2200000 , seatClass: "bg-[#2E7D32]"};
+                    return {...seat, seatValue: 2200000, seatClass: "bg-[#2E7D32]"};
                 } else {
-                    return {...seat, seatValue: 2700000 , seatClass: "bg-[#2E7D32]"};
+                    return {...seat, seatValue: 2700000, seatClass: "bg-[#2E7D32]"};
                 }
             }
             return seat;
@@ -45,37 +63,7 @@ function Seat({dataFormSeat}) {
     }, [selectedSeats, seats]);
 
     // Tạo danh sách ghế
-    const createSeats = () => {
-        const newSeats = [];
-        let seatCount = 1;
 
-        for (let i = 1; i <= totalRows; i++) {
-            for (let j = 1; j <= 15; j++) {
-                const seatNumber = String.fromCharCode(64 + i) + "-" + j.toString().padStart(2, "0");
-                let seatClass = "";
-
-                if (i <= 3) {
-                    seatClass = "bg-[#FFD5CF]";
-                } else if (i <= 6) {
-                    seatClass = "bg-[#C4F1F2]";
-                } else {
-                    seatClass = "bg-[#FDE098]";
-                }
-
-                newSeats.push({
-                    seatNumber,
-                    seatClass,
-                });
-                seatCount++;
-            }
-        }
-
-        setSeats(newSeats);
-    };
-
-    useEffect(() => {
-        createSeats();
-    }, []);
 
     // Render danh sách ghế
     const renderSeats = () => {

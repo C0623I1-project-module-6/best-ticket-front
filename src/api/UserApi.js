@@ -100,5 +100,24 @@ export async function logout(user) {
   return response;
 }
 
+export async function getUser(userId) {
+  let response = null;
+  let token = localStorage.getItem('token');
+  await axios({
+    url: `${BEST_TICKET_API}users/${userId}`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    method: "GET",
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  console.log(response)
+  return response;
+}
+
 
 

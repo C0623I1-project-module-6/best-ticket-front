@@ -1,4 +1,4 @@
-import {useLocation, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -59,7 +59,7 @@ export default function AdminTable() {
             dispatch(setUsers(null))
             dispatch(getPageBookings())
             setDataHeader(TABLE_HEAD_BOOKING)
-        }else if (param.param ==="events"){
+        } else if (param.param === "events") {
             dispatch(setBookings(null))
             dispatch(setUsers(null))
             dispatch(getPageEvents())
@@ -69,8 +69,8 @@ export default function AdminTable() {
     useEffect(() => {
         if (param.param === "bookings") {
             dispatch(getPageBookings(currentPage - 1));
-        }else  if (param.param === "users") {
-            dispatch(getPageUsers(currentPage-1))
+        } else if (param.param === "users") {
+            dispatch(getPageUsers(currentPage - 1))
         }
     }, [currentPage]);
     return (
@@ -116,18 +116,18 @@ export default function AdminTable() {
                     </table>
                 </div>
                 <div className="flex items-center justify-center border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-                        <div>
-                            <Pagination
-                                count={totalPages || 0}
-                                color="secondary"
-                                showFirstButton
-                                showLastButton
-                                size="large"
-                                variant="outlined"
-                                page={currentPage}
-                                onChange={(event, value) => setCurrentPage(value)}
-                            />
-                        </div>
+                    <div>
+                        <Pagination
+                            count={totalPages || 0}
+                            color="secondary"
+                            showFirstButton
+                            showLastButton
+                            size="large"
+                            variant="outlined"
+                            page={currentPage}
+                            onChange={(event, value) => setCurrentPage(value)}
+                        />
+                    </div>
                 </div>
             </div>
 

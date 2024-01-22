@@ -62,7 +62,7 @@ function AdminSidebar() {
     ]
     const itemFooter = [
         {icon: <FaCogs size={25}/>, label: "Setting", path: "/admin"},
-        {icon: <FaSignOutAlt size={25} onClick={()=>logout()}/>, label: "Log out", path: "/admin"},
+        {icon: <FaSignOutAlt size={25} onClick={() => logout()}/>, label: "Log out", path: "/admin"},
         {
             label: <input type="checkbox" className="toggle toggle-warning" ref={inputRef} onClick={changeTheme}/>
             , icon: <div>
