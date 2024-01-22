@@ -20,7 +20,7 @@ export function BookingManagerEventBookings() {
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
-
+    
     return (
         <>
             <div className="w-full bg-white">
