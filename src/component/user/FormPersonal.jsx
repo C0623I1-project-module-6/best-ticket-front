@@ -20,7 +20,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                id="name"
                                name="name"
                                autoComplete="name"
-                               value={organizer.name}
+                               // value={organizer.name}
                                onChange={handleChange}
                                required
                                className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -38,7 +38,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                             id="taxCode"
                             name="taxCode"
                             autoComplete="taxCode"
-                            value={organizer.taxCode}
+                            // value={organizer.taxCode}
                             onChange={handleChange}
                             required
                             type="text"
@@ -57,7 +57,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                id="idCard"
                                name="idCard"
                                autoComplete="idCard"
-                               value={organizer.idCard}
+                               // value={organizer.idCard}
                                onChange={handleChange}
                                required
                                className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -75,7 +75,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                id="issuedBy"
                                name="issuedBy"
                                autoComplete="issuedBy"
-                               value={organizer.issuedBy}
+                               // value={organizer.issuedBy}
                                onChange={handleChange}
                                required
                                className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -93,7 +93,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                id="dateRange"
                                name="dateRange"
                                autoComplete="dateRange"
-                               value={organizer.dateRange}
+                               // value={organizer.dateRange}
                                onChange={handleChange}
                                required
                                className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
@@ -116,7 +116,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                id="phoneNumber"
                                name="phoneNumber"
                                autoComplete="phoneNumber"
-                               value={organizer.phoneNumber}
+                               // value={organizer.phoneNumber}
                                onChange={handleChange}
                                className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
                                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
@@ -133,7 +133,7 @@ export default function FormPersonal({organizer, setOrganizer}) {
                                id="email"
                                name="email"
                                autoComplete="email"
-                               value={organizer.email}
+                               // value={organizer.email}
                                onChange={handleChange}
                                className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
                                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
