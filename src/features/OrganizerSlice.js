@@ -4,8 +4,8 @@ import {createOrganizer} from "../api/OrganizerApi.js";
 const initialState = {
     value: null,
     loading: false,
-    registerProfileSuccess: false,
-    registerProfileError: null,
+    success: false,
+    error: null,
 }
 export const registerProfile = createAsyncThunk(
     "organizers/add",
@@ -27,11 +27,11 @@ export const organizerSlice = createSlice(
             setLoading: (state, action) => {
                 state.loading = action.payload;
             },
-            setRegisterProfileSuccess: (state, action) => {
-                state.registerProfileSuccess = action.payload;
+            setSuccess: (state, action) => {
+                state.success = action.payload;
             },
-            setRegisterProfileError: (state, action) => {
-                state.registerProfileError = action.payload;
+            setError: (state, action) => {
+                state.error = action.payload;
             },
             setValue: (state, action) => {
                 state.value = action.payload
@@ -40,20 +40,20 @@ export const organizerSlice = createSlice(
         extraReducers: (builder) => {
             builder
                 .addCase(registerProfile.pending, (state) => {
-                    state.registerProfileSuccess = false;
+                    state.success = false;
                     state.loading = true;
-                    state.registerProfileError = false;
+                    state.error = false;
                 })
                 .addCase(registerProfile.rejected, (state, action) => {
-                    state.registerProfileSuccess = false;
+                    state.success = false;
                     state.loading = false;
-                    state.registerProfileError = action.payload;
+                    state.error = action.payload;
                 })
                 .addCase(registerProfile.fulfilled, (state, action) => {
-                    state.registerProfileSuccess = true;
+                    state.success = true;
                     state.loading = false;
                     state.value = action.payload.data;
-                    state.registerProfileError = false;
+                    state.error = false;
                 })
         }
     }
@@ -61,12 +61,12 @@ export const organizerSlice = createSlice(
 export const {
     setValue,
     setLoading,
-    setRegisterProfileSuccess,
-    setRegisterProfileError,
+    setSuccess,
+    setError,
 } = organizerSlice.actions;
 
-export const selectRegisterProfileSuccess = (state) => state.organizer.registerProfileSuccess;
+export const selectSuccess = (state) => state.organizer.success;
 export const selectOrganizerRegister = (state) => state.organizer.value;
-export const selectRegisterProfileError = (state) => state.organizer.registerProfileError;
+export const selectError = (state) => state.organizer.error;
 export default organizerSlice.reducer;
 
