@@ -4,7 +4,7 @@ import {MdEmail} from "react-icons/md";
 import {FaPhone} from "react-icons/fa";
 
 
-export default function TicketBookingStep2() {
+export const TicketBookingStep2 = () => {
 
     return (
         <>

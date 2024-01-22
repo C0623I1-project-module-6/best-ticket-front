@@ -29,15 +29,6 @@ const handleRejected = (state, action) => {
     state.loading = false;
     state.error = action.error;
 };
-
-const handleFulfilled = (state, action) => {
-    state.success = true;
-    state.loading = false;
-    state.ticketType = action.payload;
-    state.ticketTypes = action.payload;
-    state.error = false;
-};
-
 export const TicketTypeSlice = createSlice({
     name: "ticketType",
     initialState,
@@ -56,7 +47,12 @@ export const TicketTypeSlice = createSlice({
         builder
             .addCase(getTicketTypes.pending, handlePending)
             .addCase(getTicketTypes.rejected, handleRejected)
-            .addCase(getTicketTypes.fulfilled, handleFulfilled)
+            .addCase(getTicketTypes.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.ticketTypes = action.payload;
+                state.error = false;
+            })
 
 
     }

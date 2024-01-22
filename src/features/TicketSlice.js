@@ -4,12 +4,13 @@ import {
     showAllTicketFinished,
     showAllTicketUpcoming,
     showTicketByEventId,
-    showTicketById
+    showTicketById, showTicketByTimeId
 } from "../api/TicketApi";
 
 const initialState = {
     tickets: [],
     ticket: null,
+    totalElementsOfTicket: null,
     loading: false,
     success: false,
     error: null,
@@ -37,7 +38,7 @@ export const getTickets = createAsyncThunk(
         return response.data;
     }
 );
-export const getTicket = createAsyncThunk(
+export const getTicketById = createAsyncThunk(
     "tickets/showTicketById",
     async (id) => {
         const response = await showTicketById(id);
@@ -49,6 +50,14 @@ export const getTicketByEventId = createAsyncThunk(
     "tickets/showTicketByEventId",
     async (eventId) => {
         const response = await showTicketByEventId(eventId);
+        console.log(response.data)
+        return response.data;
+    }
+);
+export const getTicketByTimeId = createAsyncThunk(
+    "tickets/showTicketByTimeId",
+    async (timeId) => {
+        const response = await showTicketByTimeId(timeId);
         console.log(response.data)
         return response.data;
     }
@@ -65,14 +74,7 @@ const handleRejected = (state, action) => {
     state.error = action.error;
 };
 
-const handleFulfilled = (state, action) => {
-    state.success = true;
-    state.loading = false;
-    state.tickets = action.payload;
-    state.ticket = action.payload;
-    console.log(state.ticket);
-    state.error = false;
-};
+
 
 export const TicketSlice = createSlice({
     name: "ticket",
@@ -92,31 +94,70 @@ export const TicketSlice = createSlice({
         builder
             .addCase(getTicketsByStatusFinished.pending, handlePending)
             .addCase(getTicketsByStatusFinished.rejected, handleRejected)
-            .addCase(getTicketsByStatusFinished.fulfilled, handleFulfilled)
+            .addCase(getTicketsByStatusFinished.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.tickets = action.payload;
+                console.log(state.ticket);
+                state.error = false;
+            })
 
             .addCase(getTicketsByStatusUpcoming.pending, handlePending)
             .addCase(getTicketsByStatusUpcoming.rejected, handleRejected)
-            .addCase(getTicketsByStatusUpcoming.fulfilled, handleFulfilled)
+            .addCase(getTicketsByStatusUpcoming.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.tickets = action.payload;
+                state.error = false;
+            })
 
             .addCase(getTickets.pending, handlePending)
             .addCase(getTickets.rejected, handleRejected)
-            .addCase(getTickets.fulfilled, handleFulfilled)
+            .addCase(getTickets.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.tickets = action.payload;
+                state.error = false;
+            })
 
-            .addCase(getTicket.pending, handlePending)
-            .addCase(getTicket.rejected, handleRejected)
-            .addCase(getTicket.fulfilled, handleFulfilled)
+            .addCase(getTicketById.pending, handlePending)
+            .addCase(getTicketById.rejected, handleRejected)
+            .addCase(getTicketById.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.ticket = action.payload;
+                state.error = false;
+            })
 
             .addCase(getTicketByEventId.pending, handlePending)
             .addCase(getTicketByEventId.rejected, handleRejected)
-            .addCase(getTicketByEventId.fulfilled, handleFulfilled)
+            .addCase(getTicketByEventId.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.ticket = action.payload;
+                state.error = false;
+            })
+
+            .addCase(getTicketByTimeId.pending, handlePending)
+            .addCase(getTicketByTimeId.rejected, handleRejected)
+            .addCase(getTicketByTimeId.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.ticket = action.payload;
+                state.totalElementsOfTicket = action.payload.data.totalElements;
+                state.error = false;
+            })
 
 
     }
 });
 export const {setLoading, setError, setSuccess} = TicketSlice.actions;
 
+export const selectLoading = (state) => state.ticket.loading;
+export const selectError = (state) => state.ticket.error;
+export const selectSuccess = (state) => state.ticket.success;
 export const selectShowTicket = (state) => state.ticket.tickets;
-
 export const selectShowTicketByEventId = (state) => state.ticket.ticket;
-
+export const selectShowTicketByTimeId = (state) => state.ticket.ticket;
+export const selectTotalElements = (state) => state.ticket.totalElementsOfTicket;
 export default TicketSlice.reducer;
