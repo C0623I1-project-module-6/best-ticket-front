@@ -1,4 +1,5 @@
 import {FaPlus} from "react-icons/fa";
+import UserFooter from "../footer/UserFooter.jsx";
 
 export default function CreatedEvent() {
     return(
