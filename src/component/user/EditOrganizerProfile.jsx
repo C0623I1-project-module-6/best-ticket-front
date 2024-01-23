@@ -71,7 +71,7 @@ function EditOrganizerProfile() {
                                 value={selected}
                                 onChange={handleSelectChange}
                                 className=" mt-1 block w-72 rounded-md border-0 py-2 pl-3 text-gray-900
-                                shadow-md ring-1 ring-inset ring-gray-300 focus:ring-0
+                                shadow-md ring-1 ring-inset ring-gray-300 focus:ring-0 font-serif
                                 focus:ring-inset focus:ring-indigo-600
                                 sm:text-1xl sm:leading-6">
                                 <option className="font-serif" value="0">Doanh nghiệp/Nhà tổ chức</option>
@@ -83,8 +83,8 @@ function EditOrganizerProfile() {
                 {selected === "0" && <FormCompany organizer={organizer} setOrganizer={setOrganizer}/>}
                 {selected === "1" && <FormPersonal organizer={organizer} setOrganizer={setOrganizer}/>}
                 <button type="subbmit"
-                        className=" mt-4 block w-60 text-center text-lg font-bold ml-auto px-3 py-2
-                        bg-green-500 border-0 rounded-full">
+                        className=" mt-4 block w-60 text-center text-white font-bold ml-auto px-3 py-2
+                        bg-[#10b981] border-0 rounded-full">
                     Lưu thông tin
                 </button>
             </form>

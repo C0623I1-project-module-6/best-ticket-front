@@ -1,19 +1,37 @@
 import AdminSidebar from "../component/sidebar/AdminSidebar.jsx";
 import AdminHeader from "../component/header/AdminHeader.jsx";
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {useAuthor} from "../ultility/customHook/useAuthor.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {reLoginWithToken} from "../features/UserSlice.js";
+import {reLoginWithToken, selectLogoutSuccess, selectUserLogout} from "../features/UserSlice.js";
+import {Bounce, toast} from "react-toastify";
 
 
 const AdminLayout = ({children}) => {
     const isAdmin = useAuthor();
     const dispatch = useDispatch();
+    const logoutSuccess = useSelector(selectLogoutSuccess)
+    const navigate = useNavigate();
     useEffect(() => {
         if (localStorage.getItem("token") !== null) {
             dispatch(reLoginWithToken())
-            console.log("Hello")
+        }
+    }, []);
+    useEffect(() => {
+        if (logoutSuccess) {
+            toast('🦄 Logout success!', {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
+            navigate("/");
         }
     }, []);
     return isAdmin ? (
