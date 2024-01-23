@@ -4,12 +4,15 @@ import {MdEmail} from "react-icons/md";
 import {FaPhone} from "react-icons/fa";
 import {useSelector} from "react-redux";
 import {selectUserLogin} from "../../features/UserSlice.js";
+import {selectShowTicketByTimeId} from "../../features/TicketSlice.js";
 
 
 export const TicketBookingStep2 = () => {
     const user = useSelector(selectUserLogin);
     const seatTickets = useSelector(state => state.seat)
-    console.log(seatTickets);
+    const tickets = useSelector(selectShowTicketByTimeId);
+    console.log(tickets)
+    console.log(seatTickets.ticketTypes);
     return (
         <>
             <div className="mx-40 text-black py-5">
@@ -120,15 +123,21 @@ export const TicketBookingStep2 = () => {
                                 <div className="flex justify-between py-2" key={index}>
                                     {ticketType === "VIP" && (
                                         <>
-                                            <div className="w-2/3">
-                                                <p>Vé {ticketType}</p>
-                                                <p>{/* Dữ liệu của loại vé VIP */}</p>
-                                                <p>{" " + seatTickets.seats}</p>
-                                            </div>
-                                            <div className="w-1/3 text-right">
-                                                <p>Số lượng</p>
-                                                <p>Giá</p>
-                                            </div>
+                                            {tickets !== null ? tickets.data.map((ticket, index) => (
+                                                <>
+                                                    <div className="w-2/3" key={index}>
+                                                        {/*{ticket.ticketType.name === }*/}
+                                                        <p>Vé {ticketType}</p>
+                                                        <p>{/* Dữ liệu của loại vé VIP */}</p>
+                                                        <p>{" " + seatTickets.seats}</p>
+                                                    </div>
+                                                    <div className="w-1/3 text-right">
+                                                        <p>Số lượng</p>
+                                                        <p>Giá</p>
+                                                    </div>
+                                                </>
+                                            )) : <div></div>}
+
                                         </>
                                     )}
                                     {ticketType === "THƯỜNG" && (
