@@ -1,24 +1,44 @@
 import {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {selectBookings, selectBookingsSuccess, selectUsers, selectUsersSuccess} from "../../features/AdminSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    getBookingDetails,
+    selectBookings,
+    selectBookingsSuccess,
+    selectUsers,
+    selectUsersSuccess
+} from "../../features/AdminSlice.js";
 import {GiCancel} from "react-icons/gi";
 import {FaCheckCircle} from "react-icons/fa";
 import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
+import ModalContent from "../ModalContent.jsx";
 
 function TableContent(props) {
     const [data, setData] = useState([]);
+    const dispatch = useDispatch();
     const bookings = useSelector(selectBookings);
     const users = useSelector(selectUsers);
     const selectUserSuccess = useSelector(selectUsersSuccess);
     const selectBookingSuccess = useSelector(selectBookingsSuccess)
+    const [showDetail, setShowDetail] = useState(false);
+    const [bookingDetailId, setBookingDetailId] = useState()
     useEffect(() => {
         setData(users)
     }, [selectUserSuccess]);
     useEffect(() => {
         setData(bookings)
     }, [selectBookingSuccess]);
-
-
+    const handleClick = async (value) => {
+        if (!showDetail) {
+            await dispatch(getBookingDetails(value));
+            await setShowDetail(true);
+        } else {
+            await dispatch(getBookingDetails(value));
+            await setShowDetail(false);
+        }
+    }
+    const callbackFunction = (data) => {
+        setShowDetail(data);
+    }
     if (props.content.param === "users") {
         return (
             <>
@@ -78,6 +98,10 @@ function TableContent(props) {
     if (props.content.param === "bookings") {
         return (
             <>
+                <ModalContent
+                    parentCallback={callbackFunction}
+                    dataFromParent={showDetail}
+                />
                 <tbody className="bg-white dark:bg-blue-gray-400 items-center justify-center">
                 {
                     data !== null ? data.map((booking, index) => (
@@ -87,9 +111,7 @@ function TableContent(props) {
                                 <td className="px-4 py-3 whitespace text-sm font-medium text-gray-800 truncate hover:text-clip">
                                     {booking.customerName}
                                 </td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">
-                                    {booking.organizeName}
-                                </td>
+
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">
                                     {
                                         booking.totalAmount
@@ -99,6 +121,13 @@ function TableContent(props) {
                                     {
                                         booking.status
                                     }
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">
+                                    <button type="button" className="btn btn-outline btn-sm btn-info"
+                                            onClick={() => handleClick(booking.id)}
+
+                                    >Detail
+                                    </button>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">
                                     <button type="button" className="btn btn-outline btn-sm btn-warning">Edit

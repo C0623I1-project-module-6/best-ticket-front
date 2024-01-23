@@ -18,6 +18,24 @@ export async function showBookings(currentPage) {
   return response;
 }
 
+export async function showBookingDetail(id) {
+  let response = null;
+  const token = localStorage.getItem("token");
+  await axios({
+    url: `${BEST_TICKET_API}admin/bookings/${id}`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    method: "GET",
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  return response;
+}
+
 export async function showTickets() {
   let response = null;
   await axios({

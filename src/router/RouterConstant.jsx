@@ -16,18 +16,15 @@ import NotFoundPage from "../layout/pages/errors/NotFoundPage.jsx";
 import InternalServerErrorPage from "../layout/pages/errors/InternalServerErrorPage.jsx";
 import BadGatewayPage from "../layout/pages/errors/BadGatewayPage.jsx";
 import ServiceUnavailablePage from "../layout/pages/errors/ServiceUnavailablePage.jsx";
-
 import OrganizerBookingManagerLayout from "../layout/OrganizerBookingManagerLayout.jsx";
 import {BookingManagerEventBookings} from "../component/booking/BookingManagerEventBookings.jsx";
 import {BookingManagerModeratorList} from "../component/booking/BookingMangerModeratorList.jsx";
-
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
 import CreateEventPage from "../layout/pages/event/CreateEventPage.jsx";
 import CreateEventStep1 from "../component/event/createEvent/CreateEventStep1.jsx";
 import CreateEventStep2 from "../component/event/createEvent/CreateEventStep2.jsx";
 import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.jsx";
 import EventDetail from "../component/event/EventDetail.jsx";
-
 import {RegisterOrganizerProfile} from "../component/user/RegisterOrganizerProfile.jsx"
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import EditOrganizerProfile from "../component/user/EditOrganizerProfile.jsx";
@@ -54,11 +51,9 @@ export const ROUT_DATA = [
     {path: "/my-event/legal", element: EditOrganizerProfile, layout: OrganizerLayout},
 
 
-
-
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
-    {path: "/profile/add", element: "AddCustomerProfile", layout: UserLayout},
+    {path: "/profile", element: CustomerProfile, layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
     {
         path: "/event/create", element: CreateEventPage, children: [
