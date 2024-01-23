@@ -29,7 +29,7 @@ import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.js
 import EventDetail from "../component/event/EventDetail.jsx";
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import EditCustomerProfile from "../component/user/EditCustomerProfile.jsx";
-
+import CreatedEvent from "../component/user/CreatedEvent.jsx";
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
     {path: "/register", element: Register, layout: GuestLayout},
@@ -52,6 +52,7 @@ export const ROUT_DATA = [
 
 
     {path: "/my-event/legal", element: EditOrganizerProfile, layout: OrganizerLayout},
+    {path: "/my-event/legal/createdEvent", element: CreatedEvent , layout: OrganizerLayout},
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
 
