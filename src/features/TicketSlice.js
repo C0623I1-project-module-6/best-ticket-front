@@ -5,7 +5,7 @@ import {
     showAllTicketUpcoming,
     showTicketByEventId,
     showTicketById,
-    showTicketByTimeId
+    showTicketByTimeId, updateStatus
 } from "../api/TicketApi";
 
 const initialState = {
@@ -59,6 +59,15 @@ export const getTicketByTimeId = createAsyncThunk(
     "tickets/showTicketByTimeId",
     async (timeId) => {
         const response = await showTicketByTimeId(timeId);
+        return response.data;
+    }
+);
+
+export const updateStatusTicket = createAsyncThunk(
+    "tickets/updateStatusTicket",
+    async (selectedSeats) => {
+        const response = await updateStatus(selectedSeats);
+        console.log(response.data)
         return response.data;
     }
 );
@@ -147,6 +156,15 @@ export const TicketSlice = createSlice({
                 state.error = false;
             })
 
+            .addCase(updateStatusTicket.pending, handlePending)
+            .addCase(updateStatusTicket.rejected, handleRejected)
+            .addCase(updateStatusTicket.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.tickets = action.payload;
+                state.error = false;
+            })
+
 
     }
 });
@@ -156,6 +174,7 @@ export const selectLoading = (state) => state.ticket.loading;
 export const selectError = (state) => state.ticket.error;
 export const selectSuccess = (state) => state.ticket.success;
 export const selectShowTicket = (state) => state.ticket.tickets;
+export const selectUpdateStatusTicket = (state) => state.ticket.tickets;
 export const selectShowTicketByEventId = (state) => state.ticket.ticket;
 export const selectShowTicketByTimeId = (state) => state.ticket.ticket;
 export const selectTotalElements = (state) => state.ticket.totalElementsOfTicket;

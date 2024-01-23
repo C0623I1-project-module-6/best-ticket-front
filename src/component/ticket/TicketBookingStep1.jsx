@@ -1,21 +1,56 @@
 import Seat from "./Seat.jsx";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {getTicketTypes} from "../../features/TicketTypeSlice.js";
+import {updateStatus} from "../../api/TicketApi.js";
+import {setPrice, setSeats, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
 
-export const TicketBookingStep1 = () => {
-    const [dataPrice, setDataPrice] = useState();
-    const [dataSeat, setDataSeat] = useState();
-
-    const handleDataFromSeat = (price, seat) => {
-        setDataPrice(price);
-        setDataSeat(seat);
+export const TicketBookingStep1 = (props) => {
+    const [dataTotalPrice, setDataTotalPrice] = useState(0);
+    const [dataPriceOneTicket, setDataPriceOneTicket] = useState([]);
+    const [dataSeat, setDataSeat] = useState([]);
+    const [dataNameTicketType, setDataNameTicketType] = useState([]);
+    const dispatch = useDispatch();
+    const seatTicket = useSelector(state => state.seat)
+    const showTicketType = () => {
+        dispatch(getTicketTypes())
     }
+    useEffect(() => {
+        showTicketType();
+    }, [])
+    const handleDataFromSeat = (totalPrice, seat, nameTicketType, priceOneTicket) => {
+        setDataTotalPrice(totalPrice);
+        setDataSeat(seat);
+        setDataNameTicketType(nameTicketType)
+        setDataPriceOneTicket(priceOneTicket)
+    }
+    const handleDataFormButton = async () => {
+        if (dataTotalPrice !== 0 && dataSeat !== null) {
+            try {
+                const response = await updateStatus(dataSeat);
+                dispatch(setSeats(dataSeat));
+                dispatch(setTotalPrice(dataTotalPrice));
+                dispatch(setTicketType(dataNameTicketType));
+                dispatch(setPrice(dataPriceOneTicket))
+                props.callbackData(1);
+                return response.data;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        } else {
+            return
+        }
+    }
+    console.log(dataSeat, dataTotalPrice, dataNameTicketType,dataPriceOneTicket)
+    console.log(seatTicket)
 
     return (
         <>
             <div className="mx-40 my-5 flex justify-between	">
                 <span>Vui lòng chọn ghế bên dưới</span>
                 <span><span className="mr-2 inline-block w-4 h-4 rounded-full bg-white"></span>Ghế trống</span>
-                <span> <span className="mr-2 inline-block w-4 h-4 rounded-full bg-green-800"></span>Ghế đang chọn</span>
+                <span> <span
+                    className="mr-2 inline-block w-4 h-4 rounded-full bg-green-800"></span>Ghế đang chọn</span>
                 <span><span
                     className="mr-2 inline-block w-4 h-4 rounded-full bg-red-800"></span>Ghế đã có người chọn</span>
                 <span><span
@@ -27,6 +62,7 @@ export const TicketBookingStep1 = () => {
                     <div className="bg-[#E3E3E3]">
 
                         <div className="flex p-3">
+
                             <div className="w-1/2">
                                 <div className="flex ">
                                     <div className="w-8 h-8 bg-[#FFD5CF] mr-4 my-auto"></div>
@@ -35,7 +71,8 @@ export const TicketBookingStep1 = () => {
                                         <p className="text-[#66666E]">270.000VND</p>
 
                                     </div>
-                                    <div className="h-5 w-5 rounded-full bg-gray-400 text-center text-white my-auto">
+                                    <div
+                                        className="h-5 w-5 rounded-full bg-gray-400 text-center text-white my-auto">
                                         i
                                     </div>
                                 </div>
@@ -48,7 +85,8 @@ export const TicketBookingStep1 = () => {
                                         <p className="text-[#66666E]">220.000VND</p>
 
                                     </div>
-                                    <div className="h-5 w-5 rounded-full bg-gray-400 text-center text-white my-auto">
+                                    <div
+                                        className="h-5 w-5 rounded-full bg-gray-400 text-center text-white my-auto">
                                         i
                                     </div>
                                 </div>
@@ -63,7 +101,8 @@ export const TicketBookingStep1 = () => {
                                         <p className="text-[#66666E] font-bold">Vé Lầu</p>
                                         <p className="text-[#66666E]">170.000VND</p>
                                     </div>
-                                    <div className="h-5 w-5 rounded-full bg-gray-400 text-center text-white my-auto">
+                                    <div
+                                        className="h-5 w-5 rounded-full bg-gray-400 text-center text-white my-auto">
                                         <span>i</span>
                                     </div>
                                 </div>
@@ -86,9 +125,12 @@ export const TicketBookingStep1 = () => {
 
                     <div className="pl-5 bg-[#666666] py-4 flex text-white">
                         <span className="w-3/5 ">Tổng cộng:  </span>
-                        <span>{dataPrice} VND</span>
+                        <span>{dataTotalPrice} VND</span>
                     </div>
-                    <button className="bg-[#7CA629] py-3 px-2 w-full text-white mt-10" type="button">Tiếp tục</button>
+                    <button className="bg-[#7CA629] py-3 px-2 w-full text-white mt-10"
+                            onClick={handleDataFormButton}
+                            type="button">Tiếp tục
+                    </button>
                 </div>
             </div>
         </>

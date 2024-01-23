@@ -79,3 +79,21 @@ export const showTicketByTimeId = async (timeId) => {
     }
     return result;
 };
+
+export async function updateStatus(selectedSeats) {
+    let response = null;
+    await axios({
+        url: `${BEST_TICKET_API}tickets/updateStatus`,
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        method: "PUT",
+        data: selectedSeats
+    }).then((res)=>{
+        response = res
+    }).catch((e)=>{
+        response = e;
+    })
+    console.log(response);
+    return response;
+}

@@ -10,6 +10,7 @@ import OrganizerSlice from "../features/OrganizerSlice.js";
 import ExistsUserSlice from "../features/ExistsUserSlice.js"
 import TicketTypeSlice from "../features/TicketTypeSlice.js";
 import TimeSlice from "../features/TimeSlice.js";
+import SeatSlice from "../features/SeatSlice.js";
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -27,6 +28,7 @@ export const store = configureStore(
             customer: CustomerSlice,
             organizer: OrganizerSlice,
             existsUsers: ExistsUserSlice,
+            seat: SeatSlice,
         },
     },
     composeEnhancers(applyMiddleware())
