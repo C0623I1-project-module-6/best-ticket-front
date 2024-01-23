@@ -22,7 +22,7 @@ export const registerProfile = createAsyncThunk(
   "organizers/add",
   async (organizer, {rejectedWithValue}) => {
     const response = await createOrganizer(organizer);
-    if (response.status !== 201) {
+    if (response.status !== 200) {
       console.log(response);
       return rejectedWithValue(response.data.message);
     }

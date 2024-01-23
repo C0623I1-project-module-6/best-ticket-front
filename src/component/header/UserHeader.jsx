@@ -30,7 +30,6 @@ const UserHeader = () => {
     const dispatch = useDispatch();
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
-    const logoutSuccess = useSelector(selectLogoutSuccess);
     const userLogout = useSelector(selectUserLogout);
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
@@ -57,11 +56,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    useEffect(() => {
-        if (userRole !== null && userRole.includes(ADMIN)) {
-            navigate("/admin");
-        }
-    }, [userRole]);
+    // useEffect(() => {
+    //     if (userRole !== null && userRole.includes(ADMIN)) {
+    //         navigate("/admin");
+    //     }
+    // }, [userRole]);
 
     const loginButton = () => {
         return (
@@ -69,7 +68,7 @@ const UserHeader = () => {
                 <span onClick={() => navigate("/login")} className="hover:text-amber-400">
                     Login | Register
                 </span>
-                : <Popover placement="bottom-end">
+                : <Popover placement="bottom-end" dismiss={true}>
                     <PopoverHandler>
                         <Avatar
                             size="sm"
@@ -185,7 +184,8 @@ const UserHeader = () => {
     const handleCreateEvent = () => {
         if (isLogin) {
             dispatch(getOrganizerByUserId(user.id));
-            if (organizer !== null) {
+            console.log(organizer)
+            if (organizer !== null ) {
                 navigate('/event/create');
             }else {
                 navigate('/my-event/legal')
@@ -195,6 +195,8 @@ const UserHeader = () => {
         }
     };
     console.log(user!== null && user.id)
+    console.log(organizer)
+    console.log(isLogin)
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">

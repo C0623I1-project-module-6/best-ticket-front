@@ -14,7 +14,7 @@ export const addProfile = createAsyncThunk(
     "customers/add",
     async (customerData, {rejectedWithValue}) => {
         const response = await create(customerData);
-        if (response.status !== 201) {
+        if (response.status !== 200) {
             console.log(response);
             return rejectedWithValue(response.data.message);
         }
@@ -26,7 +26,7 @@ export const editProfile = createAsyncThunk(
     "customers/edit",
     async (customerData, {rejectedWithValue}) => {
         const response = await update(customerData);
-        if (response.status !== 201) {
+        if (response.status !== 200) {
             console.log(response);
             return rejectedWithValue(response.data.message);
         }
@@ -109,6 +109,8 @@ export const {
 export const selectAddProfileSuccess = (state) => state.customer.addProfileSuccess;
 export const selectProfileAdded = (state) => state.customer.value;
 export const selectProfileEdited = (state) => state.customer.value;
+export const selectEditProfileSuccess = (state) => state.customer.editProfileSuccess;
+export const selectEditProfileError = (state) => state.customer.editProfileError;
 export default customerSlice.reducer;
 
 

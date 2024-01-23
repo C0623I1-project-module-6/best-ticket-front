@@ -45,7 +45,6 @@ function Register() {
                 if (response.data.status === "CONFLICT") {
                     toast.error(response.data.message, toastOptions);
                 }
-
             })
             .catch(() => {
                 toast.success("🦄 Đăng ký thành công!", toastOptions);
