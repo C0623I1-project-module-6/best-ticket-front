@@ -20,7 +20,7 @@ export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", as
 });
 export const getAllBookingsByKeyword = createAsyncThunk("bookings/byEventId/byKeyword", async ({eventId, keyword}) => {
   const response = await searchBookingByKeyword(eventId, keyword);
-  return response.data.data;
+  return response.data.data.length > 0 ? response.data.data : null;
 });
 
 const handlePending = (state) => {

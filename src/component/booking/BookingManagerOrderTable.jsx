@@ -108,11 +108,10 @@ const BookingManagerOrderTable = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {bookings.length === 0 || bookings.length === undefined ? (<tr>
-                        <td colSpan="4">No booking available for this event</td>
+                    {bookings.length === 0 || bookings.length === undefined || false ? (<tr>
+                        <td colSpan="4">No booking available</td>
                     </tr>) : (bookings.map((booking, index) => {
                         const ticketCounts = {}; // Object to store ticket counts
-
                         if (bookingDetails && bookingDetails.length > 0) {
                             bookingDetails.forEach((detail) => {
                                 if (detail.data && detail.data.length > 0) {
@@ -131,7 +130,6 @@ const BookingManagerOrderTable = () => {
                                 }
                             });
                         }
-
                         return (<tr key={index} className="border border-black border-x-0">
                             <th className="px-4 py-2 text-left border-b border-black">
                                 <input
