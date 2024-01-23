@@ -10,8 +10,6 @@ export const TicketBookingStep2 = () => {
     const user = useSelector(selectUserLogin);
     const seatTickets = useSelector(state => state.seat)
     console.log(seatTickets);
-    const vipTickets = seatTickets.ticketTypes.filter(ticketType => ticketType === "VIP");
-    console.log(vipTickets.length)
     return (
         <>
             <div className="mx-40 text-black py-5">
@@ -119,17 +117,47 @@ export const TicketBookingStep2 = () => {
                             </div>
                             <hr className="border border-dashed"/>
                             {seatTickets.ticketTypes.map((ticketType, index) => (
-
                                 <div className="flex justify-between py-2" key={index}>
-                                    <div className="w-2/3">
-                                        <p>{"Vé " + seatTickets.ticketTypes}</p>
-                                        <p>{}</p>
-                                        <p>{" " + seatTickets.seats}</p>
-                                    </div>
-                                    <div className="w-1/3 text-right">
-                                        <p>Số lượng</p>
-                                        <p>Giá</p>
-                                    </div>
+                                    {ticketType === "VIP" && (
+                                        <>
+                                            <div className="w-2/3">
+                                                <p>Vé {ticketType}</p>
+                                                <p>{/* Dữ liệu của loại vé VIP */}</p>
+                                                <p>{" " + seatTickets.seats}</p>
+                                            </div>
+                                            <div className="w-1/3 text-right">
+                                                <p>Số lượng</p>
+                                                <p>Giá</p>
+                                            </div>
+                                        </>
+                                    )}
+                                    {ticketType === "THƯỜNG" && (
+                                        <>
+                                            <div className="w-2/3">
+                                                <p>Vé {ticketType}</p>
+                                                <p>{/* Dữ liệu của loại vé Standard */}</p>
+                                                <p>{" " + seatTickets.seats}</p>
+                                            </div>
+                                            <div className="w-1/3 text-right">
+                                                <p>Số lượng</p>
+                                                <p>Giá</p>
+                                            </div>
+                                        </>
+                                    )}
+                                    {ticketType === "LẦU" && (
+                                        <>
+                                            <div className="w-2/3">
+                                                <p>Vé {ticketType}</p>
+                                                <p>{/* Dữ liệu của loại vé Standard */}</p>
+                                                <p>{" " + seatTickets.seats}</p>
+                                            </div>
+                                            <div className="w-1/3 text-right">
+                                                <p>Số lượng</p>
+                                                <p>Giá</p>
+                                            </div>
+                                        </>
+                                    )}
+
                                 </div>
                             ))}
 
