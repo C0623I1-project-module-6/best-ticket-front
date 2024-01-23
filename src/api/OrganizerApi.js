@@ -36,6 +36,5 @@ export async function findByUserId({userId}) {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }

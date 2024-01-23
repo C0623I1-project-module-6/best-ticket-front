@@ -34,6 +34,7 @@ const UserHeader = () => {
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
+
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -181,22 +182,20 @@ const UserHeader = () => {
         navigate("/");
     }
 
-    const handleCreateEvent = () => {
+    const handleCreateEvent = async () => {
         if (isLogin) {
             dispatch(getOrganizerByUserId(user.id));
-            console.log(organizer)
-            if (organizer !== null ) {
+            console.log(organizer);
+            if (organizer !== null && organizer !== undefined) {
                 navigate('/event/create');
-            }else {
-                navigate('/my-event/legal')
+            } else {
+                navigate('/my-event/legal');
             }
         } else {
             navigate('/login');
         }
     };
-    console.log(user!== null && user.id)
     console.log(organizer)
-    console.log(isLogin)
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">

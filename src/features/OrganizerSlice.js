@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createOrganizer} from "../api/OrganizerApi.js";
-import {findEventsByName} from "../api/EventApi.js";
+import {createOrganizer, findByUserId} from "../api/OrganizerApi.js";
 
 const initialState = {
   value: null,
@@ -11,8 +10,9 @@ const initialState = {
 
 export const getOrganizerByUserId = createAsyncThunk(
     "organizers/userId",
-    async () => {
-        const response = await findEventsByName();
+    async (userId) => {
+        const response = await findByUserId({userId});
+        console.log(response.data)
         return response.data;
     }
 
