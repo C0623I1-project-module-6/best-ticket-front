@@ -7,7 +7,7 @@ import UserFooter from "../footer/UserFooter.jsx";
 export function BookingManagerModeratorList() {
     const eventId = useParams().eventId;
     const dispatch = useDispatch();
-    const event = useSelector((state) => state.event.events);
+    const event = useSelector((state) => state.event.event);
 
     useEffect(() => {
         dispatch(getEventById(eventId));
@@ -16,7 +16,7 @@ export function BookingManagerModeratorList() {
     if (!event) {
         return <div>Loading...</div>;
     }
-    console.log(event.organizer)
+
     return (
         <>
             <div className="w-[80%] mx-[10%] my-[5%] text-black">

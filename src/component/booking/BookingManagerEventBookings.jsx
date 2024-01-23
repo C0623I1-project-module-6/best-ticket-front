@@ -8,7 +8,7 @@ import UserFooter from "../footer/UserFooter.jsx"
 
 export function BookingManagerEventBookings() {
     const dispatch = useDispatch();
-    const event = useSelector((state) => state.event.events);
+    const event = useSelector((state) => state.event.event);
     const eventId = useParams().eventId;
 
     useEffect(() => {
@@ -20,40 +20,32 @@ export function BookingManagerEventBookings() {
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
-    
-    return (
-        <>
+
+    return (<>
             <div className="w-full bg-white">
                 <div className="w-[80%] mx-[10%] my-[5%] text-black">
-                    <div className="w-[80%] text-2xl">{event.name}</div>
-                    <div className="w-[80%]">{event.duration}</div>
+                    <div className="w-[80%] text-2xl">{event !== null ? event.name : <div>Loading...</div>}</div>
+                    <div className="w-[80%]">{event !== null ? event.duration: <div>Loading...</div>}</div>
                     <hr className="my-5 border-0.5px border-black"/>
                     <div className="my-6">
                         <button
-                            className={`${
-                                activeTab === "order" ? "bg-black" : "bg-gray-400"
-                            } hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2`}
+                            className={`${activeTab === "order" ? "bg-black" : "bg-gray-400"} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2`}
                             onClick={() => handleTabClick("order")}
                         >
                             Đơn hàng
                         </button>
                         <button
-                            className={`${
-                                activeTab === "tickets" ? "bg-black" : "bg-gray-400"
-                            } hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
+                            className={`${activeTab === "tickets" ? "bg-black" : "bg-gray-400"} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
                             onClick={() => handleTabClick("tickets")}
                         >
                             Vé
                         </button>
                     </div>
-                    {/* Conditional rendering based on activeTab */}
-                    {activeTab === "order" && <BookingManagerOrderTable/>}
-                    {activeTab === "tickets" && <BookingManagerTicketTable/>}
+                    {activeTab === "order" ? <BookingManagerOrderTable/> : <BookingManagerTicketTable/>}
                 </div>
                 <div>
                     <UserFooter/>
                 </div>
             </div>
-        </>
-    )
+        </>)
 }
