@@ -49,7 +49,6 @@ function Login() {
         dark:bg-black dark:text-white
         ">
             <AuthHeader name={"Login"}/>
-
             <div className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
                     <div>

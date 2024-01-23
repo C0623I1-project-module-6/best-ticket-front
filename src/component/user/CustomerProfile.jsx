@@ -1,11 +1,10 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {fetchGetUser, selectUser, selectUserEdit, selectUserLogin} from "../../features/UserSlice.js";
-import EditCustomerProfile from "./EditCustomerProfile.jsx";
-import AddCustomerProfile from "./AddCustomerProfile.jsx";
-import {useNavigate, useParams} from "react-router-dom";
+import {fetchGetUser, selectUserEdit, selectUserLogin} from "../../features/UserSlice.js";
+import {useNavigate} from "react-router-dom";
 import {addProfile} from "../../features/CustomerSlice.js";
 import {toast} from "react-toastify";
+
 
 export default function CustomerProfile() {
     const user = useSelector(selectUserLogin);
@@ -13,7 +12,6 @@ export default function CustomerProfile() {
     const userEdit = useSelector(selectUserEdit)
     const navigate = useNavigate();
     const [customer, setCustomer] = useState(null)
-
     useEffect(() => {
         dispatch(fetchGetUser(user.id));
     }, []);

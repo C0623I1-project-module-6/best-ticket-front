@@ -2,18 +2,19 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {getUser, login, loginGoogle, loginWithToken, logout, register} from "../api/UserApi.js";
 
 const initialState = {
-  value: null,
-  loading: false,
-  loginError: false,
-  loginSuccess: false,
-  registerSuccess: false,
-  registerError: null,
-  logoutSuccess: false,
-  logoutError: null,
-  listRole: null,
-  isLogin: false,
-  isAdmin: false,
-  userEdit: null,
+
+    value: null,
+    loading: false,
+    loginError: null,
+    loginSuccess: false,
+    registerSuccess: false,
+    registerError: null,
+    logoutSuccess: false,
+    logoutError: null,
+    listRole: null,
+    isLogin: false,
+    isAdmin: false,
+    userEdit: null,
 
 };
 
@@ -64,13 +65,15 @@ export const loginWithGoogle = createAsyncThunk(
 );
 
 export const fetchGetUser = createAsyncThunk(
-  "profile",
-  async (userId, {rejectWithValue}) => {
-    const response = await getUser(userId);
-    if (response.status !== 200) {
-      return rejectWithValue(response.data.message);
-    }
-    return response.data;
+
+    "profile",
+    async (userId, {rejectWithValue}) => {
+        const response = await getUser(userId);
+        if (response.status !== 200) {
+            console.log(response)
+            return rejectWithValue(response.data.message);
+        }
+        return response.data;
   }
 );
 
@@ -245,7 +248,5 @@ export const selectLogoutSuccess = (state) => state.user.logoutSuccess;
 export const selectUserLogout = (state) => state.user.value;
 export const selectUserRole = (state) => state.user.listRole;
 export const selectIsAdmin = (state) => state.user.isAdmin;
-export const selectUser = (state) => state.user.user;
 export const selectIsLogin = (state) => state.user.isLogin;
-
 export default userSlice.reducer;
