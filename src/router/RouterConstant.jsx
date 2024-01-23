@@ -65,18 +65,10 @@ export const ROUT_DATA = [
     {path: "/customer/profile", element: "AddCustomerProfile", layout: UserLayout},
 
     {path: "/my-event/legal", element: RegisterOrganizerProfile, layout: OrganizerLayout},
-    {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/RSVPs/bookings",
-        element: BookingManagerEventBookings,
-        layout: OrganizerBookingManagerLayout
-    },
-    {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
-    {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/moderators",
-        element: BookingManagerModeratorList,
-        layout: OrganizerBookingManagerLayout
-    },
+    // {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
+    // {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
+    // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/moderators", element: BookingManagerModeratorList, layout: OrganizerBookingManagerLayout},
 
 ];
