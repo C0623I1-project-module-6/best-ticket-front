@@ -10,7 +10,7 @@ import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    logoutUser,
+    logoutUser, selectIsLogin,
     selectLogoutSuccess,
     selectUserLogin,
     selectUserLogout,
@@ -22,16 +22,16 @@ import {Bounce, toast} from "react-toastify";
 
 
 const UserHeader = () => {
-
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const user = useSelector(selectUserLogin);
     const dispatch = useDispatch();
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
-    const logoutSuccess = useSelector(selectLogoutSuccess);
     const userLogout = useSelector(selectUserLogout);
     const userRole = useSelector(selectUserRole);
+    const isLogin = useSelector(selectIsLogin);
+    console.log(isLogin)
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -60,13 +60,13 @@ const UserHeader = () => {
         }
     }, [userRole]);
 
-    const loginButton = () => {
+  const loginButton = () => {
         return (
             !user ?
                 <span onClick={() => navigate("/login")} className="hover:text-amber-400">
                     Login | Register
                 </span>
-                : <Popover placement="bottom-end">
+                : <Popover placement="bottom-end" dismiss={true}>
                     <PopoverHandler>
                         <Avatar
                             size="sm"
@@ -85,7 +85,7 @@ const UserHeader = () => {
                                     className="font-bold text-xl">{user.fullName !== null ? user.fullName : user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
-                                      cursor-pointer" onClick={() => navigate("/my-event/profile")}>
+                                      cursor-pointer" onClick={() => navigate("/profile")}>
                                 <div className="w-[20px]">
                                     <FaCog/>
                                 </div>

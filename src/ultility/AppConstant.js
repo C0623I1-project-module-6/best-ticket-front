@@ -13,9 +13,9 @@ export const TABLE_HEAD_BOOKING = [
   "stt",
   "create at",
   "customer",
-  "organizer",
   "total amount",
   "status",
+  "detail",
 ];
 export const TABLE_HEAD_TICKET = [
   "stt"
@@ -29,13 +29,13 @@ export const TABLE_HEAD_EVENT = [
   "event type",
   "location",
 ];
- export const ADMIN = "ADMIN";
- export const ORGANIZER = "ORGANIZER";
- export const CUSTOMER = "CUSTOMER";
+export const ADMIN = "ADMIN";
+export const ORGANIZER = "ORGANIZER";
+export const CUSTOMER = "CUSTOMER";
 
 export const sortingOptions = [
-  { label: "Mới nhất", value: "newest" },
-  { label: "Cũ nhất", value: "oldest" },
-  { label: "A - Z", value: "az" },
-  { label: "Z - A", value: "za" },
+  {label: "Mới nhất", value: "newest"},
+  {label: "Cũ nhất", value: "oldest"},
+  {label: "A - Z", value: "az"},
+  {label: "Z - A", value: "za"},
 ];

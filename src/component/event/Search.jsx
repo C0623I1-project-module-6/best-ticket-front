@@ -4,9 +4,9 @@ import {FcCheckmark} from 'react-icons/fc';
 import SelectDay from './partials/SelectDay.jsx';
 import Event from './partials/Event.jsx';
 
-import { CiLocationOn } from 'react-icons/ci';
-import { findAllEventType } from "../../api/EventTypeApi.js";
-import { useDispatch, useSelector } from 'react-redux';
+import {CiLocationOn} from 'react-icons/ci';
+import {findAllEventType} from "../../api/EventTypeApi.js";
+import {useDispatch, useSelector} from 'react-redux';
 import {getAllEvent, getEventsByEventTypes, getEventsByName} from '../../features/EventSlice.js';
 import {useLocation} from "react-router-dom";
 import Stack from "@mui/material/Stack";
@@ -14,13 +14,13 @@ import Pagination from "@mui/material/Pagination";
 
 export default function Search() {
     const location = useLocation();
-    const { searchTerm } = location.state.text || "";
+    const {searchTerm} = location.state.text || "";
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [showOptions, setShowOptions] = useState(false);
     const [eventTypes, setEventTypes] = useState([]);
     const dispatch = useDispatch();
     const events = useSelector((state) => state.event.events);
-    const totalPages=useSelector(state => state.event.totalPages);
+    const totalPages = useSelector(state => state.event.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
 
 
@@ -38,14 +38,14 @@ export default function Search() {
     }, []);
 
     useEffect(() => {
-        dispatch(getEventsByName({ searchTerm, currentPage: currentPage - 1 }));
+        dispatch(getEventsByName({searchTerm, currentPage: currentPage - 1}));
     }, [searchTerm, currentPage]);
 
     useEffect(() => {
         const formattedOptions = selectedOptions.join(',');
         formattedOptions
-            ? dispatch(getEventsByEventTypes({ eventTypeNames: formattedOptions, currentPage: currentPage - 1 }))
-            : dispatch(getAllEvent(currentPage-1));
+            ? dispatch(getEventsByEventTypes({eventTypeNames: formattedOptions, currentPage: currentPage - 1}))
+            : dispatch(getAllEvent(currentPage - 1));
     }, [selectedOptions, currentPage]);
     const toggleOptions = () => {
         setShowOptions(!showOptions);
@@ -63,7 +63,7 @@ export default function Search() {
         <div className="w-full bg-white m-2 rounded-lg p-2 overflow-y-auto">
             <div className="flex gap-3">
                 <div className="flex border-2 border-gray-300 rounded-lg cursor-pointer p-2">
-                    <CiLocationOn size={23} />
+                    <CiLocationOn size={23}/>
                     <select>
                         <option>Tất cả địa điểm</option>
                         <option>THCM</option>
@@ -77,7 +77,7 @@ export default function Search() {
                         className="flex border-2 border-gray-300 rounded-lg gap-2 cursor-pointer p-2"
                         onClick={toggleOptions}
                     >
-                        <IoListOutline size={23} />
+                        <IoListOutline size={23}/>
                         <div>
                             {selectedOptions.length === 0
                                 ? 'Tất cả sự kiện'
@@ -116,7 +116,7 @@ export default function Search() {
                     </div>
                 </div>
                 <div>
-                    <SelectDay />
+                    <SelectDay/>
                 </div>
             </div>
             <div className="flex items-center justify-center h-20 mb-2">
@@ -133,7 +133,7 @@ export default function Search() {
             </div>
             <div className="grid grid-cols-4 mt-2 ">
                 {events.map((event) => (
-                    <Event key={event.id} event={event} />
+                    <Event key={event.id} event={event}/>
                 ))}
             </div>
             <div className="flex items-center justify-center h-20 mb-10">

@@ -19,7 +19,7 @@ const SearchBar = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <Link to={`/search?q=${searchTerm}`} className="absolute right-0 top-0 mt-3 mr-4">
-                    <CiSearch className="text-gray-600 h-5 w-5" />
+                    <CiSearch className="text-gray-600 h-5 w-5"/>
                 </Link>
             </div>
         </div>

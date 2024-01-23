@@ -1,9 +1,10 @@
 import Seat from "./Seat.jsx";
-import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getTicketTypes} from "../../features/TicketTypeSlice.js";
 import {updateStatus} from "../../api/TicketApi.js";
 import {setPrice, setSeats, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
+import React, {useEffect, useState} from "react";
+
 
 export const TicketBookingStep1 = (props) => {
     const [dataTotalPrice, setDataTotalPrice] = useState(0);
@@ -41,7 +42,7 @@ export const TicketBookingStep1 = (props) => {
             return
         }
     }
-    console.log(dataSeat, dataTotalPrice, dataNameTicketType,dataPriceOneTicket)
+    console.log(dataSeat, dataTotalPrice, dataNameTicketType, dataPriceOneTicket)
     console.log(seatTicket)
 
     return (

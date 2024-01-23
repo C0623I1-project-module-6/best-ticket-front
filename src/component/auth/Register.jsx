@@ -1,22 +1,22 @@
 import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {registerUser, selectRegisterSuccess, selectUserRegister} from "../../features/UserSlice.js";
+import {
+    registerUser,
+    selectRegisterError,
+    selectRegisterSuccess,
+    selectUserRegister
+} from "../../features/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
-import {getExistsUsers, selectExistsUsers, selectUsernames} from "../../features/ExistsUserSlice.js";
 
 function Register() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userRegister = useSelector(selectUserRegister);
     const registerSuccess = useSelector(selectRegisterSuccess);
+    const registerError = useSelector(selectRegisterError);
     const [user, setUser] = useState({confirmPassword: ""});
-
-    const usernames = useSelector(selectUsernames);
-    console.log(usernames)
-    const emails = useSelector(selectExistsUsers);
-    const phoneNumbers = useSelector(selectExistsUsers);
     const regexPassword = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
     const regexPhoneNumber = /^\d{10}$/;
     const toastOptions = {
@@ -33,8 +33,6 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-
         const errors = validateInput(user);
         if (errors.length > 0) {
             errors.forEach((error) => {
@@ -42,13 +40,17 @@ function Register() {
             });
             return;
         }
+        dispatch(registerUser(user))
+            .then((response) => {
+                if (response.data.status === "CONFLICT") {
+                    toast.error(response.data.message, toastOptions);
+                }
+            })
+            .catch(() => {
+                toast.success("🦄 Đăng ký thành công!", toastOptions);
+                navigate("/login");
+            });
 
-        dispatch(registerUser(user));
-        setUser(userRegister);
-        if (registerSuccess && user) {
-            toast("🦄 Register successfully!", toastOptions);
-            navigate("/login");
-        }
     }
     const handleChange = (e) => {
         setUser({
@@ -59,16 +61,11 @@ function Register() {
 
     const validateInput = (user) => {
         const errors = [];
-        if (usernames.includes(user.username)) {
-            errors.push("🦄 Tên đăng nhập đã được đăng ký!");
-        } else if (emails.includes(user.email)) {
-            errors.push("🦄 Email đã được đăng ký!");
-        } else if (user.password.length < 6) {
+
+        if (user.password.length < 6) {
             errors.push("🦄 Mật khẩu từ 6 ký tự trở lên! ");
         } else if (!regexPassword.test(user.password)) {
             errors.push("🦄 Mật khẩu gồm số và chữ cái!");
-        } else if (phoneNumbers.includes(user.phoneNumber)) {
-            errors.push("🦄 Số điện thoại đã được đăng ký!");
         } else if (!user.phoneNumber) {
             user.phoneNumber = null;
         } else if (!regexPhoneNumber.test(user.phoneNumber)) {
@@ -79,9 +76,6 @@ function Register() {
         console.log(errors)
         return errors;
     };
-    useEffect(() => {
-        dispatch(getExistsUsers())
-    }, []);
 
     return (
         <div className="flex bg-white rounded-lg items-center  flex-1 flex-col justify-center lg:px-8

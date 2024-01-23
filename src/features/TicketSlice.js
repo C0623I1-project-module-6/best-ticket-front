@@ -5,7 +5,8 @@ import {
     showAllTicketUpcoming,
     showTicketByEventId,
     showTicketById,
-    showTicketByTimeId, updateStatus
+    showTicketByTimeId,
+    updateStatus
 } from "../api/TicketApi";
 
 const initialState = {
@@ -56,21 +57,22 @@ export const getTicketByEventId = createAsyncThunk(
     }
 );
 export const getTicketByTimeId = createAsyncThunk(
-    "tickets/showTicketByTimeId",
-    async (timeId) => {
-        const response = await showTicketByTimeId(timeId);
-        return response.data;
-    }
-);
+        "tickets/showTicketByTimeId",
+        async (timeId) => {
+            const response = await showTicketByTimeId(timeId);
+            return response.data;
+        }
+    )
+;
 
 export const updateStatusTicket = createAsyncThunk(
-    "tickets/updateStatusTicket",
-    async (selectedSeats) => {
-        const response = await updateStatus(selectedSeats);
-        console.log(response.data)
-        return response.data;
-    }
-);
+        "tickets/updateStatusTicket",
+        async (selectedSeats) => {
+            const response = await updateStatus(selectedSeats);
+            return response.data;
+        }
+    )
+;
 const handlePending = (state) => {
     state.success = false;
     state.loading = true;
@@ -175,7 +177,5 @@ export const selectError = (state) => state.ticket.error;
 export const selectSuccess = (state) => state.ticket.success;
 export const selectShowTicket = (state) => state.ticket.tickets;
 export const selectUpdateStatusTicket = (state) => state.ticket.tickets;
-export const selectShowTicketByEventId = (state) => state.ticket.ticket;
 export const selectShowTicketByTimeId = (state) => state.ticket.ticket;
-export const selectTotalElements = (state) => state.ticket.totalElementsOfTicket;
 export default TicketSlice.reducer;

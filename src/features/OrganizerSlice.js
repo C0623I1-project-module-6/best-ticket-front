@@ -2,67 +2,67 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {createOrganizer} from "../api/OrganizerApi.js";
 
 const initialState = {
-    value: null,
-    loading: false,
-    success: false,
-    error: null,
+  value: null,
+  loading: false,
+  success: false,
+  error: null,
 }
 export const registerProfile = createAsyncThunk(
-    "organizers/add",
-    async (organizer, {rejectedWithValue}) => {
-        const response = await createOrganizer(organizer);
-        if (response.status !== 201) {
-            console.log(response);
-            return rejectedWithValue(response.data.message);
-        }
-        console.log(response)
-        return response.data;
+  "organizers/add",
+  async (organizer, {rejectedWithValue}) => {
+    const response = await createOrganizer(organizer);
+    if (response.status !== 200) {
+      console.log(response);
+      return rejectedWithValue(response.data.message);
     }
+    console.log(response)
+    return response.data;
+  }
 );
 export const organizerSlice = createSlice(
-    {
-        name: "organizer",
-        initialState,
-        reducers: {
-            setLoading: (state, action) => {
-                state.loading = action.payload;
-            },
-            setSuccess: (state, action) => {
-                state.success = action.payload;
-            },
-            setError: (state, action) => {
-                state.error = action.payload;
-            },
-            setValue: (state, action) => {
-                state.value = action.payload
-            },
-        },
-        extraReducers: (builder) => {
-            builder
-                .addCase(registerProfile.pending, (state) => {
-                    state.success = false;
-                    state.loading = true;
-                    state.error = false;
-                })
-                .addCase(registerProfile.rejected, (state, action) => {
-                    state.success = false;
-                    state.loading = false;
-                    state.error = action.payload;
-                })
-                .addCase(registerProfile.fulfilled, (state, action) => {
-                    state.success = true;
-                    state.loading = false;
-                    state.value = action.payload.data;
-                    state.error = false;
-                })
-        }
+  {
+    name: "organizer",
+    initialState,
+    reducers: {
+      setLoading: (state, action) => {
+        state.loading = action.payload;
+      },
+      setSuccess: (state, action) => {
+        state.success = action.payload;
+      },
+      setError: (state, action) => {
+        state.error = action.payload;
+      },
+      setValue: (state, action) => {
+        state.value = action.payload
+      },
+    },
+    extraReducers: (builder) => {
+      builder
+        .addCase(registerProfile.pending, (state) => {
+          state.success = false;
+          state.loading = true;
+          state.error = false;
+        })
+        .addCase(registerProfile.rejected, (state, action) => {
+          state.success = false;
+          state.loading = false;
+          state.error = action.payload;
+        })
+        .addCase(registerProfile.fulfilled, (state, action) => {
+          state.success = true;
+          state.loading = false;
+          state.value = action.payload.data;
+          state.error = false;
+        })
     }
+  }
 )
 export const {
-    setValue,
-    setLoading,
-    setSuccess,
-    setError,
+  setValue,
+  setLoading,
+  setSuccess,
+  setError,
 } = organizerSlice.actions;
 
 export const selectSuccess = (state) => state.organizer.success;

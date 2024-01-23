@@ -53,6 +53,7 @@ function Seat({dataFormSeat}) {
         dataFormSeat(totalPrice, selectedSeats, nameTicketType, priceOneTicket);
     }, [totalPrice, selectedSeats, nameTicketType, priceOneTicket]);
 
+
     // Render danh sách ghế
     const renderSeats = () => {
         return (
