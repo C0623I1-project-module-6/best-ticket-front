@@ -13,9 +13,9 @@ export const TABLE_HEAD_BOOKING = [
   "stt",
   "create at",
   "customer",
-  "organizer",
   "total amount",
   "status",
+  "detail",
 ];
 export const TABLE_HEAD_TICKET = [
   "stt"

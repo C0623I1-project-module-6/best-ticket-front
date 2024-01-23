@@ -29,6 +29,7 @@ import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.js
 import EventDetail from "../component/event/EventDetail.jsx";
 
 import {RegisterOrganizerProfile} from "../component/user/RegisterOrganizerProfile.jsx"
+import CustomerProfile from "../component/user/CustomerProfile.jsx";
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
@@ -48,7 +49,7 @@ export const ROUT_DATA = [
     {path: "/search", element: Search, layout: UserLayout},
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
-    {path: "/profile/add", element: "AddCustomerProfile", layout: UserLayout},
+    {path: "/profile", element: CustomerProfile, layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
     {
         path: "/event/create", element: CreateEventPage, children: [
