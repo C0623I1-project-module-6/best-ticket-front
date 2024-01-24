@@ -13,7 +13,6 @@ function Seat({dataFormSeat}) {
     const timeId = useParams().param;
 
     const tickets = useSelector(selectShowTicketByTimeId);
-    console.log(tickets)
 
     useEffect(() => {
         dispatch(getTicketByTimeId(timeId))

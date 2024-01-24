@@ -12,7 +12,6 @@ export const TicketBookingStep1 = (props) => {
     const [dataSeat, setDataSeat] = useState([]);
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
-    const seatTicket = useSelector(state => state.seat)
     const showTicketType = () => {
         dispatch(getTicketTypes())
     }
@@ -34,7 +33,7 @@ export const TicketBookingStep1 = (props) => {
                 dispatch(setTicketType(dataNameTicketType));
                 dispatch(setPrice(dataPriceOneTicket))
                 props.callbackData(1);
-                return response.data;
+                return response;
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -42,9 +41,6 @@ export const TicketBookingStep1 = (props) => {
             return
         }
     }
-    console.log(dataSeat, dataTotalPrice, dataNameTicketType, dataPriceOneTicket)
-    console.log(seatTicket)
-
     return (
         <>
             <div className="mx-40 my-5 flex justify-between	">

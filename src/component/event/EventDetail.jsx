@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import {NavLink, useLocation, useNavigate, useParams} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {FaClock, FaHeart} from "react-icons/fa";
 import {FaFacebook, FaLocationDot} from "react-icons/fa6";
 import img from '../../assets/img/image/event.png'
@@ -10,7 +10,7 @@ import {IoIosArrowForward, IoMdMail} from "react-icons/io";
 import {IoTicket} from "react-icons/io5";
 import {getTicketTypes, selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
 import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
-import {selectUserLogin} from "../../features/UserSlice.js";
+import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 const EventDetail = () => {
     const dispatch = useDispatch();
@@ -21,8 +21,22 @@ const EventDetail = () => {
     const ticketTypes = useSelector(selectShowTicketTypes);
     const times = useSelector(selectShowTimeByEventId)
     const user = useSelector(selectUserLogin);
-    console.log(user)
     let isFirstRender = true;
+
+    const [timeLeft, setTimeLeft] = useState(600); // 600 giây = 10 phút
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft(prevTime => prevTime - 1);
+        }, 1000);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
 
     const showEventById = () => {
         dispatch(getEventById(eventId));
@@ -43,6 +57,9 @@ const EventDetail = () => {
     return (
         <>
             <div className="w-full overflow-y-auto pb-52">
+                <div>
+                    Thời gian còn lại: {minutes} phút {seconds} giây
+                </div>
                 <img className="w-full h-96" src={event !== null ? event.image : <div>Loading...</div>} alt=""/>
 
                 <div className="flex mx-60 gap-20">

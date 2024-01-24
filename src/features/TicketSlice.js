@@ -45,7 +45,6 @@ export const getTicketById = createAsyncThunk(
     "tickets/showTicketById",
     async (id) => {
         const response = await showTicketById(id);
-        console.log(response.data)
         return response.data;
     }
 );
@@ -53,7 +52,6 @@ export const getTicketByEventId = createAsyncThunk(
     "tickets/showTicketByEventId",
     async (eventId) => {
         const response = await showTicketByEventId(eventId);
-        console.log(response.data)
         return response.data;
     }
 );
