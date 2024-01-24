@@ -16,11 +16,9 @@ import NotFoundPage from "../layout/pages/errors/NotFoundPage.jsx";
 import InternalServerErrorPage from "../layout/pages/errors/InternalServerErrorPage.jsx";
 import BadGatewayPage from "../layout/pages/errors/BadGatewayPage.jsx";
 import ServiceUnavailablePage from "../layout/pages/errors/ServiceUnavailablePage.jsx";
-
 import OrganizerBookingManagerLayout from "../layout/OrganizerBookingManagerLayout.jsx";
 import {BookingManagerEventBookings} from "../component/booking/BookingManagerEventBookings.jsx";
 import {BookingManagerModeratorList} from "../component/booking/BookingMangerModeratorList.jsx";
-
 import OrganizerLayout from "../layout/OrganizerLayout.jsx";
 import CreateEventPage from "../layout/pages/event/CreateEventPage.jsx";
 import CreateEventStep1 from "../component/event/createEvent/CreateEventStep1.jsx";
@@ -28,8 +26,11 @@ import CreateEventStep2 from "../component/event/createEvent/CreateEventStep2.js
 import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.jsx";
 import EventDetail from "../component/event/EventDetail.jsx";
 
+
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import OrganizerProfile from "../component/user/OrganizerProfile.jsx";
+import CreatedEvent from "../component/user/CreatedEvent.jsx";
+
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
@@ -55,6 +56,12 @@ export const ROUT_DATA = [
 
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
+
+    {path: "/my-event/legal/createdEvent", element: CreatedEvent, layout: OrganizerLayout},
+    {path: "/event/:id", element: EventDetail, layout: UserLayout},
+    {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
+
+
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
     {
         path: "/event/create", element: CreateEventPage, children: [
@@ -63,6 +70,7 @@ export const ROUT_DATA = [
             {path: "step3", element: CreateEventStep3},
         ]
     },
+
 
     {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
     {
@@ -77,5 +85,21 @@ export const ROUT_DATA = [
         element: BookingManagerModeratorList,
         layout: OrganizerBookingManagerLayout
     },
+
+
+    // {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
+    {
+        path: "/my-event/event/:eventId/RSVPs/bookings",
+        element: BookingManagerEventBookings,
+        layout: OrganizerBookingManagerLayout
+    },
+    // {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
+    // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
+    {
+        path: "/my-event/event/:eventId/moderators",
+        element: BookingManagerModeratorList,
+        layout: OrganizerBookingManagerLayout
+    },
+
 
 ];

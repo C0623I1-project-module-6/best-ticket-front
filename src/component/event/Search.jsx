@@ -86,7 +86,7 @@ export default function Search() {
                     </div>
                     <div className="relative z-10 w-full">
                         {showOptions && (
-                            <div className="absolute top-2 right-0 bg-white w-full rounded-lg">
+                            <div className="absolute top-2 right-0 bg-white w-full rounded-lg h-[300px] overflow-y-auto">
                                 <div
                                     onClick={() => setSelectedOptions([])}
                                     className="cursor-pointer hover:bg-green-200 p-2 rounded-lg"

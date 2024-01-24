@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createEvent, findAllEvents, findEventById, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
+import {createEvent, findAllEvents, findEventById, findEventsByEventTypes, findEventsByName,findEventsByProvince} from "../api/EventApi.js";
 
 const initialState = {
   events: [],
@@ -30,6 +30,11 @@ export const getEventById = createAsyncThunk("events/byEventId", async (eventId)
 
 export const addEvent = createAsyncThunk("event/create", async (eventRequest) => {
   const response = await createEvent(eventRequest);
+  return response.data;
+})
+
+export const getEventByProvince = createAsyncThunk("events/byProvince", async (searchTerm,province, currentPage) => {
+  const response = await findEventsByProvince(searchTerm,province, currentPage);
   return response.data;
 })
 
@@ -78,7 +83,13 @@ export const EventSlice = createSlice({
       // find by EventById
       .addCase(getEventById.pending, handlePending)
       .addCase(getEventById.rejected, handleRejected)
-      .addCase(getEventById.fulfilled, handleFulfilled)
+      .addCase(getEventById.fulfilled, (state, action) => {
+        state.success = true;
+        state.loading = false;
+        state.totalPages = action.payload.totalPages;
+        state.event = action.payload.data;
+        state.error = false;
+      })
 
       //create event
       .addCase(addEvent.pending, (state) => {
@@ -97,7 +108,10 @@ export const EventSlice = createSlice({
         state.error = false;
         state.event = action.payload;
       })
-
+    // find By Location
+        .addCase(getEventByProvince.pending, handlePending)
+        .addCase(getEventByProvince.rejected, handleRejected)
+        .addCase(getEventByProvince.fulfilled, handleFulfilled)
   },
 })
 

@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createOrganizer, updateOrganizer} from "../../api/OrganizerApi.js";
+import {createOrganizer, findByUserId, updateOrganizer} from "../../api/OrganizerApi.js";
+
 
 const initialState = {
     value: null,
@@ -8,6 +9,8 @@ const initialState = {
     registerOrganizerError: null,
     editOrganizerSuccess: false,
     editOrganizerError: null,
+    getOrganizerSuccess: false,
+    getOrganizerError: null,
 }
 export const registerOrganizerProfile = createAsyncThunk(
     "users/organizer/add",
@@ -33,6 +36,14 @@ export const editOrganizerProfile = createAsyncThunk(
         return response.data;
     }
 );
+export const getOrganizerByUserId = createAsyncThunk(
+    "organizers/userId",
+    async (userId) => {
+        const response = await findByUserId({userId});
+        console.log(response.data)
+        return response.data;
+    }
+);
 export const organizerSlice = createSlice(
     {
         name: "organizer",
@@ -51,6 +62,12 @@ export const organizerSlice = createSlice(
                 state.success = action.payload;
             },
             setEditOrganizerError: (state, action) => {
+                state.error = action.payload;
+            },
+            setGetOrganizerSuccess: (state, action) => {
+                state.success = action.payload;
+            },
+            setGetOrganizerError: (state, action) => {
                 state.error = action.payload;
             },
             setValue: (state, action) => {
@@ -93,6 +110,12 @@ export const organizerSlice = createSlice(
                         state.value = action.payload.data;
                         state.editOrganizerError = false;
                     })
+                    .addCase(getOrganizerByUserId.fulfilled, (state, action) => {
+                        state.getOrganizerSuccess = true;
+                        state.loading = false;
+                        state.value = action.payload.data;
+                        state.getOrganizerError = false;
+                    })
             }
     }
 )
@@ -103,6 +126,8 @@ export const {
     setRegisterOrganizerError,
     setEditOrganizerSuccess,
     setEditOrganizerError,
+    setGetOrganizerSuccess,
+    setGetOrganizerError
 } = organizerSlice.actions;
 
 export const selectRegisterOrganizerSuccess = (state) => state.organizer.registerOrganizerSuccess;
@@ -111,5 +136,7 @@ export const selectOrganizerRegister = (state) => state.organizer.value;
 export const selectEditOrganizerSuccess = (state) => state.organizer.editOrganizerSuccess;
 export const selectEditOrganizerError = (state) => state.organizer.editOrganizerError;
 export const selectOrganizerEdit = (state) => state.organizer.value;
+export const selectGetOrganizerSuccess = (state) => state.organizer.getOrganizerSuccess;
+export const selectGetOrganizerError = (state) => state.organizer.getOrganizerError;
 export default organizerSlice.reducer;
 

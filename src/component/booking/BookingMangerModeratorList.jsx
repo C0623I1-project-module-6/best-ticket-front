@@ -7,7 +7,7 @@ import UserFooter from "../footer/UserFooter.jsx";
 export function BookingManagerModeratorList() {
     const eventId = useParams().eventId;
     const dispatch = useDispatch();
-    const event = useSelector((state) => state.event.events);
+    const event = useSelector((state) => state.event.event);
 
     useEffect(() => {
         dispatch(getEventById(eventId));
@@ -37,7 +37,7 @@ export function BookingManagerModeratorList() {
                     </tr>
                     </thead>
                     <tbody>
-                    {event.organizer === undefined ? (
+                    {event.organizer === null ? (
                         <tr className="bg-[#F6F6F6]">
                             <td>
                                 <div>Organizer information is not available</div>
@@ -48,8 +48,11 @@ export function BookingManagerModeratorList() {
                     ) : (
                         <tr className="bg-[#F6F6F6]">
                             <td className="flex">
-                                <div className="w-1/5">r</div>
-                                <div>{event.organizer.fullName}<br/>{event.organizer.email}</div>
+                                <div>
+                                    {event.organizer.name}
+                                    <br/>
+                                    {event.organizer.email}
+                                </div>
                             </td>
                             <td>Event Creator</td>
                             <td></td>

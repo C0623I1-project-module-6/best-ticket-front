@@ -2,13 +2,25 @@ import {CiBank, CiCreditCard1} from "react-icons/ci";
 import {FaPencil, FaUser} from "react-icons/fa6";
 import {MdEmail} from "react-icons/md";
 import {FaPhone} from "react-icons/fa";
+import {useSelector} from "react-redux";
+
+import {selectShowTicketByTimeId} from "../../features/TicketSlice.js";
+import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 
 export const TicketBookingStep2 = () => {
+    const user = useSelector(selectUserLogin);
+    const seatTickets = useSelector(state => state.seat)
+    const tickets = useSelector(selectShowTicketByTimeId);
+    const countVIP = seatTickets.ticketTypes.filter(seat => seat === 'VIP').length;
+    const countTHUONG = seatTickets.ticketTypes.filter(seat => seat === 'THƯỜNG').length;
+    const countLAU = seatTickets.ticketTypes.filter(seat => seat === 'LẦU').length;
 
+    console.log(tickets)
+    console.log(seatTickets.ticketTypes.length);
     return (
         <>
-            <div className="mx-56 text-black py-5">
+            <div className="mx-40 text-black py-5">
                 <div className="flex gap-10 items-center justify-center bg-neutral-400 py-5">
                     <div className="w-3/5 flex-col">
                         <p className="m-7">THÔNG TIN NGƯỜI NHẬN VÉ</p>
@@ -73,7 +85,7 @@ export const TicketBookingStep2 = () => {
                                     <span className="mr-3"><FaUser/></span>
                                     <span>Họ Tên: </span>
                                 </div>
-                                <div className="w-1/2 text-right">Test</div>
+                                <div className="w-1/2 text-right">{user !== null ? user.fullName : <div></div>}</div>
                             </div>
                             <hr className="border-2 border-dashed"/>
 
@@ -82,7 +94,7 @@ export const TicketBookingStep2 = () => {
                                     <span className="mr-3"><MdEmail/></span>
                                     <span>Email: </span>
                                 </div>
-                                <div className="w-1/2 text-right">Test</div>
+                                <div className="w-1/2 text-right">{user !== null ? user.email : <div></div>}</div>
                             </div>
                             <hr className="border-2 border-dashed"/>
 
@@ -91,7 +103,7 @@ export const TicketBookingStep2 = () => {
                                     <span className="mr-3"><FaPhone/></span>
                                     <span>Điện thoại : </span>
                                 </div>
-                                <div className="w-1/2 text-right">Test</div>
+                                <div className="w-1/2 text-right"></div>
                             </div>
 
                             <div className="font-bold">HÌNH THỨC THANH TOÁN</div>
@@ -107,27 +119,62 @@ export const TicketBookingStep2 = () => {
                             </div>
                             <hr className="border-2 border-solid"/>
 
-                            <div className="flex justify-between">
+                            <div className="flex justify-between py-3">
                                 <span>Loại vé</span>
                                 <span>Số lượng</span>
                             </div>
                             <hr className="border border-dashed"/>
-                            <div className="flex justify-between py-2">
-                                <div className="w-2/3 ">
-                                    <p>Loại vé</p>
-                                    <p>Giá</p>
-                                    <p>Ghế</p>
+                            {seatTickets.ticketTypes.map((ticketType, index) => (
+                                <div className="flex justify-between py-2" key={index}>
+                                    {ticketType === "VIP" && (
+                                        <>
+                                            <div className="w-2/3" key={index}>
+                                                <p>Vé {ticketType}</p>
+                                                <p>{/* Dữ liệu của loại vé VIP */}</p>
+                                                <p>{" " + seatTickets.seats[index]}</p>
+                                            </div>
+                                            <div className="w-1/3 text-right">
+                                                <p>{countVIP}</p>
+                                                <p>{seatTickets.price[index]} VNĐ</p>
+                                            </div>
+                                        </>
+
+                                    )}
+                                    {ticketType === "THƯỜNG" && (
+                                        <>
+                                            <div className="w-2/3">
+                                                <p>Vé {ticketType}</p>
+                                                <p>{/* Dữ liệu của loại vé Standard */}</p>
+                                                <p>{" " + seatTickets.seats[index]}</p>
+                                            </div>
+                                            <div className="w-1/3 text-right">
+                                                <p>{countTHUONG}</p>
+                                                <p>{seatTickets.price[index]} VNĐ</p>
+                                            </div>
+                                        </>
+                                    )}
+                                    {ticketType === "LẦU" && (
+                                        <>
+                                            <div className="w-2/3">
+                                                <p>Vé {ticketType}</p>
+                                                <p>{/* Dữ liệu của loại vé Standard */}</p>
+                                                <p>{" " + seatTickets.seats[index]}</p>
+                                            </div>
+                                            <div className="w-1/3 text-right">
+                                                <p>{countLAU}</p>
+                                                <p>{seatTickets.price[index]} VNĐ</p>
+                                            </div>
+                                        </>
+                                    )}
+
                                 </div>
-                                <div className="w-1/3 text-right">
-                                    <p>Số lượng</p>
-                                    <p>Giá</p>
-                                </div>
-                            </div>
+                            ))}
+
                         </div>
 
                         <div className="pl-5 bg-[#666666] py-4 flex text-white">
-                            <span className="w-4/5 ">Tổng cộng: </span>
-                            <span>0 VND</span>
+                            <span className="w-4/6 ">Tổng cộng: </span>
+                            <span>{seatTickets.totalPrice} VND</span>
                         </div>
                         <p className="text-xs text-center italic py-4">Vui lòng kiểm tra kỹ đơn hàng trước khi hoàn
                             tất</p>
