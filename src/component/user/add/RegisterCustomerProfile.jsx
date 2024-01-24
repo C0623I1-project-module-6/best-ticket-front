@@ -43,9 +43,7 @@ function AddCustomerProfile() {
             <form className="w-screen" method="POST"
                   onSubmit={handleSubmit}>
                 <div className="flex">
-                    <div className=" w-1/4 ">
                         <Avatar/>
-                    </div>
                     <div className="w-3/4 p-10">
                         <div className="border border-solid shadow-lg rounded-md py-5 px-5 bg-white">
                             <h2 className=" flex justify-center text-2xl font-serif leading-7 text-gray-900">

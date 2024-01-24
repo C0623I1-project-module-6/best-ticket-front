@@ -1,5 +1,5 @@
 export const BEST_TICKET_API = "http://localhost:8080/api/";
-export const clientId = "361050206682-7vbijdohdfieda94hioub7kplcnqnn3o.apps.googleusercontent.com";
+export const clientId = "268662973738-lakd69k6o882uincmcu45qpfdo4q54eo.apps.googleusercontent.com";
 export const TABLE_HEAD_USER = [
   "stt",
   "username",
