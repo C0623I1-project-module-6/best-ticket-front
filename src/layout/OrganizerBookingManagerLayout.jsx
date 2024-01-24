@@ -1,4 +1,4 @@
-import BookingManagerSidebar from "../component/booking/BookingManagerSidebar.jsx";
+import BookingManagerSidebar from "../component/sidebar/BookingManagerSidebar.jsx";
 
 function OrganizerBookingManagerLayout({children}) {
     return (

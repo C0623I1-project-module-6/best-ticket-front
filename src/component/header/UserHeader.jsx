@@ -10,7 +10,7 @@ import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    logoutUser,
+    logoutUser, selectIsLogin,
     selectLogoutSuccess,
     selectUserLogin,
     selectUserLogout,
@@ -23,7 +23,6 @@ import {getOrganizerByUserId} from "../../features/OrganizerSlice.js";
 
 
 const UserHeader = () => {
-
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const user = useSelector(selectUserLogin);
@@ -34,6 +33,7 @@ const UserHeader = () => {
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
+
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -56,11 +56,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    // useEffect(() => {
-    //     if (userRole !== null && userRole.includes(ADMIN)) {
-    //         navigate("/admin");
-    //     }
-    // }, [userRole]);
+    useEffect(() => {
+        if (userRole !== null && userRole.includes(ADMIN)) {
+            navigate("/admin");
+        }
+    }, [userRole]);
 
     const loginButton = () => {
         return (
