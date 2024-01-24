@@ -176,7 +176,7 @@ const UserHeader = () => {
 
     const handleCreateEvent = async () => {
         if (isLogin) {
-            await dispatch(getOrganizerByUserId(user.id));
+            dispatch(getOrganizerByUserId(user.id));
             if (organizer !== null ) {
                 navigate('/event/create');
             } else {

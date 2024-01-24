@@ -4,7 +4,7 @@ import {useEffect} from "react";
 import {loginUser, selectLoginError, selectLoginSuccess, selectUserLogin} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import {Bounce, toast} from "react-toastify";
-import {getOrganizerByUserId} from "../../features/OrganizerSlice.js";
+import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
 
 function Login() {
     const dispatch = useDispatch();
@@ -37,7 +37,6 @@ function Login() {
         if (loginSuccess && user && user.token) {
             toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             dispatch(getOrganizerByUserId(user.id));
-            console.log(user.id);
             navigate("/");
         }
     }, [user]);
