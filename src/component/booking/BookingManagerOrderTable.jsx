@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventId,
-    getAllBookingsByKeyword,
-    selectAllBookingsByEventId
+    getAllBookingsByEventId, getAllBookingsByKeyword, selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
 import {getAllBookingDetailsByBookingId} from '../../features/BookingDetailSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import {ImSearch} from 'react-icons/im';
+import {MdEmail} from "react-icons/md";
 import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
 
 const BookingManagerOrderTable = () => {
@@ -17,7 +16,6 @@ const BookingManagerOrderTable = () => {
     const navigate = useNavigate();
     const totalPages = useSelector(state => state.event.totalPages);
     const bookings = useSelector(selectAllBookingsByEventId);
-    console.log(bookings)
     const eventId1 = useParams().eventId;
     const [currentPage, setCurrentPage] = useState(1);
     const [bookingDetails, setBookingDetails] = useState([]);
@@ -35,7 +33,7 @@ const BookingManagerOrderTable = () => {
     };
 
     const bookingsMemo = React.useMemo(() => {
-        return (bookings === null || bookings === undefined ? []: bookings);
+        return (bookings === null || bookings === undefined ? [] : bookings);
     }, [bookings]);
 
     useEffect(() => {
@@ -115,9 +113,7 @@ const BookingManagerOrderTable = () => {
                     <tbody>
                     {bookings === null || bookings === "" || bookings === undefined ? (<tr>
                         <td colSpan="4">No booking available</td>
-                    </tr>)
-                        :
-                        (bookings.map((booking, index) => {
+                    </tr>) : (bookings.map((booking, index) => {
                         const ticketCounts = {}; // Object to store ticket counts
                         if (bookingDetails && bookingDetails.length > 0) {
                             bookingDetails.forEach((detail) => {
@@ -180,21 +176,21 @@ const BookingManagerOrderTable = () => {
                     </Stack>
                 </div>
                 <div className="rounded-l bg-[#F6F6F6] flex">
-                    {/*<div className="m-auto text-center flex">*/}
-                    {/*    {bookings.length === undefined || bookings.length < 0 ? (<div></div>) : (<div>*/}
-                    {/*        <div className="m-2 flex text-xl">*/}
-                    {/*            <div className="py-1 px-1 text-xl"><MdEmail/></div>*/}
-                    {/*            <div>Gửi mail đến</div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className="m-auto">*/}
-                    {/*            <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {*/}
-                    {/*                navigate(`/503`)*/}
-                    {/*            }}>*/}
-                    {/*                <div className="m-2">Tất cả</div>*/}
-                    {/*            </button>*/}
-                    {/*        </div>*/}
-                    {/*    </div>)}*/}
-                    {/*</div>*/}
+                    <div className="m-auto text-center flex">
+                        {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<div>
+                            <div className="m-2 flex text-xl">
+                                <div className="py-1 px-1 text-xl"><MdEmail/></div>
+                                <div>Gửi mail đến</div>
+                            </div>
+                            <div className="m-auto">
+                                <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                                    navigate(`/503`)
+                                }}>
+                                    <div className="m-2">Tất cả</div>
+                                </button>
+                            </div>
+                        </div>)}
+                    </div>
                 </div>
             </div>
         </div>
