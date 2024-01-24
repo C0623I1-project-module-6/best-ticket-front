@@ -9,7 +9,6 @@ const UserLayout = ({children}) => {
     useEffect(() => {
         if (localStorage.getItem("token") !== null) {
             dispatch(reLoginWithToken())
-            console.log("Hello")
         }
     }, []);
     return (

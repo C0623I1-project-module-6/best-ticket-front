@@ -1,18 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllBookingsByEventId, getAllBookingsByKeyword} from '../../features/BookingSlice.js';
+import {
+    getAllBookingsByEventId,
+    getAllBookingsByKeyword,
+    selectAllBookingsByEventId
+} from '../../features/BookingSlice.js';
 import {getAllBookingDetailsByBookingId} from '../../features/BookingDetailSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import {ImSearch} from 'react-icons/im';
-import {MdEmail} from "react-icons/md";
+import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const totalPages = useSelector(state => state.event.totalPages);
-    const bookings = useSelector((state) => state.booking.bookings);
+    const bookings = useSelector(selectAllBookingsByEventId);
+    console.log(bookings)
     const eventId1 = useParams().eventId;
     const [currentPage, setCurrentPage] = useState(1);
     const [bookingDetails, setBookingDetails] = useState([]);
@@ -30,7 +35,7 @@ const BookingManagerOrderTable = () => {
     };
 
     const bookingsMemo = React.useMemo(() => {
-        return bookings;
+        return (bookings === null || bookings === undefined ? []: bookings);
     }, [bookings]);
 
     useEffect(() => {
@@ -108,11 +113,12 @@ const BookingManagerOrderTable = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {bookings.length === 0 || bookings.length === undefined ? (<tr>
-                        <td colSpan="4">No booking available for this event</td>
-                    </tr>) : (bookings.map((booking, index) => {
+                    {bookings === null || bookings === "" || bookings === undefined ? (<tr>
+                        <td colSpan="4">No booking available</td>
+                    </tr>)
+                        :
+                        (bookings.map((booking, index) => {
                         const ticketCounts = {}; // Object to store ticket counts
-
                         if (bookingDetails && bookingDetails.length > 0) {
                             bookingDetails.forEach((detail) => {
                                 if (detail.data && detail.data.length > 0) {
@@ -131,7 +137,6 @@ const BookingManagerOrderTable = () => {
                                 }
                             });
                         }
-
                         return (<tr key={index} className="border border-black border-x-0">
                             <th className="px-4 py-2 text-left border-b border-black">
                                 <input
@@ -148,7 +153,8 @@ const BookingManagerOrderTable = () => {
                                 <br/>
                                 {booking.customer.phoneNumber}
                                 <br/>
-                                Ordered at {booking.createdAt}
+                                {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
+                                Ordered at {useFormatDate(booking.createdAt)}
                             </td>
                             <td className="px-4 py-2 border-x-0">
                                 {Object.keys(ticketCounts).length > 0 ? (Object.keys(ticketCounts).map((ticketType, index) => (
@@ -156,7 +162,6 @@ const BookingManagerOrderTable = () => {
                                         <span>{ticketCounts[ticketType]}</span>
                                         <br/>
                                         <span>{ticketType}</span>
-                                        {/* Render other ticket properties */}
                                     </div>))) : (<span>No booking details available</span>)}
                             </td>
                             <td className="px-4 py-2 border-x-0">{booking.totalAmount}</td>
@@ -167,7 +172,7 @@ const BookingManagerOrderTable = () => {
                 <div className="flex items-center justify-center h-20">
                     <Stack spacing={2}>
                         <Pagination
-                            count={totalPages || Math.ceil(bookings.length / 10)}
+                            count={totalPages || 0}
                             color="primary"
                             page={currentPage}
                             onChange={(event, value) => setCurrentPage(value)}
@@ -175,21 +180,21 @@ const BookingManagerOrderTable = () => {
                     </Stack>
                 </div>
                 <div className="rounded-l bg-[#F6F6F6] flex">
-                    <div className="m-auto text-center flex">
-                        {bookings.length === undefined ? (<div></div>) : (<div>
-                            <div className="m-2 flex text-xl">
-                                <div className="py-1 px-1 text-xl"><MdEmail/></div>
-                                <div>Gửi mail đến</div>
-                            </div>
-                            <div className="m-auto">
-                                <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
-                                    navigate(`/503`)
-                                }}>
-                                    <div className="m-2">Tất cả</div>
-                                </button>
-                            </div>
-                        </div>)}
-                    </div>
+                    {/*<div className="m-auto text-center flex">*/}
+                    {/*    {bookings.length === undefined || bookings.length < 0 ? (<div></div>) : (<div>*/}
+                    {/*        <div className="m-2 flex text-xl">*/}
+                    {/*            <div className="py-1 px-1 text-xl"><MdEmail/></div>*/}
+                    {/*            <div>Gửi mail đến</div>*/}
+                    {/*        </div>*/}
+                    {/*        <div className="m-auto">*/}
+                    {/*            <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {*/}
+                    {/*                navigate(`/503`)*/}
+                    {/*            }}>*/}
+                    {/*                <div className="m-2">Tất cả</div>*/}
+                    {/*            </button>*/}
+                    {/*        </div>*/}
+                    {/*    </div>)}*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </div>

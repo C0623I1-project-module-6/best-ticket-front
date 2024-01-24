@@ -27,7 +27,9 @@ import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.js
 import EventDetail from "../component/event/EventDetail.jsx";
 import {RegisterOrganizerProfile} from "../component/user/RegisterOrganizerProfile.jsx"
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
+import CreatedEvent from "../component/user/CreatedEvent.jsx";
 import EditOrganizerProfile from "../component/user/EditOrganizerProfile.jsx";
+
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
@@ -49,8 +51,7 @@ export const ROUT_DATA = [
 
     {path: "/profile", element: CustomerProfile, layout: UserLayout},
     {path: "/my-event/legal", element: EditOrganizerProfile, layout: OrganizerLayout},
-
-
+    {path: "/my-event/legal/createdEvent", element: CreatedEvent , layout: OrganizerLayout},
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
     {path: "/profile", element: CustomerProfile, layout: UserLayout},
@@ -65,18 +66,10 @@ export const ROUT_DATA = [
     {path: "/customer/profile", element: "AddCustomerProfile", layout: UserLayout},
 
     {path: "/my-event/legal", element: RegisterOrganizerProfile, layout: OrganizerLayout},
-    {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/RSVPs/bookings",
-        element: BookingManagerEventBookings,
-        layout: OrganizerBookingManagerLayout
-    },
-    {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
-    {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/moderators",
-        element: BookingManagerModeratorList,
-        layout: OrganizerBookingManagerLayout
-    },
+    // {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
+    // {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
+    // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/moderators", element: BookingManagerModeratorList, layout: OrganizerBookingManagerLayout},
 
 ];
