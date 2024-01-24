@@ -14,7 +14,7 @@ const AdminLayout = ({children}) => {
     const logoutSuccess = useSelector(selectLogoutSuccess)
     const navigate = useNavigate();
     useEffect(() => {
-        if (localStorage.getItem("token") !== null) {
+        if (localStorage.getItem("token") !== null ) {
             dispatch(reLoginWithToken())
         }
     }, []);

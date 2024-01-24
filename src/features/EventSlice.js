@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createEvent, findAllEvents, findEventById, findEventsByEventTypes, findEventsByName,findEventsByProvince} from "../api/EventApi.js";
+import {createEvent, findAllEvents, findEventById, findEventsByEventTypes, findEventsByName} from "../api/EventApi.js";
 
 const initialState = {
   events: [],
@@ -33,10 +33,7 @@ export const addEvent = createAsyncThunk("event/create", async (eventRequest) =>
   return response.data;
 })
 
-export const getEventByProvince = createAsyncThunk("events/byProvince", async (searchTerm,province, currentPage) => {
-  const response = await findEventsByProvince(searchTerm,province, currentPage);
-  return response.data;
-})
+
 
 // set action for slice
 const handlePending = (state) => {
@@ -108,10 +105,7 @@ export const EventSlice = createSlice({
         state.error = false;
         state.event = action.payload;
       })
-    // find By Location
-        .addCase(getEventByProvince.pending, handlePending)
-        .addCase(getEventByProvince.rejected, handleRejected)
-        .addCase(getEventByProvince.fulfilled, handleFulfilled)
+
   },
 })
 

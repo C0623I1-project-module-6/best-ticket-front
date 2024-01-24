@@ -33,7 +33,6 @@ const UserHeader = () => {
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
-
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -184,7 +183,7 @@ const UserHeader = () => {
     const handleCreateEvent = async () => {
         if (isLogin) {
             await dispatch(getOrganizerByUserId(user.id));
-            if (organizer !== null && organizer !== undefined) {
+            if (organizer !== null ) {
                 navigate('/event/create');
             } else {
                 navigate('/my-event/legal');

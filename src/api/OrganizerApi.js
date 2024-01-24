@@ -5,7 +5,7 @@ export async function createOrganizer(organizer) {
   let response = null;
   let token = localStorage.getItem("token");
   await axios({
-    url: `${BEST_TICKET_API}organizers/add`,
+    url: `${BEST_TICKET_API}users/organizer/add`,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -25,7 +25,7 @@ export async function findByUserId({userId}) {
   let response = null;
   let token = localStorage.getItem("token");
   await axios({
-    url: `${BEST_TICKET_API}organizers/${userId}`,
+    url: `${BEST_TICKET_API}users/organizer/${userId}`,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,

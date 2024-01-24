@@ -4,7 +4,7 @@ import {Input, Option, Select} from "@material-tailwind/react";
 import SelectEvent from "../partials/SelectEvent.jsx";
 import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {findAllEventType} from "../../../api/EventTypeApi.js";
 import {ProvincesApi} from "../../../api/ProvincesApi.js";
 import {CalculateDuration} from "../../../ultility/customHook/calculateDuration.js";
@@ -27,7 +27,7 @@ const CreateEventStep1 = () => {
     const [eventName, setEventName] = useState("");
     const [eventDescription, setEventDescription] = useState("")
     const dispatch = useDispatch();
-
+    const organizer = useSelector(state => state.organizer.value)
 
     const fetchApiEventTypes = async () => {
         try {
@@ -61,9 +61,6 @@ const CreateEventStep1 = () => {
         const startDateTime = dayjs(startDate, {dateFormat: dateTimeFormat});
         const endDateTime = dayjs(endDate, {dateFormat: dateTimeFormat});
         const duration = CalculateDuration(startDateTime, endDateTime)
-
-        console.log(duration);
-
         const eventRequest = {
             name: eventName,
             description: eventDescription,
@@ -74,7 +71,8 @@ const CreateEventStep1 = () => {
             district: selectedDistrict,
             address: address,
             startDateTime: startDateTime.format(dateTimeFormat),
-            eventTypeNames: selectedEventTypes
+            eventTypeNames: selectedEventTypes,
+            organizerId: organizer.id
         };
         dispatch(addEvent(eventRequest))
             .then((response) => {
@@ -90,7 +88,6 @@ const CreateEventStep1 = () => {
                 });
             });
     }
-
     return (
         <div className="w-[75vw] overflow-y-auto ">
             <div className=" mx-auto">
