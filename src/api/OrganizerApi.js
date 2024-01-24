@@ -21,6 +21,23 @@ export async function createOrganizer(organizer) {
   return response;
 }
 
+
+export async function updateOrganizer(editOrganizer) {
+  let response = null;
+  let token = localStorage.getItem("token");
+  await axios({
+    url: `${BEST_TICKET_API}users/organizer/edit`,
+    method: "PUT",
+    data: editOrganizer
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  console.log(response)
+  return response;
+}
+
 export async function findByUserId({userId}) {
   let response = null;
   let token = localStorage.getItem("token");
@@ -36,5 +53,6 @@ export async function findByUserId({userId}) {
   }).catch((e) => {
     response = e;
   })
+  console.log(response)
   return response;
 }
