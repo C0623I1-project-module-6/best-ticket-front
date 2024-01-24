@@ -4,9 +4,11 @@ import {MdEmail} from "react-icons/md";
 import {FaPhone} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchGetUser, selectUserEdit, selectUserLogin} from "../../features/user/UserSlice.js";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup"
+import {Modal} from 'antd';
+import {updateStatusFail} from "../../api/TicketApi.js";
 
 
 export const TicketBookingStep2 = () => {
@@ -14,13 +16,45 @@ export const TicketBookingStep2 = () => {
     const user = useSelector(selectUserLogin);
     const userEdit = useSelector(selectUserEdit);
     const seatTickets = useSelector(state => state.seat)
+    console.log(seatTickets.seats)
+    const [open, setOpen] = useState(true);
 
-    console.log(user)
+
+    const [timeLeft, setTimeLeft] = useState(6);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft(prevTime => prevTime - 1);
+        }, 1000);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
+    const minutes = `0${Math.floor(timeLeft / 60)}`.slice(-2);
+    const seconds = `0${timeLeft % 60}`.slice(-2);
+
+    const handleClick = async () => {
+        try {
+            const response = await updateStatusFail(seatTickets.seats);
+            history.back();
+            // dispatch(setSeats(dataSeat));
+            // dispatch(setTotalPrice(dataTotalPrice));
+            // dispatch(setTicketType(dataNameTicketType));
+            // dispatch(setPrice(dataPriceOneTicket))
+            // props.callbackData(1);
+            return response;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        history.back();
+    }
+
 
     useEffect(() => {
         dispatch(fetchGetUser(user.id))
     }, [])
-    console.log(userEdit)
 
     const formik = useFormik({
         initialValues: {
@@ -46,6 +80,28 @@ export const TicketBookingStep2 = () => {
             <div className="mx-40 text-black py-5">
                 <div className="flex gap-10 items-center justify-center bg-neutral-400 py-5">
                     <div className="w-3/5 flex-col">
+                        {timeLeft > 0 ? (
+                                <div className="text-center">
+                                    <p>Vui lòng hoàn tất đặt vé trong</p>
+                                    <p>{minutes} : {seconds} </p>
+                                </div>
+                            )
+                            :
+                            (<div>
+                                <Modal
+                                    open={open}
+                                    footer={null}
+                                >
+                                    <div className='text-center'>
+                                        <p>Hết thời gian thanh toán vui lòng đặt vé mới</p>
+                                        <button className="py-3 px-5 bg-green-700 text-white my-3"
+                                                onClick={handleClick}>Đặt vé mới
+                                        </button>
+                                    </div>
+                                </Modal>
+                            </div>)
+                        }
+
                         <p className="m-7">THÔNG TIN NGƯỜI NHẬN VÉ</p>
                         <form id='myForm' onSubmit={formik.handleSubmit}>
                             <div className="flex mx-2">
@@ -221,5 +277,6 @@ export const TicketBookingStep2 = () => {
                 </div>
             </div>
         </>
-    );
+    )
+        ;
 }

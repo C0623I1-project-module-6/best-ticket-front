@@ -23,20 +23,7 @@ const EventDetail = () => {
     const user = useSelector(selectUserLogin);
     let isFirstRender = true;
 
-    const [timeLeft, setTimeLeft] = useState(600); // 600 giây = 10 phút
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft(prevTime => prevTime - 1);
-        }, 1000);
-
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
-
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
 
     const showEventById = () => {
         dispatch(getEventById(eventId));
@@ -57,9 +44,7 @@ const EventDetail = () => {
     return (
         <>
             <div className="w-full overflow-y-auto pb-52">
-                <div>
-                    Thời gian còn lại: {minutes} phút {seconds} giây
-                </div>
+
                 <img className="w-full h-96" src={event !== null ? event.image : <div>Loading...</div>} alt=""/>
 
                 <div className="flex mx-60 gap-20">
