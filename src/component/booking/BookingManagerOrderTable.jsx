@@ -10,6 +10,7 @@ import Pagination from '@mui/material/Pagination';
 import {ImSearch} from 'react-icons/im';
 import {MdEmail} from "react-icons/md";
 import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
+import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
@@ -22,6 +23,31 @@ const BookingManagerOrderTable = () => {
     const [keyword, setKeyword] = useState('');
     const [selectAllChecked, setSelectAllChecked] = useState(false);
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
+    const [sortBy, setSortBy] = useState('createdAt');
+    const [sortDirection, setSortDirection] = useState('desc');
+    const {formatCurrency, updateFormatter} = useFormatCurrency();
+
+    const handleSortChange = (selectedSortBy) => {
+        let newSortDirection = 'desc';
+        if (selectedSortBy === 'createdAt_reversed') {
+            newSortDirection = 'asc';
+        } else if (sortBy === selectedSortBy) {
+            newSortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+        } else if (selectedSortBy === 'A-Z') {
+            newSortDirection = 'asc';
+            selectedSortBy = 'customer.fullName';
+        } else if (selectedSortBy === 'Z-A') {
+            newSortDirection = 'desc';
+            selectedSortBy = 'customer.fullName';
+        }
+        setSortBy(selectedSortBy);
+        setSortDirection(newSortDirection);
+
+        dispatch(getAllBookingsByEventId(eventId1, currentPage - 1, {
+            sortBy: selectedSortBy,
+            sortDirection: newSortDirection
+        }));
+    };
 
     useEffect(() => {
         dispatch(getAllBookingsByEventId(eventId1, currentPage - 1));
@@ -74,8 +100,15 @@ const BookingManagerOrderTable = () => {
 
     return (<>
         <div className="border bg-gray-100 flex py-1">
-            <div className="w-1/2 m-1 flex">
-
+            <div className="w-1/2 m-5 flex">
+                <div>
+                    <select className="bg-white" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+                        <option value="createdAt">Mới nhất</option>
+                        <option value="createdAt_reversed">Cũ nhất</option>
+                        <option value="customer.fullName">A-Z</option>
+                        <option value="customer.fullName">Z-A</option>
+                    </select>
+                </div>
             </div>
             <div className="w-1/2 m-2">
                 <form className="text-right mr-2" onSubmit={searchBookingByKeyword}>
@@ -114,12 +147,12 @@ const BookingManagerOrderTable = () => {
                     {bookings === null || bookings === "" || bookings === undefined ? (<tr>
                         <td colSpan="4">No booking available</td>
                     </tr>) : (bookings.map((booking, index) => {
-                        const ticketCounts = {}; // Object to store ticket counts
+                        const ticketCounts = {};
                         if (bookingDetails && bookingDetails.length > 0) {
                             bookingDetails.forEach((detail) => {
                                 if (detail.data && detail.data.length > 0) {
                                     detail.data.forEach((detailData) => {
-                                        if (detailData.ticketInBookingDetailResponses && detailData.ticketInBookingDetailResponses.length > 0) {
+                                        if (booking.id === detailData.bookingId && detailData.ticketInBookingDetailResponses && detailData.ticketInBookingDetailResponses.length > 0) {
                                             detailData.ticketInBookingDetailResponses.forEach((ticket) => {
                                                 const ticketTypeName = ticket.ticketTypeName;
                                                 if (ticketCounts[ticketTypeName]) {
@@ -160,7 +193,7 @@ const BookingManagerOrderTable = () => {
                                         <span>{ticketType}</span>
                                     </div>))) : (<span>No booking details available</span>)}
                             </td>
-                            <td className="px-4 py-2 border-x-0">{booking.totalAmount}</td>
+                            <td className="px-4 py-2 border-x-0">{formatCurrency(booking.totalAmount)}</td>
                         </tr>);
                     }))}
                     </tbody>
