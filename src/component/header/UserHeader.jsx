@@ -19,6 +19,7 @@ import {
 import avatar from "../../assets/img/User.png"
 import {ADMIN} from "../../ultility/AppConstant.js";
 import {Bounce, toast} from "react-toastify";
+import {getOrganizerByUserId} from "../../features/OrganizerSlice.js";
 
 
 const UserHeader = () => {
@@ -30,8 +31,9 @@ const UserHeader = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userLogout = useSelector(selectUserLogout);
     const userRole = useSelector(selectUserRole);
-    const isLogin = useSelector(selectIsLogin);
-    console.log(isLogin)
+    const isLogin = useSelector(state => state.user.isLogin)
+    const organizer = useSelector(state => state.organizer.value)
+
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -60,7 +62,7 @@ const UserHeader = () => {
         }
     }, [userRole]);
 
-  const loginButton = () => {
+    const loginButton = () => {
         return (
             !user ?
                 <span onClick={() => navigate("/login")} className="hover:text-amber-400">
@@ -178,6 +180,19 @@ const UserHeader = () => {
         });
         navigate("/");
     }
+
+    const handleCreateEvent = async () => {
+        if (isLogin) {
+            await dispatch(getOrganizerByUserId(user.id));
+            if (organizer !== null && organizer !== undefined) {
+                navigate('/event/create');
+            } else {
+                navigate('/my-event/legal');
+            }
+        } else {
+            navigate('/login');
+        }
+    };
     return (
         <>
             <div className="h-[76px] w-full bg-[#10b981] text-white px-3 dark:bg-[#14b8a6]">
@@ -205,7 +220,7 @@ const UserHeader = () => {
                         <span
                             className="cursor-pointer border-white border-[1px]
                                         hover:bg-white hover:text-black
-                                        rounded-3xl font-bold px-6 py-2" onClick={() => navigate("/event/create")}>
+                                        rounded-3xl font-bold px-6 py-2" onClick={handleCreateEvent}>
                             Create Event
                         </span>
                     </div>
