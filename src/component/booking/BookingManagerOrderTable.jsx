@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventId, getAllBookingsByKeyword, selectAllBookingsByEventId
+    getAllBookingsByEventId,
+    getAllBookingsByKeyword,
+    selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
 import {getAllBookingDetailsByBookingId} from '../../features/BookingDetailSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
@@ -15,7 +17,7 @@ import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js"
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const totalPages = useSelector(state => state.event.totalPages);
+    const totalPages = useSelector(state => state.booking.totalPages);
     const bookings = useSelector(selectAllBookingsByEventId);
     const eventId1 = useParams().eventId;
     const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +27,7 @@ const BookingManagerOrderTable = () => {
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
     const [sortBy, setSortBy] = useState('createdAt');
     const [sortDirection, setSortDirection] = useState('desc');
-    const {formatCurrency, updateFormatter} = useFormatCurrency();
+    const {formatCurrency} = useFormatCurrency();
 
     const handleSortChange = (selectedSortBy) => {
         let newSortDirection = 'desc';
@@ -58,28 +60,6 @@ const BookingManagerOrderTable = () => {
         dispatch(getAllBookingsByKeyword({eventId: eventId1, keyword: keyword}));
     };
 
-    const bookingsMemo = React.useMemo(() => {
-        return (bookings === null || bookings === undefined ? [] : bookings);
-    }, [bookings]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const promises = bookingsMemo
-                .filter(booking => !booking.bookingDetails)
-                .map(booking => dispatch(getAllBookingDetailsByBookingId(booking.id)));
-            const results = await Promise.all(promises);
-            const updatedBookingDetails = results.map(data => data.payload); // Extracting payload from the results
-            setBookingDetails(updatedBookingDetails);
-        };
-
-        if (bookingsMemo.length > 0) {
-            setBookingDetails([]); // Clear the booking details state
-            fetchData().then(() => {
-                console.log('Data fetched successfully');
-            });
-        }
-    }, [bookings, bookingsMemo, dispatch])
-
     const toggleSelectAll = (e) => {
         setSelectAllChecked(e.target.checked);
         if (e.target.checked) {
@@ -97,7 +77,7 @@ const BookingManagerOrderTable = () => {
             setCheckboxesChecked([...checkboxesChecked, checkedBookingId]);
         }
     };
-
+    console.log(bookings)
     return (<>
         <div className="border bg-gray-100 flex py-1">
             <div className="w-1/2 m-5 flex">
@@ -146,7 +126,7 @@ const BookingManagerOrderTable = () => {
                     <tbody>
                     {bookings === null || bookings === "" || bookings === undefined ? (<tr>
                         <td colSpan="4">No booking available</td>
-                    </tr>) : (bookings.map((booking, index) => {
+                    </tr>) : (bookings.content.map((booking, index) => {
                         const ticketCounts = {};
                         if (bookingDetails && bookingDetails.length > 0) {
                             bookingDetails.forEach((detail) => {
@@ -193,7 +173,9 @@ const BookingManagerOrderTable = () => {
                                         <span>{ticketType}</span>
                                     </div>))) : (<span>No booking details available</span>)}
                             </td>
-                            <td className="px-4 py-2 border-x-0">{formatCurrency(booking.totalAmount)}</td>
+                            <td className="px-4 py-2 border-x-0">
+                                {formatCurrency(booking.totalAmount)}
+                            </td>
                         </tr>);
                     }))}
                     </tbody>

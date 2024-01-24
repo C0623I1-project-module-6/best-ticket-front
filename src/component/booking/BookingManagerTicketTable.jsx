@@ -55,7 +55,6 @@ const BookingManagerTicketTable = () => {
                     <th className="p-2 border border-black">Số tiền</th>
                 </tr>
                 </thead>
-
                 <tbody>
                 {bookings.length === 0 || bookings.length === undefined ? (<tr>
                     <td colSpan="4">No booking available for this event</td>
