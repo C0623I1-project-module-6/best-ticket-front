@@ -10,8 +10,8 @@ import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    logoutUser, selectIsLogin,
-    selectLogoutSuccess,
+    logoutUser,
+    selectIsLogin,
     selectUserLogin,
     selectUserLogout,
     selectUserRole
@@ -60,7 +60,7 @@ const UserHeader = () => {
         }
     }, [userRole]);
 
-  const loginButton = () => {
+    const loginButton = () => {
         return (
             !user ?
                 <span onClick={() => navigate("/login")} className="hover:text-amber-400">
@@ -210,7 +210,15 @@ const UserHeader = () => {
                         </span>
                     </div>
                     <div className="cursor-pointer flex items-center gap-3 hover:text-amber-400"
-                         onClick={() => navigate(`/my-ticket/${user.id}`)}>
+                         onClick={() => {
+                             if (user !== null) {
+                                 navigate(`/my-ticket/${user.id}`);
+                             } else {
+                                 navigate("/login");
+                             }
+                         }
+                         }
+                    >
                         <FaTicket size={30}/>
                         <span>My ticket</span>
                     </div>
@@ -223,6 +231,7 @@ const UserHeader = () => {
                 </div>
             </div>
         </>
-    );
+    )
+        ;
 };
 export default UserHeader;

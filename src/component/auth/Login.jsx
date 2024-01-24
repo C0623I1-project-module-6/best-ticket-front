@@ -35,7 +35,8 @@ function Login() {
     useEffect(() => {
         if (loginSuccess && user && user.token) {
             toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
-            navigate("/");
+            history.back();
+            // navigate("/");
         }
     }, [user]);
     useEffect(() => {

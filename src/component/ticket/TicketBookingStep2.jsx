@@ -133,7 +133,7 @@ export const TicketBookingStep2 = () => {
                                                 <p>{" " + seatTickets.seats[index]}</p>
                                             </div>
                                             <div className="w-1/3 text-right">
-                                                <p>{countVIP}</p>
+                                                <p>1</p>
                                                 <p>{seatTickets.price[index]} VNĐ</p>
                                             </div>
                                         </>
@@ -147,7 +147,7 @@ export const TicketBookingStep2 = () => {
                                                 <p>{" " + seatTickets.seats[index]}</p>
                                             </div>
                                             <div className="w-1/3 text-right">
-                                                <p>{countTHUONG}</p>
+                                                <p>1</p>
                                                 <p>{seatTickets.price[index]} VNĐ</p>
                                             </div>
                                         </>
@@ -160,7 +160,7 @@ export const TicketBookingStep2 = () => {
                                                 <p>{" " + seatTickets.seats[index]}</p>
                                             </div>
                                             <div className="w-1/3 text-right">
-                                                <p>{countLAU}</p>
+                                                <p>1</p>
                                                 <p>{seatTickets.price[index]} VNĐ</p>
                                             </div>
                                         </>
