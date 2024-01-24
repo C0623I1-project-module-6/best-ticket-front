@@ -10,11 +10,9 @@ function TicketBooking() {
     const {Step} = Steps;
 
     const [current, setCurrent] = useState(0);
-    const handleStepClick = (step) => {
-        setCurrent(step);
-        console.log(step)
-    };
-
+    const callBackFunction = (data) => {
+        setCurrent(data)
+    }
 
     return (
         <div className="w-full bg-[#F1F1F1] overflow-y-auto">
@@ -33,12 +31,12 @@ function TicketBooking() {
                 </div>
             </div>
             <div className="my-5" style={{marginLeft: "40px", marginRight: "40px"}}>
-                <Steps current={current} onChange={handleStepClick}>
+                <Steps current={current}>
                     <Step title="Chọn vé"/>
                     <Step title="Thanh toán"/>
                     <Step title="Hoàn tất"/>
                 </Steps>
-                {current === 0 && <TicketBookingStep1/>}
+                {current === 0 && <TicketBookingStep1 callbackData={callBackFunction}/>}
                 {current === 1 && <TicketBookingStep2/>}
                 {current === 2 && <TicketBookingStep3/>}
             </div>
