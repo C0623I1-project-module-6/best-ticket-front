@@ -25,10 +25,11 @@ import CreateEventStep1 from "../component/event/createEvent/CreateEventStep1.js
 import CreateEventStep2 from "../component/event/createEvent/CreateEventStep2.jsx";
 import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.jsx";
 import EventDetail from "../component/event/EventDetail.jsx";
-import {RegisterOrganizerProfile} from "../component/user/RegisterOrganizerProfile.jsx"
+
+
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
+import OrganizerProfile from "../component/user/OrganizerProfile.jsx";
 import CreatedEvent from "../component/user/CreatedEvent.jsx";
-import EditOrganizerProfile from "../component/user/EditOrganizerProfile.jsx";
 
 
 export const ROUT_DATA = [
@@ -50,11 +51,17 @@ export const ROUT_DATA = [
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
 
     {path: "/profile", element: CustomerProfile, layout: UserLayout},
-    {path: "/my-event/legal", element: EditOrganizerProfile, layout: OrganizerLayout},
-    {path: "/my-event/legal/createdEvent", element: CreatedEvent , layout: OrganizerLayout},
+    {path: "/my-event/legal", element: OrganizerProfile, layout: OrganizerLayout},
+
+
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
-    {path: "/profile", element: CustomerProfile, layout: UserLayout},
+
+    {path: "/my-event/legal/createdEvent", element: CreatedEvent, layout: OrganizerLayout},
+    {path: "/event/:id", element: EventDetail, layout: UserLayout},
+    {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
+
+
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
     {
         path: "/event/create", element: CreateEventPage, children: [
@@ -63,13 +70,36 @@ export const ROUT_DATA = [
             {path: "step3", element: CreateEventStep3},
         ]
     },
-    {path: "/customer/profile", element: "AddCustomerProfile", layout: UserLayout},
 
-    {path: "/my-event/legal", element: RegisterOrganizerProfile, layout: OrganizerLayout},
+
+    {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
+    {
+        path: "/my-event/event/:eventId/RSVPs/bookings",
+        element: BookingManagerEventBookings,
+        layout: OrganizerBookingManagerLayout
+    },
+    {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
+    {
+        path: "/my-event/event/:eventId/moderators",
+        element: BookingManagerModeratorList,
+        layout: OrganizerBookingManagerLayout
+    },
+
+
     // {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
-    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
+    {
+        path: "/my-event/event/:eventId/RSVPs/bookings",
+        element: BookingManagerEventBookings,
+        layout: OrganizerBookingManagerLayout
+    },
     // {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
     // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
-    {path: "/my-event/event/:eventId/moderators", element: BookingManagerModeratorList, layout: OrganizerBookingManagerLayout},
+    {
+        path: "/my-event/event/:eventId/moderators",
+        element: BookingManagerModeratorList,
+        layout: OrganizerBookingManagerLayout
+    },
+
 
 ];

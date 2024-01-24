@@ -1,7 +1,7 @@
-export default function FormCompany({organizer, setOrganizer}) {
+export default function FormEditCompany({organizer, editOrganizer, setEditOrganizer, isEditMode}) {
     const handleChange = (e) => {
-        setOrganizer({
-            ...organizer,
+        setEditOrganizer({
+            ...editOrganizer,
             [e.target.name]: e.target.value
         })
     }
@@ -25,13 +25,13 @@ export default function FormCompany({organizer, setOrganizer}) {
                             id="name"
                             name="name"
                             autoComplete="name"
-                            value={organizer.name}
+                            placeholder={organizer?.name || "Vui lòng nhập tên doanh ngiệp"}
                             onChange={handleChange}
-                            required
-                            className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                            ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
-                            focus:ring-indigo-600 sm:text-sm sm:leading-6 placeholder:font-serif"
-                            placeholder="Vui lòng nhập tên doanh ngiệp"/>
+                            disabled={!isEditMode}
+                            className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
+                            ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
+                            focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
+                            font-serif"/>
                     </div>
                     <div>
                         <div className="sm:flex sm:gap-4">
@@ -47,13 +47,13 @@ export default function FormCompany({organizer, setOrganizer}) {
                             id="businessCode"
                             name="businessCode"
                             autoComplete="businessCode"
-                            value={organizer.businessCode}
+                            placeholder={organizer.businessCode || "Vui lòng nhập mã đăng ký kinh doanh"}
                             onChange={handleChange}
-                            required
-                            className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                            ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
-                            focus:ring-indigo-600 sm:text-sm sm:leading-6 placeholder:font-serif"
-                            placeholder="Vui lòng nhập mã đăng ký kinh doanh"/>
+                            disabled={!isEditMode}
+                            className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
+                            ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
+                            focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
+                            font-serif"/>
                     </div>
                     <div>
                         <div className="sm:flex sm:gap-4">
@@ -69,12 +69,13 @@ export default function FormCompany({organizer, setOrganizer}) {
                             id="dateRange"
                             name="dateRange"
                             autoComplete="dateRange"
-                            value={organizer.dateRange}
+                            value={organizer?.dateRange}
                             onChange={handleChange}
-                            required
-                            className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
+                            disabled={!isEditMode}
+                            className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
                             ring-inset ring-gray-300 focus:ring-0 focus:ring-inset
-                            focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                            focus:ring-indigo-600 sm:text-1xl sm:font-serif sm:leading-6 placeholder:font-serif
+                            placeholder:text-1xl"/>
                     </div>
                     <div>
                         <div className="sm:flex sm:gap-4">
@@ -89,13 +90,14 @@ export default function FormCompany({organizer, setOrganizer}) {
                                id="issuedBy"
                                name="issuedBy"
                                autoComplete="issuedBy"
-                               value={organizer.issuedBy}
+                               placeholder={organizer.issuedBy || "Vui lòng nhập nơi cấp"}
                                onChange={handleChange}
-                               required
-                               className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                               ring-inset ring-gray-300 placeholder:text-gray-400  focus:ring-0 focus:ring-inset
-                               focus:ring-indigo-600 sm:text-sm sm:leading-6 placeholder:font-serif"
-                               placeholder="Vui lòng nhập nơi cấp"/>
+                               disabled={!isEditMode}
+                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
+                               ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
+                               focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
+                               font-serif"/>
+
                     </div>
                 </div>
             </div>
@@ -115,13 +117,13 @@ export default function FormCompany({organizer, setOrganizer}) {
                                id="phoneNumber"
                                name="phoneNumber"
                                autoComplete="phoneNumber"
-                               value={organizer.phoneNumber}
+                               placeholder={organizer?.phoneNumber || "Vui lòng nhập số điện thoại"}
                                onChange={handleChange}
-                               required
-                               className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                               ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
-                               focus:ring-indigo-600 sm:text-sm sm:leading-6 placeholder:font-serif"
-                               placeholder="Vui lòng nhập số điện thoại"/>
+                               disabled={!isEditMode}
+                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
+                               ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
+                               focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
+                               font-serif"/>
                     </div>
                     <div>
                         <div className="sm:flex sm:gap-4">
@@ -136,13 +138,13 @@ export default function FormCompany({organizer, setOrganizer}) {
                                id="email"
                                name="email"
                                autoComplete="email"
-                               value={organizer.email}
+                               placeholder={organizer.email || "bestticket@example.com"}
                                onChange={handleChange}
-                               required
-                               className=" block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                               ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset
-                               focus:ring-indigo-600 sm:text-sm sm:leading-6 placeholder:font-serif"
-                               placeholder="bestticket@example.com"/>
+                               disabled={!isEditMode}
+                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
+                               ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
+                               focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
+                               font-serif"/>
                     </div>
                 </div>
             </div>

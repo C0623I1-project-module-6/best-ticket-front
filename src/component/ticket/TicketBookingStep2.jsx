@@ -3,8 +3,9 @@ import {FaPencil, FaUser} from "react-icons/fa6";
 import {MdEmail} from "react-icons/md";
 import {FaPhone} from "react-icons/fa";
 import {useSelector} from "react-redux";
-import {selectUserLogin} from "../../features/UserSlice.js";
+
 import {selectShowTicketByTimeId} from "../../features/TicketSlice.js";
+import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 
 export const TicketBookingStep2 = () => {

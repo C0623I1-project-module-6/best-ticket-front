@@ -7,7 +7,7 @@ import {
     selectRegisterError,
     selectRegisterSuccess,
     selectUserRegister
-} from "../../features/UserSlice.js";
+} from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 
 function Register() {

@@ -1,21 +1,27 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {
+    registerOrganizerProfile,
+    selectOrganizerRegister,
+    selectRegisterOrganizerError,
+    selectRegisterOrganizerSuccess
+} from "../../../features/user/OrganizerSlice.js";
+import {Bounce, toast} from "react-toastify";
 import FormCompany from "./FormCompany.jsx";
 import FormPersonal from "./FormPersonal.jsx";
-import {registerProfile, selectError, selectOrganizerRegister, selectSuccess} from "../../features/OrganizerSlice.js";
-import {Bounce, toast} from "react-toastify";
-import UserFooter from "../footer/UserFooter.jsx";
+import UserFooter from "../../footer/UserFooter.jsx";
 
-function EditOrganizerProfile() {
+export default function RegisterOrganizerProfile() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [selected, setSelected] = useState("0");
     const organizerAdded = useSelector(selectOrganizerRegister);
-    const editSuccess = useSelector(selectSuccess);
-    const editError = useSelector(selectError);
-    const showToastMessage = (content) => {
-        toast("🦄", {
+    const success = useSelector(selectRegisterOrganizerSuccess);
+    const error = useSelector(selectRegisterOrganizerError);
+    const [organizer, setOrganizer] = useState({});
+    const toastOptions =
+        {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -25,27 +31,19 @@ function EditOrganizerProfile() {
             progress: undefined,
             theme: "light",
             transition: Bounce,
-        })
-    }
-    const [organizer, setOrganizer] = useState({
-        name: "",
-        businessCode: "",
-        dateRange: "",
-        issuedBy: "",
-        phoneNumber: "",
-        email: "",
-        idCard: "",
-        taxCode: "",
-    });
+        }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(registerProfile(organizer));
-        setOrganizer(organizerAdded);
-        showToastMessage("Register successfully!")
-        navigate("/")
-    }
+        dispatch(registerOrganizerProfile(organizer));
+        navigate("/my-event/legal")
 
+    }
+    useEffect(() => {
+        if (success){
+            toast.success("🦄 Đăng ký thông tin thành công!")
+        }
+    }, [success]);
     const handleSelectChange = (e) => {
         setSelected(e.target.value);
     }
@@ -82,7 +80,7 @@ function EditOrganizerProfile() {
                 </div>
                 {selected === "0" && <FormCompany organizer={organizer} setOrganizer={setOrganizer}/>}
                 {selected === "1" && <FormPersonal organizer={organizer} setOrganizer={setOrganizer}/>}
-                <button type="subbmit"
+                <button type="submit"
                         className=" mt-4 block w-60 text-center text-white font-bold ml-auto px-3 py-2
                         bg-[#10b981] border-0 rounded-full">
                     Lưu thông tin
@@ -92,5 +90,3 @@ function EditOrganizerProfile() {
         </div>
     );
 }
-
-export default EditOrganizerProfile;
