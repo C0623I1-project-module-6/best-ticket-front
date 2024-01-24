@@ -27,12 +27,7 @@ const CreateEventStep1 = () => {
     const [eventName, setEventName] = useState("");
     const [eventDescription, setEventDescription] = useState("")
     const dispatch = useDispatch();
-    // validate
-    const [errorName, setErrorName] = useState(false);
-    const [errorAddress, setErrorAddress] = useState(false);
-    const [errorProvince, setErrorProvince] = useState(false);
-    const [errorDistrict, setErrorDistrict] = useState(false);
-    const [errorEventTypes, setErrorEventTypes] = useState(false);
+
 
     const fetchApiEventTypes = async () => {
         try {

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {createOrganizer} from "../api/OrganizerApi.js";
+import {createOrganizer, findByUserId} from "../api/OrganizerApi.js";
 
 const initialState = {
   value: null,
@@ -7,6 +7,17 @@ const initialState = {
   success: false,
   error: null,
 }
+
+export const getOrganizerByUserId = createAsyncThunk(
+    "organizers/userId",
+    async (userId) => {
+        const response = await findByUserId({userId});
+        console.log(response.data)
+        return response.data;
+    }
+
+
+);
 export const registerProfile = createAsyncThunk(
   "organizers/add",
   async (organizer, {rejectedWithValue}) => {
@@ -19,6 +30,8 @@ export const registerProfile = createAsyncThunk(
     return response.data;
   }
 );
+
+
 export const organizerSlice = createSlice(
   {
     name: "organizer",
@@ -55,6 +68,12 @@ export const organizerSlice = createSlice(
           state.value = action.payload.data;
           state.error = false;
         })
+          .addCase(getOrganizerByUserId.fulfilled,(state, action)=>{
+              state.success = true;
+              state.loading = false;
+              state.value = action.payload.data;
+              state.error = false;
+          })
     }
   }
 )
