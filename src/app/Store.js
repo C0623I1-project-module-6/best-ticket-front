@@ -1,12 +1,12 @@
 import {applyMiddleware, compose, configureStore} from "@reduxjs/toolkit";
-import UserSlice from "../features/UserSlice.js";
+import UserSlice from "../features/user/UserSlice.js";
 import EventSlice from "../features/EventSlice.js";
 import AdminSlice from "../features/AdminSlice.js";
 import TicketSlice from "../features/TicketSlice.js";
 import BookingSlice from "../features/BookingSlice.js";
 import BookingDetailSlice from "../features/BookingDetailSlice.js";
-import CustomerSlice from "../features/CustomerSlice.js";
-import OrganizerSlice from "../features/OrganizerSlice.js";
+import CustomerSlice from "../features/user/CustomerSlice.js";
+import OrganizerSlice from "../features/user/OrganizerSlice.js";
 import ExistsUserSlice from "../features/ExistsUserSlice.js"
 import TicketTypeSlice from "../features/TicketTypeSlice.js";
 import TimeSlice from "../features/TimeSlice.js";

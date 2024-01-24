@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {getUser, login, loginGoogle, loginWithToken, logout, register} from "../api/UserApi.js";
+import {getUser, login, loginGoogle, loginWithToken, logout, register} from "../../api/UserApi.js";
 
 const initialState = {
 
@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
     if (response.status !== 200) {
       return rejectWithValue(response.data.message);
     }
-
+      console.log(response.data)
     return response.data;
   }
 );
@@ -73,6 +73,7 @@ export const fetchGetUser = createAsyncThunk(
             console.log(response)
             return rejectWithValue(response.data.message);
         }
+        console.log(response.data)
         return response.data;
   }
 );
@@ -118,8 +119,8 @@ export const userSlice = createSlice(
       setValue: (state, action) => {
         state.value = action.payload;
       },
-      setUser: (state, action) => {
-        state.user = action.payload;
+      setUserEdit: (state, action) => {
+        state.userEdit = action.payload;
       }
     },
     extraReducers: (builder) => {
@@ -234,7 +235,7 @@ export const {
   setLogoutSuccess,
   setLogoutError,
   setValue,
-  setUser,
+  setUserEdit,
 } = userSlice.actions;
 
 export const selectLoginSuccess = (state) => state.user.loginSuccess;

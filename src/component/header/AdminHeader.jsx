@@ -2,7 +2,7 @@ import {Fragment} from 'react'
 import {Disclosure, Menu, Transition} from '@headlessui/react'
 import {HiBars3, HiBell, HiXMark} from "react-icons/hi2";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {logoutUser, selectUserLogout} from "../../features/UserSlice.js";
+import {logoutUser, selectUserLogout} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 
 

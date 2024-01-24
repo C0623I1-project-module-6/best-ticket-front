@@ -11,9 +11,7 @@ function OrganizerLayout({children}) {
                     <OrganizerSidebar/>
                 </div>
                 <div className="w-3/4 max-h-screen overflow-y-hidden">
-                    {
-                        children
-                    }
+                    {children}
                 </div>
             </div>
         </div>

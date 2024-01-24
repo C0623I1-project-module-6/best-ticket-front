@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {GoogleLogin} from "@react-oauth/google";
 import {useDispatch, useSelector} from "react-redux";
-import {loginWithGoogle, selectIsLogin} from "../../features/UserSlice.js";
+import {loginWithGoogle, selectIsLogin} from "../../features/user/UserSlice.js";
 
 function AuthHeader(props) {
     const navigate = useNavigate();

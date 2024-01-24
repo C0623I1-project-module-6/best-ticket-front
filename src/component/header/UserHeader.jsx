@@ -15,7 +15,7 @@ import {
     selectUserLogin,
     selectUserLogout,
     selectUserRole
-} from "../../features/UserSlice.js";
+} from "../../features/user/UserSlice.js";
 import avatar from "../../assets/img/User.png"
 import {ADMIN} from "../../ultility/AppConstant.js";
 import {Bounce, toast} from "react-toastify";
