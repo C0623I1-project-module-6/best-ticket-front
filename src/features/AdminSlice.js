@@ -1,17 +1,20 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {showBookings, showEvents, showTickets, showUsers} from "../api/AdminApi.js";
+import {showBookingDetail, showBookings, showEvents, showTickets, showUsers} from "../api/AdminApi.js";
 
 const initialState = {
   bookings: null,
+  booking: null,
   totalPagesOfBooking: null,
   totalElementsOfBooking: null,
   tickets: null,
   totalPagesOfTicket: null,
   totalElementsOfTicket: null,
   users: null,
+  user: null,
   totalPagesOfUser: null,
   totalElementsOfUser: null,
   events: null,
+  event: null,
   totalPagesOfEvent: null,
   totalElementsOfEvent: null,
   getPageUsersSuccess: false,
@@ -34,6 +37,18 @@ export const getPageBookings = createAsyncThunk(
     return response.data;
   }
 )
+export const getBookingDetails = createAsyncThunk(
+  "getBookingsDetail",
+  async (id,
+         {rejectWithValue}
+  ) => {
+    const response = await showBookingDetail(id);
+    if (response.status !== 200) {
+      return rejectWithValue(response);
+    }
+    return response.data.data;
+  }
+)
 
 export const getPageTickets = createAsyncThunk(
   "getTickets",
@@ -45,6 +60,7 @@ export const getPageTickets = createAsyncThunk(
     return response.data;
   }
 )
+
 export const getPageUsers = createAsyncThunk(
   "getUsers",
   async (keyword, {rejectWithValue}) => {
@@ -103,6 +119,21 @@ export const adminSlice = createSlice(
           state.totalPagesOfBooking = action.payload.data.totalPages
           state.totalElementsOfBooking = action.payload.data.totalElements
           state.bookings = action.payload.data.content;
+          state.error = false;
+        })
+        .addCase(getBookingDetails.pending, (state) => {
+          state.getPageBookingsSuccess = false;
+          state.loading = true;
+          state.error = false;
+        })
+        .addCase(getBookingDetails.rejected, (state, action) => {
+          state.getPageBookingsSuccess = false;
+          state.loading = false;
+          state.error = action.payload;
+        })
+        .addCase(getBookingDetails.fulfilled, (state, action) => {
+          state.loading = false;
+          state.booking = action.payload.content;
           state.error = false;
         })
         .addCase(getPageTickets.pending, (state) => {
@@ -170,6 +201,7 @@ export const {
 
 } = adminSlice.actions;
 export const selectBookings = (state) => state.admin.bookings;
+export const selectBooking = (state) => state.admin.booking;
 export const selectBookingsSuccess = (state) => state.admin.getPageBookingsSuccess;
 export const selectTotalElementsOfBooking = (state) => state.admin.totalElementsOfBooking;
 export const selectTotalPageOfBooking = (state) => state.admin.totalPagesOfBooking;
