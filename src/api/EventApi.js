@@ -47,5 +47,14 @@ export const createEvent = async (eventRequest) => {
     console.log("Create event API error: " + e);
   }
   return result;
-
 }
+
+export const findEventsByProvince = async (searchTerm,province, currentPage) => {
+  let result = null;
+  try {
+    result = await axios.get(`${BEST_TICKET_API}api/events/location?searchTerm=${searchTerm}&province=${province}&page=${currentPage}&pageSize=20`);
+  } catch (e) {
+    console.log("Find events API error: " + e);
+  }
+  return result;
+};
