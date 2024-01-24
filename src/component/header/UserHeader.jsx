@@ -30,8 +30,6 @@ const UserHeader = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userLogout = useSelector(selectUserLogout);
     const userRole = useSelector(selectUserRole);
-    const isLogin = useSelector(selectIsLogin);
-    console.log(isLogin)
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (

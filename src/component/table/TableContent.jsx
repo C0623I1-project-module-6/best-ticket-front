@@ -11,6 +11,7 @@ import {GiCancel} from "react-icons/gi";
 import {FaCheckCircle} from "react-icons/fa";
 import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
 import ModalContent from "../ModalContent.jsx";
+import ModalEditBookings from "../ModalEditBookings.jsx";
 
 function TableContent(props) {
     const [data, setData] = useState([]);
@@ -20,7 +21,8 @@ function TableContent(props) {
     const selectUserSuccess = useSelector(selectUsersSuccess);
     const selectBookingSuccess = useSelector(selectBookingsSuccess)
     const [showDetail, setShowDetail] = useState(false);
-    const [bookingDetailId, setBookingDetailId] = useState()
+    const [showEditForm, setShowEditForm] = useState(false);
+    const [bookingEdit, setBookingEdit] = useState({});
     useEffect(() => {
         setData(users)
     }, [selectUserSuccess]);
@@ -36,8 +38,20 @@ function TableContent(props) {
             await setShowDetail(false);
         }
     }
+    const handleClickEdit = async (value) => {
+        if (!showEditForm) {
+            setBookingEdit(value)
+            await setShowEditForm(true);
+        } else {
+            setBookingEdit(value)
+            await setShowEditForm(false);
+        }
+    }
     const callbackFunction = (data) => {
         setShowDetail(data);
+    }
+    const callbackFromEditForm = (data) => {
+        setShowEditForm(data);
     }
     if (props.content.param === "users") {
         return (
@@ -102,6 +116,11 @@ function TableContent(props) {
                     parentCallback={callbackFunction}
                     dataFromParent={showDetail}
                 />
+                <ModalEditBookings
+                    parentCallback={callbackFromEditForm}
+                    dataFromParent={showEditForm}
+                    booking={bookingEdit}
+                />
                 <tbody className="bg-white dark:bg-blue-gray-400 items-center justify-center">
                 {
                     data !== null ? data.map((booking, index) => (
@@ -130,7 +149,9 @@ function TableContent(props) {
                                     </button>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">
-                                    <button type="button" className="btn btn-outline btn-sm btn-warning">Edit
+                                    <button type="button" className="btn btn-outline btn-sm btn-warning"
+                                            onClick={() => handleClickEdit(booking)}
+                                    >Edit
                                     </button>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">

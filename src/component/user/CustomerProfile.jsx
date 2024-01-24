@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {fetchGetUser, selectUserEdit, selectUserLogin} from "../../features/UserSlice.js";
 import {useNavigate} from "react-router-dom";
-import {addProfile} from "../../features/CustomerSlice.js";
+import {addProfile, selectAddProfileSuccess} from "../../features/CustomerSlice.js";
 import {toast} from "react-toastify";
 
 
@@ -12,15 +12,20 @@ export default function CustomerProfile() {
     const userEdit = useSelector(selectUserEdit)
     const navigate = useNavigate();
     const [customer, setCustomer] = useState(null)
+    const success = useSelector(selectAddProfileSuccess)
     useEffect(() => {
         dispatch(fetchGetUser(user.id));
     }, []);
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(addProfile(customer));
-        toast.success("🦄 Cập nhật thông tin thành công!");
         navigate("/");
     }
+    useEffect(() => {
+        if (success){
+            toast.success("🦄 Cập nhật thông tin thành công!");
+        }
+    }, []);
     const handleChange = (e) => {
 
     }
