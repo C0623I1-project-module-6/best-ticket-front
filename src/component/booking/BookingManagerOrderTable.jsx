@@ -5,25 +5,48 @@ import {
     getAllBookingsByKeyword,
     selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
-import {getAllBookingDetailsByBookingId} from '../../features/BookingDetailSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import {ImSearch} from 'react-icons/im';
+import {MdEmail} from "react-icons/md";
 import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
+import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const totalPages = useSelector(state => state.event.totalPages);
+    const totalPages = useSelector(state => state.booking.totalPages);
     const bookings = useSelector(selectAllBookingsByEventId);
-    console.log(bookings)
     const eventId1 = useParams().eventId;
     const [currentPage, setCurrentPage] = useState(1);
-    const [bookingDetails, setBookingDetails] = useState([]);
     const [keyword, setKeyword] = useState('');
     const [selectAllChecked, setSelectAllChecked] = useState(false);
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
+    const [sortBy, setSortBy] = useState('createdAt');
+    const [sortDirection, setSortDirection] = useState('desc');
+    const {formatCurrency} = useFormatCurrency();
+
+    const handleSortChange = (selectedSortBy) => {
+        let newSortDirection = 'desc';
+        if (selectedSortBy === 'createdAt_reversed') {
+            newSortDirection = 'asc';
+        } else if (sortBy === selectedSortBy) {
+            newSortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+        } else if (selectedSortBy === 'A-Z') {
+            newSortDirection = 'asc';
+            selectedSortBy = 'customer.fullName';
+        } else if (selectedSortBy === 'Z-A') {
+            newSortDirection = 'desc';
+            selectedSortBy = 'customer.fullName';
+        }
+        setSortBy(selectedSortBy);
+        setSortDirection(newSortDirection);
+
+        dispatch(getAllBookingsByEventId(eventId1, currentPage - 1, {
+            sortBy: selectedSortBy, sortDirection: newSortDirection
+        }));
+    };
 
     useEffect(() => {
         dispatch(getAllBookingsByEventId(eventId1, currentPage - 1));
@@ -33,28 +56,6 @@ const BookingManagerOrderTable = () => {
         e.preventDefault();
         dispatch(getAllBookingsByKeyword({eventId: eventId1, keyword: keyword}));
     };
-
-    const bookingsMemo = React.useMemo(() => {
-        return (bookings === null || bookings === undefined ? []: bookings);
-    }, [bookings]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const promises = bookingsMemo
-                .filter(booking => !booking.bookingDetails)
-                .map(booking => dispatch(getAllBookingDetailsByBookingId(booking.id)));
-            const results = await Promise.all(promises);
-            const updatedBookingDetails = results.map(data => data.payload); // Extracting payload from the results
-            setBookingDetails(updatedBookingDetails);
-        };
-
-        if (bookingsMemo.length > 0) {
-            setBookingDetails([]); // Clear the booking details state
-            fetchData().then(() => {
-                console.log('Data fetched successfully');
-            });
-        }
-    }, [bookings, bookingsMemo, dispatch])
 
     const toggleSelectAll = (e) => {
         setSelectAllChecked(e.target.checked);
@@ -76,8 +77,15 @@ const BookingManagerOrderTable = () => {
 
     return (<>
         <div className="border bg-gray-100 flex py-1">
-            <div className="w-1/2 m-1 flex">
-
+            <div className="w-1/2 m-5 flex">
+                <div>
+                    <select className="bg-white" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+                        <option value="createdAt">Mới nhất</option>
+                        <option value="createdAt_reversed">Cũ nhất</option>
+                        <option value="customer.fullName">A-Z</option>
+                        <option value="customer.fullName">Z-A</option>
+                    </select>
+                </div>
             </div>
             <div className="w-1/2 m-2">
                 <form className="text-right mr-2" onSubmit={searchBookingByKeyword}>
@@ -115,23 +123,17 @@ const BookingManagerOrderTable = () => {
                     <tbody>
                     {bookings === null || bookings === "" || bookings === undefined ? (<tr>
                         <td colSpan="4">No booking available</td>
-                    </tr>)
-                        :
-                        (bookings.map((booking, index) => {
-                        const ticketCounts = {}; // Object to store ticket counts
-                        if (bookingDetails && bookingDetails.length > 0) {
-                            bookingDetails.forEach((detail) => {
-                                if (detail.data && detail.data.length > 0) {
-                                    detail.data.forEach((detailData) => {
-                                        if (detailData.ticketInBookingDetailResponses && detailData.ticketInBookingDetailResponses.length > 0) {
-                                            detailData.ticketInBookingDetailResponses.forEach((ticket) => {
-                                                const ticketTypeName = ticket.ticketTypeName;
-                                                if (ticketCounts[ticketTypeName]) {
-                                                    ticketCounts[ticketTypeName] += 1;
-                                                } else {
-                                                    ticketCounts[ticketTypeName] = 1;
-                                                }
-                                            });
+                    </tr>) : (bookings.content.map((booking, index) => {
+                        const ticketCounts = {};
+                        if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
+                            booking.bookingDetailResponseList.forEach((detail) => {
+                                if (booking.id === detail.bookingId && detail.ticketInBookingDetailResponses && detail.ticketInBookingDetailResponses.length > 0) {
+                                    detail.ticketInBookingDetailResponses.forEach((ticket) => {
+                                        const ticketTypeName = ticket.ticketTypeName;
+                                        if (ticketCounts[ticketTypeName]) {
+                                            ticketCounts[ticketTypeName] += 1;
+                                        } else {
+                                            ticketCounts[ticketTypeName] = 1;
                                         }
                                     });
                                 }
@@ -159,12 +161,13 @@ const BookingManagerOrderTable = () => {
                             <td className="px-4 py-2 border-x-0">
                                 {Object.keys(ticketCounts).length > 0 ? (Object.keys(ticketCounts).map((ticketType, index) => (
                                     <div key={index}>
-                                        <span>{ticketCounts[ticketType]}</span>
-                                        <br/>
-                                        <span>{ticketType}</span>
+                                        <div>{ticketCounts[ticketType]}</div>
+                                        <div>{ticketType}</div>
                                     </div>))) : (<span>No booking details available</span>)}
                             </td>
-                            <td className="px-4 py-2 border-x-0">{booking.totalAmount}</td>
+                            <td className="px-4 py-2 border-x-0">
+                                {formatCurrency(booking.totalAmount)}
+                            </td>
                         </tr>);
                     }))}
                     </tbody>
@@ -180,21 +183,21 @@ const BookingManagerOrderTable = () => {
                     </Stack>
                 </div>
                 <div className="rounded-l bg-[#F6F6F6] flex">
-                    {/*<div className="m-auto text-center flex">*/}
-                    {/*    {bookings.length === undefined || bookings.length < 0 ? (<div></div>) : (<div>*/}
-                    {/*        <div className="m-2 flex text-xl">*/}
-                    {/*            <div className="py-1 px-1 text-xl"><MdEmail/></div>*/}
-                    {/*            <div>Gửi mail đến</div>*/}
-                    {/*        </div>*/}
-                    {/*        <div className="m-auto">*/}
-                    {/*            <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {*/}
-                    {/*                navigate(`/503`)*/}
-                    {/*            }}>*/}
-                    {/*                <div className="m-2">Tất cả</div>*/}
-                    {/*            </button>*/}
-                    {/*        </div>*/}
-                    {/*    </div>)}*/}
-                    {/*</div>*/}
+                    <div className="m-auto text-center flex">
+                        {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<div>
+                            <div className="m-2 flex text-xl">
+                                <div className="py-1 px-1 text-xl"><MdEmail/></div>
+                                <div>Gửi mail đến</div>
+                            </div>
+                            <div className="m-auto">
+                                <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                                    navigate(`/503`)
+                                }}>
+                                    <div className="m-2">Tất cả</div>
+                                </button>
+                            </div>
+                        </div>)}
+                    </div>
                 </div>
             </div>
         </div>

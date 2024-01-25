@@ -32,10 +32,3 @@ export const TABLE_HEAD_EVENT = [
 export const ADMIN = "ADMIN";
 export const ORGANIZER = "ORGANIZER";
 export const CUSTOMER = "CUSTOMER";
-
-export const sortingOptions = [
-  {label: "Mới nhất", value: "newest"},
-  {label: "Cũ nhất", value: "oldest"},
-  {label: "A - Z", value: "az"},
-  {label: "Z - A", value: "za"},
-];
