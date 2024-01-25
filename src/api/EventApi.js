@@ -49,4 +49,22 @@ export const createEvent = async (eventRequest) => {
   return result;
 }
 
+export const findEventByOrganizerId= async (organizerId,page)=>{
+  let result = null;
+  let token = localStorage.getItem("token");
+  try{
+    result=await axios({
+      url : `${BEST_TICKET_API}events/organizer/${organizerId}?page=${page}&pageSize=10`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      method: "GET",
+    })
+  } catch (e) {
+    console.log("Create event API error: " + e);
+  }
+  return result;
+}
+
 
