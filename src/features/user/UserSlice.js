@@ -73,7 +73,6 @@ export const fetchGetUser = createAsyncThunk(
             console.log(response)
             return rejectWithValue(response.data.message);
         }
-        console.log(response.data)
         return response.data;
     }
 );

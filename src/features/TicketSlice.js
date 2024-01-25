@@ -12,6 +12,7 @@ import {
 const initialState = {
     tickets: [],
     ticket: null,
+    ticketForTime: null,
     totalElementsOfTicket: null,
     loading: false,
     success: false,
@@ -44,7 +45,6 @@ export const getTicketById = createAsyncThunk(
     "tickets/showTicketById",
     async (id) => {
         const response = await showTicketById(id);
-        console.log(response.data)
         return response.data;
     }
 );
@@ -52,7 +52,6 @@ export const getTicketByEventId = createAsyncThunk(
     "tickets/showTicketByEventId",
     async (eventId) => {
         const response = await showTicketByEventId(eventId);
-        console.log(response.data)
         return response.data;
     }
 );
@@ -153,7 +152,7 @@ export const TicketSlice = createSlice({
             .addCase(getTicketByTimeId.fulfilled, (state, action) => {
                 state.success = true;
                 state.loading = false;
-                state.ticket = action.payload;
+                state.ticketForTime = action.payload;
                 state.totalElementsOfTicket = action.payload.data.totalElements;
                 state.error = false;
             })
@@ -177,5 +176,5 @@ export const selectError = (state) => state.ticket.error;
 export const selectSuccess = (state) => state.ticket.success;
 export const selectShowTicket = (state) => state.ticket.tickets;
 export const selectUpdateStatusTicket = (state) => state.ticket.tickets;
-export const selectShowTicketByTimeId = (state) => state.ticket.ticket;
+export const selectShowTicketByTimeId = (state) => state.ticket.ticketForTime;
 export default TicketSlice.reducer;
