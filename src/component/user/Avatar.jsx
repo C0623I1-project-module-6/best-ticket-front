@@ -1,6 +1,6 @@
 export default function Avatar(){
     return(
-        <div className=" w-1/4 ">
+        <div className="w-1/4">
             <div className="parent flex justify-center h-screen">
                 <div className="image flex flex-col items-center">
                     <div className=" my-8 flex justify-center gap-x-3">
