@@ -22,7 +22,7 @@ export default function Search() {
     const events = useSelector((state) => state.event.events);
     const totalPages = useSelector(state => state.event.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
-
+    console.log(location.state.text)
 
     const fetchApiEventTypes = async () => {
         try {
