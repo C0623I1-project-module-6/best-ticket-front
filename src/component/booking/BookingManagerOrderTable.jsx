@@ -5,7 +5,6 @@ import {
     getAllBookingsByKeyword,
     selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
-import {getAllBookingDetailsByBookingId} from '../../features/BookingDetailSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
@@ -21,7 +20,6 @@ const BookingManagerOrderTable = () => {
     const bookings = useSelector(selectAllBookingsByEventId);
     const eventId1 = useParams().eventId;
     const [currentPage, setCurrentPage] = useState(1);
-    const [bookingDetails, setBookingDetails] = useState([]);
     const [keyword, setKeyword] = useState('');
     const [selectAllChecked, setSelectAllChecked] = useState(false);
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
@@ -46,8 +44,7 @@ const BookingManagerOrderTable = () => {
         setSortDirection(newSortDirection);
 
         dispatch(getAllBookingsByEventId(eventId1, currentPage - 1, {
-            sortBy: selectedSortBy,
-            sortDirection: newSortDirection
+            sortBy: selectedSortBy, sortDirection: newSortDirection
         }));
     };
 
@@ -77,7 +74,7 @@ const BookingManagerOrderTable = () => {
             setCheckboxesChecked([...checkboxesChecked, checkedBookingId]);
         }
     };
-    console.log(bookings)
+
     return (<>
         <div className="border bg-gray-100 flex py-1">
             <div className="w-1/2 m-5 flex">
@@ -128,19 +125,15 @@ const BookingManagerOrderTable = () => {
                         <td colSpan="4">No booking available</td>
                     </tr>) : (bookings.content.map((booking, index) => {
                         const ticketCounts = {};
-                        if (bookingDetails && bookingDetails.length > 0) {
-                            bookingDetails.forEach((detail) => {
-                                if (detail.data && detail.data.length > 0) {
-                                    detail.data.forEach((detailData) => {
-                                        if (booking.id === detailData.bookingId && detailData.ticketInBookingDetailResponses && detailData.ticketInBookingDetailResponses.length > 0) {
-                                            detailData.ticketInBookingDetailResponses.forEach((ticket) => {
-                                                const ticketTypeName = ticket.ticketTypeName;
-                                                if (ticketCounts[ticketTypeName]) {
-                                                    ticketCounts[ticketTypeName] += 1;
-                                                } else {
-                                                    ticketCounts[ticketTypeName] = 1;
-                                                }
-                                            });
+                        if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
+                            booking.bookingDetailResponseList.forEach((detail) => {
+                                if (booking.id === detail.bookingId && detail.ticketInBookingDetailResponses && detail.ticketInBookingDetailResponses.length > 0) {
+                                    detail.ticketInBookingDetailResponses.forEach((ticket) => {
+                                        const ticketTypeName = ticket.ticketTypeName;
+                                        if (ticketCounts[ticketTypeName]) {
+                                            ticketCounts[ticketTypeName] += 1;
+                                        } else {
+                                            ticketCounts[ticketTypeName] = 1;
                                         }
                                     });
                                 }
@@ -168,9 +161,8 @@ const BookingManagerOrderTable = () => {
                             <td className="px-4 py-2 border-x-0">
                                 {Object.keys(ticketCounts).length > 0 ? (Object.keys(ticketCounts).map((ticketType, index) => (
                                     <div key={index}>
-                                        <span>{ticketCounts[ticketType]}</span>
-                                        <br/>
-                                        <span>{ticketType}</span>
+                                        <div>{ticketCounts[ticketType]}</div>
+                                        <div>{ticketType}</div>
                                     </div>))) : (<span>No booking details available</span>)}
                             </td>
                             <td className="px-4 py-2 border-x-0">
