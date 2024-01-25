@@ -1,6 +1,6 @@
 import UserHeader from "../component/header/UserHeader.jsx";
 import {useEffect} from "react";
-import {reLoginWithToken, selectUserLogin} from "../features/UserSlice.js";
+import {reLoginWithToken, selectUserLogin} from "../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 
 const UserLayout = ({children}) => {
@@ -9,7 +9,6 @@ const UserLayout = ({children}) => {
     useEffect(() => {
         if (localStorage.getItem("token") !== null) {
             dispatch(reLoginWithToken())
-            console.log("Hello")
         }
     }, []);
     return (

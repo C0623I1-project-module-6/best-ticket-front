@@ -5,7 +5,7 @@ import {Link, NavLink} from "react-router-dom";
 import TicketDetails from "./TicketDetails.jsx";
 import {useState} from "react";
 import {useSelector} from "react-redux";
-import {selectUserLogin} from "../../features/UserSlice.js";
+import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 function TicketHistory() {
     const [keyword, setKeyword] = useState("");

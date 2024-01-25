@@ -16,6 +16,7 @@ const EventDetail = () => {
     const eventId = useParams().id;
     const location = useLocation();
     const event = useSelector(selectEventById);
+    console.log(event)
     const ticketTypes = useSelector(selectShowTicketTypes);
     const times = useSelector(selectShowTimeByEventId)
     let isFirstRender = true;
@@ -39,14 +40,14 @@ const EventDetail = () => {
     return (
         <>
             <div className="w-full overflow-y-auto pb-52">
-                <img className="w-full h-96" src={event.data?.image} alt=""/>
+                <img className="w-full h-96" src={event !== null ? event.image : <div>Loading...</div>} alt=""/>
 
                 <div className="flex mx-60 gap-20">
                     <div className="w-4/6">
                         <div className=" flex mt-10">
                             <div className="w-4/6 flex">
                                 <div className="">
-                                    <div className="text-black text-xl">{event.data?.name}
+                                    <div className="text-black text-xl">{event !== null ? event.name : <div>Loading...</div>}
                                     </div>
                                     {times.data?.content.map((time, index) => {
                                         if (isFirstRender) {
@@ -172,7 +173,7 @@ const EventDetail = () => {
                         </div>
 
                         <div className="sticky top-0 w-[80%] bg-white">
-                            <p className="p-3 text-black text-xl">{event.name}</p>
+                            <p className="p-3 text-black text-xl">{event !== null ?  event.name : <div></div>}</p>
                             <hr/>
                             {times.data?.content.map((time, index) => {
                                 if (isFirstRender) {

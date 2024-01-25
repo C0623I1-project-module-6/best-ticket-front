@@ -2,7 +2,7 @@ import backgroundLight from "../assets/img/logo/logo-page-auth-light.png";
 import backgroundDark from "../assets/img/logo/logo-page-auth-dark.png";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {reLoginWithToken, selectIsLogin} from "../features/UserSlice.js";
+import {reLoginWithToken, selectIsLogin} from "../features/user/UserSlice.js";
 import {useNavigate} from "react-router-dom";
 
 const GuestLayout = ({children}) => {
