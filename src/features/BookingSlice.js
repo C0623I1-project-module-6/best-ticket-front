@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {findAllBookings, findAllBookingsByEventId, searchBookingByKeyword} from "../api/BookingApi.js";
-import {getPageEvents} from "./AdminSlice.js";
 
 const initialState = {
   bookings: null,
@@ -22,7 +21,6 @@ export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", as
 export const getAllBookingsByKeyword = createAsyncThunk("bookings/byEventId/byKeyword",
     async ({eventId, keyword},rejectWithValue) => {
   const response = await searchBookingByKeyword(eventId, keyword);
-      console.log(response)
   if (response.status !== 200){
     return rejectWithValue(response.data)
   }
@@ -37,8 +35,6 @@ const handlePending = (state) => {
   state.success = false;
   state.loading = false;
   state.bookings = action.payload;
-  console.log(action)
-
   state.error = action.error;
 }, handleFulfilled = (state, action) => {
   state.success = true;
@@ -46,7 +42,7 @@ const handlePending = (state) => {
   if (action.payload && action.payload.data) {
     state.bookings = action.payload.data;
     state.booking = action.payload;
-    state.totalPages = action.payload.totalPages;
+    state.totalPages = action.payload.data.totalPages;
   } else {
     state.bookings = [];
     state.booking = null;
@@ -75,6 +71,7 @@ export const BookingSlice = createSlice({
         state.success = true;
         state.loading = false;
         state.bookings = action.payload.data;
+        state.totalPages = action.payload.data.totalPages;
         state.error = false;
     })
   },

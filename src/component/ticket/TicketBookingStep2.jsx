@@ -2,57 +2,93 @@ import {CiBank, CiCreditCard1} from "react-icons/ci";
 import {FaPencil, FaUser} from "react-icons/fa6";
 import {MdEmail} from "react-icons/md";
 import {FaPhone} from "react-icons/fa";
-import {useSelector} from "react-redux";
-
-import {selectShowTicketByTimeId} from "../../features/TicketSlice.js";
-import {selectUserLogin} from "../../features/user/UserSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchGetUser, selectUserEdit, selectUserLogin} from "../../features/user/UserSlice.js";
+import {useEffect} from "react";
+import {useFormik} from "formik";
+import * as Yup from "yup"
 
 
 export const TicketBookingStep2 = () => {
+    const dispatch = useDispatch();
     const user = useSelector(selectUserLogin);
+    const userEdit = useSelector(selectUserEdit);
     const seatTickets = useSelector(state => state.seat)
-    const tickets = useSelector(selectShowTicketByTimeId);
-    const countVIP = seatTickets.ticketTypes.filter(seat => seat === 'VIP').length;
-    const countTHUONG = seatTickets.ticketTypes.filter(seat => seat === 'THƯỜNG').length;
-    const countLAU = seatTickets.ticketTypes.filter(seat => seat === 'LẦU').length;
 
-    console.log(tickets)
-    console.log(seatTickets.ticketTypes.length);
+    console.log(user)
+
+    useEffect(() => {
+        dispatch(fetchGetUser(user.id))
+    }, [])
+    console.log(userEdit)
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            phoneNumber: '',
+            email: '',
+            confirmEmail: ''
+        },
+        validationSchema: Yup.object({
+            name: Yup.string().required("Không được bỏ trống!"),
+            phoneNumber: Yup.number().min(10, "Số điện thoại có 10 số").required("Không được bỏ trống!"),
+            email: Yup.string().email('Invalid Email').required("Không được bỏ trống!"),
+            confirmEmail: Yup.string().oneOf([Yup.ref('email')], 'email không khớp với email đã nhập!').required("Không được bỏ trống!")
+        }),
+        onSubmit: (values) => {
+            console.log(values)
+        }
+    })
+
+
     return (
         <>
             <div className="mx-40 text-black py-5">
                 <div className="flex gap-10 items-center justify-center bg-neutral-400 py-5">
                     <div className="w-3/5 flex-col">
                         <p className="m-7">THÔNG TIN NGƯỜI NHẬN VÉ</p>
-                        <div className="flex mx-2">
-                            <div className="w-full mx-5">
-                                <label htmlFor="">Họ</label>
-                                <input type="text" className="w-full input bg-white"/>
+                        <form id='myForm' onSubmit={formik.handleSubmit}>
+                            <div className="flex mx-2">
+                                <div className="w-full mx-5">
+                                    <label htmlFor="">Họ Tên</label>
+                                    <input type="text" value={formik.values.fullName} name='name'
+                                           onChange={formik.handleChange}
+                                           className="w-full input bg-white"/>
+                                    {formik.errors.name && formik.touched.name && (
+                                        <p className='text-red-700'>{formik.errors.name}</p>
+                                    )}
+                                </div>
+                                <div className="w-full mx-3">
+                                    <label htmlFor="">Số điện thoại</label>
+                                    <input type="number" value={formik.values.phoneNumber} name='phoneNumber'
+                                           onChange={formik.handleChange}
+                                           className="w-full input bg-white"/>
+                                    {formik.errors.phoneNumber && formik.touched.phoneNumber && (
+                                        <p className='text-red-700'>{formik.errors.phoneNumber}</p>
+                                    )}
+                                </div>
                             </div>
-                            <div className="w-full mx-5">
-                                <label htmlFor="">Tên</label>
-                                <input type="text" className="w-full input bg-white"/>
+                            <div className="flex mx-2">
+                                <div className="w-full mx-5">
+                                    <label htmlFor="">Email</label>
+                                    <input type="email" value={formik.values.email} name='email'
+                                           onChange={formik.handleChange}
+                                           className="w-full input bg-white"/>
+                                    {formik.errors.email && formik.touched.email && (
+                                        <p className='text-red-700'>{formik.errors.email}</p>
+                                    )}
+                                </div>
+                                <div className="w-full mx-5">
+                                    <label htmlFor="">Nhập lại email</label>
+                                    <input type="email" value={formik.values.confirmEmail} name='confirmEmail'
+                                           onChange={formik.handleChange}
+                                           className="w-full input bg-white"/>
+                                    {formik.errors.confirmEmail && formik.touched.confirmEmail && (
+                                        <p className='text-red-700'>{formik.errors.confirmEmail}</p>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex mx-2">
-                            <div className="w-full mx-5">
-                                <label htmlFor="">Email</label>
-                                <input type="text" className="w-full input bg-white"/>
-                            </div>
-                            <div className="w-full mx-5">
-                                <label htmlFor="">Nhập lại email</label>
-                                <input type="text" className="w-full input bg-white"/>
-                            </div>
-                        </div>
-                        <div className="flex ml-4">
-                            <div className="w-full mx-3">
-                                <label htmlFor="">Số điện thoại</label>
-                                <input type="text" className="w-full input bg-white"/>
-                            </div>
-                            <div className="w-full mx-7">
-                                <input type="hidden" className="w-full input bg-white"/>
-                            </div>
-                        </div>
+                        </form>
                         <br/>
                         <hr/>
                         <div>
@@ -134,7 +170,7 @@ export const TicketBookingStep2 = () => {
                                                 <p>{" " + seatTickets.seats[index]}</p>
                                             </div>
                                             <div className="w-1/3 text-right">
-                                                <p>{countVIP}</p>
+                                                <p>1</p>
                                                 <p>{seatTickets.price[index]} VNĐ</p>
                                             </div>
                                         </>
@@ -148,7 +184,7 @@ export const TicketBookingStep2 = () => {
                                                 <p>{" " + seatTickets.seats[index]}</p>
                                             </div>
                                             <div className="w-1/3 text-right">
-                                                <p>{countTHUONG}</p>
+                                                <p>1</p>
                                                 <p>{seatTickets.price[index]} VNĐ</p>
                                             </div>
                                         </>
@@ -161,7 +197,7 @@ export const TicketBookingStep2 = () => {
                                                 <p>{" " + seatTickets.seats[index]}</p>
                                             </div>
                                             <div className="w-1/3 text-right">
-                                                <p>{countLAU}</p>
+                                                <p>1</p>
                                                 <p>{seatTickets.price[index]} VNĐ</p>
                                             </div>
                                         </>
@@ -178,7 +214,8 @@ export const TicketBookingStep2 = () => {
                         </div>
                         <p className="text-xs text-center italic py-4">Vui lòng kiểm tra kỹ đơn hàng trước khi hoàn
                             tất</p>
-                        <button className="bg-[#7CA629] py-3 px-2 w-full text-white " type="button">Tiếp tục
+                        <button className="bg-[#7CA629] py-3 px-2 w-full text-white" form='myForm' type="submit">Tiếp
+                            tục
                         </button>
                     </div>
                 </div>

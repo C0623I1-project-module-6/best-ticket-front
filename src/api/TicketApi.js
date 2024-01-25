@@ -22,7 +22,6 @@ export const showAllTicketFinished = async (data) => {
             `${BEST_TICKET_API}tickets/show-ticket/finished/${data.customerId}?status=${data.status}`, {
                 headers: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsYW1taW5nIiwiaWF0IjoxNzA0ODQwOTU2LCJleHAiOjE3MDQ5MjczNTZ9.rpShZKirF5XuTOtUTYi1_607DlK189EHwTuA-ndGzfHGgrksoq2Mw87tbYuwDg8qgsDI0WiD9dQ-D2OChTUxXw"
             });
-        console.log(result)
     } catch (error) {
         console.log("Find tickets API error: " + error);
     }
@@ -47,7 +46,6 @@ export const showTicketById = async (id) => {
             `${BEST_TICKET_API}tickets/${id}`, {
                 headers: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsYW1taW5nIiwiaWF0IjoxNzA0ODQwOTU2LCJleHAiOjE3MDQ5MjczNTZ9.rpShZKirF5XuTOtUTYi1_607DlK189EHwTuA-ndGzfHGgrksoq2Mw87tbYuwDg8qgsDI0WiD9dQ-D2OChTUxXw"
             });
-        console.log(result)
     } catch (error) {
         console.log("Find tickets API error: " + error);
     }
@@ -95,6 +93,5 @@ export async function updateStatus(selectedSeats) {
     }).catch((e) => {
         response = e;
     })
-    console.log(response);
     return response;
 }

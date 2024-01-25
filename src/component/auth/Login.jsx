@@ -37,7 +37,8 @@ function Login() {
         if (loginSuccess && user && user.token) {
             toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             dispatch(getOrganizerByUserId(user.id));
-            navigate("/");
+            history.back();
+            // navigate("/");
         }
     }, [user]);
     useEffect(() => {

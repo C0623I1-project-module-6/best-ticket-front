@@ -9,6 +9,7 @@ import logoVie from "../../assets/img/logo/Flag_of_Vietnam.svg"
 import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
+
 import {logoutUser, selectUserLogin, selectUserLogout, selectUserRole} from "../../features/user/UserSlice.js";
 import avatar from "../../assets/img/User.png"
 import {ADMIN} from "../../ultility/AppConstant.js";
@@ -218,7 +219,15 @@ const UserHeader = () => {
                         </span>
                     </div>
                     <div className="cursor-pointer flex items-center gap-3 hover:text-amber-400"
-                         onClick={() => navigate(`/my-ticket/${user.id}`)}>
+                         onClick={() => {
+                             if (user !== null) {
+                                 navigate(`/my-ticket/${user.id}`);
+                             } else {
+                                 navigate("/login");
+                             }
+                         }
+                         }
+                    >
                         <FaTicket size={30}/>
                         <span>My ticket</span>
                     </div>
@@ -231,6 +240,7 @@ const UserHeader = () => {
                 </div>
             </div>
         </>
-    );
+    )
+        ;
 };
 export default UserHeader;
