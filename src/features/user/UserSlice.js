@@ -196,7 +196,11 @@ export const userSlice = createSlice(
                     state.loading = false;
                     state.logoutSuccess = false;
                     state.value = action.payload.data;
+                    state.listRole = action.payload.data.listRole;
+                    localStorage.setItem("token", action.payload.data.token);
+                    state.logoutSuccess = false;
                     state.loginError = false;
+                    state.isLogin = true;
                 })
                 .addCase(logoutUser.pending, (state) => {
                     state.logoutSuccess = false;
