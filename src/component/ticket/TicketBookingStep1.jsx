@@ -12,7 +12,8 @@ export const TicketBookingStep1 = (props) => {
     const [dataSeat, setDataSeat] = useState([]);
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
-    console.log(dataSeat)
+    console.log(dataSeat);
+
     const showTicketType = () => {
         dispatch(getTicketTypes())
     }

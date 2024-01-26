@@ -30,6 +30,8 @@ import EventDetail from "../component/event/EventDetail.jsx";
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import OrganizerProfile from "../component/user/OrganizerProfile.jsx";
 import CreatedEvent from "../component/user/CreatedEvent.jsx";
+import Mail from "../layout/pages/mail/Mail.jsx";
+
 
 
 export const ROUT_DATA = [
@@ -100,6 +102,6 @@ export const ROUT_DATA = [
         element: BookingManagerModeratorList,
         layout: OrganizerBookingManagerLayout
     },
-
+    {path: "/mail" , element: Mail}
 
 ];

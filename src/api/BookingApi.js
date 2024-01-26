@@ -33,3 +33,31 @@ export const searchBookingByKeyword = async (eventId, keyword) => {
 
     return result;
 };
+
+export const findBookingsByTimeId = async (timeId) => {
+    let result = null;
+    try {
+        result = await axios.get(`${BEST_TICKET_API}bookings/event/time/${timeId}`);
+    } catch (e) {
+        console.log("Find bookings API error: " + e);
+    }
+    return result;
+};
+
+export async function createBooking(bookings) {
+    let response = null;
+    await axios({
+        url: `${BEST_TICKET_API}bookings/create`,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        data: bookings,
+
+    }).then((res) => {
+        response = res
+    }).catch((e) => {
+        response = e;
+    })
+    return response;
+}

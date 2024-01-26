@@ -23,8 +23,6 @@ const EventDetail = () => {
     const user = useSelector(selectUserLogin);
     let isFirstRender = true;
 
-
-
     const showEventById = () => {
         dispatch(getEventById(eventId));
     }

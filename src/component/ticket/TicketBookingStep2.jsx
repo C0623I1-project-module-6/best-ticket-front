@@ -9,22 +9,33 @@ import {useFormik} from "formik";
 import * as Yup from "yup"
 import {Modal} from 'antd';
 import {updateStatusFail} from "../../api/TicketApi.js";
+import {setValues} from "../../features/UserFormInTicketBookingSlice.js";
 
 
-export const TicketBookingStep2 = () => {
+export const TicketBookingStep2 = (props) => {
     const dispatch = useDispatch();
     const user = useSelector(selectUserLogin);
     const userEdit = useSelector(selectUserEdit);
     const seatTickets = useSelector(state => state.seat)
-    console.log(seatTickets.seats)
+    console.log(userEdit)
     const [open, setOpen] = useState(true);
+    const [selectedOption, setSelectedOption] = useState('');
 
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
 
-    const [timeLeft, setTimeLeft] = useState(6);
+    const [timeLeft, setTimeLeft] = useState(600);
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setTimeLeft(prevTime => prevTime - 1);
+            setTimeLeft(prevTime => {
+                if (prevTime <= 0) {
+                    clearInterval(timer);
+                    return prevTime;
+                }
+                return prevTime - 1;
+            });
         }, 1000);
 
         return () => {
@@ -39,11 +50,7 @@ export const TicketBookingStep2 = () => {
         try {
             const response = await updateStatusFail(seatTickets.seats);
             history.back();
-            // dispatch(setSeats(dataSeat));
-            // dispatch(setTotalPrice(dataTotalPrice));
-            // dispatch(setTicketType(dataNameTicketType));
-            // dispatch(setPrice(dataPriceOneTicket))
-            // props.callbackData(1);
+
             return response;
         } catch (error) {
             console.error('Error:', error);
@@ -61,7 +68,8 @@ export const TicketBookingStep2 = () => {
             name: '',
             phoneNumber: '',
             email: '',
-            confirmEmail: ''
+            confirmEmail: '',
+            paymentMethod: ''
         },
         validationSchema: Yup.object({
             name: Yup.string().required("Không được bỏ trống!"),
@@ -70,7 +78,8 @@ export const TicketBookingStep2 = () => {
             confirmEmail: Yup.string().oneOf([Yup.ref('email')], 'email không khớp với email đã nhập!').required("Không được bỏ trống!")
         }),
         onSubmit: (values) => {
-            console.log(values)
+            dispatch(setValues(values))
+            props.callbackData(2);
         }
     })
 
@@ -81,20 +90,25 @@ export const TicketBookingStep2 = () => {
                 <div className="flex gap-10 items-center justify-center bg-neutral-400 py-5">
                     <div className="w-3/5 flex-col">
                         {timeLeft > 0 ? (
-                                <div className="text-center">
-                                    <p>Vui lòng hoàn tất đặt vé trong</p>
-                                    <p>{minutes} : {seconds} </p>
+                                <div className="text-center  w-full flex justify-center py-4">
+                                    <div className="w-1/2 ">
+                                        <p className="text-xl">Vui lòng hoàn tất đặt vé trong</p>
+                                        <p className="my-3 text-xl"><span className='bg-white p-4'>{minutes}</span> : <span
+                                            className='bg-white p-4'>{seconds}</span></p>
+                                    </div>
+
                                 </div>
                             )
                             :
                             (<div>
                                 <Modal
                                     open={open}
+                                    closable={false}
                                     footer={null}
                                 >
                                     <div className='text-center'>
-                                        <p>Hết thời gian thanh toán vui lòng đặt vé mới</p>
-                                        <button className="py-3 px-5 bg-green-700 text-white my-3"
+                                        <p className="text-xl">Hết thời gian thanh toán vui lòng đặt vé mới</p>
+                                        <button className="py-3 px-5 bg-green-700 text-white my-3 text-xl"
                                                 onClick={handleClick}>Đặt vé mới
                                         </button>
                                     </div>
@@ -144,28 +158,44 @@ export const TicketBookingStep2 = () => {
                                     )}
                                 </div>
                             </div>
-                        </form>
-                        <br/>
-                        <hr/>
-                        <div>
-                            <p className="py-4 m-4">HÌNH THỨC THANH TOÁN</p>
-                            <div className="flex gap-2 mx-2">
-                                <div className="w-full flex pb-4">
-                                    <input className="mx-2 bg-white" type="radio"/>
-                                    <div className="flex bg-white p-2 w-full">
-                                        <div className="my-auto text-xl mr-2"><CiCreditCard1/></div>
-                                        <div>Thẻ tín dụng</div>
+                            <div>
+                                <p className="py-4 m-4">HÌNH THỨC THANH TOÁN</p>
+                                <div className="flex gap-2 mx-2">
+                                    <div className="w-full flex pb-4">
+                                        <input
+                                            type="radio"
+                                            id="creditCard"
+                                            name="paymentMethod"
+                                            value="Thẻ tín dụng"
+                                            checked={formik.values.paymentMethod === 'Thẻ tín dụng'}
+                                            onChange={formik.handleChange}
+                                            className="mx-2 bg-white"
+                                        />
+                                        <div className="flex bg-white p-2 w-full">
+                                            <div className="my-auto text-xl mr-2"><CiCreditCard1/></div>
+                                            <div>Thẻ tín dụng</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="w-full flex pb-4">
-                                    <input className="mx-2 bg-white" type="radio"/>
-                                    <div className="flex bg-white p-2 w-full">
-                                        <div className="my-auto text-xl mr-2"><CiBank/></div>
-                                        <div>Sử dụng Internet Banking</div>
+                                    <div className="w-full flex pb-4">
+                                        <input
+                                            type="radio"
+                                            id="internetBanking"
+                                            name="paymentMethod"
+                                            value="Thanh toán qua ngân hàng"
+                                            checked={formik.values.paymentMethod === 'internetBanking'}
+                                            onChange={formik.handleChange}
+                                            className="mx-2 bg-white"
+                                        />
+                                        <div className="flex bg-white p-2 w-full">
+                                            <div className="my-auto text-xl mr-2"><CiBank/></div>
+                                            <div>Sử dụng Internet Banking</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                        </form>
+                        <hr/>
                     </div>
                     <div className="w-2/5 mx-5">
                         <div className="bg-white px-5">
@@ -200,11 +230,20 @@ export const TicketBookingStep2 = () => {
 
                             <div className="font-bold">HÌNH THỨC THANH TOÁN</div>
                             <hr className="border-2 border-solid"/>
-                            <div>Chờ</div>
+                            {selectedOption === 'creditCard' && (
+                                <div className="py-2 border-b border-dashed border-gray-500">
+                                    Thẻ Tín dụng
+                                </div>
+                            )}
+                            {selectedOption === 'internetBanking' && (
+                                <div className="py-2 border-b border-dashed border-gray-500">
+                                    Sử dụng Internet Banking
+                                </div>
+                            )}
 
                             <div className="flex justify-between">
-                                <div className="font-bold">THÔNG TIN ĐẶT VÉ</div>
-                                <div className="flex ">
+                                <div className="font-bold py-3">THÔNG TIN ĐẶT VÉ</div>
+                                <div className="flex items-center">
                                     <span><FaPencil/></span>
                                     <span>Sửa</span>
                                 </div>
