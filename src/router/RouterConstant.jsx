@@ -30,6 +30,8 @@ import EventDetail from "../component/event/EventDetail.jsx";
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import OrganizerProfile from "../component/user/OrganizerProfile.jsx";
 import CreatedEvent from "../component/user/CreatedEvent.jsx";
+import BookingManagerPromotion from "../component/booking/BookingManagerPromotion.jsx";
+import TestFireBase from "../component/booking/TestFireBase.jsx";
 
 
 export const ROUT_DATA = [
@@ -72,34 +74,17 @@ export const ROUT_DATA = [
     },
 
 
-    {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/RSVPs/bookings",
-        element: BookingManagerEventBookings,
-        layout: OrganizerBookingManagerLayout
-    },
-    {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
-    {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/moderators",
-        element: BookingManagerModeratorList,
-        layout: OrganizerBookingManagerLayout
-    },
-
-
     // {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
     {
         path: "/my-event/event/:eventId/RSVPs/bookings",
         element: BookingManagerEventBookings,
         layout: OrganizerBookingManagerLayout
     },
-    // {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/promote", element: BookingManagerPromotion, layout: OrganizerBookingManagerLayout},
     // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
     {
         path: "/my-event/event/:eventId/moderators",
         element: BookingManagerModeratorList,
         layout: OrganizerBookingManagerLayout
     },
-
-
 ];
