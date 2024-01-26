@@ -12,6 +12,7 @@ import TicketTypeSlice from "../features/TicketTypeSlice.js";
 import TimeSlice from "../features/TimeSlice.js";
 import SeatSlice from "../features/SeatSlice.js";
 import UserFormInTicketBookingSlice from "../features/UserFormInTicketBookingSlice.js";
+import FileSlice from "../features/FileSlice.js";
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -31,6 +32,7 @@ export const store = configureStore(
                 existsUsers: ExistsUserSlice,
                 seat: SeatSlice,
                 userForm: UserFormInTicketBookingSlice,
+                file: FileSlice
             },
 
         },

@@ -32,61 +32,50 @@ const BookingManagerTicketTable = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {bookings === null || bookings === "" || bookings === undefined ? (
-                    <tr>
+                {bookings === null || bookings === "" || bookings === undefined ? (<tr>
                         <td colSpan="8">No booking available for this event</td>
-                    </tr>
-                ) : (
-                    bookings.content.map((booking, index) => {
+                    </tr>) : (bookings.content.map((booking, index) => {
                         const detailRows = [];
-                        if (
-                            booking.bookingDetailResponseList &&
-                            booking.bookingDetailResponseList.length > 0
-                        ) {
+                        if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
                             booking.bookingDetailResponseList.forEach((detail) => {
-                                if (
-                                    booking.id === detail.bookingId &&
-                                    detail.ticketInBookingDetailResponses &&
-                                    detail.ticketInBookingDetailResponses.length > 0
-                                ) {
+                                if (booking.id === detail.bookingId && detail.ticketInBookingDetailResponses && detail.ticketInBookingDetailResponses.length > 0) {
                                     detail.ticketInBookingDetailResponses.forEach((ticket, ticketIndex) => {
-                                        detailRows.push(
-                                            <tr key={ticket.id}>
-                                                {ticketIndex === 0 && (
-                                                    <>
-                                                        <td className="border border-black" rowSpan={detail.ticketInBookingDetailResponses.length}>
-                                                            {index + 1}
-                                                        </td>
-                                                        <td className="border border-black" rowSpan={detail.ticketInBookingDetailResponses.length}>
-                                                            {booking.customer.fullName}
-                                                        </td>
-                                                        <td className="border border-black" rowSpan={detail.ticketInBookingDetailResponses.length}>
-                                                            {booking.userEmail}
-                                                        </td>
-                                                        <td className="border border-black" rowSpan={detail.ticketInBookingDetailResponses.length}>
-                                                            {booking.customer.phoneNumber}
-                                                        </td>
-                                                        <td className="border border-black" rowSpan={detail.ticketInBookingDetailResponses.length}>
-                                                            N/A
-                                                        </td>
-                                                    </>
-                                                )}
-                                                <td className="border border-black">{ticket.ticketTypeName}</td>
-                                                <td className="border border-black">{ticket.ticketTypePrice}</td>
-                                                {ticketIndex === 0 && (
-                                                    <td className="border border-black" rowSpan={detail.ticketInBookingDetailResponses.length}>
-                                                        {formatCurrency(booking.totalAmount)}
+                                        detailRows.push(<tr key={ticket.id}>
+                                            {ticketIndex === 0 && (<>
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        {index + 1}
                                                     </td>
-                                                )}
-                                            </tr>
-                                        );
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        {booking.customer.fullName}
+                                                    </td>
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        {booking.userEmail}
+                                                    </td>
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        {booking.customer.phoneNumber}
+                                                    </td>
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        N/A
+                                                    </td>
+                                                </>)}
+                                            <td className="border border-black">{ticket.ticketTypeName}</td>
+                                            <td className="border border-black">{ticket.ticketTypePrice}</td>
+                                            {ticketIndex === 0 && (<td className="border border-black"
+                                                                       rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                    {formatCurrency(booking.totalAmount)}
+                                                </td>)}
+                                        </tr>);
                                     });
                                 }
                             });
                         }
                         return detailRows;
-                    })
-                )}
+                    }))}
                 </tbody>
             </table>
         </div>

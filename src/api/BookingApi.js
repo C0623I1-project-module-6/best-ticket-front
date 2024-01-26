@@ -5,7 +5,6 @@ export const findAllBookings = async () => {
     let result = null;
     try {
         result = await axios.get(`${BEST_TICKET_API}bookings`);
-        // console.log(`${BEST_TICKET_API}bookings`);
     } catch (e) {
         console.log("Find bookings API error: " + e);
     }
@@ -24,11 +23,11 @@ export const findAllBookingsByEventId = async (eventId) => {
 
 export const searchBookingByKeyword = async (eventId, keyword) => {
     let result = null;
-        await axios.get(`${BEST_TICKET_API}bookings/event/${eventId}/search?keyword=${keyword}`).then((res) => {
-            result = res
-        }).catch(e => {
-            console.log(e)
-        });
+    await axios.get(`${BEST_TICKET_API}bookings/event/${eventId}/search?keyword=${keyword}`).then((res) => {
+        result = res
+    }).catch(e => {
+        console.log(e)
+    });
 
     return result;
 };
@@ -60,3 +59,4 @@ export async function createBooking(bookings) {
     })
     return response;
 }
+
