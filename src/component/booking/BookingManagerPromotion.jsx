@@ -35,13 +35,14 @@ const BookingManagerPromotion = () => {
                     </a>
                 </div>
                 <div>
-                    <button className='border bg-[#5075AF] text-center py-2 px-20 text-white'>
+                    <button className='border rounded bg-[#5075AF] text-center py-3 px-[20%] text-xl text-white'>
                         <FacebookShareButton
                             url={`http://bestticket.com/${eventId}`}
                             hashtag={"#c06bestticket"}
-                            className="flex"
+                            className="flex w-[100%]"
                         >
-                            <FacebookIcon size={22}/> Chia sẻ lên Facebook
+                            <FacebookIcon size={30} round/>
+                            <span className="ml-2">Chia sẻ lên Facebook</span>
                         </FacebookShareButton>
                     </button>
                 </div>
