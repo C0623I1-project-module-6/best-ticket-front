@@ -47,35 +47,31 @@ export const createBookingForTicket = createAsyncThunk(
             const response = await createBooking(bookings);
             console.log(response.data);
             return response.data;
+        });
+
+    const handlePending = (state) => {
+        state.success = false;
+        state.loading = true;
+        state.error = false;
+    }, handleRejected = (state, action) => {
+        state.success = false;
+        state.loading = false;
+        state.bookings = action.payload;
+        state.error = action.error;
+    }, handleFulfilled = (state, action) => {
+        state.success = true;
+        state.loading = false;
+        if (action.payload && action.payload.data) {
+            state.bookings = action.payload.data;
+            state.booking = action.payload;
+            state.totalPages = action.payload.data.totalPages;
+        } else {
+            state.bookings = [];
+            state.booking = null;
+            state.totalPages = null;
         }
-    )
-;
-
-const handlePending = (state) => {
-    state.success = false;
-    state.loading = true;
-    state.error = false;
-}, handleRejected = (state, action) => {
-    state.success = false;
-    state.loading = false;
-    state.bookings = action.payload;
-    console.log(action)
-
-    state.error = action.error;
-}, handleFulfilled = (state, action) => {
-    state.success = true;
-    state.loading = false;
-    if (action.payload && action.payload.data) {
-        state.bookings = action.payload.data;
-        state.booking = action.payload;
-        state.totalPages = action.payload.totalPages;
-    } else {
-        state.bookings = [];
-        state.booking = null;
-        state.totalPages = null;
-    }
-    state.error = false;
-};
+        state.error = false;
+    };
 
 export const BookingSlice = createSlice({
     name: "Booking",
@@ -117,6 +113,16 @@ export const BookingSlice = createSlice({
                 state.error = false;
                 state.bookingCreate = action.payload;
             })
+
+            .addCase(getAllBookingsByKeyword.pending, handlePending)
+            .addCase(getAllBookingsByKeyword.rejected, handleRejected)
+            .addCase(getAllBookingsByKeyword.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.bookings = action.payload.data;
+                state.totalPages = action.payload.data.totalPages;
+                state.error = false;
+            })
     },
 });
 
@@ -124,4 +130,5 @@ export const selectAllBookingsByEventId = (state) => state.booking.bookings;
 export const selectBookingsByTimeId = (state) => state.booking.bookingForTime;
 export const selectBookingCreate = (state) => state.booking.bookingCreate;
 export const selectAllBookingsByKeyword = (state) => state.booking.bookings;
+
 export default BookingSlice.reducer;

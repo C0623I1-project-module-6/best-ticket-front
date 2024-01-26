@@ -68,6 +68,7 @@ export async function loginGoogle(user) {
     data: user
   }).then((res) => {
     response = res;
+    console.log(response)
   }).catch((e) => {
     response = e;
   })

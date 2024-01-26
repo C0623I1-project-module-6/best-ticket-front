@@ -25,7 +25,6 @@ export const findAllBookingsByEventId = async (eventId) => {
 export const searchBookingByKeyword = async (eventId, keyword) => {
     let result = null;
         await axios.get(`${BEST_TICKET_API}bookings/event/${eventId}/search?keyword=${keyword}`).then((res) => {
-            console.log(res)
             result = res
         }).catch(e => {
             console.log(e)

@@ -49,12 +49,22 @@ export const createEvent = async (eventRequest) => {
   return result;
 }
 
-export const findEventsByProvince = async (searchTerm,province, currentPage) => {
+export const findEventByOrganizerId= async (organizerId,page)=>{
   let result = null;
-  try {
-    result = await axios.get(`${BEST_TICKET_API}api/events/location?searchTerm=${searchTerm}&province=${province}&page=${currentPage}&pageSize=20`);
+  let token = localStorage.getItem("token");
+  try{
+    result=await axios({
+      url : `${BEST_TICKET_API}events/organizer/${organizerId}?page=${page}&pageSize=10`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      method: "GET",
+    })
   } catch (e) {
-    console.log("Find events API error: " + e);
+    console.log("Create event API error: " + e);
   }
   return result;
-};
+}
+
+
