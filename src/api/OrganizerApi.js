@@ -42,7 +42,7 @@ export async function findByUserId({userId}) {
   let response = null;
   let token = localStorage.getItem("token");
   await axios({
-    url: `${BEST_TICKET_API}organizers/${userId}`,
+    url: `${BEST_TICKET_API}users/organizer/${userId}`,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,

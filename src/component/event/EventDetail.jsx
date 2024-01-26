@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {getEventById, selectEventById} from "../../features/EventSlice.js";
-import {NavLink, useLocation, useParams} from "react-router-dom";
-import {useEffect} from "react";
+import {NavLink, useLocation, useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {FaClock, FaHeart} from "react-icons/fa";
 import {FaFacebook, FaLocationDot} from "react-icons/fa6";
 import img from '../../assets/img/image/event.png'
@@ -10,16 +10,33 @@ import {IoIosArrowForward, IoMdMail} from "react-icons/io";
 import {IoTicket} from "react-icons/io5";
 import {getTicketTypes, selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
 import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
+import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 const EventDetail = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const eventId = useParams().id;
     const location = useLocation();
     const event = useSelector(selectEventById);
-    console.log(event)
     const ticketTypes = useSelector(selectShowTicketTypes);
     const times = useSelector(selectShowTimeByEventId)
+    const user = useSelector(selectUserLogin);
     let isFirstRender = true;
+
+    const [timeLeft, setTimeLeft] = useState(600); // 600 giây = 10 phút
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft(prevTime => prevTime - 1);
+        }, 1000);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
 
     const showEventById = () => {
         dispatch(getEventById(eventId));
@@ -40,6 +57,9 @@ const EventDetail = () => {
     return (
         <>
             <div className="w-full overflow-y-auto pb-52">
+                <div>
+                    Thời gian còn lại: {minutes} phút {seconds} giây
+                </div>
                 <img className="w-full h-96" src={event !== null ? event.image : <div>Loading...</div>} alt=""/>
 
                 <div className="flex mx-60 gap-20">
@@ -47,7 +67,8 @@ const EventDetail = () => {
                         <div className=" flex mt-10">
                             <div className="w-4/6 flex">
                                 <div className="">
-                                    <div className="text-black text-xl">{event !== null ? event.name : <div>Loading...</div>}
+                                    <div className="text-black text-xl">{event !== null ? event.name :
+                                        <div>Loading...</div>}
                                     </div>
                                     {times.data?.content.map((time, index) => {
                                         if (isFirstRender) {
@@ -91,18 +112,21 @@ const EventDetail = () => {
                             </div>
                             {times.data?.content.map((time, index) => (
 
-                                <div className="flex w-full border-dashed border-b border-black py-3 px-4">
+                                <div className="flex w-full border-dashed border-b border-black py-3 px-4" key={index}>
 
-                                    <div className="w-5/6" key={index}>
+                                    <div className="w-5/6">
 
                                         <p className="text-black">{time.time}</p>
-                                        {/*<p>03:00 PM - 06:00 PM</p>*/}
                                     </div>
-                                    <div className="w-1/6 flex text-right justify-end items-center" key={index}>
+                                    <div className="w-1/6 flex text-right justify-end items-center" key={index}
+                                         onClick={() => {
+                                             if (user === null) {
+                                                 navigate("/login")
+                                             }
+                                         }}>
                                         <NavLink to={`${location.pathname}/ticket-booking/${time.id}`}
                                                  className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua
-                                            vé
-                                            ngay
+                                            vé ngay
                                         </NavLink>
                                     </div>
                                 </div>
@@ -173,7 +197,7 @@ const EventDetail = () => {
                         </div>
 
                         <div className="sticky top-0 w-[80%] bg-white">
-                            <p className="p-3 text-black text-xl">{event !== null ?  event.name : <div></div>}</p>
+                            <p className="p-3 text-black text-xl">{event !== null ? event.name : <div></div>}</p>
                             <hr/>
                             {times.data?.content.map((time, index) => {
                                 if (isFirstRender) {

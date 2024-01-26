@@ -10,8 +10,8 @@ import {selectUserLogin} from "../../features/user/UserSlice.js";
 function TicketHistory() {
     const [keyword, setKeyword] = useState("");
     const [activeButton, setActiveButton] = useState("");
-    const user = useSelector(selectUserLogin)
-    console.log(user)
+    const user = useSelector(selectUserLogin);
+
     const sendKeyword = (data) => {
         setActiveButton(data);
         setKeyword(data)
