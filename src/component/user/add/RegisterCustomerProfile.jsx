@@ -1,19 +1,34 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
 import {Bounce, toast} from "react-toastify";
 import {registerCustomerProfile, selectRegisterCustomerSuccess} from "../../../features/user/CustomerSlice.js";
 import Avatar from "../Avatar.jsx";
 import {FastField, Form, Formik} from "formik";
 import {button, input} from "@material-tailwind/react";
 import InputField from "../../../ultility/customField/InputField.jsx";
-import InputFieldDate from "../../../ultility/customField/InputFieldDate.jsx";
+import * as Yup from "yup";
+import {selectExistsUsers} from "../../../features/user/ExistsUserSlice.js";
+import {useEffect} from "react";
 
-
-function AddCustomerProfile(props) {
+function RegisterCustomerProfile(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const success = useSelector(selectRegisterCustomerSuccess);
+    const userExistsList = useSelector(selectExistsUsers);
+    console.log(userExistsList);
+    const phoneRegex = /^0\d{9}$/;
+    const phoneNumbers = userExistsList
+        .filter(customer => customer.customerPhoneNumber)
+        .map(customer => customer.customerPhoneNumber);
+    console.log(phoneNumbers)
+    const idCards = userExistsList
+        .filter(customer => customer.customerIdCard)
+        .map(customer => customer.customerIdCard);
+    console.log(idCards)
+    const receiptEmails = userExistsList
+        .filter(customer => customer.customerReceiptEmail)
+        .map(customer => customer.customerReceiptEmail);
+    console.log(receiptEmails)
     const toastOptions = {
         position: "top-right",
         autoClose: 2000,
@@ -25,19 +40,48 @@ function AddCustomerProfile(props) {
         theme: "light",
         transition: Bounce,
     };
-    const handleSubmit = async values => {
-        await dispatch(registerCustomerProfile(values));
-        toast.success("🦄 Đăng ký thông tin thành công!");
-        navigate("/");
+    useEffect(() => {
+        if (success){
+            toast.success("🦄 Đăng ký thông tin thành công!",toastOptions);
+            navigate("/profile");
+        }
+    }, [success]);
 
-    }
-    c
+
+    const validationSchema = Yup.object().shape({
+        fullName: Yup.string().required("This field is required."),
+
+        phoneNumber: Yup.string()
+            .test("unique", "Phone number already exists.", value => {
+                return !phoneNumbers.includes(value);
+            })
+            .matches(phoneRegex,"Invalid phone number! Start from 0 and has 10 numbers.")
+            .required("This field is required."),
+
+        idCard: Yup.string()
+            .test("unique", "Id card already exists.", value => {
+                return !idCards.includes(value);
+            })
+            .required("This field is required."),
+
+        receiptEmail: Yup.string()
+            .test("unique", "Email already exists.", value => {
+                return !receiptEmails.includes(value);
+            })
+            .email("Invalid email! Please add @.")
+            .required("This field is required."),
+
+        dateOfBirth: Yup.date().required("This field is required."),
+
+        gender: Yup.string().required("This field is required."),
+
+    })
 
     const initialValues = {
         fullName: "",
         phoneNumber: "",
         idCard: "",
-        email: "",
+        receiptEmail: "",
         dateOfBirth: "",
         gender: "",
 
@@ -45,7 +89,10 @@ function AddCustomerProfile(props) {
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+            onSubmit={values => {
+                dispatch(registerCustomerProfile(values))
+            }}
         >
             {formikProps => {
                 const {values, errors, touched} = formikProps;
@@ -63,7 +110,6 @@ function AddCustomerProfile(props) {
                                         <div className="grid grid-cols-2 gap-4 mt-4">
                                             <div>
                                                 <FastField
-                                                    type="text"
                                                     name="fullName"
                                                     component={InputField}
                                                     onChange={formikProps.handleChange}
@@ -73,7 +119,6 @@ function AddCustomerProfile(props) {
                                             </div>
                                             <div>
                                                 <FastField
-                                                    type="number"
                                                     name="phoneNumber"
                                                     component={InputField}
                                                     onChange={formikProps.handleChange}
@@ -83,7 +128,6 @@ function AddCustomerProfile(props) {
                                             </div>
                                             <div>
                                                 <FastField
-                                                    type="text"
                                                     name="idCard"
                                                     component={InputField}
                                                     onChange={formikProps.handleChange}
@@ -94,10 +138,10 @@ function AddCustomerProfile(props) {
                                             <div>
                                                 <FastField
                                                     type="email"
-                                                    name="email"
+                                                    name="receiptEmail"
                                                     component={InputField}
                                                     onChange={formikProps.handleChange}
-                                                    label="Email"
+                                                    label="Email nhận vé"
                                                     placeholder="bestticket@gmail.com"
                                                 />
                                                 <p className="mt-2"><a className="text-green-700" href="#">
@@ -108,10 +152,12 @@ function AddCustomerProfile(props) {
                                                 <FastField
                                                     type="date"
                                                     name="dateOfBirth"
-                                                    component={InputFieldDate}
+                                                    component={InputField}
                                                     onChange={formikProps.handleChange}
                                                     label="Ngày sinh"
-                                                />
+                                                    className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
+                                                    ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
+                                                    focus:ring-indigo-60 sm:text-1xl sm:font-serif sm:leading-6"/>
                                             </div>
                                             <div>
                                                 <label htmlFor="gender"
@@ -162,4 +208,4 @@ function AddCustomerProfile(props) {
     );
 }
 
-export default AddCustomerProfile;
+export default RegisterCustomerProfile;

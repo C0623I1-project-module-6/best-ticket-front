@@ -32,7 +32,24 @@ export default function RegisterOrganizerProfile() {
             theme: "light",
             transition: Bounce,
         }
+    const initialValues = {
+        name: "",
+        email: "",
+        phoneNumber: "",
+        idCard: "",
+        taxCode: "",
+        dateRangeTaxCode: "",
+        issuedByTaxCode: "",
 
+        businessCode: "",
+        companyName: "",
+        companyEmail: "",
+        companyPhone: "",
+        dateRange: "",
+        issuedBy: "",
+
+
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch(registerOrganizerProfile(organizer));
@@ -40,7 +57,7 @@ export default function RegisterOrganizerProfile() {
 
     }
     useEffect(() => {
-        if (success){
+        if (success) {
             toast.success("🦄 Đăng ký thông tin thành công!")
         }
     }, [success]);

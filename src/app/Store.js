@@ -7,7 +7,7 @@ import BookingSlice from "../features/BookingSlice.js";
 import BookingDetailSlice from "../features/BookingDetailSlice.js";
 import CustomerSlice from "../features/user/CustomerSlice.js";
 import OrganizerSlice from "../features/user/OrganizerSlice.js";
-import ExistsUserSlice from "../features/ExistsUserSlice.js"
+import ExistsUserSlice from "../features/user/ExistsUserSlice.js"
 import TicketTypeSlice from "../features/TicketTypeSlice.js";
 import TimeSlice from "../features/TimeSlice.js";
 import SeatSlice from "../features/SeatSlice.js";

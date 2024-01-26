@@ -15,6 +15,7 @@ import avatar from "../../assets/img/User.png"
 import {ADMIN} from "../../ultility/AppConstant.js";
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
+import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
 
 
 const UserHeader = () => {
@@ -28,6 +29,7 @@ const UserHeader = () => {
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
+    const userExists = useSelector(selectExistsUsers)
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -56,6 +58,15 @@ const UserHeader = () => {
         }
     }, [userRole]);
 
+    useEffect(() => {
+        if (userExists !== null) {
+            navigate("/profile")
+        }
+    }, [userExists]);
+    const getUserExists = () => {
+        dispatch(getExistsUsers());
+    }
+
     const loginButton = () => {
         return (
             !user ?
@@ -81,7 +92,7 @@ const UserHeader = () => {
                                     className="font-bold text-xl">{user.fullName !== null ? user.fullName : user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
-                                      cursor-pointer" onClick={() => navigate("/profile")}>
+                                      cursor-pointer" onClick={getUserExists}>
                                 <div className="w-[20px]">
                                     <FaCog/>
                                 </div>
