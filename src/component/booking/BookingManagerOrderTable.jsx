@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventId,
-    getAllBookingsByKeyword,
-    selectAllBookingsByEventId
+    getAllBookingsByEventId, getAllBookingsByKeyword, selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
@@ -58,9 +56,10 @@ const BookingManagerOrderTable = () => {
     };
 
     const toggleSelectAll = (e) => {
-        setSelectAllChecked(e.target.checked);
-        if (e.target.checked) {
-            const allBookingIds = bookings.map((booking) => booking.id);
+        const checked = e.target.checked;
+        setSelectAllChecked(checked);
+        if (checked) {
+            const allBookingIds = bookings.content.map((booking) => booking.id);
             setCheckboxesChecked(allBookingIds);
         } else {
             setCheckboxesChecked([]);
@@ -69,12 +68,13 @@ const BookingManagerOrderTable = () => {
 
     const toggleCheckbox = (checkedBookingId) => {
         if (checkboxesChecked.includes(checkedBookingId)) {
-            setCheckboxesChecked(checkboxesChecked.filter((id) => id !== checkedBookingId));
+            setCheckboxesChecked(prevChecked => prevChecked.filter(id => id !== checkedBookingId));
         } else {
-            setCheckboxesChecked([...checkboxesChecked, checkedBookingId]);
+            setCheckboxesChecked(prevChecked => [...prevChecked, checkedBookingId]);
         }
     };
 
+    let totalAmount = 0;
     return (<>
         <div className="border bg-gray-100 flex py-1">
             <div className="w-1/2 m-5 flex">
@@ -139,7 +139,8 @@ const BookingManagerOrderTable = () => {
                                 }
                             });
                         }
-                        return (<tr key={index} className="border border-black border-x-0">
+                        totalAmount += booking.totalAmount;
+                        return <tr key={index} className="border border-black border-x-0">
                             <th className="px-4 py-2 text-left border-b border-black">
                                 <input
                                     type="checkbox"
@@ -159,17 +160,23 @@ const BookingManagerOrderTable = () => {
                                 Ordered at {useFormatDate(booking.createdAt)}
                             </td>
                             <td className="px-4 py-2 border-x-0">
-                                {Object.keys(ticketCounts).length > 0 ? (Object.keys(ticketCounts).map((ticketType, index) => (
+                                {Object.keys(ticketCounts).length > 0 ? Object.keys(ticketCounts).map((ticketType, index) => (
                                     <div key={index}>
                                         <div>{ticketCounts[ticketType]}</div>
                                         <div>{ticketType}</div>
-                                    </div>))) : (<span>No booking details available</span>)}
+                                    </div>)) : <span>No booking details available</span>}
                             </td>
                             <td className="px-4 py-2 border-x-0">
                                 {formatCurrency(booking.totalAmount)}
                             </td>
-                        </tr>);
+                        </tr>;
                     }))}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className="py-5 px-4">{formatCurrency(totalAmount)}</td>
+                    </tr>
                     </tbody>
                 </table>
                 <div className="flex items-center justify-center h-20">
