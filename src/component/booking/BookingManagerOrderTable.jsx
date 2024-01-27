@@ -200,27 +200,27 @@ const BookingManagerOrderTable = () => {
                 </div>
                 <div className="rounded-l bg-[#F6F6F6] flex">
                     <div className="m-auto text-center flex">
-                        {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<div>
-                            <div className="m-2 flex text-xl">
+                        {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<div className="flex">
+                            <div className="my-3 mx-2 flex text-xl">
                                 <div className="py-1 px-1 text-xl"><MdEmail/></div>
                                 <div>Gửi mail đến</div>
                             </div>
-                            <div className="">
+                            <div className="mx-1 my-2">
                                 <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
                                     navigate(`/503`)
                                 }}>
                                     <div className="m-2">Tất cả</div>
                                 </button>
                             </div>
-                            <div>
-                                {checkboxesChecked.length > 0 && checkboxesChecked.length < bookings.content.length && (
+                            <div className="mx-1 my-2">
+                            {checkboxesChecked.length > 0 && checkboxesChecked.length < bookings.content.length && (
 
                                     <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
                                         navigate(`/503`)
                                     }}>
-                                        Gửi đã chọn
+                                        <div className="m-2">Gửi đã chọn</div>
                                     </button>
-                                )}
+                            )}
                             </div>
                         </div>)}
                     </div>
