@@ -15,6 +15,22 @@ const BookingManagerPromotion = () => {
         dispatch(getEventById(eventId))
     }, [dispatch, eventId]);
 
+    // const handleFacebookSharingButtonClick = () => {
+    //     const url = `http://bestticket.com/${eventId}`;
+    //     const hashtag = "#c06bestticket";
+    //
+    //     const windowWidth = 500;
+    //     const windowHeight = 400;
+    //     const windowLeft = window.screen.width / 2 - windowWidth / 2;
+    //     const windowTop = window.screen.height / 2 - windowHeight / 2;
+    //
+    //     window.open(
+    //         `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&hashtag=${encodeURIComponent(hashtag)}`,
+    //         "_blank",
+    //         `width=${windowWidth},height=${windowHeight},left=${windowLeft},top=${windowTop}`
+    //     );
+    // };
+
     return (<>
         <div className="w-full bg-white">
             <div className="w-[80%] mx-[10%] pt-[5%] text-black">
@@ -34,17 +50,23 @@ const BookingManagerPromotion = () => {
                         </button>
                     </a>
                 </div>
-                <div>
-                    <button className='border rounded bg-[#5075AF] text-center py-3 px-[20%] text-xl text-white'>
-                        <FacebookShareButton
-                            url={`http://bestticket.com/${eventId}`}
-                            hashtag={"#c06bestticket"}
-                            className="flex w-[100%]"
-                        >
-                            <FacebookIcon size={30} round/>
-                            <span className="ml-2">Chia sẻ lên Facebook</span>
-                        </FacebookShareButton>
-                    </button>
+                <div className="my-3">
+                    <FacebookShareButton
+                        url={`http://bestticket.com/${eventId}`}
+                        hashtag={"#c06bestticket"}
+                        className="flex w-[50%] justify-center"
+                        style={{
+                            backgroundColor: "#5075AF",
+                            color: "white",
+                            borderRadius: "0.25rem",
+                            padding: "0.75rem 1rem",
+                            fontSize: "1rem",
+                            cursor: "pointer"
+                        }}
+                    >
+                        <FacebookIcon size={30} round/>
+                        <span className="ml-2 text-xl">Chia sẻ lên Facebook</span>
+                    </FacebookShareButton>
                 </div>
                 <hr className="my-5 border-0.5px border-black"/>
             </div>
