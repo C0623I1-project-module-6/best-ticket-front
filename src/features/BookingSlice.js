@@ -25,8 +25,8 @@ export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", as
     return response.data;
 });
 export const getAllBookingsByKeyword = createAsyncThunk("bookings/byEventId/byKeyword",
-    async ({eventId, keyword}, rejectWithValue) => {
-        const response = await searchBookingByKeyword(eventId, keyword);
+    async ({eventId, keyword, currentPage}, rejectWithValue) => {
+        const response = await searchBookingByKeyword(eventId, keyword, currentPage);
         if (response.status !== 200) {
             return rejectWithValue(response.data)
         }

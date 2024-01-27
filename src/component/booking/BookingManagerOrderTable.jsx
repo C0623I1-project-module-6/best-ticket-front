@@ -1,7 +1,9 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventId, getAllBookingsByKeyword, selectAllBookingsByEventId
+    getAllBookingsByEventId,
+    getAllBookingsByKeyword,
+    selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
@@ -23,40 +25,15 @@ const BookingManagerOrderTable = () => {
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
     const [sortBy, setSortBy] = useState('createdAt');
     const [sortDirection, setSortDirection] = useState('desc');
-    const {formatCurrency} = useFormatCurrency();
-
-    const handleSortChange = (selectedSortBy) => {
-        let newSortDirection = 'desc';
-        if (selectedSortBy === 'createdAt_reversed') {
-            newSortDirection = 'asc';
-        } else if (sortBy === selectedSortBy) {
-            newSortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-        } else if (selectedSortBy === 'A-Z') {
-            newSortDirection = 'asc';
-            selectedSortBy = 'customer.fullName';
-        } else if (selectedSortBy === 'Z-A') {
-            newSortDirection = 'desc';
-            selectedSortBy = 'customer.fullName';
-        }
-        setSortBy(selectedSortBy);
-        setSortDirection(newSortDirection);
-
-        dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage - 1}, {
-            sortBy: selectedSortBy, sortDirection: newSortDirection
-        }));
-    };
-
-    // useEffect(() => {
-    //     dispatch(getAllBookings(currentPage - 1));
-    // }, [currentPage]);
+    const {formatCurrency} = useFormatCurrency()
 
     useEffect(() => {
-        dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage -1}));
+        dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage - 1}));
     }, [currentPage, dispatch, eventId1]);
 
     const searchBookingByKeyword = async (e) => {
         e.preventDefault();
-        dispatch(getAllBookingsByKeyword({eventId: eventId1, keyword: keyword}));
+        dispatch(getAllBookingsByKeyword({eventId: eventId1, keyword: keyword, currentPage: currentPage - 1}));
     };
 
     const toggleSelectAll = (e) => {
@@ -78,7 +55,28 @@ const BookingManagerOrderTable = () => {
         }
     };
 
+    const handleSortChange = (selectedSortBy) => {
+        setSortBy(selectedSortBy);
+    };
+
+    let sortedBookings = [];
+
+    if (bookings && bookings.content) {
+        sortedBookings = [...bookings.content];
+
+        if (sortBy === 'createdAt') {
+            sortedBookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        } else if (sortBy === 'createdAt_reversed') {
+            sortedBookings.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        } else if (sortBy === 'customer.fullName') {
+            sortedBookings.sort((a, b) => a.customer.fullName.localeCompare(b.customer.fullName));
+        } else if (sortBy === 'customer.fullName_reversed') {
+            sortedBookings.sort((a, b) => b.customer.fullName.localeCompare(a.customer.fullName));
+        }
+    }
+
     let totalAmount = 0;
+
     return (<>
         <div className="border bg-gray-100 flex py-1">
             <div className="w-1/2 m-5 flex">
@@ -87,7 +85,7 @@ const BookingManagerOrderTable = () => {
                         <option value="createdAt">Mới nhất</option>
                         <option value="createdAt_reversed">Cũ nhất</option>
                         <option value="customer.fullName">A-Z</option>
-                        <option value="customer.fullName">Z-A</option>
+                        <option value="customer.fullName_reversed">Z-A</option>
                     </select>
                 </div>
             </div>
@@ -126,8 +124,8 @@ const BookingManagerOrderTable = () => {
                     </thead>
                     <tbody>
                     {bookings === null || bookings === "" || bookings === undefined ? (<tr>
-                        <td colSpan="4">No booking available</td>
-                    </tr>) : (bookings.content.map((booking) => {
+                        <td colSpan="4" className="text-center">No booking available</td>
+                    </tr>) : (sortedBookings.map((booking) => {
                         const ticketCounts = {};
                         if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
                             booking.bookingDetailResponseList.forEach((detail) => {
@@ -175,12 +173,15 @@ const BookingManagerOrderTable = () => {
                             </td>
                         </tr>;
                     }))}
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td className="py-5 px-4">{formatCurrency(totalAmount)}</td>
-                    </tr>
+                    {bookings === null || bookings === "" || bookings === undefined ? (<tr>
+                        <td colSpan="4" className="text-center"></td>
+                    </tr>) : (
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td className="py-5 px-4">{formatCurrency(totalAmount)}</td>
+                        </tr>)}
                     </tbody>
                 </table>
                 <div className="flex items-center justify-center h-20">
