@@ -1,7 +1,7 @@
 import Seat from "./Seat.jsx";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {getTicketTypes} from "../../features/TicketTypeSlice.js";
-import {updateStatus} from "../../api/TicketApi.js";
+import {updateStatusSuccess} from "../../api/TicketApi.js";
 import {setPrice, setSeats, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
 import React, {useEffect, useState} from "react";
 
@@ -12,6 +12,8 @@ export const TicketBookingStep1 = (props) => {
     const [dataSeat, setDataSeat] = useState([]);
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
+    console.log(dataSeat);
+
     const showTicketType = () => {
         dispatch(getTicketTypes())
     }
@@ -27,7 +29,7 @@ export const TicketBookingStep1 = (props) => {
     const handleDataFormButton = async () => {
         if (dataTotalPrice !== 0 && dataSeat !== null) {
             try {
-                const response = await updateStatus(dataSeat);
+                const response = await updateStatusSuccess(dataSeat);
                 dispatch(setSeats(dataSeat));
                 dispatch(setTotalPrice(dataTotalPrice));
                 dispatch(setTicketType(dataNameTicketType));
