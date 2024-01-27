@@ -24,7 +24,6 @@ const BookingManagerOrderTable = () => {
     const [selectAllChecked, setSelectAllChecked] = useState(false);
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
     const [sortBy, setSortBy] = useState('createdAt');
-    const [sortDirection, setSortDirection] = useState('desc');
     const {formatCurrency} = useFormatCurrency()
 
     useEffect(() => {
