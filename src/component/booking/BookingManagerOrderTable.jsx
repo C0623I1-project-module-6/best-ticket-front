@@ -83,8 +83,10 @@ const BookingManagerOrderTable = () => {
         if (status === "ACTIVE" || status === "PENDING" || status === "INACTIVE") {
             sortedBookings = sortedBookings.filter(booking => booking.status === status);
         }
+
     }
 
+    console.log(sortedBookings)
     let totalAmount = 0;
     console.log(sortedBookings)
     return (<>
@@ -193,8 +195,8 @@ const BookingManagerOrderTable = () => {
                             </td>
                         </tr>;
                     }))}
-                    {bookings === null || bookings === "" || bookings === undefined ? (<tr>
-                        <td colSpan="4" className="text-center"></td>
+                    {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (<tr>
+                        <td colSpan="4" className="text-center">No booking details available</td>
                     </tr>) : (
                         <tr>
                             <td></td>
