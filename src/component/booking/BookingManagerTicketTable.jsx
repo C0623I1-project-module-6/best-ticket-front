@@ -1,23 +1,30 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventIdNoPagination,
+    getAllBookingsByEventId,
     selectAllBookingsByEventId,
-    selectAllBookingsByEventIdNoPagination
 } from '../../features/BookingSlice';
 import {useParams} from 'react-router-dom';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {ImInfo} from "react-icons/im";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
 
 const BookingManagerTicketTable = () => {
     const dispatch = useDispatch();
-    const bookings = useSelector(selectAllBookingsByEventIdNoPagination);
+    const bookings = useSelector(selectAllBookingsByEventId);
     const eventId1 = useParams().eventId;
+    const totalPages = useSelector(state => state.booking.totalPages);
+    const [currentPage, setCurrentPage] = useState(1);
     const {formatCurrency} = useFormatCurrency();
 
+
     useEffect(() => {
-        dispatch(getAllBookingsByEventIdNoPagination(eventId1));
-    }, [dispatch, eventId1]);
+        dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage -1}));
+    }, [currentPage, dispatch, eventId1]);
+
+    const rowsPerPage = 10;
+    const startIndex = (currentPage - 1) * rowsPerPage;
     
     return (<>
         <div className="table-container border border-black max-h-96 overflow-y-auto">
@@ -47,7 +54,7 @@ const BookingManagerTicketTable = () => {
                                         {ticketIndex === 0 && (<>
                                             <td className="border border-black"
                                                 rowSpan={detail.ticketInBookingDetailResponses.length}>
-                                                {index + 1}
+                                                {startIndex + index + 1}
                                             </td>
                                             <td className="border border-black"
                                                 rowSpan={detail.ticketInBookingDetailResponses.length}>
@@ -81,6 +88,18 @@ const BookingManagerTicketTable = () => {
                 }))}
                 </tbody>
             </table>
+        </div>
+        <div className="flex items-center justify-center h-20">
+            <Stack
+                spacing={2}
+            >
+                <Pagination
+                    count={totalPages || 0}
+                    color="primary"
+                    page={currentPage}
+                    onChange={(event, value) => setCurrentPage(value)}
+                />
+            </Stack>
         </div>
         <div className="my-2 rounded-l bg-[#F6F6F6] flex">
             <div className="m-auto text-center flex">
