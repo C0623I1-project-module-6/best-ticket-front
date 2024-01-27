@@ -85,8 +85,7 @@ const BookingManagerOrderTable = () => {
         }
 
     }
-
-    console.log(sortedBookings)
+    
     let totalAmount = 0;
     console.log(sortedBookings)
     return (<>
@@ -195,9 +194,10 @@ const BookingManagerOrderTable = () => {
                             </td>
                         </tr>;
                     }))}
-                    {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (<tr>
-                        <td colSpan="4" className="text-center">No booking details available</td>
-                    </tr>) : (
+                    {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (
+                        <tr>
+                            <td colSpan="4" className="text-center">No booking details available</td>
+                        </tr>) : (
                         <tr>
                             <td></td>
                             <td></td>
