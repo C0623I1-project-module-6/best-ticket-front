@@ -1,9 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventId,
-    getAllBookingsByKeyword,
-    selectAllBookingsByEventId
+    getAllBookingsByEventId, getAllBookingsByKeyword, selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
@@ -51,9 +49,7 @@ const BookingManagerOrderTable = () => {
 
     const toggleCheckbox = (checkedBookingId) => {
         if (checkboxesChecked.includes(checkedBookingId)) {
-            setCheckboxesChecked((prevChecked) =>
-                prevChecked.filter((id) => id !== checkedBookingId)
-            );
+            setCheckboxesChecked((prevChecked) => prevChecked.filter((id) => id !== checkedBookingId));
         } else {
             setCheckboxesChecked((prevChecked) => [...prevChecked, checkedBookingId]);
         }
@@ -140,10 +136,10 @@ const BookingManagerOrderTable = () => {
                                 onChange={toggleSelectAll}
                             />
                         </th>
-                        <th className="px-4 py-2 text-center border-b border-black">TRẠNG THÁI</th>
-                        <th className="px-4 py-2 text-left border-b border-black">ĐƠN HÀNG</th>
-                        <th className="px-4 py-2 text-center border-b border-black">VÉ</th>
-                        <th className="px-4 py-2 text-center border-b border-black">TỔNG CỘNG (VNĐ)</th>
+                        <th className="py-2 text-center border-b border-black">TRẠNG THÁI</th>
+                        <th className="py-2 text-left border-b border-black">ĐƠN HÀNG</th>
+                        <th className="py-2 text-center border-b border-black">VÉ</th>
+                        <th className="py-2 text-center border-b border-black">TỔNG CỘNG (VNĐ)</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -176,15 +172,13 @@ const BookingManagerOrderTable = () => {
                                 />
                             </th>
                             <td>
-                                {
-                                    booking.status === "INACTIVE" ? <GiCancel className="mx-auto" color={"red"}/> :
-                                        booking.status === "PENDING" ?
-                                            <FaCheckCircle className="mx-auto" color={"orange"}/> :
-                                            booking.status === "ACTIVE" ?
-                                                <FaCheckCircle className="mx-auto" color={"green"}/> : null
-                                }
+                                {booking.status === "INACTIVE" ?
+                                    <GiCancel className="mx-auto" color={"red"}/> : booking.status === "PENDING" ?
+                                        <FaCheckCircle className="mx-auto"
+                                                       color={"orange"}/> : booking.status === "ACTIVE" ?
+                                            <FaCheckCircle className="mx-auto" color={"green"}/> : null}
                             </td>
-                            <td className="px-4 py-2 border-x-0">
+                            <td className="py-2 border-x-0">
                                 {booking.customer.fullName}
                                 <br/>
                                 {booking.userEmail}
@@ -194,14 +188,14 @@ const BookingManagerOrderTable = () => {
                                 {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
                                 Ordered at {useFormatDate(booking.createdAt)}
                             </td>
-                            <td className="px-4 py-2 border-x-0 text-center">
+                            <td className="py-2 border-x-0 text-center">
                                 {Object.keys(ticketCounts).length > 0 ? Object.keys(ticketCounts).map((ticketType, index) => (
                                     <div key={index}>
                                         <div>{ticketCounts[ticketType]}</div>
                                         <div>{ticketType}</div>
                                     </div>)) : <span>No booking details available</span>}
                             </td>
-                            <td className="px-4 py-2 border-x-0 text-center">
+                            <td className="py-2 border-x-0 text-center">
                                 {formatCurrency(booking.totalAmount)}
                             </td>
                         </tr>;
@@ -209,14 +203,13 @@ const BookingManagerOrderTable = () => {
                     {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (
                         <tr>
                             <td colSpan="5" className="text-center">Chưa có vé nào được bán</td>
-                        </tr>) : (
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td className="py-5 px-4 text-center">{formatCurrency(totalAmount)}</td>
-                        </tr>)}
+                        </tr>) : (<tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className="py-5 text-center">{formatCurrency(totalAmount)}</td>
+                    </tr>)}
                     </tbody>
                 </table>
                 <div className="flex items-center justify-center h-20">
@@ -252,8 +245,7 @@ const BookingManagerOrderTable = () => {
                                             navigate(`/503`)
                                         }}>
                                             <div className="m-2">Đã chọn</div>
-                                        </button>
-                                    )}
+                                        </button>)}
                                 </div>
                             </div>)}
                     </div>

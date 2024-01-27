@@ -5,6 +5,7 @@ import {getEventById} from "../../features/EventSlice.js";
 import UserFooter from "../footer/UserFooter.jsx"
 import {FacebookIcon, FacebookShareButton} from "react-share";
 import {FaArrowRight} from "react-icons/fa";
+import {FaCloudDownloadAlt} from "react-icons/fa";
 
 const BookingManagerPromotion = () => {
     const dispatch = useDispatch();
@@ -81,20 +82,28 @@ const BookingManagerPromotion = () => {
                         Quảng bá sự kiện cùng Best Ticket
                     </div>
                     <div>
-                        <div className="flex"><FaArrowRight/> Là sự kiện nóng trên ngay trang chủ</div>
-                        <div className="flex"><FaArrowRight/> Gửi email marketing cho các khách hàng tiềm năng</div>
+                        <div className="flex">
+                            <div><FaArrowRight/></div>
+                            <div>Là sự kiện nóng trên ngay trang chủ</div>
+                        </div>
+                        <div className="flex">
+                            <div><FaArrowRight/></div>
+                            <div>Gửi email marketing cho các khách hàng tiềm năng</div>
+                        </div>
                     </div>
                     <div className="my-5 text-xl">Xem các dịch vụ hỗ trợ marketing</div>
                     <div className="flex pb-10">
-                        <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                        <button className="border-0 border-black rounded bg-[#C2DEA3] flex" onClick={() => {
                             navigate(`/503`)
                         }}>
-                            <div className="m-2">Tiếng Việt</div>
+                            <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
+                            <div className="m-2 text-xl">Tiếng Việt</div>
                         </button>
-                        <button className="border-0 border-black rounded bg-[#C2DEA3] mx-2" onClick={() => {
+                        <button className="border-0 border-black rounded bg-[#C2DEA3] mx-2 flex" onClick={() => {
                             navigate(`/503`)
                         }}>
-                            <div className="m-2">English</div>
+                            <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
+                            <div className="m-2 text-xl">English</div>
                         </button>
                     </div>
                 </div>
