@@ -205,21 +205,24 @@ const BookingManagerOrderTable = () => {
                                 <div className="py-1 px-1 text-xl"><MdEmail/></div>
                                 <div>Gửi mail đến</div>
                             </div>
-                            <div className="m-auto">
+                            <div className="">
                                 <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
                                     navigate(`/503`)
                                 }}>
                                     <div className="m-2">Tất cả</div>
                                 </button>
                             </div>
+                            <div>
+                                {checkboxesChecked.length > 0 && checkboxesChecked.length < bookings.content.length && (
+
+                                    <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                                        navigate(`/503`)
+                                    }}>
+                                        Gửi đã chọn
+                                    </button>
+                                )}
+                            </div>
                         </div>)}
-                        {checkboxesChecked.length > 0 && checkboxesChecked.length < bookings.content.length && (
-                            <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
-                                navigate(`/503`)
-                            }}>
-                                Gửi đã chọn
-                            </button>
-                        )}
                     </div>
                 </div>
             </div>
