@@ -49,9 +49,11 @@ const BookingManagerOrderTable = () => {
 
     const toggleCheckbox = (checkedBookingId) => {
         if (checkboxesChecked.includes(checkedBookingId)) {
-            setCheckboxesChecked(prevChecked => prevChecked.filter(id => id !== checkedBookingId));
+            setCheckboxesChecked((prevChecked) =>
+                prevChecked.filter((id) => id !== checkedBookingId)
+            );
         } else {
-            setCheckboxesChecked(prevChecked => [...prevChecked, checkedBookingId]);
+            setCheckboxesChecked((prevChecked) => [...prevChecked, checkedBookingId]);
         }
     };
 
@@ -211,6 +213,13 @@ const BookingManagerOrderTable = () => {
                                 </button>
                             </div>
                         </div>)}
+                        {checkboxesChecked.length > 0 && checkboxesChecked.length < bookings.content.length && (
+                            <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                                navigate(`/503`)
+                            }}>
+                                Gửi đã chọn
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
