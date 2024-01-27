@@ -33,8 +33,6 @@ import CreatedEvent from "../component/user/CreatedEvent.jsx";
 import Mail from "../layout/pages/mail/Mail.jsx";
 
 import BookingManagerPromotion from "../component/booking/BookingManagerPromotion.jsx";
-import TestFireBase from "../component/booking/TestFireBase.jsx";
-
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},

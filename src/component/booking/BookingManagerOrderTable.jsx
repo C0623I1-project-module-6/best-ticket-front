@@ -1,7 +1,9 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventId, getAllBookingsByKeyword, selectAllBookingsByEventId
+    getAllBookingsByEventId,
+    getAllBookingsByKeyword,
+    selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
@@ -22,37 +24,15 @@ const BookingManagerOrderTable = () => {
     const [selectAllChecked, setSelectAllChecked] = useState(false);
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
     const [sortBy, setSortBy] = useState('createdAt');
-    const [sortDirection, setSortDirection] = useState('desc');
-    const {formatCurrency} = useFormatCurrency();
-
-    const handleSortChange = (selectedSortBy) => {
-        let newSortDirection = 'desc';
-        if (selectedSortBy === 'createdAt_reversed') {
-            newSortDirection = 'asc';
-        } else if (sortBy === selectedSortBy) {
-            newSortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-        } else if (selectedSortBy === 'A-Z') {
-            newSortDirection = 'asc';
-            selectedSortBy = 'customer.fullName';
-        } else if (selectedSortBy === 'Z-A') {
-            newSortDirection = 'desc';
-            selectedSortBy = 'customer.fullName';
-        }
-        setSortBy(selectedSortBy);
-        setSortDirection(newSortDirection);
-
-        dispatch(getAllBookingsByEventId(eventId1, currentPage - 1, {
-            sortBy: selectedSortBy, sortDirection: newSortDirection
-        }));
-    };
+    const {formatCurrency} = useFormatCurrency()
 
     useEffect(() => {
-        dispatch(getAllBookingsByEventId(eventId1, currentPage - 1));
-    }, [dispatch, eventId1, currentPage]);
+        dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage - 1}));
+    }, [currentPage, dispatch, eventId1]);
 
     const searchBookingByKeyword = async (e) => {
         e.preventDefault();
-        dispatch(getAllBookingsByKeyword({eventId: eventId1, keyword: keyword}));
+        dispatch(getAllBookingsByKeyword({eventId: eventId1, keyword: keyword, currentPage: currentPage - 1}));
     };
 
     const toggleSelectAll = (e) => {
@@ -68,22 +48,55 @@ const BookingManagerOrderTable = () => {
 
     const toggleCheckbox = (checkedBookingId) => {
         if (checkboxesChecked.includes(checkedBookingId)) {
-            setCheckboxesChecked(prevChecked => prevChecked.filter(id => id !== checkedBookingId));
+            setCheckboxesChecked((prevChecked) =>
+                prevChecked.filter((id) => id !== checkedBookingId)
+            );
         } else {
-            setCheckboxesChecked(prevChecked => [...prevChecked, checkedBookingId]);
+            setCheckboxesChecked((prevChecked) => [...prevChecked, checkedBookingId]);
         }
     };
 
+    const handleSortChange = (selectedSortBy) => {
+        setSortBy(selectedSortBy);
+    };
+
+    let sortedBookings = [];
+
+    if (bookings && bookings.content) {
+        sortedBookings = [...bookings.content];
+
+        if (sortBy === 'createdAt') {
+            sortedBookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        } else if (sortBy === 'createdAt_reversed') {
+            sortedBookings.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        } else if (sortBy === 'customer.fullName') {
+            sortedBookings.sort((a, b) => a.customer.fullName.localeCompare(b.customer.fullName));
+        } else if (sortBy === 'customer.fullName_reversed') {
+            sortedBookings.sort((a, b) => b.customer.fullName.localeCompare(a.customer.fullName));
+        } else if (sortBy === "ACTIVE" || sortBy === "PENDING" || sortBy === "INACTIVE") {
+            sortedBookings = sortedBookings.filter(booking => booking.status === sortBy);
+        }
+    }
+
     let totalAmount = 0;
+    console.log(sortedBookings)
     return (<>
         <div className="border bg-gray-100 flex py-1">
             <div className="w-1/2 m-5 flex">
                 <div>
-                    <select className="bg-white" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+                    <select className="bg-white border rounded border-black mx-1" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
                         <option value="createdAt">Mới nhất</option>
                         <option value="createdAt_reversed">Cũ nhất</option>
                         <option value="customer.fullName">A-Z</option>
-                        <option value="customer.fullName">Z-A</option>
+                        <option value="customer.fullName_reversed">Z-A</option>
+                    </select>
+                </div>
+                <div>
+                    <select className="bg-white border rounded border-black mx-1" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+                        <option value="">Tất cả đơn hàng</option>
+                        <option value="ACTIVE">Đang hiệu lực</option>
+                        <option value="PENDING">Đang chờ</option>
+                        <option value="INACTIVE">Không còn hiệu lực</option>
                     </select>
                 </div>
             </div>
@@ -122,8 +135,8 @@ const BookingManagerOrderTable = () => {
                     </thead>
                     <tbody>
                     {bookings === null || bookings === "" || bookings === undefined ? (<tr>
-                        <td colSpan="4">No booking available</td>
-                    </tr>) : (bookings.content.map((booking, index) => {
+                        <td colSpan="4" className="text-center">No booking available</td>
+                    </tr>) : (sortedBookings.map((booking) => {
                         const ticketCounts = {};
                         if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
                             booking.bookingDetailResponseList.forEach((detail) => {
@@ -140,7 +153,7 @@ const BookingManagerOrderTable = () => {
                             });
                         }
                         totalAmount += booking.totalAmount;
-                        return <tr key={index} className="border border-black border-x-0">
+                        return <tr key={booking.id} className="border border-black border-x-0">
                             <th className="px-4 py-2 text-left border-b border-black">
                                 <input
                                     type="checkbox"
@@ -171,16 +184,21 @@ const BookingManagerOrderTable = () => {
                             </td>
                         </tr>;
                     }))}
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td className="py-5 px-4">{formatCurrency(totalAmount)}</td>
-                    </tr>
+                    {bookings === null || bookings === "" || bookings === undefined ? (<tr>
+                        <td colSpan="4" className="text-center"></td>
+                    </tr>) : (
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td className="py-5 px-4">{formatCurrency(totalAmount)}</td>
+                        </tr>)}
                     </tbody>
                 </table>
                 <div className="flex items-center justify-center h-20">
-                    <Stack spacing={2}>
+                    <Stack
+                        spacing={2}
+                    >
                         <Pagination
                             count={totalPages || 0}
                             color="primary"
@@ -191,17 +209,27 @@ const BookingManagerOrderTable = () => {
                 </div>
                 <div className="rounded-l bg-[#F6F6F6] flex">
                     <div className="m-auto text-center flex">
-                        {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<div>
-                            <div className="m-2 flex text-xl">
+                        {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<div className="flex">
+                            <div className="my-3 mx-2 flex text-xl">
                                 <div className="py-1 px-1 text-xl"><MdEmail/></div>
                                 <div>Gửi mail đến</div>
                             </div>
-                            <div className="m-auto">
+                            <div className="mx-1 my-2">
                                 <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
                                     navigate(`/503`)
                                 }}>
                                     <div className="m-2">Tất cả</div>
                                 </button>
+                            </div>
+                            <div className="mx-1 my-2">
+                            {checkboxesChecked.length > 0 && checkboxesChecked.length < bookings.content.length && (
+
+                                    <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                                        navigate(`/503`)
+                                    }}>
+                                        <div className="m-2">Gửi đã chọn</div>
+                                    </button>
+                            )}
                             </div>
                         </div>)}
                     </div>

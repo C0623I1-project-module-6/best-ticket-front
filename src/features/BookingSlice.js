@@ -18,17 +18,23 @@ const initialState = {
     bookingCreate: null
 };
 
-export const getAllBookings = createAsyncThunk("bookings", async () => {
-    const response = await findAllBookings();
+export const getAllBookings = createAsyncThunk("bookings", async (currentPage, rejectWithValue) => {
+    const response = await findAllBookings(currentPage);
+    if (response.status !== 200) {
+        return rejectWithValue(response.data)
+    }
     return response.data;
 });
-export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async (eventId) => {
-    const response = await findAllBookingsByEventId(eventId);
+export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({eventId, currentPage}, rejectWithValue) => {
+    const response = await findAllBookingsByEventId(eventId, currentPage);
+    if (response.status !== 200) {
+        return rejectWithValue(response.data)
+    }
     return response.data;
 });
 export const getAllBookingsByKeyword = createAsyncThunk("bookings/byEventId/byKeyword",
-    async ({eventId, keyword}, rejectWithValue) => {
-        const response = await searchBookingByKeyword(eventId, keyword);
+    async ({eventId, keyword, currentPage}, rejectWithValue) => {
+        const response = await searchBookingByKeyword(eventId, keyword, currentPage);
         if (response.status !== 200) {
             return rejectWithValue(response.data)
         }
