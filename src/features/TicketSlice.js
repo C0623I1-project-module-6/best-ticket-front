@@ -5,8 +5,8 @@ import {
     showAllTicketUpcoming,
     showTicketByEventId,
     showTicketById,
-    showTicketByTimeId,
-    updateStatus
+    showTicketByTimeId, updateStatusFail,
+    updateStatusSuccess
 } from "../api/TicketApi";
 
 const initialState = {
@@ -64,10 +64,19 @@ export const getTicketByTimeId = createAsyncThunk(
     )
 ;
 
-export const updateStatusTicket = createAsyncThunk(
+export const updateStatusTicketSuccess = createAsyncThunk(
         "tickets/updateStatusTicket",
         async (selectedSeats) => {
-            const response = await updateStatus(selectedSeats);
+            const response = await updateStatusSuccess(selectedSeats);
+            return response.data;
+        }
+    )
+;
+
+export const updateStatusTicketFail = createAsyncThunk(
+        "tickets/updateStatusTicketFail",
+        async (selectedSeats) => {
+            const response = await updateStatusFail(selectedSeats);
             return response.data;
         }
     )
@@ -157,9 +166,18 @@ export const TicketSlice = createSlice({
                 state.error = false;
             })
 
-            .addCase(updateStatusTicket.pending, handlePending)
-            .addCase(updateStatusTicket.rejected, handleRejected)
-            .addCase(updateStatusTicket.fulfilled, (state, action) => {
+            .addCase(updateStatusTicketSuccess.pending, handlePending)
+            .addCase(updateStatusTicketSuccess.rejected, handleRejected)
+            .addCase(updateStatusTicketSuccess.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.tickets = action.payload;
+                state.error = false;
+            })
+
+            .addCase(updateStatusTicketFail.pending, handlePending)
+            .addCase(updateStatusTicketFail.rejected, handleRejected)
+            .addCase(updateStatusTicketFail.fulfilled, (state, action) => {
                 state.success = true;
                 state.loading = false;
                 state.tickets = action.payload;
@@ -173,8 +191,6 @@ export const {setLoading, setError, setSuccess} = TicketSlice.actions;
 
 export const selectLoading = (state) => state.ticket.loading;
 export const selectError = (state) => state.ticket.error;
-export const selectSuccess = (state) => state.ticket.success;
 export const selectShowTicket = (state) => state.ticket.tickets;
-export const selectUpdateStatusTicket = (state) => state.ticket.tickets;
 export const selectShowTicketByTimeId = (state) => state.ticket.ticketForTime;
 export default TicketSlice.reducer;
