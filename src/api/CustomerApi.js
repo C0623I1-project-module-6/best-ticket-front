@@ -17,7 +17,6 @@ export async function createCustomer(customer) {
     }).catch((e) => {
         response = e;
     })
-    console.log(response)
     return response;
 }
 export async function updateCustomer(editCustomer) {
@@ -36,7 +35,6 @@ export async function updateCustomer(editCustomer) {
     }).catch((e) => {
         response = e;
     })
-    console.log(response)
     return response;
 }
 

@@ -53,6 +53,7 @@ export async function register(user) {
   }).catch((e) => {
     response = e;
   })
+  console.log(response)
   return response;
 }
 
@@ -68,7 +69,6 @@ export async function loginGoogle(user) {
     data: user
   }).then((res) => {
     response = res;
-    console.log(response)
   }).catch((e) => {
     response = e;
   })

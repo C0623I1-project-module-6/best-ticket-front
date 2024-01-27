@@ -17,7 +17,6 @@ export async function createOrganizer(organizer) {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }
 
@@ -34,7 +33,6 @@ export async function updateOrganizer(editOrganizer) {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }
 
@@ -53,6 +51,5 @@ export async function findByUserId({userId}) {
   }).catch((e) => {
     response = e;
   })
-  console.log(response)
   return response;
 }

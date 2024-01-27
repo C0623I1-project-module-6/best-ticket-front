@@ -17,10 +17,8 @@ export const registerOrganizerProfile = createAsyncThunk(
     async (organizer, {rejectedWithValue}) => {
         const response = await createOrganizer(organizer);
         if (response.status !== 200) {
-            console.log(response);
             return rejectedWithValue(response.data.message);
         }
-        console.log(response)
         return response.data;
     }
 );
@@ -29,10 +27,8 @@ export const editOrganizerProfile = createAsyncThunk(
     async (editOrganizer, {rejectedWithValue}) => {
         const response = await updateOrganizer(editOrganizer);
         if (response.status !== 200) {
-            console.log(response);
             return rejectedWithValue(response.data.message);
         }
-        console.log(response)
         return response.data;
     }
 );

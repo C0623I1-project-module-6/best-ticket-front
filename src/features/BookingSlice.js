@@ -25,7 +25,10 @@ export const getAllBookings = createAsyncThunk("bookings", async (currentPage, r
     }
     return response.data;
 });
-export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({eventId, currentPage}, rejectWithValue) => {
+export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({
+                                                                                         eventId,
+                                                                                         currentPage
+                                                                                     }, rejectWithValue) => {
     const response = await findAllBookingsByEventId(eventId, currentPage);
     if (response.status !== 200) {
         return rejectWithValue(response.data)
@@ -47,36 +50,36 @@ export const getBookingsByTimeId = createAsyncThunk("bookings/byTimeId", async (
 });
 
 export const createBookingForTicket = createAsyncThunk(
-        "bookings/createBookingForTicket",
-        async (bookings) => {
-            const response = await createBooking(bookings);
-            console.log(response.data);
-            return response.data;
-        });
+    "bookings/createBookingForTicket",
+    async (bookings) => {
+        const response = await createBooking(bookings);
+        console.log(response.data);
+        return response.data;
+    });
 
-    const handlePending = (state) => {
-        state.success = false;
-        state.loading = true;
-        state.error = false;
-    }, handleRejected = (state, action) => {
-        state.success = false;
-        state.loading = false;
-        state.bookings = action.payload;
-        state.error = action.error;
-    }, handleFulfilled = (state, action) => {
-        state.success = true;
-        state.loading = false;
-        if (action.payload && action.payload.data) {
-            state.bookings = action.payload.data;
-            state.booking = action.payload;
-            state.totalPages = action.payload.data.totalPages;
-        } else {
-            state.bookings = [];
-            state.booking = null;
-            state.totalPages = null;
-        }
-        state.error = false;
-    };
+const handlePending = (state) => {
+    state.success = false;
+    state.loading = true;
+    state.error = false;
+}, handleRejected = (state, action) => {
+    state.success = false;
+    state.loading = false;
+    state.bookings = action.payload;
+    state.error = action.error;
+}, handleFulfilled = (state, action) => {
+    state.success = true;
+    state.loading = false;
+    if (action.payload && action.payload.data) {
+        state.bookings = action.payload.data;
+        state.booking = action.payload;
+        state.totalPages = action.payload.data.totalPages;
+    } else {
+        state.bookings = [];
+        state.booking = null;
+        state.totalPages = null;
+    }
+    state.error = false;
+};
 
 export const BookingSlice = createSlice({
     name: "Booking",
@@ -118,7 +121,8 @@ export const BookingSlice = createSlice({
                 state.error = false;
                 state.bookingCreate = action.payload;
             })
-
+    }
+});
 export const selectAllBookingsByEventId = (state) => state.booking.bookings;
 export const selectBookingsByTimeId = (state) => state.booking.bookingForTime;
 export const selectBookingCreate = (state) => state.booking.bookingCreate;

@@ -1,3 +1,5 @@
+import {Button} from "@material-tailwind/react";
+
 export default function Avatar(){
     return(
         <div className="w-1/4">
@@ -17,12 +19,12 @@ export default function Avatar(){
                         </svg>
                     </div>
                     <div className="flex justify-center">
-                        <button type="button"
-                                className="rounded-md bg-[#10b981] px-3 py-2 text-sm font-semibold
-                            text-whiteshadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2
+                        <Button type="button"
+                                className="rounded-md bg-[#10b981] px-3 py-2 text-1xl
+                            text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2
                             focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >Thêm ảnh
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
