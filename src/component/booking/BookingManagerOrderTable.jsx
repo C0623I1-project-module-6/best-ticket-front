@@ -73,20 +73,30 @@ const BookingManagerOrderTable = () => {
             sortedBookings.sort((a, b) => a.customer.fullName.localeCompare(b.customer.fullName));
         } else if (sortBy === 'customer.fullName_reversed') {
             sortedBookings.sort((a, b) => b.customer.fullName.localeCompare(a.customer.fullName));
+        } else if (sortBy === "ACTIVE" || sortBy === "PENDING" || sortBy === "INACTIVE") {
+            sortedBookings = sortedBookings.filter(booking => booking.status === sortBy);
         }
     }
 
     let totalAmount = 0;
-
+    console.log(sortedBookings)
     return (<>
         <div className="border bg-gray-100 flex py-1">
             <div className="w-1/2 m-5 flex">
                 <div>
-                    <select className="bg-white" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+                    <select className="bg-white border rounded border-black mx-1" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
                         <option value="createdAt">Mới nhất</option>
                         <option value="createdAt_reversed">Cũ nhất</option>
                         <option value="customer.fullName">A-Z</option>
                         <option value="customer.fullName_reversed">Z-A</option>
+                    </select>
+                </div>
+                <div>
+                    <select className="bg-white border rounded border-black mx-1" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+                        <option value="">Tất cả đơn hàng</option>
+                        <option value="ACTIVE">Đang hiệu lực</option>
+                        <option value="PENDING">Đang chờ</option>
+                        <option value="INACTIVE">Không còn hiệu lực</option>
                     </select>
                 </div>
             </div>
