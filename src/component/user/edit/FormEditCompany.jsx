@@ -41,19 +41,15 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
     const companyNames = userExistsList
         .filter(organizer => organizer.companyName)
         .map(organizer => organizer.companyName);
-    console.log(companyNames)
     const companyEmails = userExistsList
         .filter(organizer => organizer.companyEmail)
-        .map(organizer => organizer.companyEmail);
-    console.log(companyEmails)
+        .map(organizer => organizer.companyEmail)
     const companyPhones = userExistsList
         .filter(organizer => organizer.companyPhone)
         .map(organizer => organizer.companyPhone);
-    console.log(companyPhones)
     const businessCodes = userExistsList
         .filter(organizer => organizer.companyBusinessCode)
         .map(organizer => organizer.companyBusinessCode);
-    console.log(businessCodes)
     const validationCompanySchema = Yup.object().shape({
         companyEmail: Yup.string()
             .test("unique", "Email already exists.", value => {
@@ -98,7 +94,6 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                 onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
-                console.log({values, errors, touched});
                 return (
                     <Form method="PUT"
                           onSubmit={formikProps.handleSubmit}>
@@ -112,7 +107,7 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         component={InputField}
                                         onChange={formikProps.handleChange}
                                         label="Tên doanh nghiệp"
-                                        disabled={isEditMode}
+                                        disabled={!isEditMode}
                                         placeholder={organizer.companyName || "Vui lòng nhập tên doanh nghiệp"}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
@@ -126,6 +121,7 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         component={InputField}
                                         onChange={formikProps.handleChange}
                                         label="Mã số đăng ký kinh doanh"
+                                        disabled={!isEditMode}
                                         placeholder={organizer.businessCode || "Vui lòng nhập mã số đăng ký kinh doanh"}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
@@ -141,6 +137,7 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         name="dateRange"
                                         onChange={formikProps.handleChange}
                                         value={organizer.dateRange}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md border-0 p-2 mt-2
                             text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1
                             focus:ring-inset focus:ring-indigo-600 sm:text-1xl sm:font-serif
@@ -154,6 +151,7 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         onChange={formikProps.handleChange}
                                         label="Nơi Cấp"
                                         placeholder={organizer.issuedBy || "Vui lòng nhập nơi cấp"}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -172,6 +170,7 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         onChange={formikProps.handleChange}
                                         label="Số điện thoại"
                                         placeholder={organizer.companyPhone || "Vui lòng nhập số điện thoại"}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -185,6 +184,7 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         onChange={formikProps.handleChange}
                                         label="Nơi Cấp"
                                         placeholder={organizer.companyEmail || "bestticket@example.com"}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl

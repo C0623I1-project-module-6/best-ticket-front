@@ -1,19 +1,14 @@
-import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {useState} from "react";
-import {Bounce, toast} from "react-toastify";
+import {Bounce} from "react-toastify";
 import UserFooter from "../../footer/UserFooter.jsx";
 import FormEditCompany from "./FormEditCompany.jsx";
 import FormEditPersonal from "./FormEditPersonal.jsx";
-import {editOrganizerProfile} from "../../../features/user/OrganizerSlice.js";
 import {selectExistsUsers} from "../../../features/user/ExistsUserSlice.js";
 import {FormGroup, Label} from "reactstrap";
 
 function EditOrganizerProfile({organizer}) {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
     const [selected, setSelected] = useState("0");
-    const [isEditMode, setIsEditMode] = useState(false);
     const userExistsList = useSelector(selectExistsUsers)
     const phoneRegex = /^0\d{9}$/;
 
@@ -29,14 +24,6 @@ function EditOrganizerProfile({organizer}) {
             theme: "light",
             transition: Bounce,
         }
-
-
-    const handleSubmit = (values) => {
-        dispatch(editOrganizerProfile(values));
-        setIsEditMode(false);
-        toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
-        navigate("/my-event/legal");
-    }
 
     const handleSelectChange = (e) => {
         setSelected(e.target.value);

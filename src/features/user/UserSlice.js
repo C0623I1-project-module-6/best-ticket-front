@@ -25,7 +25,6 @@ export const loginUser = createAsyncThunk(
         if (response.status !== 200) {
             return rejectWithValue(response.data.message);
         }
-        console.log(response.data)
         return response.data;
     }
 );
@@ -57,10 +56,8 @@ export const loginWithGoogle = createAsyncThunk(
     async (loginData, {rejectWithValue}) => {
         const response = await loginGoogle(loginData);
         if (response.status !== 200) {
-            console.log(response)
             return rejectWithValue(response.data.message);
         }
-        console.log(response.data)
         return response.data;
     }
 );
@@ -70,7 +67,6 @@ export const fetchGetUser = createAsyncThunk(
     async (userId, {rejectWithValue}) => {
         const response = await getUser(userId);
         if (response.status !== 200) {
-            console.log(response)
             return rejectWithValue(response.data.message);
         }
         return response.data;
@@ -82,7 +78,6 @@ export const registerUser = createAsyncThunk(
     async (registerData, {rejectWithValue}) => {
         const response = await register(registerData);
         if (response.status !== 201) {
-            console.log(response)
             return rejectWithValue(response.data.message);
         }
         return response.data;

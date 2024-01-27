@@ -5,6 +5,7 @@ import {loginUser, selectLoginError, selectLoginSuccess, selectUserLogin} from "
 import {useDispatch, useSelector} from "react-redux";
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
+import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
 
 function Login() {
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ function Login() {
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
+    const userExists = useSelector(selectExistsUsers)
     const toastOptions = {
         position: "top-right",
         autoClose: 2000,
@@ -46,6 +48,7 @@ function Login() {
             toast("🦄 Tên đăng nhập hoặc mật khẩu không đúng!", toastOptions);
         }
     }, [loginError]);
+
     return (
         <div className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
         dark:bg-black dark:text-white
@@ -119,7 +122,11 @@ function Login() {
                                 Don't have account ?
                             </span>
                             <span className="cursor-pointer hover:text-gray-500 font-bold text-blue-500"
-                                  onClick={() => navigate("/register")}>Register</span>
+                                  onClick={() => {
+                                      dispatch(getExistsUsers())
+                                      if (userExists != null)
+                                          navigate("/register")
+                                  }}>Register</span>
                         </div>
                     </div>
                 </form>

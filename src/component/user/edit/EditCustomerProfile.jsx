@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
-import {editCustomerProfile, selectEditCustomerProfileSuccess} from "../../../features/user/CustomerSlice.js";
+import {editCustomerProfile} from "../../../features/user/CustomerSlice.js";
 import {Bounce, toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Avatar from "../Avatar.jsx";
@@ -18,8 +18,6 @@ function classNames(...classes) {
 export default function EditCustomerProfile({customer}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [editCustomer, setEditCustomer] = useState({});
-    const success = useSelector(selectEditCustomerProfileSuccess)
     const [gender, setGender] = useState(customer?.gender);
     const [isEditMode, setIsEditMode] = useState(false);
     const userExistsList = useSelector(selectExistsUsers);
@@ -81,14 +79,11 @@ export default function EditCustomerProfile({customer}) {
     }
 
     const toggleEditMode = () => {
-        setIsEditMode(prev=>!prev);
+        setIsEditMode(true);
 
     }
     const handleGenderChange = (e) => {
         setGender(e.target.value);
-    }
-    const handleBlur = () => {
-        setIsEditMode(false)
     }
 
     return (
@@ -98,7 +93,6 @@ export default function EditCustomerProfile({customer}) {
         >
             {formikProps => {
                 const {values, errors, touched} = formikProps;
-                console.log({values, errors, touched});
                 return (
                     <FormGroup className="flex">
                         <Form className="w-screen" method="PUT"
@@ -118,7 +112,6 @@ export default function EditCustomerProfile({customer}) {
                                                     label="Họ và tên"
                                                     placeholder={customer.fullName || "Vui lòng nhập họ và tên"}
                                                     disabled={!isEditMode}
-                                                    onBlur={handleBlur}
                                                     className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                                                     ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                                                     focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -131,7 +124,7 @@ export default function EditCustomerProfile({customer}) {
                                                     onChange={formikProps.handleChange}
                                                     label="Số điện thoại"
                                                     placeholder={customer.phoneNumber || "Vui lòng nhập số điện thoại"}
-                                                    disabled={isEditMode}
+                                                    disabled={!isEditMode}
                                                     className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                                                     ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                                                     focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -144,7 +137,7 @@ export default function EditCustomerProfile({customer}) {
                                                     onChange={formikProps.handleChange}
                                                     label="CMND/CCCD/Hộ chiếu"
                                                     placeholder={customer.idCard || "Vui lòng nhập CMND/CCCD/Hộ chiếu"}
-                                                    disabled={isEditMode}
+                                                    disabled={!isEditMode}
                                                     className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                                                     ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                                                     focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -158,7 +151,7 @@ export default function EditCustomerProfile({customer}) {
                                                     onChange={formikProps.handleChange}
                                                     label="Email nhận vé"
                                                     placeholder={customer.receiptEmail || "bestticket@gmail.com"}
-                                                    disabled={isEditMode}
+                                                    disabled={!isEditMode}
                                                     className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                                                     ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                                                     focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl

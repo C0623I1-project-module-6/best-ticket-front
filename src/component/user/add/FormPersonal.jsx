@@ -86,7 +86,6 @@ export default function FormPersonal({userExistsList, phoneRegex}) {
             onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
-                console.log({values, errors, touched});
                 return (
                     <Form method="POST"
                           onSubmit={formikProps.handleSubmit}>

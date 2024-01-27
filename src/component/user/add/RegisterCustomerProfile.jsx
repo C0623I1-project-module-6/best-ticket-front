@@ -76,7 +76,7 @@ function RegisterCustomerProfile(props) {
 
     const initialValues = {
         fullName: "",
-        phoneNumber: "",
+        phoneNumber: null,
         idCard: "",
         receiptEmail: "",
         dateOfBirth: "",
@@ -93,7 +93,6 @@ function RegisterCustomerProfile(props) {
         >
             {formikProps => {
                 const {values, errors, touched} = formikProps;
-                console.log({values, errors, touched});
                 return (
                     <FormGroup className="flex">
                         <Form className="w-screen" method="POST"

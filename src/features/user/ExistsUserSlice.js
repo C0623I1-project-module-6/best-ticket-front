@@ -28,7 +28,6 @@ export const getExistsUsers = createAsyncThunk(
         if (response.status !== 200) {
             return rejectWithValue(response.data.message)
         }
-        console.log(response)
         return response.data
     }
 )
@@ -45,7 +44,6 @@ export const existsUserSlice = createSlice({
         builder
             .addCase(getExistsUsers.fulfilled, (state, action) => {
                 state.existsUserList = action.payload.data;
-
             })
     }
 })

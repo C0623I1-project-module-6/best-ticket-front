@@ -95,7 +95,6 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
             onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
-                console.log({values, errors, touched});
                 return (
                     <Form method="POST"
                           onSubmit={formikProps.handleSubmit}>
@@ -110,6 +109,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         onChange={formikProps.handleChange}
                                         label="Họ và tên"
                                         placeholder={organizer.name || "Vui lòng nhập họ và tên"}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -121,8 +121,9 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         name="taxCode"
                                         component={InputField}
                                         onChange={formikProps.handleChange}
-                                        label={organizer.taxCode || "Mã số thuế cá nhân"}
-                                        placeholder="Vui lòng nhập mã số thuế cá nhân"
+                                        label="Mã số thuế cá nhân"
+                                        placeholder={organizer.taxCode || "Vui lòng nhập mã số thuế cá nhân"}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -136,6 +137,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         onChange={formikProps.handleChange}
                                         label="CMNN/CCCD/Hộ chiếu"
                                         placeholder={organizer.idCard || "Vui lòng nhập CMNN/CCCD/Hộ chiếu"}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -151,6 +153,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         name="dateRangeTaxCode"
                                         onChange={formikProps.handleChange}
                                         value={organizer.dateRangeTaxCode}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md border-0 p-2 mt-2
                             text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1
                             focus:ring-inset focus:ring-indigo-600 sm:text-1xl sm:font-serif
@@ -163,7 +166,8 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         component={InputField}
                                         onChange={formikProps.handleChange}
                                         label="Nơi cấp"
-                                        placeholder="Vui lòng nhập nơi cấp"
+                                        placeholder={organizer.issuedByTaxCode || "Vui lòng nhập nơi cấp"}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -180,8 +184,9 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         name="phoneNumber"
                                         component={InputField}
                                         onChange={formikProps.handleChange}
-                                        label={organizer.phoneNumber || "Số điện thoại"}
-                                        placeholder="Vui lòng nhập số điện thoại"
+                                        label="Số điện thoại"
+                                        placeholder={organizer.phoneNumber || "Vui lòng nhập số điện thoại"}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -195,6 +200,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         onChange={formikProps.handleChange}
                                         label="Email"
                                         placeholder={organizer.email || "bestticket@example.com"}
+                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl

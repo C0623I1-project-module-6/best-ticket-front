@@ -34,19 +34,15 @@ export default function FormCompany({userExistsList,phoneRegex}) {
     const companyNames = userExistsList
         .filter(organizer => organizer.companyName)
         .map(organizer => organizer.companyName);
-    console.log(companyNames)
     const companyEmails = userExistsList
         .filter(organizer => organizer.companyEmail)
         .map(organizer => organizer.companyEmail);
-    console.log(companyEmails)
     const companyPhones = userExistsList
         .filter(organizer => organizer.companyPhone)
         .map(organizer => organizer.companyPhone);
-    console.log(companyPhones)
     const businessCodes = userExistsList
         .filter(organizer => organizer.companyBusinessCode)
         .map(organizer => organizer.companyBusinessCode);
-    console.log(businessCodes)
     const validationCompanySchema= Yup.object().shape({
         companyEmail: Yup.string()
             .test("unique", "Email already exists.", value => {
@@ -86,7 +82,6 @@ export default function FormCompany({userExistsList,phoneRegex}) {
                 onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
-                console.log({values, errors, touched});
                 return(
                     <Form method="POST"
                           onSubmit={formikProps.handleSubmit}>

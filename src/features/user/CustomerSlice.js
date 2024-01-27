@@ -15,10 +15,8 @@ export const registerCustomerProfile = createAsyncThunk(
     async (customer, {rejectedWithValue}) => {
         const response = await createCustomer(customer);
         if (response.status !== 200) {
-            console.log(response);
             return rejectedWithValue(response.data.message);
         }
-        console.log(response);
         return response.data;
     }
 );
@@ -28,10 +26,8 @@ export const editCustomerProfile = createAsyncThunk(
     async (editCustomer, {rejectedWithValue}) => {
         const response = await updateCustomer(editCustomer);
         if (response.status !== 200) {
-            console.log(response);
             return rejectedWithValue(response.data.message);
         }
-        console.log(response);
         return response.data;
     }
 );
