@@ -1,44 +1,20 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllBookingsByEventId} from '../../features/BookingSlice';
-import {getAllBookingDetailsByBookingId} from '../../features/BookingDetailSlice';
 import {useParams} from 'react-router-dom';
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ImInfo} from "react-icons/im";
+import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
 const BookingManagerTicketTable = () => {
     const dispatch = useDispatch();
     const bookings = useSelector((state) => state.booking.bookings);
     const eventId = useParams().eventId;
-    const [bookingDetails, setBookingDetails] = useState([]);
     const [currentPage] = useState(1);
-
-    const bookingsMemo = React.useMemo(() => {
-        return bookings;
-    }, [bookings]);
+    const {formatCurrency} = useFormatCurrency();
 
     useEffect(() => {
         dispatch(getAllBookingsByEventId(eventId, currentPage - 1));
     }, [dispatch, eventId, currentPage]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const promises = bookingsMemo
-                .filter((booking) => !booking.bookingDetails)
-                .map((booking) => dispatch(getAllBookingDetailsByBookingId(booking.id)));
-
-            const results = await Promise.all(promises);
-            const updatedBookingDetails = results.map((data) => data.payload); // Extracting payload from the results
-
-            setBookingDetails(updatedBookingDetails);
-        };
-
-        if (bookingsMemo.length > 0) {
-            setBookingDetails([]); // Clear the booking details state
-            fetchData().then(() => {
-                console.log('Data fetched successfully');
-            });
-        }
-    }, [bookingsMemo, dispatch]);
 
     return (<>
         <div className="table-container max-h-96 overflow-y-auto">
@@ -55,44 +31,55 @@ const BookingManagerTicketTable = () => {
                     <th className="p-2 border border-black">Số tiền</th>
                 </tr>
                 </thead>
-
                 <tbody>
-                {bookings.length === 0 || bookings.length === undefined ? (<tr>
-                    <td colSpan="4">No booking available for this event</td>
-                </tr>) : (bookings.map((booking, index) => {
-                    const count = index + 1;
-                    return (<>
-                        {bookingDetails && bookingDetails.length > 0 ? (bookingDetails.map((detail) => detail.data.map((detailData) => {
-                            return detailData.ticketInBookingDetailResponses.map((ticket, index1) => {
-                                if (detailData.booking.id === booking.id) {
-                                    if (ticket.bookingDetail.id !== detailData.id) {
-                                        return null; // Use null instead of <div></div> for an empty element
-                                    } else {
-                                        return (<React.Fragment
-                                            key={index1}> {/* Use React.Fragment instead of empty tags <> </> */}
-                                            <tr key="index">
-                                                <td className="p-2 border border-black"
-                                                    rowSpan={bookings.length}>{count}</td>
-                                                <td className="p-2 border border-black bg-gray-200">{booking.customer.fullName}</td>
-                                                <td className="p-2 border border-black">{booking.userEmail}</td>
-                                                <td className="p-2 border border-black bg-gray-200">{booking.customer.phoneNumber}</td>
-                                                <td className="p-2 border border-black">N/A</td>
-                                                <td className="p-2 border border-black bg-gray-200">{ticket.ticketTypeName}</td>
-                                                <td className="p-2 border border-black">{ticket.ticketTypePrice}</td>
-                                                <td className="p-2 border border-black bg-gray-200">{booking.totalAmount}</td>
-                                            </tr>
-                                        </React.Fragment>);
-                                    }
+                {bookings === null || bookings === "" || bookings === undefined ? (<tr>
+                        <td colSpan="8">No booking available for this event</td>
+                    </tr>) : (bookings.content.map((booking, index) => {
+                        const detailRows = [];
+                        if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
+                            booking.bookingDetailResponseList.forEach((detail) => {
+                                if (booking.id === detail.bookingId && detail.ticketInBookingDetailResponses && detail.ticketInBookingDetailResponses.length > 0) {
+                                    detail.ticketInBookingDetailResponses.forEach((ticket, ticketIndex) => {
+                                        detailRows.push(<tr key={ticket.id}>
+                                            {ticketIndex === 0 && (<>
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        {index + 1}
+                                                    </td>
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        {booking.customer.fullName}
+                                                    </td>
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        {booking.userEmail}
+                                                    </td>
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        {booking.customer.phoneNumber}
+                                                    </td>
+                                                    <td className="border border-black"
+                                                        rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                        N/A
+                                                    </td>
+                                                </>)}
+                                            <td className="border border-black">{ticket.ticketTypeName}</td>
+                                            <td className="border border-black">{ticket.ticketTypePrice}</td>
+                                            {ticketIndex === 0 && (<td className="border border-black"
+                                                                       rowSpan={detail.ticketInBookingDetailResponses.length}>
+                                                    {formatCurrency(booking.totalAmount)}
+                                                </td>)}
+                                        </tr>);
+                                    });
                                 }
-                                return null; // Add a return statement for the outer map functions
                             });
-                        }))) : (<td colSpan="2">No booking details available</td>)}
-                    </>);
-                }))}
+                        }
+                        return detailRows;
+                    }))}
                 </tbody>
             </table>
         </div>
-        <div className="rounded-l bg-[#F6F6F6] flex">
+        <div className="my-2 rounded-l bg-[#F6F6F6] flex">
             <div className="m-auto text-center flex">
                 <div className="my-2"><ImInfo/></div>
                 <div className="my-auto">

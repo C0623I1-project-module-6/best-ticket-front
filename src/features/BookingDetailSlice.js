@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {findAllBookingDetailsByBookingId} from "../api/BookingDetailApi.js";
 
 const initialState = {
-  bookingDetails: [],
+  bookingDetails: null,
   bookingDetail: null,
   totalPages: null,
   loading: false,
@@ -26,15 +26,22 @@ const handlePending = (state) => {
 }, handleRejected = (state, action) => {
   state.success = false;
   state.loading = false;
+  state.bookings = action.payload;
   state.error = action.error;
 }, handleFulfilled = (state, action) => {
-  if (action.payload) {
-    state.success = true;
-    state.loading = false;
-    state.bookingDetails = action.payload;
-    state.totalPages = action.payload.totalPages;
-    state.error = false;
+  state.success = true;
+  state.loading = false;
+  if (action.payload && action.payload.data) {
+    state.bookingDetails = action.payload.data;
+    state.bookingDetail = action.payload;
+    state.totalPages = action.payload.data.totalPages;
+    console.log(action.payload)
+  } else {
+    state.bookingDetails = null;
+    state.bookingDetail = null;
+    state.totalPages = null;
   }
+  state.error = false;
 };
 
 export const BookingDetailSlice = createSlice({

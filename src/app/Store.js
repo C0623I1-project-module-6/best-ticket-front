@@ -11,6 +11,7 @@ import ExistsUserSlice from "../features/user/ExistsUserSlice.js"
 import TicketTypeSlice from "../features/TicketTypeSlice.js";
 import TimeSlice from "../features/TimeSlice.js";
 import SeatSlice from "../features/SeatSlice.js";
+import FileSlice from "../features/FileSlice.js";
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -29,6 +30,7 @@ export const store = configureStore(
                 organizer: OrganizerSlice,
                 existsUsers: ExistsUserSlice,
                 seat: SeatSlice,
+                file: FileSlice
             },
 
         },

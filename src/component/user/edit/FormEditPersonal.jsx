@@ -1,170 +1,227 @@
-export default function FormEditPersonal({organizer, editOrganizer, setEditOrganizer, isEditMode}) {
-    const handleChange = (e) => {
-        setEditOrganizer({
-            ...editOrganizer,
-            [e.target.name]: e.target.value
-        });
-    }
-    return (
-        <>
-            <h4 className="font-serif text-2xl p-5">Thông tin cơ bản</h4>
-            <div className="border border-solid shadow-lg rounded-md py-5 px-5 bg-white">
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <div className="sm:flex sm:gap-4">
-                            <label
-                                htmlFor="name"
-                                className="block text-1xl font-serif text-gray-700">
-                                Họ và tên *
-                            </label>
-                            <p className="text-red-900 text-2xl">*</p>
-                        </div>
-                        <input type="text"
-                               id="name"
-                               name="name"
-                               autoComplete="name"
-                               placeholder={organizer?.name || "Vui lòng nhập họ và tên"}
-                               onChange={handleChange}
-                               disabled={!isEditMode}
-                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                               ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                               focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                               font-serif"/>
-                    </div>
-                    <div>
-                        <div className="sm:flex sm:gap-4">
-                            <label
-                                htmlFor="taxCode"
-                                className="block text-1xl font-serif text-gray-700">
-                                Mã số thuế cá nhân
-                            </label>
-                            <p className="text-red-900 text-2xl">*</p>
-                        </div>
-                        <input type="text"
-                               id="taxCode"
-                               name="taxCode"
-                               autoComplete="taxCode"
-                               placeholder={organizer?.taxCode || "Vui lòng nhập mã số thuế cá nhân"}
-                               onChange={handleChange}
-                               disabled={!isEditMode}
-                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                               ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                               focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                               font-serif"/>
-                    </div>
-                    <div>
-                        <div className="sm:flex sm:gap-4">
-                            <label
-                                htmlFor="idCard"
-                                className="block text-1xl font-serif text-gray-700">
-                                CMND/CCCD/Hộ chiếu
-                            </label>
-                            <p className="text-red-900 text-2xl">*</p>
-                        </div>
-                        <input type="text"
-                               id="idCard"
-                               name="idCard"
-                               autoComplete="idCard"
-                               placeholder={organizer?.idCard || "Vui lòng nhập CMND/CCCD/Hộ chiếu"}
-                               onChange={handleChange}
-                               disabled={!isEditMode}
-                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                            ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                            focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                            font-serif"/>
-                    </div>
-                    <div>
-                        <div className="sm:flex sm:gap-4">
-                            <label
-                                htmlFor="issuedBy"
-                                className="block text-1xl font-serif text-gray-700">
-                                Nơi cấp
-                            </label>
-                            <p className="text-red-900 text-2xl">*</p>
-                        </div>
-                        <input type="text"
-                               id="issuedBy"
-                               name="issuedBy"
-                               autoComplete="issuedBy"
-                               placeholder={organizer?.issuedBy || "Vui lòng nhập nơi cấp"}
-                               onChange={handleChange}
-                               disabled={!isEditMode}
-                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                            ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                            focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                            font-serif"/>
-                    </div>
-                    <div>
-                        <div className="sm:flex sm:gap-4">
-                            <label
-                                htmlFor="dateRange"
-                                className="block text-1xl font-serif text-gray-700">
-                                Ngày cấp
-                            </label>
-                            <p className="text-red-900 text-2xl">*</p>
-                        </div>
-                        <input type="date"
-                               id="dateRange"
-                               name="dateRange"
-                               autoComplete="dateRange"
-                               placeholder={organizer?.dateRange}
-                               onChange={handleChange}
-                               disabled={!isEditMode}
-                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                               ring-inset ring-gray-300 focus:ring-0 focus:ring-inset
-                               focus:ring-indigo-600 sm:text-1xl sm:font-serif sm:leading-6 placeholder:font-serif
-                               placeholder:text-1xl"/>
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {Bounce, toast} from "react-toastify";
+import * as Yup from "yup";
+import {FastField, Form, Formik} from "formik";
+import {FormGroup, Label} from "reactstrap";
+import InputField from "../../../ultility/customField/InputField.jsx";
+import {Button} from "@material-tailwind/react";
+import {editOrganizerProfile} from "../../../features/user/OrganizerSlice.js";
 
-                    </div>
-                </div>
-            </div>
-            <h4 className="font-serif text-2xl p-5">Thông tin liên hệ</h4>
-            <div className="border border-solid shadow-lg rounded-md py-5 px-5 bg-white">
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <div className="sm:flex sm:gap-4">
-                            <label
-                                htmlFor="phoneNumber"
-                                className="block text-1xl font-serif text-gray-700">
-                                Số điện thoại
-                            </label>
-                            <p className="text-red-900 text-2xl">*</p>
-                        </div>
-                        <input type="number"
-                               id="phoneNumber"
-                               name="phoneNumber"
-                               autoComplete="phoneNumber"
-                               placeholder={organizer?.phoneNumber || "Vui lòng nhập số điện thoại"}
-                               onChange={handleChange}
-                               disabled={!isEditMode}
-                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                               ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                               ocus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                               font-serif"/>
-                    </div>
-                    <div>
-                        <div className="sm:flex sm:gap-4">
-                            <label
-                                htmlFor="email"
-                                className="block text-1xl font-serif text-gray-700">
-                                Email
-                            </label>
-                            <p className="text-red-900 text-2xl">*</p>
-                        </div>
-                        <input type="email"
-                               id="email"
-                               name="email"
-                               autoComplete="email"
-                               placeholder={organizer?.email || "bestticket@example.com"}
-                               onChange={handleChange}
-                               disabled={!isEditMode}
-                               className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                               ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                               focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                               font-serif"/>
-                    </div>
-                </div>
-            </div>
-        </>
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
+
+export default function FormEditPersonal({organizer, userExistsList, phoneRegex}) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [isEditMode, setIsEditMode] = useState(false)
+    const toastOptions =
+        {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        }
+    const initialValues = {
+        name: null,
+        email: null,
+        phoneNumber: null,
+        idCard: null,
+        taxCode: null,
+        dateRangeTaxCode: null,
+        issuedByTaxCode: null,
+    }
+    const personPhones = userExistsList
+        .filter(organizer => organizer.personPhoneNumber)
+        .map(organizer => organizer.personPhoneNumber);
+    const personEmails = userExistsList
+        .filter(organizer => organizer.personEmail)
+        .map(organizer => organizer.personEmail);
+    const personIdCards = userExistsList
+        .filter(organizer => organizer.personIdCard)
+        .map(organizer => organizer.personIdCard);
+    const personTaxCodes = userExistsList
+        .filter(organizer => organizer.personTaxCode)
+        .map(organizer => organizer.personTaxCode);
+    const validationPersonalSchema = Yup.object().shape({
+        name: Yup.string().nullable(),
+        email: Yup.string()
+            .test("unique", "Email already exists.", value => {
+                return !personEmails.includes(value)
+            })
+            .email("Invalid email! Please add @.")
+            .nullable(),
+
+        phoneNumber: Yup.string()
+            .test("unique", "Phone number already exists.", value => {
+                return !personPhones.includes(value);
+            })
+            .matches(phoneRegex, "Invalid phone number! Start from 0 and has 10 numbers.")
+            .nullable(),
+
+        idCard: Yup.string()
+            .test("unique", "Id card already exists.", value => {
+                return !personIdCards.includes(value);
+            })
+            .nullable(),
+        taxCode: Yup.string()
+            .test("unique", "Tax code already exists.", value => {
+                return !personTaxCodes.includes(value);
+            })
+            .nullable(),
+        dateRangeTaxCode: Yup.date().nullable(),
+        issuedByTaxCode: Yup.string().nullable(),
+    })
+    const toggleEditMode = () => {
+        setIsEditMode(prev => !prev);
+    };
+    const handleSubmit = (values) => {
+        dispatch(editOrganizerProfile(values));
+        setIsEditMode(false);
+        toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
+        navigate("/my-event/legal");
+    };
+    return (
+        <Formik
+            initialValues={initialValues}
+            validationSchema={validationPersonalSchema}
+            onSubmit={handleSubmit}>
+            {formikProps => {
+                const {values, errors, touched} = formikProps;
+                console.log({values, errors, touched});
+                return (
+                    <Form method="POST"
+                          onSubmit={formikProps.handleSubmit}>
+                        <h4 className="font-serif text-2xl p-5">Thông tin cơ bản</h4>
+                        <FormGroup className="border border-solid shadow-2xl rounded-md py-5 px-5 bg-white">
+                            <FormGroup className="grid grid-cols-2 gap-4">
+                                <FormGroup>
+                                    <FastField
+                                        type="text"
+                                        name="name"
+                                        component={InputField}
+                                        onChange={formikProps.handleChange}
+                                        label="Họ và tên"
+                                        placeholder={organizer.name || "Vui lòng nhập họ và tên"}
+                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <FastField
+                                        type="text"
+                                        name="taxCode"
+                                        component={InputField}
+                                        onChange={formikProps.handleChange}
+                                        label={organizer.taxCode || "Mã số thuế cá nhân"}
+                                        placeholder="Vui lòng nhập mã số thuế cá nhân"
+                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <FastField
+                                        type="text"
+                                        name="idCard"
+                                        component={InputField}
+                                        onChange={formikProps.handleChange}
+                                        label="CMNN/CCCD/Hộ chiếu"
+                                        placeholder={organizer.idCard || "Vui lòng nhập CMNN/CCCD/Hộ chiếu"}
+                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label htmlFor="dateRangeTaxCode"
+                                           className="block text-1xl font-serif text-gray-700">
+                                        Ngày cấp
+                                    </Label>
+                                    <FastField
+                                        type="date"
+                                        name="dateRangeTaxCode"
+                                        onChange={formikProps.handleChange}
+                                        value={organizer.dateRangeTaxCode}
+                                        className="block w-full rounded-md shadow-md border-0 p-2 mt-2
+                            text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1
+                            focus:ring-inset focus:ring-indigo-600 sm:text-1xl sm:font-serif
+                            sm:leading-6 placeholder:font-serif placeholder:text-1xl"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <FastField
+                                        type="text"
+                                        name="issuedByTaxCode"
+                                        component={InputField}
+                                        onChange={formikProps.handleChange}
+                                        label="Nơi cấp"
+                                        placeholder="Vui lòng nhập nơi cấp"
+                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                </FormGroup>
+                            </FormGroup>
+                        </FormGroup>
+                        <h4 className="font-serif text-2xl p-5">Thông tin liên hệ</h4>
+                        <FormGroup className="border border-solid shadow-2xl rounded-md py-5 px-5 bg-white">
+                            <FormGroup className="grid grid-cols-2 gap-4">
+                                <FormGroup>
+                                    <FastField
+                                        type="text"
+                                        name="phoneNumber"
+                                        component={InputField}
+                                        onChange={formikProps.handleChange}
+                                        label={organizer.phoneNumber || "Số điện thoại"}
+                                        placeholder="Vui lòng nhập số điện thoại"
+                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <FastField
+                                        type="email"
+                                        name="email"
+                                        component={InputField}
+                                        onChange={formikProps.handleChange}
+                                        label="Email"
+                                        placeholder={organizer.email || "bestticket@example.com"}
+                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                </FormGroup>
+                            </FormGroup>
+                        </FormGroup>
+                        <Button type="submit"
+                                className={classNames(
+                                    isEditMode ? "mt-4 block w-60 rounded-full shadow-sm text-center text-white text-1xl"
+                                        + " px-3 py-2 bg-[#10b981] border-0 hover:bg-gray-600 focus-visible:outline"
+                                        + "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                        : "hidden"
+                                )}>
+                            {isEditMode ? "Hoàn thành" : "Chỉnh sửa"}
+                        </Button>
+                        <Button type="button" onClick={toggleEditMode}
+                                className={classNames(
+                                    isEditMode ? "hidden" : "mt-4 block w-60 rounded-full shadow-sm text-center text-white text-1xl"
+                                        + " px-3 py-2 bg-[#10b981] border-0 hover:bg-gray-600 focus-visible:outline"
+                                        + "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                )}>
+                            {isEditMode ? "Hoàn thành" : "Chỉnh sửa"}
+                        </Button>
+                    </Form>
+                );
+            }}
+        </Formik>
     );
 }

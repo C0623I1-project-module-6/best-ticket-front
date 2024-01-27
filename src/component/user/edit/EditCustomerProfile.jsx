@@ -4,11 +4,12 @@ import {editCustomerProfile, selectEditCustomerProfileSuccess} from "../../../fe
 import {Bounce, toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Avatar from "../Avatar.jsx";
-import {ErrorMessage, FastField, Form, Formik} from "formik";
+import {FastField, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {selectExistsUsers} from "../../../features/user/ExistsUserSlice.js";
 import {Button} from "@material-tailwind/react";
-import {FormFeedback} from "reactstrap";
+import InputField from "../../../ultility/customField/InputField.jsx";
+import {FormGroup, Label} from "reactstrap";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -80,10 +81,14 @@ export default function EditCustomerProfile({customer}) {
     }
 
     const toggleEditMode = () => {
-        setIsEditMode(prev => !prev);
+        setIsEditMode(prev=>!prev);
+
     }
     const handleGenderChange = (e) => {
         setGender(e.target.value);
+    }
+    const handleBlur = () => {
+        setIsEditMode(false)
     }
 
     return (
@@ -94,158 +99,126 @@ export default function EditCustomerProfile({customer}) {
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 console.log({values, errors, touched});
-                const showError = errors[name] && touched[name];
                 return (
-                    <div className="flex">
+                    <FormGroup className="flex">
                         <Form className="w-screen" method="PUT"
                               onSubmit={formikProps.handleSubmit}>
-                            <div className="flex">
+                            <FormGroup className="flex">
                                 <Avatar/>
-                                <div className="w-3/4 p-10">
-                                    <div className="border border-solid shadow-lg rounded-md py-5 px-5 bg-white">
+                                <FormGroup className="w-3/4 p-10">
+                                    <FormGroup className="border border-solid shadow-2xl rounded-md py-5 px-5 bg-white">
                                         <h2 className=" flex justify-center text-2xl font-serif leading-7 text-gray-900">
                                             Thông tin cá nhân</h2>
-                                        <div className="grid grid-cols-2 gap-4 mt-4">
-                                            <div>
-                                                <label htmlFor="fullName"
-                                                       className="block text-1xl font-serif text-gray-700">
-                                                    Họ và tên
-                                                    {showError &&
-                                                        <span className="m-2 text-red-500 text-1xl">*</span>}
-                                                </label>
-                                                <div className="mt-2">
-                                                    <input
-                                                        type="text"
-                                                        name="fullName"
-                                                        placeholder={customer.fullName || "Vui lòng nhập họ và tên"}
-                                                        onChange={formikProps.handleChange}
-                                                        disabled={!isEditMode}
-                                                        className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                                                        ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                                                        focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                                                        font-serif"/>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label htmlFor="phoneNumber"
-                                                       className="block text-1xl font-serif text-gray-700">
-                                                    Số điện thoại
-                                                    {showError &&
-                                                        <span className="m-2 text-red-500 text-1xl">*</span>}
-                                                </label>
-                                                <div className="mt-2">
-                                                    <input
-                                                        type="text"
-                                                        name="phoneNumber"
-                                                        placeholder={customer.phoneNumber || "Vui lòng nhập số điện thoại"}
-                                                        onChange={formikProps.handleChange}
-                                                        error={formikProps.errors.phoneNumber}
-                                                        touched={formikProps.touched.phoneNumber}
-                                                        disabled={!isEditMode}
-                                                        className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                                            ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                                            focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                                            font-serif"/>
-
-                                                </div>
-                                                <ErrorMessage name="phoneNumber"
-                                                              component={FormFeedback}
-                                                              className="text-sm font-serif text-red-500"/>
-                                            </div>
-                                            <div>
-                                                <label htmlFor="idCard"
-                                                       className="block text-1xl font-serif text-gray-700">
-                                                    Số CMND/CCCD/Hộ chiếu
-                                                    {showError &&
-                                                        <span className="m-2 text-red-500 text-1xl">*</span>}
-                                                </label>
-                                                <div className="mt-2">
-                                                    <input
-                                                        type="text"
-                                                        name="idCard"
-                                                        placeholder={customer.idCard || "Vui lòng nhập số CMND/CCCD/Hộ chiếu"}
-                                                        onChange={formikProps.handleChange}
-                                                        disabled={!isEditMode}
-                                                        className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                                            ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                                            focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                                            font-serif"/>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label htmlFor="email"
-                                                       className="block text-1xl font-serif text-gray-700">
-                                                    Email nhận vé
-                                                    {showError &&
-                                                        <span className="m-2 text-red-500 text-1xl">*</span>}
-                                                </label>
-                                                <div className="mt-2">
-                                                    <input
-                                                        type="email"
-                                                        name="receiptEmail"
-                                                        placeholder={customer.receiptEmail || "besttick@example.com"}
-                                                        onChange={formikProps.handleChange}
-                                                        disabled={!isEditMode}
-                                                        className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md ring-1
-                                            ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-0 focus:ring-inset
-                                            focus:ring-indigo-600 sm:text-1xl sm:leading-6 placeholder:font-serif placeholder:text-1xl
-                                            font-serif"/>
-                                                </div>
+                                        <FormGroup className="grid grid-cols-2 gap-4 mt-4">
+                                            <FormGroup>
+                                                <FastField
+                                                    name="fullName"
+                                                    component={InputField}
+                                                    onChange={formikProps.handleChange}
+                                                    label="Họ và tên"
+                                                    placeholder={customer.fullName || "Vui lòng nhập họ và tên"}
+                                                    disabled={!isEditMode}
+                                                    onBlur={handleBlur}
+                                                    className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                                                    ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                                                    focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                                                    placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <FastField
+                                                    name="phoneNumber"
+                                                    component={InputField}
+                                                    onChange={formikProps.handleChange}
+                                                    label="Số điện thoại"
+                                                    placeholder={customer.phoneNumber || "Vui lòng nhập số điện thoại"}
+                                                    disabled={isEditMode}
+                                                    className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                                                    ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                                                    focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                                                    placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <FastField
+                                                    name="idCard"
+                                                    component={InputField}
+                                                    onChange={formikProps.handleChange}
+                                                    label="CMND/CCCD/Hộ chiếu"
+                                                    placeholder={customer.idCard || "Vui lòng nhập CMND/CCCD/Hộ chiếu"}
+                                                    disabled={isEditMode}
+                                                    className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                                                    ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                                                    focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                                                    placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <FastField
+                                                    type="email"
+                                                    name="receiptEmail"
+                                                    component={InputField}
+                                                    onChange={formikProps.handleChange}
+                                                    label="Email nhận vé"
+                                                    placeholder={customer.receiptEmail || "bestticket@gmail.com"}
+                                                    disabled={isEditMode}
+                                                    className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                                                    ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                                                    focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                                                    placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
                                                 <p className="mt-2"><a className="text-green-700" href="#">
-                                                    * Click để gửi lại email xác thực.</a>
+                                                    * Click để gửi lại mail xác thực.</a>
                                                 </p>
-                                            </div>
-                                            <div>
-                                                <label htmlFor="dateOfBirth"
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <Label htmlFor="dateOfBirth"
                                                        className="block text-1xl font-serif text-gray-700">
                                                     Ngày sinh
-                                                </label>
-                                                <div className="mt-2">
+                                                </Label>
+                                                <FormGroup className="mt-2">
                                                     <input
                                                         type="date"
                                                         name="dateOfBirth"
-                                                        value={customer?.dateOfBirth}
+                                                        value={customer.dateOfBirth}
                                                         onChange={formikProps.handleChange}
                                                         disabled={!isEditMode}
-                                                        className="block w-full rounded-md border-0 p-2 mt-2 text-gray-900 shadow-md
-                                            ring-1 ring-inset ring-gray-300 focus:ring-0 focus:ring-inset focus:ring-indigo-600
-                                            sm:text-1xl sm:font-serif sm:leading-6 placeholder:font-serif placeholder:text-1xl"/>
-                                                </div>
-                                            </div>
+                                                        className="block w-full rounded-md shadow-md border-0 p-2 mt-2
+                                                        text-gray-800 ring-1 ring-inset ring-gray-300 focus:ring-1
+                                                        focus:ring-inset focus:ring-indigo-600 sm:text-1xl sm:font-serif
+                                                        sm:leading-6 placeholder:font-serif placeholder:text-1xl"/>
+                                                </FormGroup>
+                                            </FormGroup>
 
-                                            <div>
-                                                <label htmlFor="gender"
+                                            <FormGroup>
+                                                <Label htmlFor="gender"
                                                        className="block text-1xl font-serif text-gray-700">
-                                                    Giới tính</label>
-                                                <div className="mt-2">
-                                                    <div className="flex items-center gap-x-3">
+                                                    Giới tính</Label>
+                                                <FormGroup className="mt-2">
+                                                    <FormGroup className="flex items-center gap-x-3">
                                                         <input id="gender" name="gender" type="radio"
                                                                value="Male" onChange={handleGenderChange}
                                                                checked={gender === "Male"}
                                                                disabled={!isEditMode}
                                                                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
-                                                        <label htmlFor="gender"
-                                                               className="block text-sm font-medium leading-6 text-gray-900">Nam</label>
+                                                        <Label htmlFor="gender"
+                                                               className="block text-sm font-medium leading-6 text-gray-900">Nam</Label>
                                                         <input id="gender" name="gender" type="radio"
                                                                value="Female" onChange={handleGenderChange}
                                                                checked={gender === "Female"}
                                                                disabled={!isEditMode}
                                                                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
-                                                        <label htmlFor="gender"
-                                                               className="block text-sm font-medium leading-6 text-gray-900">Nữ</label>
+                                                        <Label htmlFor="gender"
+                                                               className="block text-sm font-medium leading-6 text-gray-900">Nữ</Label>
                                                         <input id="gender" name="gender" type="radio"
                                                                value="Other" onChange={handleGenderChange}
                                                                checked={gender === "Other"}
                                                                disabled={!isEditMode}
                                                                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
-                                                        <label htmlFor="gender"
-                                                               className="block text-sm font-medium leading-6 text-gray-900">Khác</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="mt-6 flex items-center justify-center gap-x-6 mx-auto">
+                                                        <Label htmlFor="gender"
+                                                               className="block text-sm font-medium leading-6 text-gray-900">Khác</Label>
+                                                    </FormGroup>
+                                                </FormGroup>
+                                            </FormGroup>
+                                        </FormGroup>
+                                    </FormGroup>
+                                    <FormGroup className="mt-6 flex items-center justify-center gap-x-6 mx-auto">
                                         <Button type="button"
                                                 onClick={() => navigate("/")}
                                                 className="text-1xl px-3 py-2 text-white
@@ -272,11 +245,11 @@ export default function EditCustomerProfile({customer}) {
                                                 )}>
                                             {isEditMode ? "Hoàn thành" : "Chỉnh sửa"}
                                         </Button>
-                                    </div>
-                                </div>
-                            </div>
+                                    </FormGroup>
+                                </FormGroup>
+                            </FormGroup>
                         </Form>
-                    </div>
+                    </FormGroup>
                 );
             }}
         </Formik>
