@@ -76,7 +76,7 @@ function RegisterCustomerProfile(props) {
 
     const initialValues = {
         fullName: "",
-        phoneNumber: null,
+        phoneNumber: "",
         idCard: "",
         receiptEmail: "",
         dateOfBirth: "",

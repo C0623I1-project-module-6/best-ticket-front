@@ -78,8 +78,10 @@ export const registerUser = createAsyncThunk(
     async (registerData, {rejectWithValue}) => {
         const response = await register(registerData);
         if (response.status !== 201) {
+            console.log(response)
             return rejectWithValue(response.data.message);
         }
+        console.log(response)
         return response.data;
     }
 );

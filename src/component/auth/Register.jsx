@@ -29,7 +29,7 @@ function Register() {
     const initialValues = {
         username: "",
         email: "",
-        phoneNumber: "",
+        phoneNumber: null,
         password: "",
         confirmPassword: "",
     }
