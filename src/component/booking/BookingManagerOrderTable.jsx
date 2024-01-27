@@ -41,14 +41,18 @@ const BookingManagerOrderTable = () => {
         setSortBy(selectedSortBy);
         setSortDirection(newSortDirection);
 
-        dispatch(getAllBookingsByEventId(eventId1, currentPage - 1, {
+        dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage - 1}, {
             sortBy: selectedSortBy, sortDirection: newSortDirection
         }));
     };
 
+    // useEffect(() => {
+    //     dispatch(getAllBookings(currentPage - 1));
+    // }, [currentPage]);
+
     useEffect(() => {
-        dispatch(getAllBookingsByEventId(eventId1, currentPage - 1));
-    }, [dispatch, eventId1, currentPage]);
+        dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage -1}));
+    }, [currentPage, dispatch, eventId1]);
 
     const searchBookingByKeyword = async (e) => {
         e.preventDefault();
@@ -74,6 +78,7 @@ const BookingManagerOrderTable = () => {
         }
     };
 
+    console.log(bookings)
     let totalAmount = 0;
     return (<>
         <div className="border bg-gray-100 flex py-1">
@@ -123,7 +128,7 @@ const BookingManagerOrderTable = () => {
                     <tbody>
                     {bookings === null || bookings === "" || bookings === undefined ? (<tr>
                         <td colSpan="4">No booking available</td>
-                    </tr>) : (bookings.content.map((booking, index) => {
+                    </tr>) : (bookings.content.map((booking) => {
                         const ticketCounts = {};
                         if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
                             booking.bookingDetailResponseList.forEach((detail) => {
@@ -140,7 +145,7 @@ const BookingManagerOrderTable = () => {
                             });
                         }
                         totalAmount += booking.totalAmount;
-                        return <tr key={index} className="border border-black border-x-0">
+                        return <tr key={booking.id} className="border border-black border-x-0">
                             <th className="px-4 py-2 text-left border-b border-black">
                                 <input
                                     type="checkbox"
@@ -180,7 +185,9 @@ const BookingManagerOrderTable = () => {
                     </tbody>
                 </table>
                 <div className="flex items-center justify-center h-20">
-                    <Stack spacing={2}>
+                    <Stack
+                        spacing={2}
+                    >
                         <Pagination
                             count={totalPages || 0}
                             color="primary"

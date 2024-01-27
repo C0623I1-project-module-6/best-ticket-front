@@ -31,8 +31,6 @@ import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import OrganizerProfile from "../component/user/OrganizerProfile.jsx";
 import CreatedEvent from "../component/user/CreatedEvent.jsx";
 import BookingManagerPromotion from "../component/booking/BookingManagerPromotion.jsx";
-import TestFireBase from "../component/booking/TestFireBase.jsx";
-
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
