@@ -79,7 +79,7 @@ export default function EditCustomerProfile({customer}) {
     }
 
     const toggleEditMode = () => {
-        setIsEditMode(true);
+        setIsEditMode(prev=>!prev);
 
     }
     const handleGenderChange = (e) => {
