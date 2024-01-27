@@ -24,6 +24,7 @@ const BookingManagerOrderTable = () => {
     const [selectAllChecked, setSelectAllChecked] = useState(false);
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
     const [sortBy, setSortBy] = useState('createdAt');
+    const [status, setStatus] = useState('createdAt');
     const {formatCurrency} = useFormatCurrency()
 
     useEffect(() => {
@@ -60,6 +61,10 @@ const BookingManagerOrderTable = () => {
         setSortBy(selectedSortBy);
     };
 
+    const handleStatusChange = (selectedStatus) => {
+        setStatus(selectedStatus);
+    };
+
     let sortedBookings = [];
 
     if (bookings && bookings.content) {
@@ -73,8 +78,10 @@ const BookingManagerOrderTable = () => {
             sortedBookings.sort((a, b) => a.customer.fullName.localeCompare(b.customer.fullName));
         } else if (sortBy === 'customer.fullName_reversed') {
             sortedBookings.sort((a, b) => b.customer.fullName.localeCompare(a.customer.fullName));
-        } else if (sortBy === "ACTIVE" || sortBy === "PENDING" || sortBy === "INACTIVE") {
-            sortedBookings = sortedBookings.filter(booking => booking.status === sortBy);
+        }
+
+        if (status === "ACTIVE" || status === "PENDING" || status === "INACTIVE") {
+            sortedBookings = sortedBookings.filter(booking => booking.status === status);
         }
     }
 
@@ -84,7 +91,8 @@ const BookingManagerOrderTable = () => {
         <div className="border bg-gray-100 flex py-1">
             <div className="w-1/2 m-5 flex">
                 <div>
-                    <select className="bg-white border rounded border-black mx-1" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
+                    <select className="bg-white border rounded border-black mx-1" value={sortBy}
+                            onChange={(e) => handleSortChange(e.target.value)}>
                         <option value="createdAt">Mới nhất</option>
                         <option value="createdAt_reversed">Cũ nhất</option>
                         <option value="customer.fullName">A-Z</option>
@@ -92,8 +100,9 @@ const BookingManagerOrderTable = () => {
                     </select>
                 </div>
                 <div>
-                    <select className="bg-white border rounded border-black mx-1" value={sortBy} onChange={(e) => handleSortChange(e.target.value)}>
-                        <option value="">Tất cả đơn hàng</option>
+                    <select className="bg-white border rounded border-black mx-1" value={status}
+                            onChange={(e) => handleStatusChange(e.target.value)}>
+                        <option value="createdAt">Tất cả đơn hàng</option>
                         <option value="ACTIVE">Đang hiệu lực</option>
                         <option value="PENDING">Đang chờ</option>
                         <option value="INACTIVE">Không còn hiệu lực</option>
@@ -209,29 +218,29 @@ const BookingManagerOrderTable = () => {
                 </div>
                 <div className="rounded-l bg-[#F6F6F6] flex">
                     <div className="m-auto text-center flex">
-                        {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<div className="flex">
-                            <div className="my-3 mx-2 flex text-xl">
-                                <div className="py-1 px-1 text-xl"><MdEmail/></div>
-                                <div>Gửi mail đến</div>
-                            </div>
-                            <div className="mx-1 my-2">
-                                <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
-                                    navigate(`/503`)
-                                }}>
-                                    <div className="m-2">Tất cả</div>
-                                </button>
-                            </div>
-                            <div className="mx-1 my-2">
-                            {checkboxesChecked.length > 0 && checkboxesChecked.length < bookings.content.length && (
-
+                        {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (
+                            <div className="flex">
+                                <div className="my-3 mx-2 flex text-xl">
+                                    <div className="py-1 px-1 text-xl"><MdEmail/></div>
+                                    <div>Gửi mail đến</div>
+                                </div>
+                                <div className="mx-1 my-2">
                                     <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
                                         navigate(`/503`)
                                     }}>
-                                        <div className="m-2">Gửi đã chọn</div>
+                                        <div className="m-2">Tất cả</div>
                                     </button>
-                            )}
-                            </div>
-                        </div>)}
+                                </div>
+                                <div className="mx-1 my-2">
+                                    {checkboxesChecked.length > 0 && checkboxesChecked.length < bookings.content.length && (
+                                        <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                                            navigate(`/503`)
+                                        }}>
+                                            <div className="m-2">Đã chọn</div>
+                                        </button>
+                                    )}
+                                </div>
+                            </div>)}
                     </div>
                 </div>
             </div>
