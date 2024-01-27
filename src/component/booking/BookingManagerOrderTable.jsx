@@ -12,6 +12,8 @@ import {ImSearch} from 'react-icons/im';
 import {MdEmail} from "react-icons/md";
 import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
+import {GiCancel} from "react-icons/gi";
+import {FaCheckCircle} from "react-icons/fa";
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
@@ -85,7 +87,7 @@ const BookingManagerOrderTable = () => {
         }
 
     }
-    
+
     let totalAmount = 0;
     console.log(sortedBookings)
     return (<>
@@ -138,6 +140,7 @@ const BookingManagerOrderTable = () => {
                                 onChange={toggleSelectAll}
                             />
                         </th>
+                        <th className="px-4 py-2 text-center border-b border-black">TRẠNG THÁI</th>
                         <th className="px-4 py-2 text-left border-b border-black">ĐƠN HÀNG</th>
                         <th className="px-4 py-2 text-left border-b border-black">VÉ</th>
                         <th className="px-4 py-2 text-left border-b border-black">TỔNG CỘNG (VNĐ)</th>
@@ -145,7 +148,7 @@ const BookingManagerOrderTable = () => {
                     </thead>
                     <tbody>
                     {bookings === null || bookings === "" || bookings === undefined ? (<tr>
-                        <td colSpan="4" className="text-center">No booking available</td>
+                        <td colSpan="5" className="text-center">No booking available</td>
                     </tr>) : (sortedBookings.map((booking) => {
                         const ticketCounts = {};
                         if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
@@ -172,6 +175,15 @@ const BookingManagerOrderTable = () => {
                                     onChange={() => toggleCheckbox(booking.id)}
                                 />
                             </th>
+                            <td>
+                                {
+                                    booking.status === "INACTIVE" ? <GiCancel className="mx-auto" color={"red"}/> :
+                                        booking.status === "PENDING" ?
+                                            <FaCheckCircle className="mx-auto" color={"orange"}/> :
+                                            booking.status === "ACTIVE" ?
+                                                <FaCheckCircle className="mx-auto" color={"green"}/> : null
+                                }
+                            </td>
                             <td className="px-4 py-2 border-x-0">
                                 {booking.customer.fullName}
                                 <br/>
@@ -196,7 +208,7 @@ const BookingManagerOrderTable = () => {
                     }))}
                     {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (
                         <tr>
-                            <td colSpan="4" className="text-center">No booking details available</td>
+                            <td colSpan="4" className="text-center"></td>
                         </tr>) : (
                         <tr>
                             <td></td>
