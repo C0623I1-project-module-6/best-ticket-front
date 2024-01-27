@@ -142,13 +142,13 @@ const BookingManagerOrderTable = () => {
                         </th>
                         <th className="px-4 py-2 text-center border-b border-black">TRẠNG THÁI</th>
                         <th className="px-4 py-2 text-left border-b border-black">ĐƠN HÀNG</th>
-                        <th className="px-4 py-2 text-left border-b border-black">VÉ</th>
-                        <th className="px-4 py-2 text-left border-b border-black">TỔNG CỘNG (VNĐ)</th>
+                        <th className="px-4 py-2 text-center border-b border-black">VÉ</th>
+                        <th className="px-4 py-2 text-center border-b border-black">TỔNG CỘNG (VNĐ)</th>
                     </tr>
                     </thead>
                     <tbody>
                     {bookings === null || bookings === "" || bookings === undefined ? (<tr>
-                        <td colSpan="5" className="text-center">No booking available</td>
+                        <td colSpan="5" className="text-center">Chưa có vé nào được bán</td>
                     </tr>) : (sortedBookings.map((booking) => {
                         const ticketCounts = {};
                         if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
@@ -194,27 +194,28 @@ const BookingManagerOrderTable = () => {
                                 {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
                                 Ordered at {useFormatDate(booking.createdAt)}
                             </td>
-                            <td className="px-4 py-2 border-x-0">
+                            <td className="px-4 py-2 border-x-0 text-center">
                                 {Object.keys(ticketCounts).length > 0 ? Object.keys(ticketCounts).map((ticketType, index) => (
                                     <div key={index}>
                                         <div>{ticketCounts[ticketType]}</div>
                                         <div>{ticketType}</div>
                                     </div>)) : <span>No booking details available</span>}
                             </td>
-                            <td className="px-4 py-2 border-x-0">
+                            <td className="px-4 py-2 border-x-0 text-center">
                                 {formatCurrency(booking.totalAmount)}
                             </td>
                         </tr>;
                     }))}
                     {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (
                         <tr>
-                            <td colSpan="4" className="text-center"></td>
+                            <td colSpan="5" className="text-center">Chưa có vé nào được bán</td>
                         </tr>) : (
                         <tr>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td className="py-5 px-4">{formatCurrency(totalAmount)}</td>
+                            <td></td>
+                            <td className="py-5 px-4 text-center">{formatCurrency(totalAmount)}</td>
                         </tr>)}
                     </tbody>
                 </table>

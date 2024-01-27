@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {getEventById} from "../../features/EventSlice.js";
 import UserFooter from "../footer/UserFooter.jsx"
 import {FacebookIcon, FacebookShareButton} from "react-share";
+import {FaArrowRight} from "react-icons/fa";
 
 const BookingManagerPromotion = () => {
     const dispatch = useDispatch();
@@ -74,6 +75,30 @@ const BookingManagerPromotion = () => {
             {/*    <div> Chia sẻ lên website, blog</div>*/}
             {/*    <div>Sao chép đoạn mã dưới đây để tạo widget bán vé trên website hoặc blog của bạn</div>*/}
             {/*</div>*/}
+            <div className="w-[80%] mx-[10%] text-black">
+                <div>
+                    <div className="my-3 text-xl">
+                        Quảng bá sự kiện cùng Best Ticket
+                    </div>
+                    <div>
+                        <div className="flex"><FaArrowRight/> Là sự kiện nóng trên ngay trang chủ</div>
+                        <div className="flex"><FaArrowRight/> Gửi email marketing cho các khách hàng tiềm năng</div>
+                    </div>
+                    <div className="my-5 text-xl">Xem các dịch vụ hỗ trợ marketing</div>
+                    <div className="flex pb-10">
+                        <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                            navigate(`/503`)
+                        }}>
+                            <div className="m-2">Tiếng Việt</div>
+                        </button>
+                        <button className="border-0 border-black rounded bg-[#C2DEA3] mx-2" onClick={() => {
+                            navigate(`/503`)
+                        }}>
+                            <div className="m-2">English</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div>
             <UserFooter/>
