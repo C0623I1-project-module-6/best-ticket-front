@@ -4,13 +4,14 @@ import {GiReturnArrow} from "react-icons/gi";
 import {GrAnnounce, GrUserManager} from "react-icons/gr";
 import {BiSolidDiscount} from "react-icons/bi";
 import {useNavigate, useParams} from "react-router-dom";
-import {selectUserLogin} from "../../features/user/UserSlice.js";
+import {logoutUser, selectUserLogin, selectUserLogout} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import avatar from "../../assets/img/User.png";
 import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
 import {Avatar, Popover, PopoverContent, PopoverHandler} from "@material-tailwind/react";
 import {FaSignOutAlt} from "react-icons/fa";
-import {logout} from "../../api/UserApi.js";
+import {Bounce, toast} from "react-toastify";
+
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
@@ -18,6 +19,23 @@ const BookingManagerSidebar = () => {
     const dispatch = useDispatch();
     const user = useSelector(selectUserLogin);
     const userExists = useSelector(selectExistsUsers)
+    const userLogout = useSelector(selectUserLogout);
+
+    const logout = () => {
+        dispatch(logoutUser(userLogout));
+        toast('🦄 Logout success!', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+        navigate("/");
+    }
 
     return (<div className="fixed w-[26%] border-r shadow-md">
         <nav className="bg-[#303B46] h-screen">
@@ -88,7 +106,7 @@ const BookingManagerSidebar = () => {
                                             <div className="w-[20px]">
                                                 <FaSignOutAlt/>
                                             </div>
-                                            <div>Sign out</div>
+                                            <div>Đăng xuất</div>
                                         </div>
                                     </div>
                                 </PopoverContent>
