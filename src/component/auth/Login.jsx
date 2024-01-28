@@ -37,7 +37,7 @@ function Login() {
     }
     useEffect(() => {
         if (loginSuccess && user && user.token) {
-            toast("🦄 Bạn đã đăng nhập thành công!", toastOptions);
+            toast.success("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             dispatch(getOrganizerByUserId(user.id));
             history.back();
             // navigate("/");
@@ -45,7 +45,7 @@ function Login() {
     }, [user]);
     useEffect(() => {
         if (loginError) {
-            toast("🦄 Tên đăng nhập hoặc mật khẩu không đúng!", toastOptions);
+            toast.error("🦄 Tên đăng nhập hoặc mật khẩu không đúng!", toastOptions);
         }
     }, [loginError]);
 
@@ -116,7 +116,8 @@ function Login() {
                     </div>
                     <div className="w-full flex justify-between text-sm">
                         <span
-                            className="cursor-pointer text-blue-500 hover:text-gray-500 font-bold">Forgot password ?</span>
+                            className="cursor-pointer text-blue-500 hover:text-gray-500 font-bold"
+                        onClick={()=>{navigate("/send-otp")}}>Forgot password ?</span>
                         <div className="flex">
                             <span className="mx-2 font-bold">
                                 Don't have account ?

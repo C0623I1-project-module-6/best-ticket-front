@@ -1,5 +1,14 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {getUser, login, loginGoogle, loginWithToken, logout, register} from "../../api/UserApi.js";
+import {
+    forgotPassword,
+    getUser,
+    login,
+    loginGoogle,
+    loginWithToken,
+    logout,
+    register,
+    sendOtp
+} from "../../api/UserApi.js";
 
 const initialState = {
 
@@ -15,7 +24,10 @@ const initialState = {
     isLogin: false,
     isAdmin: false,
     userEdit: null,
-
+    sendOtpSuccess: false,
+    sendOtpError: null,
+    forgotPasswordSuccess: false,
+    forgotPasswordError: null,
 };
 
 export const loginUser = createAsyncThunk(
@@ -85,6 +97,30 @@ export const registerUser = createAsyncThunk(
         return response.data;
     }
 );
+export const sendOtpWithEmail = createAsyncThunk(
+    "send-otp",
+    async (otpData, {rejectWithValue}) => {
+        const response = await sendOtp(otpData);
+        if (response.status !== 200) {
+            console.log(response)
+            return rejectWithValue(response.data.message);
+        }
+        console.log(response)
+        return response.data;
+    }
+);
+export const forgotPasswordUser = createAsyncThunk(
+    "forgot-password",
+    async (data, {rejectWithValue}) => {
+        const response = await forgotPassword(data);
+        if (response.status !== 200) {
+            console.log(response)
+            return rejectWithValue(response.data.message);
+        }
+        console.log(response)
+        return response.data;
+    }
+);
 
 export const userSlice = createSlice(
     {
@@ -117,7 +153,20 @@ export const userSlice = createSlice(
             },
             setUserEdit: (state, action) => {
                 state.userEdit = action.payload;
-            }
+            },
+            setSendOtpSuccess: (state, action) => {
+                state.sendOtpSuccess = action.payload;
+            },
+            setSendOtpError: (state, action) => {
+                state.sendOtpError = action.payload;
+            },
+            setForgotPasswordSuccess: (state, action) => {
+                state.forgotPasswordSuccess = action.payload;
+            },
+            setForgotPasswordError: (state, action) => {
+                state.forgotPasswordError = action.payload;
+            },
+
         },
         extraReducers: (builder) => {
             builder
@@ -137,6 +186,7 @@ export const userSlice = createSlice(
                     state.value = action.payload.data;
                     state.registerError = false;
                 })
+
                 .addCase(loginUser.pending, (state) => {
                     state.loginSuccess = false;
                     state.loading = true;
@@ -219,8 +269,43 @@ export const userSlice = createSlice(
                     state.logoutError = false;
                     localStorage.removeItem("token");
                 })
+
                 .addCase(fetchGetUser.fulfilled, (state, action) => {
                     state.userEdit = action.payload.data;
+                })
+
+                .addCase(sendOtpWithEmail.pending, (state) => {
+                    state.sendOtpSuccess = false;
+                    state.loading = true;
+                    state.sendOtpError = false;
+                })
+                .addCase(sendOtpWithEmail.rejected, (state, action) => {
+                    state.sendOtpSuccess = false;
+                    state.loading = false;
+                    state.sendOtpError = true;
+                })
+                .addCase(sendOtpWithEmail.fulfilled, (state, action) => {
+                    state.sendOtpSuccess = true;
+                    state.loading = false;
+                    state.value = action.payload.data;
+                    state.sendOtpError = false;
+                })
+
+                .addCase(forgotPasswordUser.pending, (state) => {
+                    state.forgotPasswordSuccess = false;
+                    state.loading = true;
+                    state.forgotPasswordError = false;
+                })
+                .addCase(forgotPasswordUser.rejected, (state, action) => {
+                    state.forgotPasswordSuccess = false;
+                    state.loading = false;
+                    state.forgotPasswordError = true;
+                })
+                .addCase(forgotPasswordUser.fulfilled, (state, action) => {
+                    state.forgotPasswordSuccess = true;
+                    state.loading = false;
+                    state.value = action.payload.data;
+                    state.forgotPasswordError = false;
                 })
         }
     }
@@ -236,6 +321,10 @@ export const {
     setLogoutError,
     setValue,
     setUserEdit,
+    setSendOtpSuccess,
+    setSendOtpError,
+    setForgotPasswordError,
+    setForgotPasswordSuccess,
 } = userSlice.actions;
 
 export const selectLoginSuccess = (state) => state.user.loginSuccess;
@@ -250,4 +339,7 @@ export const selectUserLogout = (state) => state.user.value;
 export const selectUserRole = (state) => state.user.listRole;
 export const selectIsAdmin = (state) => state.user.isAdmin;
 export const selectIsLogin = (state) => state.user.isLogin;
+export const selectSendOtpSuccess = (state) => state.user.sendOtpSuccess;
+export const selectSendOtpError = (state) => state.user.sendOtpSuccess;
+
 export default userSlice.reducer;
