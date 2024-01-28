@@ -93,6 +93,10 @@ export const BookingSlice = createSlice({
             .addCase(getAllBookingsByEventId.rejected, handleRejected)
             .addCase(getAllBookingsByEventId.fulfilled, handleFulfilled)
 
+            .addCase(getAllBookingsByKeyword.pending, handlePending)
+            .addCase(getAllBookingsByKeyword.rejected, handleRejected)
+            .addCase(getAllBookingsByKeyword.fulfilled, handleFulfilled)
+
             .addCase(getBookingsByTimeId.pending, handlePending)
             .addCase(getBookingsByTimeId.rejected, handleRejected)
             .addCase(getBookingsByTimeId.fulfilled, (state, action) => {
