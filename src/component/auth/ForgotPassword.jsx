@@ -54,7 +54,6 @@ export default function ForgotPassword() {
                 onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps
-                console.log(values, errors, touched)
                 return (
                     <FormGroup className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
                              dark:bg-black dark:text-white">

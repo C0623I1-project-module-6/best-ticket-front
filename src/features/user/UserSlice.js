@@ -90,10 +90,8 @@ export const registerUser = createAsyncThunk(
     async (registerData, {rejectWithValue}) => {
         const response = await register(registerData);
         if (response.status !== 201) {
-            console.log(response)
             return rejectWithValue(response.data.message);
         }
-        console.log(response)
         return response.data;
     }
 );
@@ -102,10 +100,8 @@ export const sendOtpWithEmail = createAsyncThunk(
     async (otpData, {rejectWithValue}) => {
         const response = await sendOtp(otpData);
         if (response.status !== 200) {
-            console.log(response)
             return rejectWithValue(response.data.message);
         }
-        console.log(response)
         return response.data;
     }
 );
@@ -114,10 +110,8 @@ export const forgotPasswordUser = createAsyncThunk(
     async (data, {rejectWithValue}) => {
         const response = await forgotPassword(data);
         if (response.status !== 200) {
-            console.log(response)
             return rejectWithValue(response.data.message);
         }
-        console.log(response)
         return response.data;
     }
 );
