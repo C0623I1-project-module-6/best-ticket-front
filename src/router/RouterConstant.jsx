@@ -36,12 +36,19 @@ import BookingManagerPromotion from "../component/booking/BookingManagerPromotio
 import Mail from "../layout/pages/mail/Mail.jsx";
 import ForgotPassword from "../component/auth/ForgotPassword.jsx";
 import SendOtp from "../component/auth/SendOtp.jsx";
+import UnLockUser from "../component/auth/UnLockUser.jsx";
+import UserProfile from "../component/user/UserProfile.jsx";
+import UserRecovery from "../component/auth/UserRecovery.jsx";
+import SendOtpUnlock from "../component/auth/SendOtpUnlock.jsx";
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
     {path: "/register", element: Register, layout: GuestLayout},
     {path: "/send-otp", element: SendOtp, layout: GuestLayout},
     {path: "/forgot-password", element: ForgotPassword, layout: GuestLayout},
+    {path: "/unlock", element: UnLockUser, layout: GuestLayout},
+    {path: "/send-otp-unlock", element: SendOtpUnlock, layout: GuestLayout},
+    {path: "/user-recovery", element: UserRecovery, layout: GuestLayout},
     {path: "/403", element: ForbiddenPage, layout: ErrorLayout},
     {path: "/404", element: NotFoundPage, layout: ErrorLayout},
     {path: "/500", element: InternalServerErrorPage, layout: ErrorLayout},
@@ -56,7 +63,7 @@ export const ROUT_DATA = [
     {path: "/admin/:param", element: AdminTable, layout: AdminLayout},
     {path: "/search", element: Search, layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
-
+    {path: "/user-profile", element: UserProfile, layout: UserLayout},
     {path: "/profile", element: CustomerProfile, layout: UserLayout},
     {path: "/my-event/legal", element: OrganizerProfile, layout: OrganizerLayout},
 

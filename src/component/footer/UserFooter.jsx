@@ -6,7 +6,7 @@ function UserFooter(props) {
     return (
         <>
 
-            <div className="bg-black pt-10 pb-32">
+            <div className="bg-gray-200 pt-10 pb-32">
                 <div className="flex mx-10 gap-10">
                     <div className="w-2/5 flex">
                         <div className="w-1/5 mr-4">

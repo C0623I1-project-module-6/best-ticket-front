@@ -109,7 +109,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         onChange={formikProps.handleChange}
                                         label="Họ và tên"
                                         placeholder={organizer.name || "Vui lòng nhập họ và tên"}
-                                        disabled={!isEditMode}
+                                        disabled={isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -123,7 +123,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         onChange={formikProps.handleChange}
                                         label="Mã số thuế cá nhân"
                                         placeholder={organizer.taxCode || "Vui lòng nhập mã số thuế cá nhân"}
-                                        disabled={!isEditMode}
+                                        disabled={isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -137,7 +137,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         onChange={formikProps.handleChange}
                                         label="CMNN/CCCD/Hộ chiếu"
                                         placeholder={organizer.idCard || "Vui lòng nhập CMNN/CCCD/Hộ chiếu"}
-                                        disabled={!isEditMode}
+                                        disabled={isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -167,7 +167,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         onChange={formikProps.handleChange}
                                         label="Nơi cấp"
                                         placeholder={organizer.issuedByTaxCode || "Vui lòng nhập nơi cấp"}
-                                        disabled={!isEditMode}
+                                        disabled={isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -186,7 +186,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         onChange={formikProps.handleChange}
                                         label="Số điện thoại"
                                         placeholder={organizer.phoneNumber || "Vui lòng nhập số điện thoại"}
-                                        disabled={!isEditMode}
+                                        disabled={isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -200,7 +200,7 @@ export default function FormEditPersonal({organizer, userExistsList, phoneRegex}
                                         onChange={formikProps.handleChange}
                                         label="Email"
                                         placeholder={organizer.email || "bestticket@example.com"}
-                                        disabled={!isEditMode}
+                                        disabled={isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
