@@ -10,6 +10,7 @@ import {
 const initialState = {
     bookings: null,
     booking: null,
+    message: null,
     totalPages: null,
     loading: false,
     success: false,
@@ -25,10 +26,7 @@ export const getAllBookings = createAsyncThunk("bookings", async (currentPage, r
     }
     return response.data;
 });
-export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({
-                                                                                         eventId,
-                                                                                         currentPage
-                                                                                     }, rejectWithValue) => {
+export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({eventId, currentPage}, rejectWithValue) => {
     const response = await findAllBookingsByEventId(eventId, currentPage);
     if (response.status !== 200) {
         return rejectWithValue(response.data)
@@ -94,6 +92,10 @@ export const BookingSlice = createSlice({
             .addCase(getAllBookingsByEventId.pending, handlePending)
             .addCase(getAllBookingsByEventId.rejected, handleRejected)
             .addCase(getAllBookingsByEventId.fulfilled, handleFulfilled)
+
+            .addCase(getAllBookingsByKeyword.pending, handlePending)
+            .addCase(getAllBookingsByKeyword.rejected, handleRejected)
+            .addCase(getAllBookingsByKeyword.fulfilled, handleFulfilled)
 
             .addCase(getBookingsByTimeId.pending, handlePending)
             .addCase(getBookingsByTimeId.rejected, handleRejected)
