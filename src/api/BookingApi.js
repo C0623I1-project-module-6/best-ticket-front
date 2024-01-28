@@ -1,6 +1,7 @@
 import axios from "axios";
 import {BEST_TICKET_API} from "../ultility/AppConstant.js";
 
+
 export const findAllBookings = async () => {
     let result = null;
     try {
@@ -24,11 +25,11 @@ export const findAllBookingsByEventId = async (eventId) => {
 
 export const searchBookingByKeyword = async (eventId, keyword) => {
     let result = null;
-        await axios.get(`${BEST_TICKET_API}bookings/event/${eventId}/search?keyword=${keyword}`).then((res) => {
-            result = res
-        }).catch(e => {
-            console.log(e)
-        });
+    await axios.get(`${BEST_TICKET_API}bookings/event/${eventId}/search?keyword=${keyword}`).then((res) => {
+        result = res
+    }).catch(e => {
+        console.log(e)
+    });
 
     return result;
 };
@@ -45,6 +46,7 @@ export const findBookingsByTimeId = async (timeId) => {
 
 export async function createBooking(bookings) {
     let response = null;
+    console.log(bookings);
     await axios({
         url: `${BEST_TICKET_API}bookings/create`,
         headers: {

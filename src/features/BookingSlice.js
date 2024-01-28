@@ -45,7 +45,6 @@ export const createBookingForTicket = createAsyncThunk(
         "bookings/createBookingForTicket",
         async (bookings) => {
             const response = await createBooking(bookings);
-            console.log(response.data);
             return response.data;
         });
 
@@ -86,15 +85,6 @@ export const BookingSlice = createSlice({
             .addCase(getAllBookingsByEventId.pending, handlePending)
             .addCase(getAllBookingsByEventId.rejected, handleRejected)
             .addCase(getAllBookingsByEventId.fulfilled, handleFulfilled)
-
-            .addCase(getAllBookingsByKeyword.pending, handlePending)
-            .addCase(getAllBookingsByKeyword.rejected, handleRejected)
-            .addCase(getAllBookingsByKeyword.fulfilled, (state, action) => {
-                state.success = true;
-                state.loading = false;
-                state.bookings = action.payload.data;
-                state.error = false;
-            })
 
             .addCase(getBookingsByTimeId.pending, handlePending)
             .addCase(getBookingsByTimeId.rejected, handleRejected)
