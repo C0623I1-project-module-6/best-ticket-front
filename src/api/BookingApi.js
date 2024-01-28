@@ -61,6 +61,7 @@ export const findBookingsByTimeId = async (timeId) => {
 
 export async function createBooking(bookings) {
     let response = null;
+    console.log(bookings);
     await axios({
         url: `${BEST_TICKET_API}bookings/create`,
         headers: {

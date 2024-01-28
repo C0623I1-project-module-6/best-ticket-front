@@ -25,15 +25,10 @@ import CreateEventStep1 from "../component/event/createEvent/CreateEventStep1.js
 import CreateEventStep2 from "../component/event/createEvent/CreateEventStep2.jsx";
 import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.jsx";
 import EventDetail from "../component/event/EventDetail.jsx";
-
-
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import OrganizerProfile from "../component/user/OrganizerProfile.jsx";
 import CreatedEvent from "../component/user/CreatedEvent.jsx";
-
 import BookingManagerPromotion from "../component/booking/BookingManagerPromotion.jsx";
-
-import Mail from "../layout/pages/mail/Mail.jsx";
 import ForgotPassword from "../component/auth/ForgotPassword.jsx";
 import SendOtp from "../component/auth/SendOtp.jsx";
 
@@ -90,8 +85,5 @@ export const ROUT_DATA = [
     {
         path: "/my-event/event/:eventId/moderators",
         element: BookingManagerModeratorList,
-        layout: OrganizerBookingManagerLayout
     },
-    {path: "/mail", element: Mail}
-
 ];
