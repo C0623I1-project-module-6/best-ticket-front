@@ -7,14 +7,12 @@ import RegisterOrganizerProfile from "./add/RegisterOrganizerProfile.jsx";
 export default function OrganizerProfile() {
     const dispatch = useDispatch();
     const user = useSelector(selectUserLogin);
-    console.log(user);
     const userEdit = useSelector(selectUserEdit);
-    console.log(userEdit);
+
     useEffect(() => {
         dispatch(fetchGetUser(user.id));
-        console.log(user.id)
+
     }, []);
-    console.log(userEdit?.organizer)
     return (
         <>
             {

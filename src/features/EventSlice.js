@@ -16,6 +16,7 @@ const initialState = {
     loading: false,
     success: false,
     error: null,
+    eventById: null
 };
 export const getEventsByName = createAsyncThunk("events/byName", async ({searchTerm, currentPage}) => {
     const response = await findEventsByName(searchTerm, currentPage);
@@ -107,7 +108,7 @@ export const EventSlice = createSlice({
                 state.success = true;
                 state.loading = false;
                 state.totalPages = action.payload.totalPages;
-                state.event = action.payload.data;
+                state.eventById = action.payload.data;
                 state.error = false;
             })
 
@@ -132,7 +133,6 @@ export const EventSlice = createSlice({
     },
 })
 
-// export const selectEvents = (State)=> State.event.events
-export const selectEventById = (state) => state.event.event;
+export const selectEventById = (state) => state.event.eventById;
 export const selectEvents = (state) => state.event.events;
 export default EventSlice.reducer

@@ -14,6 +14,7 @@ function TicketBooking() {
         setCurrent(data)
     }
 
+
     return (
         <div className="w-full bg-[#F1F1F1] overflow-y-auto">
             <div className=" bg-gradient-to-r from-blue-gray-400 via-brown-300 to-blue-400 text-white">
@@ -37,7 +38,7 @@ function TicketBooking() {
                     <Step title="Hoàn tất"/>
                 </Steps>
                 {current === 0 && <TicketBookingStep1 callbackData={callBackFunction}/>}
-                {current === 1 && <TicketBookingStep2/>}
+                {current === 1 && <TicketBookingStep2 callbackData={callBackFunction}/>}
                 {current === 2 && <TicketBookingStep3/>}
             </div>
             <UserFooter/>

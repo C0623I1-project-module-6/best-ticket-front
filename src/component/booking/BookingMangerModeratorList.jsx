@@ -1,13 +1,13 @@
 import {useParams} from 'react-router-dom';
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getEventById} from '../../features/EventSlice.js';
+import {getEventById, selectEventById} from '../../features/EventSlice.js';
 import UserFooter from "../footer/UserFooter.jsx";
 
 export function BookingManagerModeratorList() {
     const eventId = useParams().eventId;
     const dispatch = useDispatch();
-    const event = useSelector((state) => state.event.event);
+    const event = useSelector(selectEventById);
 
     useEffect(() => {
         dispatch(getEventById(eventId));

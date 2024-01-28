@@ -2,20 +2,20 @@ import BookingManagerOrderTable from "./BookingManagerOrderTable.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getEventById} from "../../features/EventSlice.js";
+import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import BookingManagerTicketTable from "./BookingManagerTicketTable.jsx";
 import UserFooter from "../footer/UserFooter.jsx"
 
 export function BookingManagerEventBookings() {
     const dispatch = useDispatch();
-    const event = useSelector((state) => state.event.event);
+    const event = useSelector(selectEventById);
     const eventId = useParams().eventId;
 
     useEffect(() => {
         dispatch(getEventById(eventId))
     }, [dispatch, eventId]);
 
-    const [activeTab, setActiveTab] = useState("order");
+    const [activeTab, setActiveTab] = useState("orders");
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -29,8 +29,8 @@ export function BookingManagerEventBookings() {
                     <hr className="my-5 border-0.5px border-black"/>
                     <div className="my-6">
                         <button
-                            className={`${activeTab === "order" ? "bg-black" : "bg-gray-400"} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2`}
-                            onClick={() => handleTabClick("order")}
+                            className={`${activeTab === "orders" ? "bg-black" : "bg-gray-400"} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2`}
+                            onClick={() => handleTabClick("orders")}
                         >
                             Đơn hàng
                         </button>
@@ -41,7 +41,7 @@ export function BookingManagerEventBookings() {
                             Vé
                         </button>
                     </div>
-                    {activeTab === "order" ? <BookingManagerOrderTable/> : <BookingManagerTicketTable/>}
+                    {activeTab === "orders" ? <BookingManagerOrderTable/> : <BookingManagerTicketTable/>}
                 </div>
                 <div>
                     <UserFooter/>

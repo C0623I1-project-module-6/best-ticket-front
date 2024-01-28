@@ -65,10 +65,10 @@ function Seat({dataFormSeat}) {
                                 key={index}
                                 className={`inline-block w-8 h-8 leading-8 text-center text-black text-xs m-2 rounded`}
                                 style={{
-                                    backgroundColor: ticket.status === "Pending" ? 'red' : ticket.ticketType.name === "VIP" ? '#FFD5CF' : ticket.ticketType.name === "THƯỜNG" ? "#C4F1F2" : "#FDE098"
+                                    backgroundColor: ticket.status === "Success" ? 'red' : ticket.ticketType.name === "VIP" ? '#FFD5CF' : ticket.ticketType.name === "THƯỜNG" ? "#C4F1F2" : "#FDE098"
                                 }}
                                 onClick={() => handleSeatClick(ticket.seat)}
-                                disabled={ticket.status === "Pending"}
+                                disabled={ticket.status === "Success"}
                             >
                                 {ticket.seat}
                             </button>

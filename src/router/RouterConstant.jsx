@@ -25,16 +25,19 @@ import CreateEventStep1 from "../component/event/createEvent/CreateEventStep1.js
 import CreateEventStep2 from "../component/event/createEvent/CreateEventStep2.jsx";
 import CreateEventStep3 from "../component/event/createEvent/CreateEventStep3.jsx";
 import EventDetail from "../component/event/EventDetail.jsx";
-
-
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import OrganizerProfile from "../component/user/OrganizerProfile.jsx";
 import CreatedEvent from "../component/user/CreatedEvent.jsx";
-
+import BookingManagerPromotion from "../component/booking/BookingManagerPromotion.jsx";
+import BookingManagerEventSummarize from "../component/booking/BookingManagerEventSummarize.jsx";
+import ForgotPassword from "../component/auth/ForgotPassword.jsx";
+import SendOtp from "../component/auth/SendOtp.jsx";
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
     {path: "/register", element: Register, layout: GuestLayout},
+    {path: "/send-otp", element: SendOtp, layout: GuestLayout},
+    {path: "/forgot-password", element: ForgotPassword, layout: GuestLayout},
     {path: "/403", element: ForbiddenPage, layout: ErrorLayout},
     {path: "/404", element: NotFoundPage, layout: ErrorLayout},
     {path: "/500", element: InternalServerErrorPage, layout: ErrorLayout},
@@ -71,35 +74,13 @@ export const ROUT_DATA = [
         ]
     },
 
-
-    {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/RSVPs/bookings",
-        element: BookingManagerEventBookings,
-        layout: OrganizerBookingManagerLayout
-    },
-    {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
-    {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/moderators",
-        element: BookingManagerModeratorList,
-        layout: OrganizerBookingManagerLayout
-    },
-
-
-    // {path: "/my-event/event/:eventId/", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/RSVPs/bookings",
-        element: BookingManagerEventBookings,
-        layout: OrganizerBookingManagerLayout
-    },
-    // {path: "/my-event/event/:eventId/promote", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/summarize", element: BookingManagerEventSummarize, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/promote", element: BookingManagerPromotion, layout: OrganizerBookingManagerLayout},
     // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/moderators", element: BookingManagerModeratorList, layout: OrganizerBookingManagerLayout},
     {
         path: "/my-event/event/:eventId/moderators",
         element: BookingManagerModeratorList,
-        layout: OrganizerBookingManagerLayout
     },
-
-
 ];
