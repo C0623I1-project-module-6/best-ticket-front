@@ -34,7 +34,7 @@ const BookingManagerSidebar = () => {
             theme: "light",
             transition: Bounce,
         });
-        navigate("/");
+        navigate("/503");
     }
 
     return (<div className="fixed w-[26%] border-r shadow-md">
