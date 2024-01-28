@@ -1,14 +1,15 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {
-    getAllBookingsByEventId,
-    selectAllBookingsByEventId,
-} from '../../features/BookingSlice';
-import {useParams} from 'react-router-dom';
+import {getAllBookingsByEventId, selectAllBookingsByEventId,} from '../../features/BookingSlice';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {ImInfo} from "react-icons/im";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
+import {GiCancel} from "react-icons/gi";
+import {FaCheckCircle} from "react-icons/fa";
+import {RiFileExcel2Fill} from "react-icons/ri";
+
 
 const BookingManagerTicketTable = () => {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const BookingManagerTicketTable = () => {
     const totalPages = useSelector(state => state.booking.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
     const {formatCurrency} = useFormatCurrency();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -27,6 +29,20 @@ const BookingManagerTicketTable = () => {
     const startIndex = (currentPage - 1) * rowsPerPage;
     
     return (<>
+        <div className="border bg-gray-100 flex my-6">
+            <div className="w-1/2 m-5 flex">
+                <div className="mx-1">
+                    <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
+                        navigate(`/503`)
+                    }}>
+                        <div className="m-2 flex">
+                            <div className="p-1"><RiFileExcel2Fill /></div>
+                            <div>Tải về file Excel</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
         <div className="table-container border border-black max-h-96 overflow-y-auto">
             <table className="w-full text-left border border-black">
                 <thead className="border border-black">
@@ -39,11 +55,12 @@ const BookingManagerTicketTable = () => {
                     <th className="p-2 border border-black">Loại vé</th>
                     <th className="p-2 border border-black">Giá vé</th>
                     <th className="p-2 border border-black">Số tiền</th>
+                    <th className="p-2 border border-black">Trạng thái thanh toán</th>
                 </tr>
                 </thead>
                 <tbody>
                 {bookings === null || bookings === "" || bookings === undefined ? (<tr>
-                    <td colSpan="8">No booking available for this event</td>
+                    <td colSpan="9" className="text-center">Chưa có vé nào được bán</td>
                 </tr>) : (bookings.content.map((booking, index) => {
                     const detailRows = [];
                     if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
@@ -79,6 +96,13 @@ const BookingManagerTicketTable = () => {
                                                                    rowSpan={detail.ticketInBookingDetailResponses.length}>
                                             {formatCurrency(booking.totalAmount)}
                                         </td>)}
+                                        <td className="border border-black">
+                                        {ticket.status === "UNPAID" || ticket.status === null ?
+                                            <GiCancel className="mx-auto" color={"red"}/> : ticket.status === "PENDING" ?
+                                                <FaCheckCircle className="mx-auto"
+                                                               color={"orange"}/> : ticket.status === "PAID" ?
+                                                    <FaCheckCircle className="mx-auto" color={"green"}/> : null}
+                                    </td>
                                     </tr>);
                                 });
                             }
@@ -90,7 +114,7 @@ const BookingManagerTicketTable = () => {
             </table>
         </div>
         <div className="flex items-center justify-center h-20">
-            <Stack
+            {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<Stack
                 spacing={2}
             >
                 <Pagination
@@ -99,7 +123,8 @@ const BookingManagerTicketTable = () => {
                     page={currentPage}
                     onChange={(event, value) => setCurrentPage(value)}
                 />
-            </Stack>
+            </Stack>)
+            }
         </div>
         <div className="my-2 rounded-l bg-[#F6F6F6] flex">
             <div className="m-auto text-center flex">
