@@ -76,6 +76,8 @@ export default function AdminTable() {
             dispatch(getPageBookings(currentPage - 1));
         } else if (param.param === "users") {
             dispatch(getPageUsers(currentPage - 1))
+        } else if (param.param === "eventApproval") {
+            dispatch(getPageUsers(currentPage - 1))
         }
     }, [currentPage]);
 
@@ -126,7 +128,7 @@ export default function AdminTable() {
                             )}
                         </tr>
                         </thead>
-                        <TableContent content={param}/>
+                        <TableContent content={param} />
 
                     </table>
                 </div>

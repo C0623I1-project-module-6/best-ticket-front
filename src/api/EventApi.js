@@ -72,7 +72,7 @@ export const findEventByStatusIsPending= async (currentPage)=>{
   let token = localStorage.getItem("token");
   try{
     result=await axios({
-      url : `${BEST_TICKET_API}events/status/pending?page=${currentPage}&pageSize=20`,
+      url : `${BEST_TICKET_API}events/status/pending?page=${currentPage}&pageSize=100`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
