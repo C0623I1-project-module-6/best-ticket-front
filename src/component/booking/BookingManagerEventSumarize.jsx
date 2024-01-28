@@ -3,7 +3,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect} from "react";
 import {getEventById} from "../../features/EventSlice.js";
 import UserFooter from "../footer/UserFooter.jsx"
-import {FacebookIcon, FacebookShareButton} from "react-share";
 
 const BookingManagerEventSumarize = () => {
     const dispatch = useDispatch();

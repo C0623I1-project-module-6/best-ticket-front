@@ -52,17 +52,19 @@ export async function searchBookingByKeyword(eventId, keyword, currentPage) {
 export async function sendEmail(message) {
     let response = null;
     await axios({
-        url: `${BEST_TICKET_API}bookings/sent-email`,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        method: "POST",
-        data: message
-    }).then((res) => {
+            url: `${BEST_TICKET_API}bookings/sent-email`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: "POST",
+            data: message
+        }
+    ).then((res) => {
         response = res;
     }).catch((e) => {
         response = e;
     })
+    console.log(response)
     return response;
 }
 
