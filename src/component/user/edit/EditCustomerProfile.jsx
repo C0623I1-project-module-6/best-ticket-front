@@ -111,7 +111,6 @@ export default function EditCustomerProfile({customer}) {
                                                     onChange={formikProps.handleChange}
                                                     label="Họ và tên"
                                                     placeholder={customer.fullName || "Vui lòng nhập họ và tên"}
-                                                    disabled={isEditMode}
                                                     className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                                                     ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                                                     focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -124,7 +123,6 @@ export default function EditCustomerProfile({customer}) {
                                                     onChange={formikProps.handleChange}
                                                     label="Số điện thoại"
                                                     placeholder={customer.phoneNumber || "Vui lòng nhập số điện thoại"}
-                                                    disabled={isEditMode}
                                                     className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                                                     ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                                                     focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -137,7 +135,6 @@ export default function EditCustomerProfile({customer}) {
                                                     onChange={formikProps.handleChange}
                                                     label="CMND/CCCD/Hộ chiếu"
                                                     placeholder={customer.idCard || "Vui lòng nhập CMND/CCCD/Hộ chiếu"}
-                                                    disabled={isEditMode}
                                                     className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                                                     ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                                                     focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
@@ -151,7 +148,6 @@ export default function EditCustomerProfile({customer}) {
                                                     onChange={formikProps.handleChange}
                                                     label="Email nhận vé"
                                                     placeholder={customer.receiptEmail || "bestticket@gmail.com"}
-                                                    disabled={isEditMode}
                                                     className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                                                     ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                                                     focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
