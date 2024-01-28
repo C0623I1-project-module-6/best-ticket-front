@@ -111,7 +111,7 @@ const BookingManagerSidebar = () => {
                                     </div>
                                 </PopoverContent>
                             </Popover>)
-                        </div>) : navigate(`/`)}
+                        </div>) : navigate(`/login`)}
                     </div>
                 </li>
                 <li>
