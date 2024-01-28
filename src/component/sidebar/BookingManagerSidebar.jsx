@@ -34,7 +34,7 @@ const BookingManagerSidebar = () => {
             theme: "light",
             transition: Bounce,
         });
-        navigate("/503");
+        navigate("/404");
     }
 
     return (<div className="fixed w-[26%] border-r shadow-md">
@@ -42,7 +42,7 @@ const BookingManagerSidebar = () => {
             <ul className="text-left">
                 <li>
                     <div className="text-center p-2 flex bg-[#262F38]">
-                        <div className="w-1/2 text-left ml-6">
+                        <div className="w-1/2 text-left ml-6 py-1">
                             <a href="/">
                                 <img src="/src/assets/img/logo/logo-auth-header-light.svg" alt=""
                                      className="h-[50px] w-[50px] cursor-pointer bg-white"/>
