@@ -107,7 +107,7 @@ const BookingManagerSidebar = () => {
                 </li>
                 <li>
                     <a onClick={() => {
-                        navigate(`/my-event/legal`)
+                        navigate(`/my-event/legal/createdEvent`)
                     }} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
                             <div className="m-1"><GiReturnArrow/></div>

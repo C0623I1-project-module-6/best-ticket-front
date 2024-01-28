@@ -77,9 +77,9 @@ const BookingManagerOrderTable = () => {
         const checked = e.target.checked;
         setSelectAllChecked(checked);
         if (checked) {
-            const allBookingIds = bookings.content.map((booking) => booking.id);
+            const allBookingIds = sortedBookings.map((booking) => booking.id);
             setCheckboxesChecked(allBookingIds);
-            allBookingEmails = bookings.content.map((booking) => booking.userEmail);
+            allBookingEmails = sortedBookings.map((booking) => booking.userEmail);
             console.log(allBookingEmails);
         } else {
             setCheckboxesChecked([]);
