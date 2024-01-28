@@ -1,7 +1,9 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventId, getAllBookingsByKeyword, selectAllBookingsByEventId
+    getAllBookingsByEventId,
+    getAllBookingsByKeyword,
+    selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
 import {useNavigate, useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
@@ -12,6 +14,8 @@ import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 import {GiCancel} from "react-icons/gi";
 import {FaCheckCircle} from "react-icons/fa";
+import {Modal} from 'antd';
+import emailjs from '@emailjs/browser';
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
@@ -25,7 +29,9 @@ const BookingManagerOrderTable = () => {
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
     const [sortBy, setSortBy] = useState('createdAt');
     const [status, setStatus] = useState('createdAt');
-    const {formatCurrency} = useFormatCurrency()
+    const {formatCurrency} = useFormatCurrency();
+    const [selectedBookingIds, setSelectedBookingIds] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage - 1}));
@@ -34,25 +40,6 @@ const BookingManagerOrderTable = () => {
     const searchBookingByKeyword = async (e) => {
         e.preventDefault();
         dispatch(getAllBookingsByKeyword({eventId: eventId1, keyword: keyword, currentPage: currentPage - 1}));
-    };
-
-    const toggleSelectAll = (e) => {
-        const checked = e.target.checked;
-        setSelectAllChecked(checked);
-        if (checked) {
-            const allBookingIds = bookings.content.map((booking) => booking.id);
-            setCheckboxesChecked(allBookingIds);
-        } else {
-            setCheckboxesChecked([]);
-        }
-    };
-
-    const toggleCheckbox = (checkedBookingId) => {
-        if (checkboxesChecked.includes(checkedBookingId)) {
-            setCheckboxesChecked((prevChecked) => prevChecked.filter((id) => id !== checkedBookingId));
-        } else {
-            setCheckboxesChecked((prevChecked) => [...prevChecked, checkedBookingId]);
-        }
     };
 
     const handleSortChange = (selectedSortBy) => {
@@ -83,6 +70,55 @@ const BookingManagerOrderTable = () => {
         }
 
     }
+
+    let allBookingEmails = [];
+
+    const toggleSelectAll = (e) => {
+        const checked = e.target.checked;
+        setSelectAllChecked(checked);
+        if (checked) {
+            const allBookingIds = bookings.content.map((booking) => booking.id);
+            setCheckboxesChecked(allBookingIds);
+            allBookingEmails = bookings.content.map((booking) => booking.userEmail);
+            console.log(allBookingEmails);
+        } else {
+            setCheckboxesChecked([]);
+        }
+    };
+
+    const toggleCheckbox = (checkedBookingId) => {
+        if (checkboxesChecked.includes(checkedBookingId)) {
+            setCheckboxesChecked((prevChecked) => prevChecked.filter((id) => id !== checkedBookingId));
+        } else {
+            setCheckboxesChecked((prevChecked) => [...prevChecked, checkedBookingId]);
+        }
+    };
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        sendEmail();
+        setIsModalOpen(true);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const form = useRef();
+
+    const sendEmail = () => {
+        // e.preventDefault();
+
+        emailjs.sendForm('service_0njt1s5', 'template_x4164f8', form.current, 'LHVxILU3VnOGyS6nU')
+            .then((result) => {
+                console.log(result.text);
+                window.alert("Email sent successfully!")
+            }, (error) => {
+                console.log(error.text);
+                window.alert("Email sent failed!");
+            });
+    };
 
     let totalAmount = 0;
 
@@ -199,21 +235,21 @@ const BookingManagerOrderTable = () => {
                                 {formatCurrency(booking.totalAmount)}
                             </td>
                         </tr>;
+
                     }))}
                     {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (
+                        <tr></tr>) : (
                         <tr>
-                            <td colSpan="5" className="text-center">Chưa có vé nào được bán</td>
-                        </tr>) : (<tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td className="py-5 text-center">{formatCurrency(totalAmount)}</td>
-                    </tr>)}
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td className="py-5 text-center">{formatCurrency(totalAmount)}</td>
+                        </tr>)}
                     </tbody>
                 </table>
                 <div className="flex items-center justify-center h-20">
-                    <Stack
+                    {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<Stack
                         spacing={2}
                     >
                         <Pagination
@@ -222,7 +258,8 @@ const BookingManagerOrderTable = () => {
                             page={currentPage}
                             onChange={(event, value) => setCurrentPage(value)}
                         />
-                    </Stack>
+                    </Stack>)
+                    }
                 </div>
                 <div className="rounded-l bg-[#F6F6F6] flex">
                     <div className="m-auto text-center flex">
@@ -233,26 +270,60 @@ const BookingManagerOrderTable = () => {
                                     <div>Gửi mail đến</div>
                                 </div>
                                 <div className="mx-1 my-2">
-                                    <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
-                                        navigate(`/503`)
-                                    }}>
+                                    <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={showModal}>
                                         <div className="m-2">Tất cả</div>
                                     </button>
                                 </div>
                                 <div className="mx-1 my-2">
                                     {checkboxesChecked.length > 0 && checkboxesChecked.length < bookings.content.length && (
-                                        <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
-                                            navigate(`/503`)
-                                        }}>
+                                        <button className="border-0 border-black rounded bg-[#C2DEA3]"
+                                                onClick={showModal}>
                                             <div className="m-2">Đã chọn</div>
                                         </button>)}
                                 </div>
+                                <Modal title="" open={isModalOpen} onOk={handleOk}
+                                       onCancel={handleCancel}>
+                                    <section className="bg-white dark:bg-gray-900">
+                                        <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+                                            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Gửi Thư
+                                            </h2>
+                                            <form ref={form} action="#" onSubmit={sendEmail} className="space-y-8">
+                                                <div>
+                                                    <label htmlFor="email"
+                                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email người nhận</label>
+                                                    <input type="email"
+                                                           name="user_email"
+                                                           className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+                                                           placeholder="Nhập email người nhận" required/>
+                                                </div>
+                                                <div>
+                                                    <label htmlFor="subject"
+                                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tiêu đề</label>
+                                                    <input type="text" id="subject" name="subject"
+                                                           className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+                                                           placeholder="Nhập tiêu đề" required/>
+                                                </div>
+                                                <div className="sm:col-span-2">
+                                                    <label htmlFor="message"
+                                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Nội dung</label>
+                                                    <textarea id="message" name="message" rows="6"
+                                                              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                              placeholder="Nhập nội dung..."></textarea>
+                                                </div>
+                                                {/*<div>*/}
+                                                {/*    <button type="submit" className="border border-black">Submit</button>*/}
+                                                {/*</div>*/}
+                                            </form>
+                                        </div>
+                                    </section>
+                                </Modal>
                             </div>)}
                     </div>
                 </div>
             </div>
         </div>
-    </>);
+    </>
+);
 };
 
 export default BookingManagerOrderTable;

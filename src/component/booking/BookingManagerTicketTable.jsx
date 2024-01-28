@@ -20,6 +20,7 @@ const BookingManagerTicketTable = () => {
     const {formatCurrency} = useFormatCurrency();
     const navigate = useNavigate();
 
+
     useEffect(() => {
         dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage -1}));
     }, [currentPage, dispatch, eventId1]);
@@ -59,7 +60,7 @@ const BookingManagerTicketTable = () => {
                 </thead>
                 <tbody>
                 {bookings === null || bookings === "" || bookings === undefined ? (<tr>
-                    <td colSpan="8">No booking available for this event</td>
+                    <td colSpan="9" className="text-center">Chưa có vé nào được bán</td>
                 </tr>) : (bookings.content.map((booking, index) => {
                     const detailRows = [];
                     if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
@@ -113,7 +114,7 @@ const BookingManagerTicketTable = () => {
             </table>
         </div>
         <div className="flex items-center justify-center h-20">
-            <Stack
+            {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<Stack
                 spacing={2}
             >
                 <Pagination
@@ -122,7 +123,8 @@ const BookingManagerTicketTable = () => {
                     page={currentPage}
                     onChange={(event, value) => setCurrentPage(value)}
                 />
-            </Stack>
+            </Stack>)
+            }
         </div>
         <div className="my-2 rounded-l bg-[#F6F6F6] flex">
             <div className="m-auto text-center flex">

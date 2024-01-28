@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect} from "react";
-import {getEventById} from "../../features/EventSlice.js";
+import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import UserFooter from "../footer/UserFooter.jsx"
 import {FacebookIcon, FacebookShareButton} from "react-share";
 import {FaArrowRight} from "react-icons/fa";
@@ -10,8 +10,9 @@ import {FaCloudDownloadAlt} from "react-icons/fa";
 const BookingManagerPromotion = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const event = useSelector((state) => state.event.event);
+    const event = useSelector(selectEventById);
     const eventId = useParams().eventId;
+
 
     useEffect(() => {
         dispatch(getEventById(eventId))

@@ -4,7 +4,7 @@ import {useEffect} from "react";
 import {getEventById} from "../../features/EventSlice.js";
 import UserFooter from "../footer/UserFooter.jsx"
 
-const BookingManagerEventSumarize = () => {
+const BookingManagerEventSummarize = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const event = useSelector((state) => state.event.event);
@@ -12,7 +12,7 @@ const BookingManagerEventSumarize = () => {
 
     useEffect(() => {
         dispatch(getEventById(eventId))
-    }, [dispatch, eventId]);
+    }, [dispatch, eventId, navigate]);
 
 
     return (<>
@@ -23,4 +23,4 @@ const BookingManagerEventSumarize = () => {
 };
 
 
-export default BookingManagerEventSumarize;
+export default BookingManagerEventSummarize;

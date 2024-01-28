@@ -2,13 +2,13 @@ import BookingManagerOrderTable from "./BookingManagerOrderTable.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getEventById} from "../../features/EventSlice.js";
+import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import BookingManagerTicketTable from "./BookingManagerTicketTable.jsx";
 import UserFooter from "../footer/UserFooter.jsx"
 
 export function BookingManagerEventBookings() {
     const dispatch = useDispatch();
-    const event = useSelector((state) => state.event.event);
+    const event = useSelector(selectEventById);
     const eventId = useParams().eventId;
 
     useEffect(() => {

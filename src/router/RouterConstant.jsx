@@ -29,7 +29,7 @@ import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import OrganizerProfile from "../component/user/OrganizerProfile.jsx";
 import CreatedEvent from "../component/user/CreatedEvent.jsx";
 import BookingManagerPromotion from "../component/booking/BookingManagerPromotion.jsx";
-import BookingManagerEventSumarize from "../component/booking/BookingManagerEventSumarize.jsx";
+import BookingManagerEventSummarize from "../component/booking/BookingManagerEventSummarize.jsx";
 import ForgotPassword from "../component/auth/ForgotPassword.jsx";
 import SendOtp from "../component/auth/SendOtp.jsx";
 
@@ -74,7 +74,7 @@ export const ROUT_DATA = [
         ]
     },
 
-    {path: "/my-event/event/:eventId/summarize", element: BookingManagerEventSumarize, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/summarize", element: BookingManagerEventSummarize, layout: OrganizerBookingManagerLayout},
     {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
     {path: "/my-event/event/:eventId/promote", element: BookingManagerPromotion, layout: OrganizerBookingManagerLayout},
     // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
