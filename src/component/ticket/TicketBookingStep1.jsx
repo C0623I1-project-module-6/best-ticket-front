@@ -2,7 +2,7 @@ import Seat from "./Seat.jsx";
 import {useDispatch} from "react-redux";
 import {getTicketTypes} from "../../features/TicketTypeSlice.js";
 import {updateStatusSuccess} from "../../api/TicketApi.js";
-import {setPrice, setSeats, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
+import {setPrice, setSeats, setTicketCode, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
 import React, {useEffect, useState} from "react";
 
 
@@ -10,6 +10,7 @@ export const TicketBookingStep1 = (props) => {
     const [dataTotalPrice, setDataTotalPrice] = useState(0);
     const [dataPriceOneTicket, setDataPriceOneTicket] = useState([]);
     const [dataSeat, setDataSeat] = useState([]);
+    const [dataTicketCode, setDataTicketCode] = useState([]);
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
     console.log(dataSeat);
@@ -20,22 +21,23 @@ export const TicketBookingStep1 = (props) => {
     useEffect(() => {
         showTicketType();
     }, [])
-    const handleDataFromSeat = (totalPrice, seat, nameTicketType, priceOneTicket) => {
+    const handleDataFromSeat = (totalPrice, seat, nameTicketType, priceOneTicket,ticketCodeSeats) => {
         setDataTotalPrice(totalPrice);
         setDataSeat(seat);
-        setDataNameTicketType(nameTicketType)
-        setDataPriceOneTicket(priceOneTicket)
+        setDataNameTicketType(nameTicketType);
+        setDataPriceOneTicket(priceOneTicket);
+        setDataTicketCode(ticketCodeSeats)
     }
     const handleDataFormButton = async () => {
         if (dataTotalPrice !== 0 && dataSeat !== null) {
             try {
-                const response = await updateStatusSuccess(dataSeat);
+                 await updateStatusSuccess(dataSeat);
                 dispatch(setSeats(dataSeat));
                 dispatch(setTotalPrice(dataTotalPrice));
                 dispatch(setTicketType(dataNameTicketType));
-                dispatch(setPrice(dataPriceOneTicket))
+                dispatch(setPrice(dataPriceOneTicket));
+                dispatch(setTicketCode(dataTicketCode))
                 props.callbackData(1);
-                return response;
             } catch (error) {
                 console.error('Error:', error);
             }

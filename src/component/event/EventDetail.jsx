@@ -11,6 +11,7 @@ import {IoTicket} from "react-icons/io5";
 import {getTicketTypes, selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
 import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
 import {selectUserLogin} from "../../features/user/UserSlice.js";
+import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 
 const EventDetail = () => {
     const dispatch = useDispatch();
@@ -59,7 +60,7 @@ const EventDetail = () => {
                                             return (
                                                 <div className="flex items-center text-black" key={index}><FaClock
                                                     className="mr-2"/>
-                                                    {time.time}
+                                                    {useFormatDateFull(time.time)}
                                                 </div>
                                             )
                                         }
@@ -99,7 +100,7 @@ const EventDetail = () => {
 
                                     <div className="w-5/6">
 
-                                        <p className="text-black">{time.time}</p>
+                                        <p className="text-black">{useFormatDateFull(time.time)}</p>
                                     </div>
                                     <div className="w-1/6 flex text-right justify-end items-center" key={index}
                                          onClick={() => {

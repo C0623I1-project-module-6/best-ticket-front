@@ -17,9 +17,10 @@ export const TicketBookingStep2 = (props) => {
     const user = useSelector(selectUserLogin);
     const userEdit = useSelector(selectUserEdit);
     const seatTickets = useSelector(state => state.seat)
-    console.log(userEdit)
     const [open, setOpen] = useState(true);
     const [selectedOption, setSelectedOption] = useState('');
+    const [inputValue, setInputValue] = useState("");
+
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
@@ -168,7 +169,7 @@ export const TicketBookingStep2 = (props) => {
                                             name="paymentMethod"
                                             value="Thẻ tín dụng"
                                             checked={formik.values.paymentMethod === 'Thẻ tín dụng'}
-                                            onChange={formik.handleChange}
+                                            onChange={handleOptionChange}
                                             className="mx-2 bg-white"
                                         />
                                         <div className="flex bg-white p-2 w-full">
@@ -183,7 +184,7 @@ export const TicketBookingStep2 = (props) => {
                                             name="paymentMethod"
                                             value="Thanh toán qua ngân hàng"
                                             checked={formik.values.paymentMethod === 'internetBanking'}
-                                            onChange={formik.handleChange}
+                                            onChange={handleOptionChange}
                                             className="mx-2 bg-white"
                                         />
                                         <div className="flex bg-white p-2 w-full">
@@ -207,7 +208,7 @@ export const TicketBookingStep2 = (props) => {
                                     <span className="mr-3"><FaUser/></span>
                                     <span>Họ Tên: </span>
                                 </div>
-                                <div className="w-1/2 text-right">{user !== null ? user.fullName : <div></div>}</div>
+                                <div className="w-1/2 text-right">{formik.values.name}</div>
                             </div>
                             <hr className="border-2 border-dashed"/>
 
@@ -216,7 +217,7 @@ export const TicketBookingStep2 = (props) => {
                                     <span className="mr-3"><MdEmail/></span>
                                     <span>Email: </span>
                                 </div>
-                                <div className="w-1/2 text-right">{user !== null ? user.email : <div></div>}</div>
+                                <div className="w-1/2 text-right">{formik.values.email}</div>
                             </div>
                             <hr className="border-2 border-dashed"/>
 
@@ -225,10 +226,10 @@ export const TicketBookingStep2 = (props) => {
                                     <span className="mr-3"><FaPhone/></span>
                                     <span>Điện thoại : </span>
                                 </div>
-                                <div className="w-1/2 text-right"></div>
+                                <div className="w-1/2 text-right">{formik.values.phoneNumber}</div>
                             </div>
 
-                            <div className="font-bold">HÌNH THỨC THANH TOÁN</div>
+                            <div className="font-bold">HÌNH THỨC THANH TOÁN : {selectedOption}</div>
                             <hr className="border-2 border-solid"/>
                             {selectedOption === 'creditCard' && (
                                 <div className="py-2 border-b border-dashed border-gray-500">
@@ -245,7 +246,9 @@ export const TicketBookingStep2 = (props) => {
                                 <div className="font-bold py-3">THÔNG TIN ĐẶT VÉ</div>
                                 <div className="flex items-center">
                                     <span><FaPencil/></span>
-                                    <span>Sửa</span>
+                                    <span className="cursor-pointer" onClick={()=>{
+                                        history.back()
+                                    }}>Sửa</span>
                                 </div>
                             </div>
                             <hr className="border-2 border-solid"/>
