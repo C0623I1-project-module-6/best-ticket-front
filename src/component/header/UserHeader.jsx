@@ -12,9 +12,9 @@ import {useDispatch, useSelector} from "react-redux";
 
 import {logoutUser, selectUserLogin, selectUserLogout, selectUserRole} from "../../features/user/UserSlice.js";
 import avatar from "../../assets/img/User.png"
-import {ADMIN} from "../../ultility/AppConstant.js";
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
+import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
 
 
 const UserHeader = () => {
@@ -28,6 +28,7 @@ const UserHeader = () => {
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
+    const userExists = useSelector(selectExistsUsers)
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -50,11 +51,12 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    useEffect(() => {
-        if (userRole !== null && userRole.includes(ADMIN)) {
-            navigate("/admin");
-        }
-    }, [userRole]);
+    // useEffect(() => {
+    //     if (userRole !== null && userRole.includes(ADMIN)) {
+    //         navigate("/admin");
+    //     }
+    // }, [userRole]);
+
 
     const loginButton = () => {
         return (
@@ -81,7 +83,12 @@ const UserHeader = () => {
                                     className="font-bold text-xl">{user.fullName !== null ? user.fullName : user.username}</div>
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
-                                      cursor-pointer" onClick={() => navigate("/profile")}>
+                                      cursor-pointer" onClick={() => {
+                                dispatch(getExistsUsers())
+                                if (userExists !== null) {
+                                    navigate("/profile")
+                                }
+                            }}>
                                 <div className="w-[20px]">
                                     <FaCog/>
                                 </div>
@@ -89,7 +96,12 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2 border-2 items-center justify-start w-full
                                      cursor-pointer
-                                    " onClick={() => navigate("/my-event/legal")}>
+                                    " onClick={() => {
+                                dispatch(getExistsUsers())
+                                if (userExists !== null) {
+                                    navigate("/my-event/legal")
+                                }
+                            }}>
                                 <div className="w-[20px]">
                                     <FaUser/>
                                 </div>
@@ -178,7 +190,7 @@ const UserHeader = () => {
     const handleCreateEvent = async () => {
         if (isLogin) {
             dispatch(getOrganizerByUserId(user.id));
-            if (organizer !== null ) {
+            if (organizer !== null) {
                 navigate('/event/create');
             } else {
                 navigate('/my-event/legal');
