@@ -49,3 +49,20 @@ export async function searchBookingByKeyword(eventId, keyword, currentPage) {
     return response;
 }
 
+export async function sendEmail(message) {
+    let response = null;
+    await axios({
+        url: `${BEST_TICKET_API}bookings/sent-email`,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: "POST",
+        data: message
+    }).then((res) => {
+        response = res;
+    }).catch((e) => {
+        response = e;
+    })
+    return response;
+}
+

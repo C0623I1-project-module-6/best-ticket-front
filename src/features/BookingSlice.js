@@ -1,9 +1,10 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {findAllBookings, findAllBookingsByEventId, searchBookingByKeyword} from "../api/BookingApi.js";
+import {findAllBookings, findAllBookingsByEventId, searchBookingByKeyword, sendEmail} from "../api/BookingApi.js";
 
 const initialState = {
     bookings: null,
     booking: null,
+    message: null,
     totalPages: null,
     loading: false,
     success: false,
@@ -27,6 +28,15 @@ export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", as
 export const getAllBookingsByKeyword = createAsyncThunk("bookings/byEventId/byKeyword",
     async ({eventId, keyword, currentPage}, rejectWithValue) => {
         const response = await searchBookingByKeyword(eventId, keyword, currentPage);
+        if (response.status !== 200) {
+            return rejectWithValue(response.data)
+        }
+        return response.data;
+    });
+
+export const sendEmailToCustomers = createAsyncThunk("bookings/sentEmail",
+    async (message, rejectWithValue) => {
+        const response = await sendEmail();
         if (response.status !== 200) {
             return rejectWithValue(response.data)
         }
@@ -78,6 +88,20 @@ export const BookingSlice = createSlice({
                 state.loading = false;
                 state.bookings = action.payload.data;
                 state.totalPages = action.payload.data.totalPages;
+                state.error = false;
+            })
+
+            .addCase(sendEmailToCustomers.pending, handlePending)
+            .addCase(sendEmailToCustomers.rejected, (state, action) => {
+                state.success = false;
+                state.loading = false;
+                state.message = action.payload;
+                state.error = action.error;
+            })
+            .addCase(sendEmailToCustomers.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.message = action.payload.data;
                 state.error = false;
             })
     },
