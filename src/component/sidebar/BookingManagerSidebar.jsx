@@ -4,10 +4,8 @@ import {GiReturnArrow} from "react-icons/gi";
 import {GrAnnounce, GrUserManager} from "react-icons/gr";
 import {BiSolidDiscount} from "react-icons/bi";
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect} from "react";
 import {selectUserLogin} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
-import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
 import avatar from "../../assets/img/User.png";
 import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
 import {Avatar, Popover, PopoverContent, PopoverHandler} from "@material-tailwind/react";
@@ -19,14 +17,7 @@ const BookingManagerSidebar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(selectUserLogin);
-    const organizer = useSelector(state => state.organizer.value)
     const userExists = useSelector(selectExistsUsers)
-
-    useEffect(() => {
-        if (user) {
-            dispatch(getOrganizerByUserId(user.id));
-        }
-    }, [dispatch, user.id]);
 
     return (<div className="fixed w-[26%] border-r shadow-md">
         <nav className="bg-[#303B46] h-screen">
@@ -39,7 +30,7 @@ const BookingManagerSidebar = () => {
                                      className="h-[50px] w-[50px] cursor-pointer bg-white"/>
                             </a>
                         </div>
-                        {user ? organizer ? (<div className="w-1/2 text-right m-3 mr-8">
+                        {user ? (<div className="w-1/2 text-right m-3 mr-8">
                             <Popover placement="bottom-end" dismiss={true}>
                                 <PopoverHandler>
                                     <Avatar
@@ -102,7 +93,7 @@ const BookingManagerSidebar = () => {
                                     </div>
                                 </PopoverContent>
                             </Popover>)
-                        </div>) : navigate(`/my-event/legal`) : navigate(`/my-event/legal`)}
+                        </div>) : navigate(`/my-event/legal`)}
                     </div>
                 </li>
                 <li>
