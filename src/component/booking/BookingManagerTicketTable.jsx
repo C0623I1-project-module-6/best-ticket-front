@@ -97,10 +97,10 @@ const BookingManagerTicketTable = () => {
                                             {formatCurrency(booking.totalAmount)}
                                         </td>)}
                                         <td className="border border-black">
-                                        {ticket.status === "UNPAID" || ticket.status === null ?
-                                            <GiCancel className="mx-auto" color={"red"}/> : ticket.status === "PENDING" ?
+                                        {ticket.status === "UNPAID" || ticket.status === "Fail" || ticket.status === null ?
+                                            <GiCancel className="mx-auto" color={"red"}/> : ticket.status === "PENDING" || ticket.status === "All"?
                                                 <FaCheckCircle className="mx-auto"
-                                                               color={"orange"}/> : ticket.status === "PAID" ?
+                                                               color={"orange"}/> : ticket.status === "PAID" || ticket.status === "Success"?
                                                     <FaCheckCircle className="mx-auto" color={"green"}/> : null}
                                     </td>
                                     </tr>);

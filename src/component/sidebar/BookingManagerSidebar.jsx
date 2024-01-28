@@ -4,42 +4,51 @@ import {GiReturnArrow} from "react-icons/gi";
 import {GrAnnounce, GrUserManager} from "react-icons/gr";
 import {BiSolidDiscount} from "react-icons/bi";
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect} from "react";
-import {selectUserLogin} from "../../features/user/UserSlice.js";
+import {logoutUser, selectUserLogin, selectUserLogout} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
-import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
 import avatar from "../../assets/img/User.png";
 import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
 import {Avatar, Popover, PopoverContent, PopoverHandler} from "@material-tailwind/react";
 import {FaSignOutAlt} from "react-icons/fa";
-import {logout} from "../../api/UserApi.js";
+import {Bounce, toast} from "react-toastify";
+
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(selectUserLogin);
-    const organizer = useSelector(state => state.organizer.value)
     const userExists = useSelector(selectExistsUsers)
+    const userLogout = useSelector(selectUserLogout);
 
-    useEffect(() => {
-        if (user) {
-            dispatch(getOrganizerByUserId(user.id));
-        }
-    }, [dispatch, user.id]);
+    const logout = () => {
+        dispatch(logoutUser(userLogout));
+        toast('🦄 Logout success!', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+        navigate("/404");
+    }
 
     return (<div className="fixed w-[26%] border-r shadow-md">
         <nav className="bg-[#303B46] h-screen">
             <ul className="text-left">
                 <li>
                     <div className="text-center p-2 flex bg-[#262F38]">
-                        <div className="w-1/2 text-left ml-6">
+                        <div className="w-1/2 text-left ml-6 py-1">
                             <a href="/">
                                 <img src="/src/assets/img/logo/logo-auth-header-light.svg" alt=""
                                      className="h-[50px] w-[50px] cursor-pointer bg-white"/>
                             </a>
                         </div>
-                        {user ? organizer ? (<div className="w-1/2 text-right m-3 mr-8">
+                        {user ? (<div className="w-1/2 text-right m-3 mr-8">
                             <Popover placement="bottom-end" dismiss={true}>
                                 <PopoverHandler>
                                     <Avatar
@@ -97,17 +106,17 @@ const BookingManagerSidebar = () => {
                                             <div className="w-[20px]">
                                                 <FaSignOutAlt/>
                                             </div>
-                                            <div>Sign out</div>
+                                            <div>Đăng xuất</div>
                                         </div>
                                     </div>
                                 </PopoverContent>
                             </Popover>)
-                        </div>) : navigate(`/my-event/legal`) : navigate(`/my-event/legal`)}
+                        </div>) : navigate(`/login`)}
                     </div>
                 </li>
                 <li>
                     <a onClick={() => {
-                        navigate(`/my-event/legal`)
+                        navigate(`/my-event/legal/createdEvent`)
                     }} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
                             <div className="m-1"><GiReturnArrow/></div>
