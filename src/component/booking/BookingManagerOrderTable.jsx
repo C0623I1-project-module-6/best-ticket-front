@@ -85,7 +85,7 @@ const BookingManagerOrderTable = () => {
     }
 
     let totalAmount = 0;
-    console.log(sortedBookings)
+
     return (<>
         <div className="border bg-gray-100 flex py-1">
             <div className="w-1/2 m-5 flex">
