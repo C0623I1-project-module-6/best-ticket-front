@@ -1,5 +1,11 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {findAllBookings, findAllBookingsByEventId, searchBookingByKeyword, sendEmail} from "../api/BookingApi.js";
+import {
+    createBooking,
+    findAllBookings,
+    findAllBookingsByEventId,
+    findBookingsByTimeId,
+    searchBookingByKeyword
+} from "../api/BookingApi.js";
 
 const initialState = {
     bookings: null,
@@ -9,6 +15,8 @@ const initialState = {
     loading: false,
     success: false,
     error: null,
+    bookingForTime: null,
+    bookingCreate: null
 };
 
 export const getAllBookings = createAsyncThunk("bookings", async (currentPage, rejectWithValue) => {
@@ -18,7 +26,10 @@ export const getAllBookings = createAsyncThunk("bookings", async (currentPage, r
     }
     return response.data;
 });
-export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({eventId, currentPage}, rejectWithValue) => {
+export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({
+                                                                                         eventId,
+                                                                                         currentPage
+                                                                                     }, rejectWithValue) => {
     const response = await findAllBookingsByEventId(eventId, currentPage);
     if (response.status !== 200) {
         return rejectWithValue(response.data)
@@ -34,12 +45,16 @@ export const getAllBookingsByKeyword = createAsyncThunk("bookings/byEventId/byKe
         return response.data;
     });
 
-export const sendEmailToCustomers = createAsyncThunk("bookings/sentEmail",
-    async (message, rejectWithValue) => {
-        const response = await sendEmail();
-        if (response.status !== 200) {
-            return rejectWithValue(response.data)
-        }
+export const getBookingsByTimeId = createAsyncThunk("bookings/byTimeId", async (timeId) => {
+    const response = await findBookingsByTimeId(timeId);
+    return response.data;
+});
+
+export const createBookingForTicket = createAsyncThunk(
+    "bookings/createBookingForTicket",
+    async (bookings) => {
+        const response = await createBooking(bookings);
+        console.log(response.data);
         return response.data;
     });
 
@@ -87,26 +102,31 @@ export const BookingSlice = createSlice({
                 state.success = true;
                 state.loading = false;
                 state.bookings = action.payload.data;
-                state.totalPages = action.payload.data.totalPages;
                 state.error = false;
             })
 
-            .addCase(sendEmailToCustomers.pending, handlePending)
-            .addCase(sendEmailToCustomers.rejected, (state, action) => {
-                state.success = false;
-                state.loading = false;
-                state.message = action.payload;
-                state.error = action.error;
-            })
-            .addCase(sendEmailToCustomers.fulfilled, (state, action) => {
+            .addCase(getBookingsByTimeId.pending, handlePending)
+            .addCase(getBookingsByTimeId.rejected, handleRejected)
+            .addCase(getBookingsByTimeId.fulfilled, (state, action) => {
                 state.success = true;
                 state.loading = false;
-                state.message = action.payload.data;
                 state.error = false;
+                state.bookingForTime = action.payload.data;
             })
-    },
-});
 
+            .addCase(createBookingForTicket.pending, handlePending)
+            .addCase(createBookingForTicket.rejected, handleRejected)
+            .addCase(createBookingForTicket.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.error = false;
+                state.bookingCreate = action.payload;
+            })
+    }
+});
 export const selectAllBookingsByEventId = (state) => state.booking.bookings;
+export const selectBookingsByTimeId = (state) => state.booking.bookingForTime;
+export const selectBookingCreate = (state) => state.booking.bookingCreate;
 export const selectAllBookingsByKeyword = (state) => state.booking.bookings;
+
 export default BookingSlice.reducer;

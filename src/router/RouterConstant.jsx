@@ -30,12 +30,19 @@ import EventDetail from "../component/event/EventDetail.jsx";
 import CustomerProfile from "../component/user/CustomerProfile.jsx";
 import OrganizerProfile from "../component/user/OrganizerProfile.jsx";
 import CreatedEvent from "../component/user/CreatedEvent.jsx";
+
 import BookingManagerPromotion from "../component/booking/BookingManagerPromotion.jsx";
 import BookingManagerEventSumarize from "../component/booking/BookingManagerEventSumarize.jsx";
+
+import Mail from "../layout/pages/mail/Mail.jsx";
+import ForgotPassword from "../component/auth/ForgotPassword.jsx";
+import SendOtp from "../component/auth/SendOtp.jsx";
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
     {path: "/register", element: Register, layout: GuestLayout},
+    {path: "/send-otp", element: SendOtp, layout: GuestLayout},
+    {path: "/forgot-password", element: ForgotPassword, layout: GuestLayout},
     {path: "/403", element: ForbiddenPage, layout: ErrorLayout},
     {path: "/404", element: NotFoundPage, layout: ErrorLayout},
     {path: "/500", element: InternalServerErrorPage, layout: ErrorLayout},
@@ -76,5 +83,15 @@ export const ROUT_DATA = [
     {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
     {path: "/my-event/event/:eventId/promote", element: BookingManagerPromotion, layout: OrganizerBookingManagerLayout},
     // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
+<<<<<<< HEAD
     {path: "/my-event/event/:eventId/moderators", element: BookingManagerModeratorList, layout: OrganizerBookingManagerLayout},
+=======
+    {
+        path: "/my-event/event/:eventId/moderators",
+        element: BookingManagerModeratorList,
+        layout: OrganizerBookingManagerLayout
+    },
+    {path: "/mail", element: Mail}
+
+>>>>>>> b37aae16fd31d95348ff6f6c19ec6875158e9d85
 ];
