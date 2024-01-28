@@ -111,6 +111,40 @@ export async function getUser(userId) {
   })
   return response;
 }
+export async function sendOtp(data) {
+  let response = null;
+  await axios({
+    url: `${BEST_TICKET_API}auth/send-otp`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: "POST",
+    data: data
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  console.log(response)
+  return response;
+}
+export async function forgotPassword(data) {
+  let response = null;
+  await axios({
+    url: `${BEST_TICKET_API}auth/forgot-password`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: "POST",
+    data: data
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  console.log(response)
+  return response;
+}
 
 
 

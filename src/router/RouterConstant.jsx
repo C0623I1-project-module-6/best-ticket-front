@@ -34,10 +34,14 @@ import CreatedEvent from "../component/user/CreatedEvent.jsx";
 import BookingManagerPromotion from "../component/booking/BookingManagerPromotion.jsx";
 
 import Mail from "../layout/pages/mail/Mail.jsx";
+import ForgotPassword from "../component/auth/ForgotPassword.jsx";
+import SendOtp from "../component/auth/SendOtp.jsx";
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
     {path: "/register", element: Register, layout: GuestLayout},
+    {path: "/send-otp", element: SendOtp, layout: GuestLayout},
+    {path: "/forgot-password", element: ForgotPassword, layout: GuestLayout},
     {path: "/403", element: ForbiddenPage, layout: ErrorLayout},
     {path: "/404", element: NotFoundPage, layout: ErrorLayout},
     {path: "/500", element: InternalServerErrorPage, layout: ErrorLayout},

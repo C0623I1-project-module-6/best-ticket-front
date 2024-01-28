@@ -66,11 +66,11 @@ function Register() {
         confirmPassword: Yup.string()
             .oneOf([Yup.ref("password"), null], "Password not match.")
             .matches(regexPassword, "6-character password consisting of letters and numbers")
-            .required("This field is required.")
+            .required("This field is required."),
     })
     const handleSubmit = (values) => {
         dispatch(registerUser(values))
-        toast.success("🦄 Đăng ký thành công!", toastOptions);
+        toast.success("🦄 Đăng ký thành công", toastOptions);
         navigate("/login");
     };
 

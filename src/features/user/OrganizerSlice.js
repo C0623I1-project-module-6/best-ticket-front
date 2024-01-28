@@ -16,7 +16,7 @@ export const registerOrganizerProfile = createAsyncThunk(
     "users/organizer/add",
     async (organizer, {rejectedWithValue}) => {
         const response = await createOrganizer(organizer);
-        if (response.status !== 200) {
+        if (response.status !== 201) {
             return rejectedWithValue(response.data.message);
         }
         return response.data;

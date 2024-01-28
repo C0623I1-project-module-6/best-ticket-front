@@ -14,7 +14,7 @@ export const registerCustomerProfile = createAsyncThunk(
     "users/customer/add",
     async (customer, {rejectedWithValue}) => {
         const response = await createCustomer(customer);
-        if (response.status !== 200) {
+        if (response.status !== 201) {
             return rejectedWithValue(response.data.message);
         }
         return response.data;
