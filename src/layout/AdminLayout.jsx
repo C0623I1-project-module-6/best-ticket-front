@@ -40,10 +40,10 @@ const AdminLayout = ({children}) => {
                     <div className="h-screen">
                         <AdminSidebar/>
                     </div>
-                    <div className="flex-col justify-center w-full  overflow-hidden">
+                    <div className="flex-col  justify-center w-full  overflow-hidden">
                         <div className="flex-col  max-h-full overflow-hidden">
                             <AdminHeader/>
-                            <div className="h-fit">
+                            <div className="h-fit overflow-y-auto">
                                 {
                                     children
                                 }

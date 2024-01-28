@@ -67,4 +67,40 @@ export const findEventByOrganizerId= async (organizerId,page)=>{
   return result;
 }
 
+export const findEventByStatusIsPending= async (currentPage)=>{
+  let result = null;
+  let token = localStorage.getItem("token");
+  try{
+    result=await axios({
+      url : `${BEST_TICKET_API}events/status/pending?page=${currentPage}&pageSize=20`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      method: "GET",
+    })
+  } catch (e) {
+    console.log("Create event API error: " + e);
+  }
+  return result;
+}
+
+export const setStatusActive= async (eventId)=>{
+  let result = null;
+  let token = localStorage.getItem("token");
+  try{
+    result=await axios({
+      url : `${BEST_TICKET_API}events/setActive/${eventId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      method: "POST",
+    })
+  } catch (e) {
+    console.log(" Event API error: " + e);
+  }
+  return result;
+}
+
 

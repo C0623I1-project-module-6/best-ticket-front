@@ -5,7 +5,8 @@ import {
     findEventById,
     findEventByOrganizerId,
     findEventsByEventTypes,
-    findEventsByName
+    findEventsByName,
+    findEventByStatusIsPending
 } from "../api/EventApi.js";
 
 const initialState = {
@@ -46,6 +47,10 @@ export const getEventByOrganizerId = createAsyncThunk("events/OrganizerId", asyn
     return response.data;
 })
 
+export const getEventByStatusIsPending = createAsyncThunk("events/status/pending", async (currentPage) => {
+    const response = await findEventByStatusIsPending(currentPage);
+    return response.data;
+})
 // set action for slice
 const handlePending = (state) => {
     state.success = false;
@@ -91,6 +96,10 @@ export const EventSlice = createSlice({
             .addCase(getEventByOrganizerId.pending, handlePending)
             .addCase(getEventByOrganizerId.rejected, handleRejected)
             .addCase(getEventByOrganizerId.fulfilled, handleFulfilled)
+            // find by status is pending
+            .addCase(getEventByStatusIsPending.pending, handlePending)
+            .addCase(getEventByStatusIsPending.rejected, handleRejected)
+            .addCase(getEventByStatusIsPending.fulfilled, handleFulfilled)
             // find by EventById
             .addCase(getEventById.pending, handlePending)
             .addCase(getEventById.rejected, handleRejected)

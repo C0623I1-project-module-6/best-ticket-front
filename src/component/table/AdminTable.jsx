@@ -14,9 +14,10 @@ import {
     setBookings,
     setUsers
 } from "../../features/AdminSlice.js";
-import {TABLE_HEAD_BOOKING, TABLE_HEAD_EVENT, TABLE_HEAD_USER} from "../../ultility/AppConstant.js";
+import {TABLE_HEAD_BOOKING, TABLE_HEAD_EVENT, TABLE_HEAD_USER,TABLE_HEAD_EVENT_APPROVAL} from "../../ultility/AppConstant.js";
 import TableContent from "./TableContent.jsx";
 import Pagination from '@mui/material/Pagination';
+import {getEventByStatusIsPending} from "../../features/EventSlice.js";
 
 
 export default function AdminTable() {
@@ -65,6 +66,9 @@ export default function AdminTable() {
             dispatch(setUsers(null))
             dispatch(getPageEvents())
             setDataHeader(TABLE_HEAD_EVENT)
+        } else if (param.param === "eventApproval") {
+            dispatch(getEventByStatusIsPending(0))
+            setDataHeader(TABLE_HEAD_EVENT_APPROVAL)
         }
     }, [param]);
     useEffect(() => {
@@ -74,8 +78,6 @@ export default function AdminTable() {
             dispatch(getPageUsers(currentPage - 1))
         }
     }, [currentPage]);
-
-
 
    async function handleSearch(e) {
         e.preventDefault()
@@ -103,22 +105,25 @@ export default function AdminTable() {
                         <thead className="bg-amber-500
                         dark:text-white dark:bg-black">
                         <tr>
-                            {
-                                dataHeader.map((data, index) => (
-                                    <th scope="col" key={index}
-                                        className="px-4 py-3 text-start text-xs font-bold font-sans uppercase">
-                                        {data}
-                                    </th>
-                                ))
-                            }
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-
-                            </th>
+                            {param.param !== "eventApproval" ? (
+                                <>
+                                    {dataHeader.map((data, index) => (
+                                        <th scope="col" key={index} className="px-4 py-3 text-start text-xs font-bold font-sans uppercase">
+                                            {data}
+                                        </th>
+                                    ))}
+                                    <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
+                                    <th scope="col" className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
+                                </>
+                            ) : (
+                                <>
+                                    {dataHeader.map((data, index) => (
+                                        <th scope="col" key={index} className="px-4 py-3 text-start text-xs font-bold font-sans uppercase">
+                                            {data}
+                                        </th>
+                                    ))}
+                                </>
+                            )}
                         </tr>
                         </thead>
                         <TableContent content={param}/>
