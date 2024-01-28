@@ -93,7 +93,7 @@ const BookingManagerSidebar = () => {
                                     </div>
                                 </PopoverContent>
                             </Popover>)
-                        </div>) : navigate(`/my-event/legal`)}
+                        </div>) : navigate(`/`)}
                     </div>
                 </li>
                 <li>
