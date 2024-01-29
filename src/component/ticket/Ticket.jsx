@@ -6,7 +6,6 @@ import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js"
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
 const Ticket = (props) => {
-    console.log(props.dataSendMail)
     const [listTicketCode, setListTicketCode] = useState([]);
     const time = useFormatDateFull(props.dataSendMail.time);
     const timeBooking = useFormatDateFull(props.dataSendMail.timeBooking);

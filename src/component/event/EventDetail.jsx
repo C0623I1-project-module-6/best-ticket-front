@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import {NavLink, useLocation, useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {FaClock, FaHeart} from "react-icons/fa";
 import {FaFacebook, FaLocationDot} from "react-icons/fa6";
 import img from '../../assets/img/image/event.png'

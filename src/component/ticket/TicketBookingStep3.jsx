@@ -12,6 +12,8 @@ import {useParams} from "react-router-dom";
 import Ticket from "./Ticket.jsx";
 import * as emailjs from "@emailjs/browser";
 import ReactDOMServer from "react-dom/server";
+import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
+import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
 export const TicketBookingStep3 = () => {
     const dispatch = useDispatch();
@@ -28,12 +30,6 @@ export const TicketBookingStep3 = () => {
     const seatPriceList = seatTickets.price.join(", ");
     const [dataSendMail, setDataSendMail] = useState({});
 
-    // eslint-disable-next-line no-undef
-    // const pdfContent = ReactDOMServer.renderToString(<Ticket />);
-    // const pdfBlob = new Blob([pdfContent], { type: "application/pdf" });
-    // const file = new File([pdfBlob], "my_pdf_file.pdf");
-
-    // console.log(file)
     const bookings = {
         infoUser: infoUser,
         seatTickets: seatTickets,
@@ -48,10 +44,10 @@ export const TicketBookingStep3 = () => {
             const newDataSendMail = {
                 bookingId: bookingCreate.data.id,
                 eventName: event.name,
-                time: selectedTime.time,
+                time: useFormatDateFull(selectedTime.time) ,
                 nameUser: infoUser.name,
                 emailUser: infoUser.email,
-                timeBooking: bookingCreate.data.createdAt,
+                timeBooking: useFormatDateFull(bookingCreate.data.createdAt),
                 paymentMethod: infoUser.paymentMethod,
                 seat: seatList,
                 price: seatPriceList,
@@ -60,12 +56,12 @@ export const TicketBookingStep3 = () => {
             };
             setDataSendMail(newDataSendMail);
 
-            emailjs.send('service_rgh3yss', 'template_tc83two', newDataSendMail, 'bC7itDNp2khTY1SsL')
-                .then(function (response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                }, function (error) {
-                    console.log('FAILED...', error);
-                });
+            // emailjs.send('service_rgh3yss', 'template_tc83two', newDataSendMail, 'bC7itDNp2khTY1SsL')
+            //     .then(function (response) {
+            //         console.log('SUCCESS!', response.status, response.text);
+            //     }, function (error) {
+            //         console.log('FAILED...', error);
+            //     });
         }
 
     }, [bookingCreate])
