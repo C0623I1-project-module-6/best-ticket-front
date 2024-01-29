@@ -107,12 +107,11 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         component={InputField}
                                         onChange={formikProps.handleChange}
                                         label="Tên doanh nghiệp"
-                                        disabled={!isEditMode}
                                         placeholder={organizer.companyName || "Vui lòng nhập tên doanh nghiệp"}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -121,12 +120,11 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         component={InputField}
                                         onChange={formikProps.handleChange}
                                         label="Mã số đăng ký kinh doanh"
-                                        disabled={!isEditMode}
                                         placeholder={organizer.businessCode || "Vui lòng nhập mã số đăng ký kinh doanh"}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label htmlFor="dateRange" className="block text-1xl font-serif text-gray-700">
@@ -151,11 +149,10 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         onChange={formikProps.handleChange}
                                         label="Nơi Cấp"
                                         placeholder={organizer.issuedBy || "Vui lòng nhập nơi cấp"}
-                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>
@@ -170,11 +167,10 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         onChange={formikProps.handleChange}
                                         label="Số điện thoại"
                                         placeholder={organizer.companyPhone || "Vui lòng nhập số điện thoại"}
-                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -184,11 +180,10 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         onChange={formikProps.handleChange}
                                         label="Nơi Cấp"
                                         placeholder={organizer.companyEmail || "bestticket@example.com"}
-                                        disabled={!isEditMode}
                                         className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
                             ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
                             focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>

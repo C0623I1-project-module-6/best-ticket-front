@@ -1,12 +1,12 @@
-import {FastField, Form, Formik} from "formik";
-import AuthHeader from "../header/AuthHeader.jsx";
-import {FormGroup} from "reactstrap";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import InputRegister from "../../ultility/customField/InputRegister.jsx";
+import * as Yup from "yup";
 import {sendOtpWithEmail} from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
-import * as Yup from "yup";
+import {FastField, Form, Formik} from "formik";
+import {FormGroup} from "reactstrap";
+import AuthHeader from "../header/AuthHeader.jsx";
+import InputRegister from "../../ultility/customField/InputRegister.jsx";
 
 const toastOptions = {
     position: "top-right",
@@ -19,7 +19,7 @@ const toastOptions = {
     theme: "light",
     transition: Bounce,
 };
-export default function SendOtp() {
+export default function SendOtpUnlock() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const initialValues = {
@@ -34,7 +34,7 @@ export default function SendOtp() {
     const handleSubmit = (values) => {
         dispatch(sendOtpWithEmail(values))
         toast.success("🦄 Vui lòng kiểm tra mail để nhận mã otp", toastOptions);
-        navigate("/forgot-password")
+        navigate("/unlock")
     }
 
     return (
@@ -70,7 +70,7 @@ export default function SendOtp() {
                                         </FormGroup>
                                         <FormGroup className="w-full">
                                             <button type="button" onClick={() => {
-                                                navigate("/login")
+                                                navigate("/user-recovery")
                                             }}
                                                     className="w-full btn btn-outline btn-primary dark:btn-info">
                                                 Quay lại

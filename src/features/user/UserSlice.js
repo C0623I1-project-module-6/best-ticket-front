@@ -2,13 +2,17 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {
     forgotPassword,
     getUser,
+    lock,
     login,
     loginGoogle,
     loginWithToken,
     logout,
     register,
-    sendOtp
+    remove,
+    sendOtp,
+    unlock
 } from "../../api/UserApi.js";
+
 
 const initialState = {
 
@@ -28,6 +32,13 @@ const initialState = {
     sendOtpError: null,
     forgotPasswordSuccess: false,
     forgotPasswordError: null,
+    lockUserSuccess: false,
+    lockUserError: null,
+    unlockUserSuccess: false,
+    unlockUserError: null,
+    removeUserSuccess: false,
+    removeUserError: null,
+    isLocked: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -35,6 +46,7 @@ export const loginUser = createAsyncThunk(
     async (loginData, {rejectWithValue}) => {
         const response = await login(loginData);
         if (response.status !== 200) {
+            console.log(response.data.message)
             return rejectWithValue(response.data.message);
         }
         return response.data;
@@ -50,7 +62,6 @@ export const reLoginWithToken = createAsyncThunk(
         return response.data;
     }
 );
-
 
 export const logoutUser = createAsyncThunk(
     "logout",
@@ -115,6 +126,36 @@ export const forgotPasswordUser = createAsyncThunk(
         return response.data;
     }
 );
+export const lockUser = createAsyncThunk(
+    "lock",
+    async (userData, {rejectWithValue}) => {
+        const response = await lock(userData);
+        if (response.status !== 200) {
+            return rejectWithValue(response.data.message);
+        }
+        return response.data
+    }
+);
+export const removeUser = createAsyncThunk(
+    "remove",
+    async (data, {rejectWithValue}) => {
+        const response = await remove(data);
+        if (response.status !== 200) {
+            return rejectWithValue(response.data.message);
+        }
+        return response.data
+    }
+);
+export const unlockUser = createAsyncThunk(
+    "unlock",
+    async (data, {rejectWithValue}) => {
+        const response = await unlock(data);
+        if (response.status !== 200) {
+            return rejectWithValue(response.data.message);
+        }
+        return response.data
+    }
+);
 
 export const userSlice = createSlice(
     {
@@ -160,6 +201,27 @@ export const userSlice = createSlice(
             setForgotPasswordError: (state, action) => {
                 state.forgotPasswordError = action.payload;
             },
+            setLockUserSuccess: (state, action) => {
+                state.loginSuccess = action.payload;
+            },
+            setLockUserError: (state, action) => {
+                state.lockUserError = action.payload;
+            },
+            setUnlockUserSuccess: (state, action) => {
+                state.unlockUserSuccess = action.payload;
+            },
+            setUnlockUserError: (state, action) => {
+                state.unlockUserError = action.payload;
+            },
+            setRemoveUserSuccess: (state, action) => {
+                state.removeUserSuccess = action.payload;
+            },
+            setRemoveUserError: (state, action) => {
+                state.removeUserError = action.payload;
+            },
+            setIsLocked: (state, action) => {
+                state.isLocked = action.payload;
+            },
 
         },
         extraReducers: (builder) => {
@@ -190,6 +252,7 @@ export const userSlice = createSlice(
                     state.loginSuccess = false;
                     state.loading = false;
                     state.loginError = true;
+                    state.isLocked = true;
                 })
                 .addCase(loginUser.fulfilled, (state, action) => {
                     state.loginSuccess = true;
@@ -200,6 +263,7 @@ export const userSlice = createSlice(
                     state.logoutSuccess = false;
                     state.loginError = false;
                     state.isLogin = true;
+                    state.isLocked = false
                 })
                 .addCase(reLoginWithToken.pending, (state) => {
                     state.loginSuccess = false;
@@ -301,6 +365,57 @@ export const userSlice = createSlice(
                     state.value = action.payload.data;
                     state.forgotPasswordError = false;
                 })
+
+                .addCase(lockUser.pending, (state) => {
+                    state.lockUserSuccess = false;
+                    state.loading = true;
+                    state.lockUserError = false;
+                })
+                .addCase(lockUser.rejected, (state, action) => {
+                    state.lockUserSuccess = false;
+                    state.loading = false;
+                    state.lockUserError = true;
+                })
+                .addCase(lockUser.fulfilled, (state, action) => {
+                    state.lockUserSuccess = true;
+                    state.loading = false;
+                    state.value = action.payload.data;
+                    state.lockUserError = false;
+                })
+
+                .addCase(unlockUser.pending, (state) => {
+                    state.unlockUserSuccess = false;
+                    state.loading = true;
+                    state.unlockUserError = false;
+                })
+                .addCase(unlockUser.rejected, (state, action) => {
+                    state.unlockUserSuccess = false;
+                    state.loading = false;
+                    state.unlockUserError = true;
+                })
+                .addCase(unlockUser.fulfilled, (state, action) => {
+                    state.unlockUserSuccess = true;
+                    state.loading = false;
+                    state.value = action.payload.data;
+                    state.unlockUserError = false;
+                })
+
+                .addCase(removeUser.pending, (state) => {
+                    state.removeUserSuccess = false;
+                    state.loading = true;
+                    state.removeUserError = false;
+                })
+                .addCase(removeUser.rejected, (state, action) => {
+                    state.removeUserSuccess = false;
+                    state.loading = false;
+                    state.removeUserError = true;
+                })
+                .addCase(removeUser.fulfilled, (state, action) => {
+                    state.removeUserSuccess = true;
+                    state.loading = false;
+                    state.value = action.payload.data;
+                    state.removeUserError = false;
+                })
         }
     }
 )
@@ -319,6 +434,13 @@ export const {
     setSendOtpError,
     setForgotPasswordError,
     setForgotPasswordSuccess,
+    setLockUserSuccess,
+    setLockUserError,
+    setUnlockUserSuccess,
+    setUnlockUserError,
+    setIsLocked,
+    setRemoveUserError,
+    setRemoveUserSuccess,
 } = userSlice.actions;
 
 export const selectLoginSuccess = (state) => state.user.loginSuccess;
@@ -335,5 +457,7 @@ export const selectIsAdmin = (state) => state.user.isAdmin;
 export const selectIsLogin = (state) => state.user.isLogin;
 export const selectSendOtpSuccess = (state) => state.user.sendOtpSuccess;
 export const selectSendOtpError = (state) => state.user.sendOtpSuccess;
-
+export const selectLockUser = (state) => state.user.value;
+export const selectRemoveUser = (state) => state.user.value;
+export const selectIsLocked = (state) => state.user.isLocked;
 export default userSlice.reducer;

@@ -19,7 +19,7 @@ export default function Avatar(){
                         </svg>
                     </div>
                     <div className="flex justify-center">
-                        <Button type="button"
+                        <Button type="file"
                                 className="rounded-md bg-[#10b981] px-3 py-2 text-1xl
                             text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2
                             focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
