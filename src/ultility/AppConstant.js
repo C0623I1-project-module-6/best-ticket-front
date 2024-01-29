@@ -29,6 +29,15 @@ export const TABLE_HEAD_EVENT = [
   "event type",
   "location",
 ];
+export const TABLE_HEAD_EVENT_APPROVAL =[
+  "stt",
+  "event name",
+  "organizer name",
+  "organizer type",
+  "time",
+  "location",
+  "approval",
+];
 export const ADMIN = "ADMIN";
 export const ORGANIZER = "ORGANIZER";
 export const CUSTOMER = "CUSTOMER";

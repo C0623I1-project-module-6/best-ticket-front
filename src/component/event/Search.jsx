@@ -2,12 +2,17 @@ import React, {useEffect, useState} from 'react';
 import {IoListOutline} from 'react-icons/io5';
 import {FcCheckmark} from 'react-icons/fc';
 import SelectDay from './partials/SelectDay.jsx';
-import Event from './partials/Event.jsx';
+import Event from '../content/partials/Event.jsx';
 
 import {CiLocationOn} from 'react-icons/ci';
 import {findAllEventType} from "../../api/EventTypeApi.js";
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllEvent, getEventsByEventTypes, getEventsByName} from '../../features/EventSlice.js';
+import {
+    getAllEvent,
+    getEventBySearchCriteria,
+    getEventsByEventTypes,
+    getEventsByName
+} from '../../features/EventSlice.js';
 import {useLocation} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
@@ -40,6 +45,7 @@ export default function Search() {
     useEffect(() => {
         dispatch(getEventsByName({searchTerm, currentPage: currentPage - 1}));
     }, [searchTerm, currentPage]);
+
 
     useEffect(() => {
         const formattedOptions = selectedOptions.join(',');
@@ -131,7 +137,7 @@ export default function Search() {
                     />
                 </Stack>
             </div>
-            <div className="grid grid-cols-4 mt-2 ">
+            <div className="grid grid-cols-4 m-2 gap-4">
                 {events.map((event) => (
                     <Event key={event.id} event={event}/>
                 ))}

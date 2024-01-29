@@ -12,12 +12,14 @@ import {FaCheckCircle} from "react-icons/fa";
 import {useFormatDate} from "../../ultility/customHook/useFormatDate.js";
 import ModalContent from "../ModalContent.jsx";
 import ModalEditBookings from "../ModalEditBookings.jsx";
-
+import {setStatusActive} from "../../api/EventApi.js";
+import {getEventByStatusIsPending} from "../../features/EventSlice.js";
 function TableContent(props) {
     const [data, setData] = useState([]);
     const dispatch = useDispatch();
     const bookings = useSelector(selectBookings);
     const users = useSelector(selectUsers);
+    const eventPending = useSelector(state => state.event.events)
     const selectUserSuccess = useSelector(selectUsersSuccess);
     const selectBookingSuccess = useSelector(selectBookingsSuccess)
     const [showDetail, setShowDetail] = useState(false);
@@ -29,6 +31,9 @@ function TableContent(props) {
     useEffect(() => {
         setData(bookings)
     }, [selectBookingSuccess]);
+    useEffect(() => {
+        setData(eventPending);
+    }, [eventPending]);
     const handleClick = async (value) => {
         if (!showDetail) {
             await dispatch(getBookingDetails(value));
@@ -52,6 +57,11 @@ function TableContent(props) {
     }
     const callbackFromEditForm = (data) => {
         setShowEditForm(data);
+    }
+
+    const handleSetActive= async (eventId)=>{
+        await setStatusActive(eventId);
+        dispatch(getEventByStatusIsPending(0));
     }
     if (props.content.param === "users") {
         return (
@@ -121,7 +131,7 @@ function TableContent(props) {
                     dataFromParent={showEditForm}
                     booking={bookingEdit}
                 />
-                <tbody className="bg-white dark:bg-blue-gray-400 items-center justify-center">
+                <tbody className="bg-white dark:bg-blue-gray-400 items-center justify-center ">
                 {
                     data !== null ? data.map((booking, index) => (
                             <tr key={index}>
@@ -173,6 +183,43 @@ function TableContent(props) {
             </>
         )
     }
+    if (props.content.param === "eventApproval") {
+        return (
+
+                <tbody className="bg-white text-black dark:bg-blue-gray-400 items-center justify-center">
+                {
+                    data !== null ? data.map((event, index) => (
+                            <tr key={index}>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 ">{index + 1}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.name}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.email}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.organizer ? event.organizer.name : "NULL"}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.time ? event.time.name : "NULL"}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.location ? event.location.province+ "," + event.location.district + ","+ event.location.address : "NULL"}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">
+                                    <button
+                                        className="rounded-lg bg-green-300 border-green-900 border-2 p-2 cursor-pointer"
+                                        onClick={() => handleSetActive(event.id)}
+                                    >
+                                        SET ACTIVE
+                                    </button>
+                                </td>
+                            </tr>
+                        )) :
+                        <tr className="text-center">
+                            <td><span className="loading loading-spinner text-primary"></span></td>
+                            <td><span className="loading loading-spinner text-primary"></span></td>
+                            <td><span className="loading loading-spinner text-primary"></span></td>
+                            <td><span className="loading loading-spinner text-primary"></span></td>
+                            <td><span className="loading loading-spinner text-primary"></span></td>
+                            <td><span className="loading loading-spinner text-primary"></span></td>
+                            <td><span className="loading loading-spinner text-primary"></span></td>
+                        </tr>
+                }
+                </tbody>
+        )
+    }
 }
+
 
 export default TableContent;

@@ -21,6 +21,7 @@ export default function AdminHeader() {
         {name: 'Bookings', href: '/admin/bookings', current: param.param === 'bookings'},
         {name: 'Events', href: '/admin/events', current: param.param === 'events'},
         {name: 'Tickets', href: '/admin/tickets', current: param.param === 'tickets'},
+        {name: 'Event Approval', href: '/admin/tickets', current: param.param === 'eventApproval'},
     ]
 
     const logout = () => {

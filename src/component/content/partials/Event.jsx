@@ -4,6 +4,7 @@ import 'tippy.js/dist/tippy.css';
 import {CiLocationOn} from "react-icons/ci";
 import {GiDuration} from "react-icons/gi";
 import {NavLink} from "react-router-dom";
+import {IoTimeOutline} from "react-icons/io5";
 
 export default function Event({event}) {
 
@@ -27,11 +28,16 @@ export default function Event({event}) {
                 <p className="font-bold truncate w-full" ref={tooltipRef}>
                     {event.name}
                 </p>
-                <p>20/2/2024</p>
                 <div className="flex mt-2 gap-1 items-center">
-                    <CiLocationOn/>
+                    <IoTimeOutline size={18}/>
+                    <p>
+                        {event.time ? event.time.time : "NULL"}
+                    </p>
+                </div>
+                <div className="flex mt-2 gap-1 items-center">
+                    <CiLocationOn size={25}/>
                     <p className="text-neutral-400 text-sm  w-full">
-                        {event.address}
+                        {event.location ? event.location.province + ","+ event.location.district+ ","+ event.location.address : "NULL"}
                     </p>
                 </div>
                 <div className="flex mt-2 gap-1 items-center">
@@ -40,6 +46,8 @@ export default function Event({event}) {
                         {event.duration}
                     </p>
                 </div>
+
+
 
             </div>
         </NavLink>
