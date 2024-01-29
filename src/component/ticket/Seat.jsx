@@ -6,6 +6,7 @@ import {useParams} from "react-router-dom";
 function Seat({dataFormSeat}) {
     const [clickedSeats, setClickedSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
+    const [ticketCodeSeats, setTicketCodeSeats] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [priceOneTicket, setPriceOneTicket] = useState([]);
     const [nameTicketType, setNameTicketType] = useState([])
@@ -26,12 +27,14 @@ function Seat({dataFormSeat}) {
             const seat = selectedSeat.seat;
             const nameTicketType = selectedSeat.ticketType.name;
             const priceOneTicket = selectedSeat.ticketType.price;
+            const ticketCode = selectedSeat.ticketCode;
             setTotalPrice((prevTotalPrice) => prevTotalPrice + parseInt(price));
             setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seat]);
             setClickedSeats((prevClickedSeats) => [...prevClickedSeats, seat]);
             setNameTicketType((prevNameTicketType) => [...prevNameTicketType, nameTicketType]);
             setPriceOneTicket((prevPriceOneTicket) => [...prevPriceOneTicket, priceOneTicket]);
-            dataFormSeat((totalPrice + parseInt(price)), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket]);
+            setTicketCodeSeats(prevTicketCode=>[...prevTicketCode,ticketCode])
+            dataFormSeat((totalPrice + parseInt(price)), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket],[...ticketCodeSeats]);
             event.target.style.backgroundColor = "#2E7D32";
         } else {
             const price = selectedSeat.ticketType.price;
@@ -50,8 +53,8 @@ function Seat({dataFormSeat}) {
     };
 
     useEffect(() => {
-        dataFormSeat(totalPrice, selectedSeats, nameTicketType, priceOneTicket);
-    }, [totalPrice, selectedSeats, nameTicketType, priceOneTicket]);
+        dataFormSeat(totalPrice, selectedSeats, nameTicketType, priceOneTicket,ticketCodeSeats);
+    }, [totalPrice, selectedSeats, nameTicketType, priceOneTicket,ticketCodeSeats]);
 
 
     // Render danh sách ghế

@@ -4,7 +4,8 @@ const initialState = {
     seats : [],
     totalPrice: null,
     ticketTypes: [],
-    price: []
+    price: [],
+    ticketCode: null
 };
 
 export const SeatSlice = createSlice({
@@ -22,10 +23,14 @@ export const SeatSlice = createSlice({
         },
         setPrice:(state,action)=>{
             state.price = action.payload;
-        }
+        },
+        setTicketCode:(state,action)=>{
+            state.ticketCode = action.payload;
+            console.log(state.ticketCode)
+        },
     },
 });
 
-export const { setSeats,setTotalPrice,setTicketType ,setPrice} = SeatSlice.actions;
+export const { setSeats,setTotalPrice,setTicketType ,setPrice,setTicketCode} = SeatSlice.actions;
 
 export default SeatSlice.reducer;
