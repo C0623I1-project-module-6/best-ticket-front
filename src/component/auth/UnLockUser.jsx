@@ -1,12 +1,12 @@
 import {FastField, Form, Formik} from "formik";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {FormGroup} from "reactstrap";
+import InputRegister from "../../ultility/customField/InputRegister.jsx";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import InputRegister from "../../ultility/customField/InputRegister.jsx";
-import {sendOtpWithEmail} from "../../features/user/UserSlice.js";
-import {Bounce, toast} from "react-toastify";
 import * as Yup from "yup";
+import {unlockUser} from "../../features/user/UserSlice.js";
+import {Bounce, toast} from "react-toastify";
 
 const toastOptions = {
     position: "top-right",
@@ -19,35 +19,35 @@ const toastOptions = {
     theme: "light",
     transition: Bounce,
 };
-export default function SendOtp() {
+export default function UnLockUser() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const initialValues = {
         email: "",
+        otp: "",
     }
-    const validationSendOtpSchema = Yup.object().shape({
+    const validationUnlockSchema = Yup.object().shape({
         email: Yup.string()
-            .email("Invalid email! Please add @.")
-            .required("This field is required.")
+            .email("Invalid email.Please add @.")
+            .required("This field is required."),
+        otp: Yup.string().required("This field is required."),
     })
 
     const handleSubmit = (values) => {
-        dispatch(sendOtpWithEmail(values))
-        toast.success("🦄 Vui lòng kiểm tra mail để nhận mã otp", toastOptions);
-        navigate("/forgot-password")
+        dispatch(unlockUser(values));
+        toast.success("🦄 Mở khóa tài khoản thành công.", toastOptions)
+        navigate("/login")
     }
-
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSendOtpSchema}
-            onSubmit={handleSubmit}>
+        <Formik initialValues={initialValues}
+                validationSchema={validationUnlockSchema}
+                onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps
                 return (
                     <FormGroup className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
                              dark:bg-black dark:text-white">
-                        <AuthHeader name={"OTP"}/>
+                        <AuthHeader name={"Unlock Account"}/>
                         <FormGroup className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
                             <Form className="space-y-6"
                                   method="POST"
@@ -57,7 +57,14 @@ export default function SendOtp() {
                                         type="email"
                                         name="email"
                                         component={InputRegister}
-                                        label="Email nhận OTP"
+                                        label="Email đăng ký tài khoản"
+                                        onChange={formikProps.handleChange}/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <FastField
+                                        name="otp"
+                                        component={InputRegister}
+                                        label="Mã OTP"
                                         onChange={formikProps.handleChange}/>
                                 </FormGroup>
                                 <FormGroup className="flex justify-center gap-3">
@@ -65,12 +72,12 @@ export default function SendOtp() {
                                         <FormGroup className="w-full">
                                             <button type="submit"
                                                     className="w-full btn btn-outline btn-primary dark:btn-info">
-                                                Gửi
+                                                Hoàn thành
                                             </button>
                                         </FormGroup>
                                         <FormGroup className="w-full">
                                             <button type="button" onClick={() => {
-                                                navigate("/login")
+                                                navigate("/send-otp-unlock")
                                             }}
                                                     className="w-full btn btn-outline btn-primary dark:btn-info">
                                                 Quay lại

@@ -57,7 +57,7 @@ export default function ForgotPassword() {
                 return (
                     <FormGroup className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
                              dark:bg-black dark:text-white">
-                        <AuthHeader name={"Login"}/>
+                        <AuthHeader name={"Forgot Password"}/>
                         <FormGroup className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
                             <Form className="space-y-6"
                                   method="POST"

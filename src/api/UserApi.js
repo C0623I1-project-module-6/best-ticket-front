@@ -145,6 +145,63 @@ export async function forgotPassword(data) {
   console.log(response)
   return response;
 }
+export async function lock(user) {
+  let response = null;
+  let token = localStorage.getItem('token');
+  await axios({
+    url: `${BEST_TICKET_API}users/lock`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    method: "DELETE",
+    data: user
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  console.log(response)
+  return response;
+}
+
+export async function unlock(data) {
+  let response = null;
+  await axios({
+    url: `${BEST_TICKET_API}users/unlock`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: "POST",
+    data: data
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  console.log(response)
+  return response;
+}
+
+export async function remove(data) {
+  let response = null;
+  let token = localStorage.getItem('token');
+  await axios({
+    url: `${BEST_TICKET_API}users/remove`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    method: "DELETE",
+    data: data
+  }).then((res) => {
+    response = res;
+  }).catch((e) => {
+    response = e;
+  })
+  console.log(response)
+  return response;
+}
 
 
 
