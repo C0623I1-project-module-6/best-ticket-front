@@ -103,4 +103,20 @@ export const setStatusActive= async (eventId)=>{
   return result;
 }
 
+export const findEventsBySearchCriteria = async (searchTerm) => {
+  let result = null;
+
+  try {
+    result = await axios({
+      url: `${BEST_TICKET_API}events/searchCriteria?searchTerm=${searchTerm}`,
+      method: "GET",
+
+    });
+  } catch (error) {
+    console.log("Find events by search criteria API error: " + error);
+  }
+
+  return result;
+}
+
 

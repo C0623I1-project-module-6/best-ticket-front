@@ -6,7 +6,7 @@ import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import {useDispatch, useSelector} from "react-redux";
 import {findAllEventType} from "../../../api/EventTypeApi.js";
-import {ProvincesApi} from "../../../api/ProvincesApi.js";
+import {getDistrict, getProvince, ProvincesApi} from "../../../api/ProvincesApi.js";
 import {CalculateDuration} from "../../../ultility/customHook/calculateDuration.js";
 import {addEvent} from "../../../features/EventSlice.js";
 import {toast} from "react-toastify";
@@ -18,6 +18,7 @@ const CreateEventStep1 = () => {
     const navigate = useNavigate();
     const [eventTypes, setEventTypes] = useState([]);
     const [provinces, setProvinces] = useState([]);
+    const [district,setDistrict] = useState([]);
     const [selectedProvince, setSelectedProvince] = useState("");
     const [selectedDistrict, setSelectedDistrict] = useState("");
     const [address, setAddress] = useState("");
@@ -40,17 +41,30 @@ const CreateEventStep1 = () => {
     useEffect(() => {
         fetchApiEventTypes();
     }, []);
+
     useEffect(() => {
-        const fetchProvinceData = async () => {
-            const ProvincesData = await ProvincesApi();
-            setProvinces(ProvincesData);
+        const fetchProvince = async () => {
+            const ProvincesData = await getProvince();
+            setProvinces(ProvincesData.results);
         }
-        fetchProvinceData();
+        fetchProvince();
     }, []);
     const selectedData = (data) => {
         setSelectedEventTypes(data);
     }
+    const handleDistrict = async (selectedProvince) => {
+        try {
+            const provinceId = provinces.find(province => province.province_name === selectedProvince)?.province_id;
 
+            if (provinceId) {
+                const DistrictData = await getDistrict(provinceId);
+                setDistrict(DistrictData.results);
+                console.log(DistrictData);
+            }
+        } catch  {
+            console.error("loi api");
+        }
+    };
     const handleCreateEvent = () => {
         if (!eventName || !address || !selectedProvince || !selectedDistrict || !selectedEventTypes) {
             return (
@@ -88,6 +102,8 @@ const CreateEventStep1 = () => {
                 });
             });
     }
+    console.log(selectedProvince)
+    console.log(district)
     return (
         <div className="w-[75vw] overflow-y-auto ">
             <div className=" mx-auto">
@@ -114,31 +130,28 @@ const CreateEventStep1 = () => {
                         label="Tỉnh thành"
                         onChange={(value) => {
                             setSelectedProvince(value);
+                            handleDistrict(value);
+                            console.log(value);
                         }}
                     >
                         {provinces.map((province) => (
-                            <Option key={province.code} value={province.name}>
-                                {province.name}
+                            <Option key={province.province_id} value={province.province_name}>
+                                {province.province_name}
                             </Option>
                         ))}
                     </Select>
-                    {provinces.map((province) => {
-                        return province.name === selectedProvince ? (
-                            <Select
-                                key={province.code}
-                                label="Quận huyện"
-                                onChange={(value) => {
-                                    setSelectedDistrict(value);
-                                }}
-                            >
-                                {province.districts.map((district) => (
-                                    <Option key={district.code} value={district.name}>
-                                        {district.name}
-                                    </Option>
-                                ))}
-                            </Select>
-                        ) : null;
-                    })}
+                    <Select
+                        label="Quận huyện"
+                        onChange={(value) => {
+                            setSelectedDistrict(value);
+                        }}
+                    >
+                        {district.map((districtItem) => (
+                            <Option key={districtItem.district_id} value={districtItem.district_name}>
+                                {districtItem.district_name}
+                            </Option>
+                        ))}
+                    </Select>
                 </div>
                 <div className="w-[80%] p-5 mx-auto">
                     <Input
