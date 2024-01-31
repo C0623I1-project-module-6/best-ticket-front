@@ -2,6 +2,7 @@ import UserHeader from "../component/header/UserHeader.jsx";
 import {useEffect} from "react";
 import {reLoginWithToken, selectUserLogin} from "../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
+import ScrollToTop from "react-scroll-to-top";
 
 const UserLayout = ({children}) => {
     const user = useSelector(selectUserLogin);
@@ -13,15 +14,14 @@ const UserLayout = ({children}) => {
     }, []);
     return (
         <>
-            <div className=" relative item-center h-screen max-h-full bg-[#ece8f3]
+                <div className=" relative item-center h-screen max-h-full bg-[#ece8f3]
                              dark:bg-[#111827] dark:text-white
                              ">
-                <UserHeader/>
-                <div className="relative md:flex max-h-full h-screen">
-                    {children}
+                    <UserHeader/>
+                    <div className="relative md:flex max-h-full h-screen">
+                        {children}
+                    </div>
                 </div>
-
-            </div>
         </>
 
     )

@@ -18,7 +18,13 @@ export const TABLE_HEAD_BOOKING = [
   "detail",
 ];
 export const TABLE_HEAD_TICKET = [
-  "stt"
+  "stt",
+  "event name",
+  "customer name",
+  "promotion",
+  "ticket code",
+  "ticket type",
+  "time",
 ];
 export const TABLE_HEAD_EVENT = [
   "stt",

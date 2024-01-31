@@ -8,9 +8,9 @@ import {Bounce, toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
-export default function FormCompany({userExistsList,phoneRegex}) {
-    const dispatch=useDispatch();
-    const navigate=useNavigate();
+export default function FormCompany({userExistsList, phoneRegex}) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const toastOptions =
         {
             position: "top-right",
@@ -23,7 +23,7 @@ export default function FormCompany({userExistsList,phoneRegex}) {
             theme: "light",
             transition: Bounce,
         }
-    const initialValues={
+    const initialValues = {
         businessCode: null,
         companyName: null,
         companyEmail: null,
@@ -43,7 +43,7 @@ export default function FormCompany({userExistsList,phoneRegex}) {
     const businessCodes = userExistsList
         .filter(organizer => organizer.companyBusinessCode)
         .map(organizer => organizer.companyBusinessCode);
-    const validationCompanySchema= Yup.object().shape({
+    const validationCompanySchema = Yup.object().shape({
         companyEmail: Yup.string()
             .test("unique", "Email already exists.", value => {
                 return !companyEmails.includes(value);
@@ -82,7 +82,7 @@ export default function FormCompany({userExistsList,phoneRegex}) {
                 onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
-                return(
+                return (
                     <Form method="POST"
                           onSubmit={formikProps.handleSubmit}>
                         <h4 className="font-serif text-2xl p-5">Thông tin cơ bản</h4>
@@ -179,7 +179,7 @@ export default function FormCompany({userExistsList,phoneRegex}) {
                             Hoàn thành
                         </Button>
                     </Form>
-                    );
+                );
             }}
         </Formik>
     );

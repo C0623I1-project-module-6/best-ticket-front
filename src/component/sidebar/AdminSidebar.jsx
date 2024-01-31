@@ -58,12 +58,18 @@ function AdminSidebar() {
             path: "/admin/events",
             current: param.param === 'events'
         },
-        {icon: <ImTicket size={25}/>, label: " Tickets", path: "/admin/tickets", current: param.param === 'tickets'},
         {
-            icon: <MdAppRegistration size={25} />,
+            icon: <ImTicket size={25}/>,
+            label: " Tickets",
+            path: "/admin/tickets",
+            current: param.param === 'tickets'
+        },
+        {
+            icon: <MdAppRegistration size={25}/>,
             label: "Event Approval",
-            path: "/admin/eventApproval",
-            current:  param.param === 'eventApproval'}
+            path: "/admin/event-approval",
+            current: param.param === 'event-approval'
+        }
     ]
     const itemFooter = [
         {icon: <FaCogs size={25}/>, label: "Setting", path: "/admin"},

@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     getBookingDetails,
     selectBookings,
-    selectBookingsSuccess,
+    selectBookingsSuccess, selectTickets, selectTicketsSuccess,
     selectUsers,
     selectUsersSuccess
 } from "../../features/AdminSlice.js";
@@ -14,17 +14,21 @@ import ModalContent from "../ModalContent.jsx";
 import ModalEditBookings from "../ModalEditBookings.jsx";
 import {setStatusActive} from "../../api/EventApi.js";
 import {getEventByStatusIsPending} from "../../features/EventSlice.js";
+
 function TableContent(props) {
     const [data, setData] = useState([]);
     const dispatch = useDispatch();
     const bookings = useSelector(selectBookings);
     const users = useSelector(selectUsers);
+    const tickets = useSelector(selectTickets);
     const eventPending = useSelector(state => state.event.events)
     const selectUserSuccess = useSelector(selectUsersSuccess);
     const selectBookingSuccess = useSelector(selectBookingsSuccess)
+    const selectTicketSuccess = useSelector(selectTicketsSuccess)
     const [showDetail, setShowDetail] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
     const [bookingEdit, setBookingEdit] = useState({});
+    console.log(tickets)
     useEffect(() => {
         setData(users)
     }, [selectUserSuccess]);
@@ -34,6 +38,9 @@ function TableContent(props) {
     useEffect(() => {
         setData(eventPending);
     }, [eventPending]);
+    useEffect(() => {
+        setData(tickets);
+    }, [selectTicketSuccess]);
     const handleClick = async (value) => {
         if (!showDetail) {
             await dispatch(getBookingDetails(value));
@@ -59,7 +66,7 @@ function TableContent(props) {
         setShowEditForm(data);
     }
 
-    const handleSetActive= async (eventId)=>{
+    const handleSetActive = async (eventId) => {
         await setStatusActive(eventId);
         dispatch(getEventByStatusIsPending(0));
     }
@@ -183,25 +190,44 @@ function TableContent(props) {
             </>
         )
     }
-    if (props.content.param === "eventApproval") {
+    if (props.content.param === "tickets") {
         return (
-
+            <>
                 <tbody className="bg-white text-black dark:bg-blue-gray-400 items-center justify-center">
                 {
-                    data !== null ? data.map((event, index) => (
+                    data !== null ? data.map((ticket, index) => (
                             <tr key={index}>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 ">{index + 1}</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.name}</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.email}</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.organizer ? event.organizer.name : "NULL"}</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.time ? event.time.name : "NULL"}</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.location ? event.location.province+ "," + event.location.district + ","+ event.location.address : "NULL"}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{ticket.eventName}</td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">
-                                    <button
-                                        className="rounded-lg bg-green-300 border-green-900 border-2 p-2 cursor-pointer"
-                                        onClick={() => handleSetActive(event.id)}
-                                    >
-                                        SET ACTIVE
+                                    {
+                                        ticket.customer === null ?
+                                            "N/A" :
+                                            ticket.customer.fullName
+                                    }
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{ticket.promotion}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{ticket.ticketCode}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip ">
+                                    {
+                                        ticket.ticketType === null ? "N/A" :
+                                            ticket.ticketType.name
+                                    }
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">
+                                    {
+                                        ticket.time === null ?
+                                            "N/A" :
+                                            useFormatDate(ticket.time.time)
+                                    }
+                                </td>
+
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 ">
+                                    <button type="button" className="btn btn-outline btn-sm btn-warning">Edit
+                                    </button>
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 ">
+                                    <button type="button" className="btn btn-outline btn-sm btn-error">Delete
                                     </button>
                                 </td>
                             </tr>
@@ -213,10 +239,46 @@ function TableContent(props) {
                             <td><span className="loading loading-spinner text-primary"></span></td>
                             <td><span className="loading loading-spinner text-primary"></span></td>
                             <td><span className="loading loading-spinner text-primary"></span></td>
-                            <td><span className="loading loading-spinner text-primary"></span></td>
                         </tr>
                 }
                 </tbody>
+            </>
+        )
+    }
+    if (props.content.param === "event-approval") {
+        return (
+
+            <tbody className="bg-white text-black dark:bg-blue-gray-400 items-center justify-center">
+            {
+                data !== null ? data.map((event, index) => (
+                        <tr key={index}>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 ">{index + 1}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.name}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.email}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.organizer ? event.organizer.name : "NULL"}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.time ? event.time.name : "NULL"}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">{event.location ? event.location.province + "," + event.location.district + "," + event.location.address : "NULL"}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-800 truncate hover:text-clip">
+                                <button
+                                    className="rounded-lg bg-green-300 border-green-900 border-2 p-2 cursor-pointer"
+                                    onClick={() => handleSetActive(event.id)}
+                                >
+                                    SET ACTIVE
+                                </button>
+                            </td>
+                        </tr>
+                    )) :
+                    <tr className="text-center">
+                        <td><span className="loading loading-spinner text-primary"></span></td>
+                        <td><span className="loading loading-spinner text-primary"></span></td>
+                        <td><span className="loading loading-spinner text-primary"></span></td>
+                        <td><span className="loading loading-spinner text-primary"></span></td>
+                        <td><span className="loading loading-spinner text-primary"></span></td>
+                        <td><span className="loading loading-spinner text-primary"></span></td>
+                        <td><span className="loading loading-spinner text-primary"></span></td>
+                    </tr>
+            }
+            </tbody>
         )
     }
 }
