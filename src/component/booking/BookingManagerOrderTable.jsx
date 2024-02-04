@@ -1,9 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventId,
-    getAllBookingsByKeyword,
-    selectAllBookingsByEventId
+    getAllBookingsByEventId, getAllBookingsByKeyword, selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
 import {useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
@@ -70,18 +68,28 @@ const BookingManagerOrderTable = () => {
 
     }
 
-    let selectedEmails = [];
-
     const toggleSelectAll = (e) => {
         const checked = e.target.checked;
         setSelectAllChecked(checked);
         if (checked) {
             const allBookingIds = sortedBookings.map((booking) => booking.id);
             setCheckboxesChecked(allBookingIds);
-            selectedEmails = sortedBookings.map((booking) => booking.userEmail);
-            console.log(selectedEmails);
+            setEmailList(sortedBookings.map((booking) => booking.customer.receiptEmail));
+            console.log(emailList);
         } else {
             setCheckboxesChecked([]);
+            setEmailList([]);
+            console.log(emailList);
+        }
+    };
+
+    const handleToggleAllClick = () => {
+        const toggleAllInput = document.querySelector('input[name="toggleAll"]');
+        if (toggleAllInput) {
+            const changeEvent = new Event('change', {bubbles: true});
+            toggleAllInput.checked = true;
+            toggleAllInput.dispatchEvent(changeEvent);
+            toggleSelectAll(changeEvent);
         }
     };
 
@@ -92,7 +100,7 @@ const BookingManagerOrderTable = () => {
             if (selectedBooking) {
                 const selectedEmail = selectedBooking.customer.receiptEmail;
                 setEmailList((prevEmailList) => prevEmailList.filter((email) => email !== selectedEmail));
-                console.log(emailList)
+                console.log(emailList);
             }
         } else {
             const selectedBooking = sortedBookings.find((booking) => booking.id === checkedBookingId);
@@ -101,7 +109,7 @@ const BookingManagerOrderTable = () => {
                 const selectedEmail = selectedBooking.customer.receiptEmail;
                 if (!emailList.includes(selectedEmail)) {
                     setEmailList((prevEmailList) => [...prevEmailList, selectedEmail]);
-                    console.log(emailList)
+                    console.log(emailList);
                 }
             } else {
                 console.log("Invalid booking ID");
@@ -113,7 +121,7 @@ const BookingManagerOrderTable = () => {
     };
     const handleOk = () => {
         sendEmail();
-        setIsModalOpen(true);
+        setIsModalOpen(false);
     };
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -123,18 +131,17 @@ const BookingManagerOrderTable = () => {
 
     const sendEmail = () => {
         // e.preventDefault();
-        emailList.forEach((recipientEmail) => {
-            emailjs
-                .sendForm('service_99xnbap', 'template_x4164f8', form.current, 'LHVxILU3VnOGyS6nU')
-                .then((result) => {
-                    console.log(`Email sent to ${recipientEmail}:`, result.text);
-                    window.alert("Email sent successfully!");
-                })
-                .catch((error) => {
-                    console.log(`Failed to send email to ${recipientEmail}:`, error.text);
-                    window.alert("Email sent failed!");
-                });
-        });
+        emailjs
+            .sendForm('service_99xnbap', 'template_x4164f8', form.current, 'LHVxILU3VnOGyS6nU')
+            .then((result) => {
+                console.log(result.text);
+                window.alert("Email sent successfully!");
+            })
+            .catch((error) => {
+                console.log(error.text);
+                window.alert("Email sent failed!");
+            });
+        setCheckboxesChecked([]);
     };
 
     let totalAmount = 0;
@@ -184,6 +191,7 @@ const BookingManagerOrderTable = () => {
                         <th className="px-4 py-2 text-left border-b border-black">
                             <input
                                 type="checkbox"
+                                name="toggleAll"
                                 className="bg-white"
                                 checked={selectAllChecked}
                                 onChange={toggleSelectAll}
@@ -284,8 +292,13 @@ const BookingManagerOrderTable = () => {
                                     <div>Gửi mail đến</div>
                                 </div>
                                 <div className="mx-1 my-2">
-                                    <button className="border-0 border-black rounded bg-[#C2DEA3]"
-                                            onClick={showModal}>
+                                    <button
+                                        className="border-0 border-black rounded bg-[#C2DEA3]"
+                                        onClick={() => {
+                                            handleToggleAllClick();
+                                            showModal();
+                                        }}
+                                    >
                                         <div className="m-2">Tất cả</div>
                                     </button>
                                 </div>
@@ -320,6 +333,7 @@ const BookingManagerOrderTable = () => {
                                                         className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
                                                         placeholder="Nhập email người nhận"
                                                         value={emailList.join(", ")}
+                                                        hidden={true}
                                                         required
                                                     />
                                                 </div>
