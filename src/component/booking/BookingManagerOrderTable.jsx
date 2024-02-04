@@ -125,6 +125,8 @@ const BookingManagerOrderTable = () => {
     };
     const handleCancel = () => {
         setIsModalOpen(false);
+        setSelectAllChecked(false);
+        setCheckboxesChecked([]);
     };
 
     const form = useRef();
