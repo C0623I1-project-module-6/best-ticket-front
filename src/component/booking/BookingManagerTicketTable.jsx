@@ -78,7 +78,7 @@ const BookingManagerTicketTable = () => {
                                             </td>
                                             <td className="border border-black"
                                                 rowSpan={detail.ticketInBookingDetailResponses.length}>
-                                                {booking.userEmail}
+                                                {booking.customer.receiptEmail}
                                             </td>
                                             <td className="border border-black"
                                                 rowSpan={detail.ticketInBookingDetailResponses.length}>
