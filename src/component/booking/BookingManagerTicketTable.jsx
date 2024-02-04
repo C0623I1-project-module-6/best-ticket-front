@@ -20,7 +20,6 @@ const BookingManagerTicketTable = () => {
     const {formatCurrency} = useFormatCurrency();
     const navigate = useNavigate();
 
-
     useEffect(() => {
         dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage -1}));
     }, [currentPage, dispatch, eventId1]);
@@ -69,7 +68,7 @@ const BookingManagerTicketTable = () => {
                                 detail.ticketInBookingDetailResponses.forEach((ticket, ticketIndex) => {
                                     detailRows.push(<tr key={ticket.id}>
                                         {ticketIndex === 0 && (<>
-                                            <td className="border border-black"
+                                            <td className="border border-black row-span-2"
                                                 rowSpan={detail.ticketInBookingDetailResponses.length}>
                                                 {startIndex + index + 1}
                                             </td>

@@ -24,11 +24,8 @@ export default function CreatedEvent() {
     useEffect(() => {
         if (organizer) {
             dispatch(getEventByOrganizerId({ organizerId: organizer.id, currentPage }));
-            console.log(organizer);
         }
     }, [currentPage, organizer, dispatch]);
-
-    console.log(eventByOrganizer)
 
     return (
         <div>
