@@ -68,7 +68,7 @@ const BookingManagerTicketTable = () => {
                                 detail.ticketInBookingDetailResponses.forEach((ticket, ticketIndex) => {
                                     detailRows.push(<tr key={ticket.id}>
                                         {ticketIndex === 0 && (<>
-                                            <td className="border border-black row-span-2"
+                                            <td className="border border-black"
                                                 rowSpan={detail.ticketInBookingDetailResponses.length}>
                                                 {startIndex + index + 1}
                                             </td>
