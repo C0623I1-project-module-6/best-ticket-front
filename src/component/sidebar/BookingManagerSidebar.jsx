@@ -127,7 +127,7 @@ const BookingManagerSidebar = () => {
                 <li>
                     <a onClick={() => {
                         // navigate(`/my-event/event/${eventId}/summarize`)
-                        navigate('/503')
+                        navigate('/404')
                     }}
                        className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">

@@ -32,7 +32,7 @@ const BookingManagerTicketTable = () => {
             <div className="w-1/2 m-5 flex">
                 <div className="mx-1">
                     <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
-                        navigate(`/503`)
+                        navigate(`/404`)
                     }}>
                         <div className="m-2 flex">
                             <div className="p-1"><RiFileExcel2Fill /></div>
