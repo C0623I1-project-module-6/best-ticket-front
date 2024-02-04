@@ -121,12 +121,13 @@ const BookingManagerOrderTable = () => {
     };
     const handleOk = () => {
         sendEmail();
-        setIsModalOpen(false);
+        handleCancel();
     };
     const handleCancel = () => {
         setIsModalOpen(false);
         setSelectAllChecked(false);
         setCheckboxesChecked([]);
+        setEmailList([]);
     };
 
     const form = useRef();
@@ -145,6 +146,7 @@ const BookingManagerOrderTable = () => {
             });
         setSelectAllChecked(false);
         setCheckboxesChecked([]);
+        setEmailList([]);
     };
 
     let totalAmount = 0;
