@@ -1,11 +1,9 @@
 import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    getAllBookingsByEventId,
-    getAllBookingsByKeyword,
-    selectAllBookingsByEventId
+    getAllBookingsByEventId, getAllBookingsByKeyword, selectAllBookingsByEventId
 } from '../../features/BookingSlice.js';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import {ImSearch} from 'react-icons/im';
@@ -19,18 +17,17 @@ import emailjs from '@emailjs/browser';
 
 const BookingManagerOrderTable = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const totalPages = useSelector(state => state.booking.totalPages);
     const bookings = useSelector(selectAllBookingsByEventId);
     const eventId1 = useParams().eventId;
     const [currentPage, setCurrentPage] = useState(1);
     const [keyword, setKeyword] = useState('');
     const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const [emailList, setEmailList] = useState([]);
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
     const [sortBy, setSortBy] = useState('createdAt');
     const [status, setStatus] = useState('createdAt');
     const {formatCurrency} = useFormatCurrency();
-    const [selectedBookingIds, setSelectedBookingIds] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
@@ -71,53 +68,85 @@ const BookingManagerOrderTable = () => {
 
     }
 
-    let allBookingEmails = [];
-
     const toggleSelectAll = (e) => {
         const checked = e.target.checked;
         setSelectAllChecked(checked);
         if (checked) {
             const allBookingIds = sortedBookings.map((booking) => booking.id);
             setCheckboxesChecked(allBookingIds);
-            allBookingEmails = sortedBookings.map((booking) => booking.userEmail);
-            console.log(allBookingEmails);
+            setEmailList(sortedBookings.map((booking) => booking.customer.receiptEmail));
+            console.log(emailList);
         } else {
             setCheckboxesChecked([]);
+            setEmailList([]);
+            console.log(emailList);
+        }
+    };
+
+    const handleToggleAllClick = () => {
+        const toggleAllInput = document.querySelector('input[name="toggleAll"]');
+        if (toggleAllInput) {
+            const changeEvent = new Event('change', {bubbles: true});
+            toggleAllInput.checked = true;
+            toggleAllInput.dispatchEvent(changeEvent);
+            toggleSelectAll(changeEvent);
         }
     };
 
     const toggleCheckbox = (checkedBookingId) => {
         if (checkboxesChecked.includes(checkedBookingId)) {
             setCheckboxesChecked((prevChecked) => prevChecked.filter((id) => id !== checkedBookingId));
+            const selectedBooking = sortedBookings.find((booking) => booking.id === checkedBookingId);
+            if (selectedBooking) {
+                const selectedEmail = selectedBooking.customer.receiptEmail;
+                setEmailList((prevEmailList) => prevEmailList.filter((email) => email !== selectedEmail));
+                console.log(emailList);
+            }
         } else {
-            setCheckboxesChecked((prevChecked) => [...prevChecked, checkedBookingId]);
+            const selectedBooking = sortedBookings.find((booking) => booking.id === checkedBookingId);
+            if (selectedBooking) {
+                setCheckboxesChecked((prevChecked) => [...prevChecked, checkedBookingId]);
+                const selectedEmail = selectedBooking.customer.receiptEmail;
+                if (!emailList.includes(selectedEmail)) {
+                    setEmailList((prevEmailList) => [...prevEmailList, selectedEmail]);
+                    console.log(emailList);
+                }
+            } else {
+                console.log("Invalid booking ID");
+            }
         }
     };
-
     const showModal = () => {
         setIsModalOpen(true);
     };
     const handleOk = () => {
         sendEmail();
-        setIsModalOpen(true);
+        handleCancel();
     };
     const handleCancel = () => {
         setIsModalOpen(false);
+        setSelectAllChecked(false);
+        setCheckboxesChecked([]);
+        setEmailList([]);
     };
 
     const form = useRef();
 
     const sendEmail = () => {
         // e.preventDefault();
-
-        emailjs.sendForm('service_0njt1s5', 'template_x4164f8', form.current, 'LHVxILU3VnOGyS6nU')
+        emailjs
+            .sendForm('service_99xnbap', 'template_x4164f8', form.current, 'LHVxILU3VnOGyS6nU')
             .then((result) => {
                 console.log(result.text);
-                window.alert("Email sent successfully!")
-            }, (error) => {
+                window.alert("Email sent successfully!");
+            })
+            .catch((error) => {
                 console.log(error.text);
                 window.alert("Email sent failed!");
             });
+        setSelectAllChecked(false);
+        setCheckboxesChecked([]);
+        setEmailList([]);
     };
 
     let totalAmount = 0;
@@ -167,6 +196,7 @@ const BookingManagerOrderTable = () => {
                         <th className="px-4 py-2 text-left border-b border-black">
                             <input
                                 type="checkbox"
+                                name="toggleAll"
                                 className="bg-white"
                                 checked={selectAllChecked}
                                 onChange={toggleSelectAll}
@@ -217,7 +247,7 @@ const BookingManagerOrderTable = () => {
                             <td className="py-2 border-x-0">
                                 {booking.customer.fullName}
                                 <br/>
-                                {booking.userEmail}
+                                {booking.customer.receiptEmail}
                                 <br/>
                                 {booking.customer.phoneNumber}
                                 <br/>
@@ -235,17 +265,15 @@ const BookingManagerOrderTable = () => {
                                 {formatCurrency(booking.totalAmount)}
                             </td>
                         </tr>;
-
                     }))}
                     {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (
-                        <tr></tr>) : (
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td className="py-5 text-center">{formatCurrency(totalAmount)}</td>
-                        </tr>)}
+                        <tr></tr>) : (<tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className="py-5 text-center">{formatCurrency(totalAmount)}</td>
+                    </tr>)}
                     </tbody>
                 </table>
                 <div className="flex items-center justify-center h-20">
@@ -258,8 +286,7 @@ const BookingManagerOrderTable = () => {
                             page={currentPage}
                             onChange={(event, value) => setCurrentPage(value)}
                         />
-                    </Stack>)
-                    }
+                    </Stack>)}
                 </div>
                 <div className="rounded-l bg-[#F6F6F6] flex">
                     <div className="m-auto text-center flex">
@@ -270,7 +297,13 @@ const BookingManagerOrderTable = () => {
                                     <div>Gửi mail đến</div>
                                 </div>
                                 <div className="mx-1 my-2">
-                                    <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={showModal}>
+                                    <button
+                                        className="border-0 border-black rounded bg-[#C2DEA3]"
+                                        onClick={() => {
+                                            handleToggleAllClick();
+                                            showModal();
+                                        }}
+                                    >
                                         <div className="m-2">Tất cả</div>
                                     </button>
                                 </div>
@@ -281,38 +314,65 @@ const BookingManagerOrderTable = () => {
                                             <div className="m-2">Đã chọn</div>
                                         </button>)}
                                 </div>
-                                <Modal title="" open={isModalOpen} onOk={handleOk}
-                                       onCancel={handleCancel}>
+                                <Modal
+                                    title=""
+                                    open={isModalOpen}
+                                    onOk={handleOk}
+                                    onCancel={handleCancel}
+                                >
                                     <section className="bg-white dark:bg-gray-900">
                                         <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-                                            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Gửi Thư
+                                            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
+                                                Gửi Thư
                                             </h2>
                                             <form ref={form} action="#" onSubmit={sendEmail} className="space-y-8">
                                                 <div>
                                                     <label htmlFor="email"
-                                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email người nhận</label>
-                                                    <input type="email"
-                                                           name="user_email"
-                                                           className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
-                                                           placeholder="Nhập email người nhận" required/>
+                                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                        Email người nhận
+                                                    </label>
+                                                    <input
+                                                        type="email"
+                                                        name="email"
+                                                        // readOnly
+                                                        className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+                                                        placeholder="Nhập email người nhận"
+                                                        value={emailList.join(", ")}
+                                                        required
+                                                    />
                                                 </div>
                                                 <div>
                                                     <label htmlFor="subject"
-                                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tiêu đề</label>
-                                                    <input type="text" id="subject" name="subject"
-                                                           className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
-                                                           placeholder="Nhập tiêu đề" required/>
+                                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                        Tiêu đề
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        id="subject"
+                                                        name="subject"
+                                                        className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+                                                        placeholder="Nhập tiêu đề"
+                                                        required
+                                                    />
                                                 </div>
                                                 <div className="sm:col-span-2">
                                                     <label htmlFor="message"
-                                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Nội dung</label>
-                                                    <textarea id="message" name="message" rows="6"
-                                                              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                              placeholder="Nhập nội dung..."></textarea>
+                                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                                        Nội dung
+                                                    </label>
+                                                    <textarea
+                                                        id="message"
+                                                        name="message"
+                                                        rows="6"
+                                                        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                        placeholder="Nhập nội dung..."
+                                                    ></textarea>
                                                 </div>
-                                                {/*<div>*/}
-                                                {/*    <button type="submit" className="border border-black">Submit</button>*/}
-                                                {/*</div>*/}
+                                                <div>
+                                                    <button type="submit" className="border border-black">
+                                                        Submit
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
                                     </section>
@@ -322,8 +382,7 @@ const BookingManagerOrderTable = () => {
                 </div>
             </div>
         </div>
-    </>
-);
+    </>);
 };
 
 export default BookingManagerOrderTable;
