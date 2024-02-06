@@ -39,7 +39,7 @@ const BookingManagerSidebar = () => {
     }
 
     return (<div className="fixed w-[26%] border-r shadow-md">
-        <nav className="bg-[#303B46] h-screen">
+        <nav className="bg-[#424242] h-screen">
             <ul className="text-left">
                 <li>
                     <div className="text-center p-2 flex bg-[#14B981]">
@@ -120,19 +120,18 @@ const BookingManagerSidebar = () => {
                         navigate(`/my-event/legal/createdEvent`)
                     }} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
-                            <div className="m-1"><GiReturnArrow/></div>
+                            <div className="m-1 pr-2"><GiReturnArrow/></div>
                             Quay lại trang sự kiện của tôi
                         </div>
                     </a>
                 </li>
                 <li>
                     <a onClick={() => {
-                        // navigate(`/my-event/event/${eventId}/summarize`)
                         navigate(`/my-event/event/${eventId}/summarize`)
                     }}
                        className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
-                            <div className="m-1"><BsGraphUpArrow/></div>
+                            <div className="m-1 pr-2"><BsGraphUpArrow/></div>
                             Tổng kết
                         </div>
                     </a>
@@ -143,7 +142,7 @@ const BookingManagerSidebar = () => {
                     }}
                        className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
-                            <div className="m-1"><RiGroupLine/></div>
+                            <div className="m-1 pr-2"><RiGroupLine/></div>
                             RSVPs
                         </div>
                     </a>
@@ -154,7 +153,7 @@ const BookingManagerSidebar = () => {
                     }}
                        className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
-                            <div className="m-1"><GrAnnounce/></div>
+                            <div className="m-1 pr-2"><GrAnnounce/></div>
                             Quảng bá
                         </div>
                     </a>
@@ -165,7 +164,7 @@ const BookingManagerSidebar = () => {
                     }}
                        className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
-                            <div className="m-1"><BiSolidDiscount/></div>
+                            <div className="m-1 pr-2"><BiSolidDiscount/></div>
                             Mã giảm giá
                         </div>
                     </a>
@@ -176,7 +175,7 @@ const BookingManagerSidebar = () => {
                     }}
                        className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
-                            <div className="m-1"><GrUserManager/></div>
+                            <div className="m-1 pr-2"><GrUserManager/></div>
                             Người quản lý
                         </div>
                     </a>
