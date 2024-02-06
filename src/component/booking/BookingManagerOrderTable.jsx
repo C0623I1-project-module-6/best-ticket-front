@@ -144,9 +144,6 @@ const BookingManagerOrderTable = () => {
                 console.log(error.text);
                 window.alert("Email sent failed!");
             });
-        setSelectAllChecked(false);
-        setCheckboxesChecked([]);
-        setEmailList([]);
     };
 
     let totalAmount = 0;
