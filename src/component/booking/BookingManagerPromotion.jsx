@@ -85,11 +85,11 @@ const BookingManagerPromotion = () => {
                         </div>
                         <div>
                             <div className="flex">
-                                <div><FaArrowRight/></div>
+                                <div className="py-1"><FaArrowRight/></div>
                                 <div>Là sự kiện nóng trên ngay trang chủ</div>
                             </div>
                             <div className="flex">
-                                <div><FaArrowRight/></div>
+                                <div className="py-1"><FaArrowRight/></div>
                                 <div>Gửi email marketing cho các khách hàng tiềm năng</div>
                             </div>
                         </div>
