@@ -12,7 +12,7 @@ import {Avatar, Popover, PopoverContent, PopoverHandler} from "@material-tailwin
 import {FaSignOutAlt} from "react-icons/fa";
 import {Bounce, toast} from "react-toastify";
 import logo from "../../assets/img/logo/logo-auth-header-light.svg";
-
+import {twMerge} from 'tailwind-merge';
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
@@ -21,6 +21,7 @@ const BookingManagerSidebar = () => {
     const user = useSelector(selectUserLogin);
     const userExists = useSelector(selectExistsUsers)
     const userLogout = useSelector(selectUserLogout);
+    const pathName = location.pathname;
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
@@ -37,6 +38,45 @@ const BookingManagerSidebar = () => {
         });
         navigate("/404");
     }
+
+    const steps = [
+        {
+            icon:<GiReturnArrow/>,
+            title: "Quay lại trang sự kiện của tôi",
+            url: `/my-event/legal/createdEvent`,
+            active: `/my-event/legal/createdEvent` === pathName
+        },
+        {
+            icon: <BsGraphUpArrow/>,
+            title: "Tổng kết",
+            url: `/my-event/event/${eventId}/summarize`,
+            active: `/my-event/event/${eventId}/summarize` === pathName
+        },
+        {
+            icon: <RiGroupLine/>,
+            title: "RSVPs",
+            url: `/my-event/event/${eventId}/RSVPs/bookings`,
+            active: `/my-event/event/${eventId}/RSVPs/bookings` === pathName
+        },
+        {
+            icon: <GrAnnounce/>,
+            title: "Quảng bá",
+            url: `/my-event/event/${eventId}/promote`,
+            active: `/my-event/event/${eventId}/promote` === pathName
+        },
+        {
+            icon: <BiSolidDiscount/>,
+            title: "Mã giảm giá",
+            url: `/my-event/event/${eventId}/discount-codes`,
+            active: `/my-event/event/${eventId}/discount-codes` === pathName
+        },
+        {
+            icon: <GrUserManager/>,
+            title: "Người quản lý",
+            url: `/my-event/event/${eventId}/moderators`,
+            active: `/my-event/event/${eventId}/moderators` === pathName
+        },
+    ]
 
     return (<div className="fixed w-[26%] border-r shadow-md">
         <nav className="bg-[#424242] h-screen">
@@ -115,71 +155,17 @@ const BookingManagerSidebar = () => {
                         </div>) : navigate(`/login`)}
                     </div>
                 </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/my-event/legal/createdEvent`)
-                    }} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1 pr-2"><GiReturnArrow/></div>
-                            Quay lại trang sự kiện của tôi
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/my-event/event/${eventId}/summarize`)
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1 pr-2"><BsGraphUpArrow/></div>
-                            Tổng kết
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/my-event/event/${eventId}/RSVPs/bookings`)
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1 pr-2"><RiGroupLine/></div>
-                            RSVPs
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/my-event/event/${eventId}/promote`)
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1 pr-2"><GrAnnounce/></div>
-                            Quảng bá
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/404`)
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1 pr-2"><BiSolidDiscount/></div>
-                            Mã giảm giá
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/my-event/event/${eventId}/moderators`)
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1 pr-2"><GrUserManager/></div>
-                            Người quản lý
-                        </div>
-                    </a>
-                </li>
+                {steps.map((step, index) => (
+                    <li key={index}
+                        className={twMerge('flex gap-5 items-center hover:bg-[#ece8f3] hover:text-black py-3 px-5 mb-2',step.active && 'bg-gray-400 text-black ')}
+                        onClick={()=> navigate(step.url)}
+                    >
+                    <span className={`rounded-full h-10 w-10 flex items-center justify-center`}>
+                        {step.icon}
+                    </span>
+                        <p>{step.title}</p>
+                    </li>
+                ))}
             </ul>
             <div className="h-screen">
                 <div className="text-center flex">
