@@ -41,7 +41,7 @@ const BookingManagerSidebar = () => {
 
     const steps = [
         {
-            icon:<GiReturnArrow/>,
+            icon: <GiReturnArrow/>,
             title: "Quay lại trang sự kiện của tôi",
             url: `/my-event/legal/createdEvent`,
             active: `/my-event/legal/createdEvent` === pathName
@@ -92,12 +92,15 @@ const BookingManagerSidebar = () => {
                         {user ? (<div className="w-1/2 text-right mx-3 my-5 mr-8">
                             <Popover placement="bottom-end" dismiss={true}>
                                 <PopoverHandler>
-                                    <Avatar
-                                        size="sm"
-                                        alt={avatar}
-                                        src={user.avatar}
-                                        className="border border-white-500 shadow-xl shadow-green-900/20 ring-4 ring-blue-300"
-                                    />
+                                    <button className="pl-28 flex">
+                                        <div className="pr-2 py-1 text-xl">{user.username}</div>
+                                        <Avatar
+                                            size="sm"
+                                            alt={avatar}
+                                            src={user.avatar}
+                                            className="border border-white-500 shadow-xl shadow-green-900/20 ring-4 ring-blue-300"
+                                        />
+                                    </button>
                                 </PopoverHandler>
                                 <PopoverContent className="w-48 p-1">
                                     <div className="flex-col w-full gap-3">
@@ -157,8 +160,8 @@ const BookingManagerSidebar = () => {
                 </li>
                 {steps.map((step, index) => (
                     <li key={index}
-                        className={twMerge('flex gap-5 items-center hover:bg-[#ece8f3] hover:text-black py-3 px-5 mb-2',step.active && 'bg-gray-400 text-black ')}
-                        onClick={()=> navigate(step.url)}
+                        className={twMerge('flex gap-5 items-center hover:bg-[#ece8f3] hover:text-black py-3 px-5 mb-2', step.active && 'bg-gray-400 text-black ')}
+                        onClick={() => navigate(step.url)}
                     >
                     <span className={`rounded-full h-10 w-10 flex items-center justify-center`}>
                         {step.icon}
