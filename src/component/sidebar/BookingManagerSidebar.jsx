@@ -11,6 +11,7 @@ import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserS
 import {Avatar, Popover, PopoverContent, PopoverHandler} from "@material-tailwind/react";
 import {FaSignOutAlt} from "react-icons/fa";
 import {Bounce, toast} from "react-toastify";
+import logo from "../../assets/img/logo/logo-auth-header-light.svg";
 
 
 const BookingManagerSidebar = () => {
@@ -41,21 +42,21 @@ const BookingManagerSidebar = () => {
         <nav className="bg-[#303B46] h-screen">
             <ul className="text-left">
                 <li>
-                    <div className="text-center p-2 flex bg-[#262F38]">
-                        <div className="w-1/2 text-left ml-6 py-1">
-                            <a href="/">
-                                <img src="/src/assets/img/logo/logo-auth-header-light.svg" alt=""
-                                     className="h-[50px] w-[50px] cursor-pointer bg-white"/>
-                            </a>
+                    <div className="text-center p-2 flex bg-[#14B981]">
+                        <div className="w-1/2 text-left ml-6 my-2">
+                            <div className="flex items-center gap-3 font-semibold dark:text-white">
+                                <img src={logo} alt="" className="h-[75px] w-[100px] m-0 cursor-pointer  "
+                                     onClick={() => navigate("/")}/>
+                            </div>
                         </div>
-                        {user ? (<div className="w-1/2 text-right m-3 mr-8">
+                        {user ? (<div className="w-1/2 text-right mx-3 my-6 mr-8">
                             <Popover placement="bottom-end" dismiss={true}>
                                 <PopoverHandler>
                                     <Avatar
                                         size="sm"
                                         alt={avatar}
                                         src={user.avatar}
-                                        className="border border-green-500 shadow-xl shadow-green-900/20 ring-4 ring-green-500/30"
+                                        className="border border-white-500 shadow-xl shadow-green-900/20 ring-4 ring-blue-300"
                                     />
                                 </PopoverHandler>
                                 <PopoverContent className="w-48 p-1">
@@ -110,7 +111,7 @@ const BookingManagerSidebar = () => {
                                         </div>
                                     </div>
                                 </PopoverContent>
-                            </Popover>)
+                            </Popover>
                         </div>) : navigate(`/login`)}
                     </div>
                 </li>
@@ -127,7 +128,7 @@ const BookingManagerSidebar = () => {
                 <li>
                     <a onClick={() => {
                         // navigate(`/my-event/event/${eventId}/summarize`)
-                        navigate('/404')
+                        navigate(`/my-event/event/${eventId}/summarize`)
                     }}
                        className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
                         <div className="flex">
