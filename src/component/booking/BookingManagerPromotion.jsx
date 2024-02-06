@@ -115,7 +115,7 @@ const BookingManagerPromotion = () => {
                 <UserFooter/>
             </div>
         </>
-    ) : (navigate('/'))}
+    ) : (navigate(`/my-event/event/${eventId}/RSVPs/bookings`))}
     </>)
 };
 
