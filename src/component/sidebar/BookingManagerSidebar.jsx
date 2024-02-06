@@ -82,14 +82,14 @@ const BookingManagerSidebar = () => {
         <nav className="bg-[#424242] h-screen">
             <ul className="text-left">
                 <li>
-                    <div className="text-center p-2 flex bg-[#14B981]">
-                        <div className="w-1/2 text-left ml-6 my-2">
+                    <div className="text-center flex bg-[#14B981]">
+                        <div className="w-1/2 text-left ml-2">
                             <div className="flex items-center gap-3 font-semibold dark:text-white">
                                 <img src={logo} alt="" className="h-[75px] w-[100px] m-0 cursor-pointer  "
                                      onClick={() => navigate("/")}/>
                             </div>
                         </div>
-                        {user ? (<div className="w-1/2 text-right mx-3 my-6 mr-8">
+                        {user ? (<div className="w-1/2 text-right mx-3 my-5 mr-8">
                             <Popover placement="bottom-end" dismiss={true}>
                                 <PopoverHandler>
                                     <Avatar
