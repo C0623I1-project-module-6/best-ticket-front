@@ -175,7 +175,7 @@ const BookingManagerSidebar = () => {
                     <a onClick={() => {
                         navigate(`/404`)
                     }}
-                       className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[70%]">
+                       className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[85%]">
                         <div className="m-3">Câu hỏi thường gặp</div>
                     </a>
                 </div>
