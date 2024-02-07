@@ -148,8 +148,8 @@ const BookingManagerEventSummarize = () => {
                             <option>02/2024</option>
                         </select>
                     </div>
-                    <button className="bg-[#ADD260] border m-3 shadow shadow-[#829E48] rounded-lg">
-                        <div className="px-3">Chọn</div>
+                    <button className="bg-[#ADD260] border m-3 shadow-lg shadow-[#829E48] rounded-lg">
+                        <div className="px-5 text-white">Chọn</div>
                     </button>
                 </div>
                 <div className="justify-center flex text-white font-bold mb-10">

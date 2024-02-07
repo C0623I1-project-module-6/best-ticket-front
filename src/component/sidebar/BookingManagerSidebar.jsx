@@ -163,7 +163,7 @@ const BookingManagerSidebar = () => {
                         className={twMerge('flex gap-5 items-center hover:bg-[#ece8f3] hover:text-black py-3 px-5 mb-0', step.active && 'bg-gray-400 text-black ')}
                         onClick={() => navigate(step.url)}
                     >
-                    <span className={`rounded-full h-10 w-10 flex items-center justify-center`}>
+                    <span className={`rounded-full h-10 w-10 flex items-center justify-center text-xl`}>
                         {step.icon}
                     </span>
                         <p>{step.title}</p>
