@@ -132,20 +132,23 @@ const BookingManagerEventSummarize = () => {
                     </div>
                 </div>
                 <div className="bg-gray-300 mb-16 mx-[10%] flex text-black border rounded-xl">
-                    <div className="p-2">Từ</div>
-                    <div className="py-2">
+                    <div className="my-3 p-2">Từ</div>
+                    <div className="my-3 py-2">
                         <select className="bg-white">
                             <option>01/2024</option>
                             <option>02/2024</option>
                         </select>
                     </div>
-                    <div className="py-2 pl-2">Đến</div>
-                    <div className="px-2 py-2">
+                    <div className="my-3 py-2 pl-2">Đến</div>
+                    <div className="my-3 px-2 py-2">
                         <select className="bg-white">
                             <option>01/2024</option>
                             <option>02/2024</option>
                         </select>
                     </div>
+                    <button className="bg-[#ADD260] border m-3 shadow shadow-[#829E48] rounded-xl">
+                        <div className="px-3">Chọn</div>
+                    </button>
                 </div>
                 <div className="my-10 mx-[10%]">
                     <canvas ref={chartContainerRef} />
