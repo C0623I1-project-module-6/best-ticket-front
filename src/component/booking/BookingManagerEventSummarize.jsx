@@ -152,23 +152,23 @@ const BookingManagerEventSummarize = () => {
                         <div className="px-3">Chọn</div>
                     </button>
                 </div>
-                <div className="justify-center flex text-black mb-10">
-                    <div className="border rounded-xl bg-[#A1DA79] flex">
-                        <div className="my-4 pl-5 text-3xl text-white"><FaCheck/></div>
+                <div className="justify-center flex text-white font-bold mb-10">
+                    <div className="border rounded-lg bg-[#A1DA79] flex">
+                        <div className="my-4 pl-5 text-3xl"><FaCheck/></div>
                         <div>
                             <div className="mx-3 mt-2">0</div>
                             <div className="mx-3 mb-2">Đã thanh toán</div>
                         </div>
                     </div>
-                    <div className="mx-5 border rounded-xl bg-[#FD6161] flex">
-                        <div className="my-2 pl-3 text-5xl text-white"><HiMiniXMark/></div>
+                    <div className="mx-5 border rounded-lg bg-[#FD6161] flex">
+                        <div className="my-2 pl-3 text-5xl"><HiMiniXMark/></div>
                         <div>
                             <div className="mx-3 mt-2">0</div>
                             <div className="mx-3 mb-2">Đã hủy</div>
                         </div>
                     </div>
-                    <div className="border rounded-xl bg-[#F7B31F] flex">
-                        <div className="my-2 pl-3 text-5xl text-white"><HiMiniXMark/></div>
+                    <div className="border rounded-lg bg-[#F7B31F] flex">
+                        <div className="my-2 pl-3 text-5xl"><HiMiniXMark/></div>
                         <div>
                             <div className="mx-3 mt-2">0</div>
                             <div className="mx-3 mb-2">Hết hạn</div>
