@@ -365,11 +365,6 @@ const BookingManagerOrderTable = () => {
                                                         placeholder="Nhập nội dung..."
                                                     ></textarea>
                                                 </div>
-                                                <div>
-                                                    <button type="submit" className="border border-black">
-                                                        Submit
-                                                    </button>
-                                                </div>
                                             </form>
                                         </div>
                                     </section>
