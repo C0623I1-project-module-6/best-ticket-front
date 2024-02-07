@@ -82,21 +82,9 @@ export const ROUT_DATA = [
         ]
     },
 
-    {
-        path: "/my-event/event/:eventId/summarize",
-        element: BookingManagerEventSummarize,
-        layout: OrganizerBookingManagerLayout
-    },
-    {
-        path: "/my-event/event/:eventId/RSVPs/bookings",
-        element: BookingManagerEventBookings,
-        layout: OrganizerBookingManagerLayout
-    },
+    {path: "/my-event/event/:eventId/summarize", element: BookingManagerEventSummarize, layout: OrganizerBookingManagerLayout},
+    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
     {path: "/my-event/event/:eventId/promote", element: BookingManagerPromotion, layout: OrganizerBookingManagerLayout},
     // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
-    {
-        path: "/my-event/event/:eventId/moderators",
-        element: BookingManagerModeratorList,
-        layout: OrganizerBookingManagerLayout
-    },
+    {path: "/my-event/event/:eventId/moderators", element: BookingManagerModeratorList, layout: OrganizerBookingManagerLayout},
 ];
