@@ -13,7 +13,7 @@ import {FaSignOutAlt} from "react-icons/fa";
 import {Bounce, toast} from "react-toastify";
 import logo from "../../assets/img/logo/logo-auth-header-light.svg";
 import {twMerge} from 'tailwind-merge';
-import { FaQuestionCircle } from "react-icons/fa";
+import {FaQuestionCircle} from "react-icons/fa";
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
@@ -91,10 +91,10 @@ const BookingManagerSidebar = () => {
                                      onClick={() => navigate("/")}/>
                             </div>
                         </div>
-                        {user ? (<div className="w-1/2 text-right mx-3 my-5 mr-8">
+                        {user ? (<div className="w-1/2 text-right justify-right mx-3 my-5 mr-8">
                             <Popover placement="bottom-end" dismiss={true}>
                                 <PopoverHandler>
-                                    <button className="pl-28 flex">
+                                    <button className="ml-28 flex">
                                         <div className="pr-2 py-1 text-xl">{user.username}</div>
                                         <Avatar
                                             size="sm"
@@ -140,7 +140,7 @@ const BookingManagerSidebar = () => {
                                     " onClick={() => {
                                             dispatch(getExistsUsers())
                                             if (userExists !== null) {
-                                                navigate(`/404`)
+                                                navigate(`/my-event/pos/${eventId}`)
                                             }
                                         }}>
                                             <div>Thống kê Pos</div>
@@ -179,7 +179,7 @@ const BookingManagerSidebar = () => {
                     }}
                        className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[85%]">
                         <div className="m-3 flex text-center justify-center">
-                            <div className="p-1 text-xl"><FaQuestionCircle /></div>
+                            <div className="p-1 text-xl"><FaQuestionCircle/></div>
                             <div className="text-lg">Câu hỏi thường gặp</div>
                         </div>
                     </a>
