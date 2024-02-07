@@ -13,6 +13,7 @@ import {FaSignOutAlt} from "react-icons/fa";
 import {Bounce, toast} from "react-toastify";
 import logo from "../../assets/img/logo/logo-auth-header-light.svg";
 import {twMerge} from 'tailwind-merge';
+import { FaQuestionCircle } from "react-icons/fa";
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
@@ -22,6 +23,7 @@ const BookingManagerSidebar = () => {
     const userExists = useSelector(selectExistsUsers)
     const userLogout = useSelector(selectUserLogout);
     const pathName = location.pathname;
+
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
@@ -173,10 +175,13 @@ const BookingManagerSidebar = () => {
             <div className="h-screen">
                 <div className="text-center flex">
                     <a onClick={() => {
-                        navigate(`/404`)
+                        navigate(`/help-center`)
                     }}
                        className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[85%]">
-                        <div className="m-3">Câu hỏi thường gặp</div>
+                        <div className="m-3 flex text-center justify-center">
+                            <div className="p-1 text-xl"><FaQuestionCircle /></div>
+                            <div className="text-lg">Câu hỏi thường gặp</div>
+                        </div>
                     </a>
                 </div>
             </div>
