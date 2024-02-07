@@ -1,12 +1,14 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect} from "react";
+import { useEffect, useRef } from 'react';
 import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import UserFooter from "../footer/UserFooter.jsx"
 import {selectUserLogin} from "../../features/user/UserSlice.js";
 import {SlLocationPin} from "react-icons/sl";
 import logo from "../../assets/img/logo/logo-auth-header-light.svg";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
+import Chart from 'chart.js/auto';
+
 
 const BookingManagerEventSummarize = () => {
     const dispatch = useDispatch();
@@ -20,6 +22,51 @@ const BookingManagerEventSummarize = () => {
     }, [dispatch, eventId, navigate]);
 
     const user = useSelector(selectUserLogin);
+
+    const chartContainerRef = useRef(null);
+
+    useEffect(() => {
+        if (event) {
+            const chartData = {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [
+                    {
+                        label: 'Revenue',
+                        data: [1000, 2000, 1500, 3000, 2500, 4000],
+                        borderColor: 'green',
+                        fill: false,
+                    },
+                ],
+            };
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        display: true,
+                    },
+                    y: {
+                        display: true,
+                        beginAtZero: true,
+                        suggestedMax: 5000,
+                    },
+                },
+            };
+
+            const chartConfig = {
+                type: 'line',
+                data: chartData,
+                options: chartOptions,
+            };
+
+            const lineChart = new Chart(chartContainerRef.current, chartConfig);
+
+            return () => {
+                lineChart.destroy();
+            };
+        }
+    }, [event]);
 
     return (
         <>
@@ -42,7 +89,7 @@ const BookingManagerEventSummarize = () => {
                                 ) :
                                 <div>Loading...</div>}</div>
                         </div>
-                        <div className="m-14">
+                        <div className="m-14 pl-24">
                             <button className="border rounded-xl bg-gray-200 shadow shadow-black" onClick={() => {
                                 navigate(`/checkin-app`)
                             }}>
@@ -66,7 +113,7 @@ const BookingManagerEventSummarize = () => {
                         </div>
                     </div>
                 </div>
-                <div className="mb-16 mx-[10%] bg-gray-300 border rounded-xl text-black">
+                <div className="mb-10 mx-[10%] bg-gray-300 border rounded-xl text-black">
                     <div className="flex">
                         <div className="p-5 text-xl w-1/2">Tổng thu nhập</div>
                         <div className="p-5 text-xl text-green-400 w-1/2">{formatCurrency(0)}</div>
@@ -83,6 +130,25 @@ const BookingManagerEventSummarize = () => {
                         <div className="py-5 pl-12 text-xl w-1/2">Phí dịch vụ</div>
                         <div className="p-5 text-xl w-1/2">{formatCurrency(0)}</div>
                     </div>
+                </div>
+                <div className="bg-gray-300 mb-16 mx-[10%] flex text-black border rounded-xl">
+                    <div className="p-2">Từ</div>
+                    <div className="py-2">
+                        <select className="bg-white">
+                            <option>01/2024</option>
+                            <option>02/2024</option>
+                        </select>
+                    </div>
+                    <div className="py-2 pl-2">Đến</div>
+                    <div className="px-2 py-2">
+                        <select className="bg-white">
+                            <option>01/2024</option>
+                            <option>02/2024</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="my-10 mx-[10%]">
+                    <canvas ref={chartContainerRef} />
                 </div>
                 <div className=""><UserFooter/></div>
             </>) : (navigate('/'))}
