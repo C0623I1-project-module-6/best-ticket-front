@@ -226,14 +226,14 @@ const BookingManagerOrderTable = () => {
                         }
                         totalAmount += booking.totalAmount;
                         return <tr key={booking.id} className="border border-black border-x-0">
-                            <th className="px-4 py-2 text-left border-b border-black">
+                            <td className="px-4 py-2 text-left border-b border-black">
                                 <input
                                     type="checkbox"
                                     className="bg-white"
                                     checked={checkboxesChecked.includes(booking.id)}
                                     onChange={() => toggleCheckbox(booking.id)}
                                 />
-                            </th>
+                            </td>
                             <td>
                                 {booking.status === "INACTIVE" ?
                                     <GiCancel className="mx-auto" color={"red"}/> : booking.status === "PENDING" ?
