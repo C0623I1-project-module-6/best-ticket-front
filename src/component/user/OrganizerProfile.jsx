@@ -8,10 +8,8 @@ export default function OrganizerProfile() {
     const dispatch = useDispatch();
     const user = useSelector(selectUserLogin);
     const userEdit = useSelector(selectUserEdit);
-
     useEffect(() => {
         dispatch(fetchGetUser(user.id));
-
     }, []);
     return (
         <>

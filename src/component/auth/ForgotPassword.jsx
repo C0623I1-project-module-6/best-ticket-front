@@ -2,11 +2,12 @@ import {FastField, Form, Formik} from "formik";
 import {FormGroup} from "reactstrap";
 import AuthHeader from "../header/AuthHeader.jsx";
 import InputRegister from "../../ultility/customField/InputRegister.jsx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Bounce, toast} from "react-toastify";
 import * as Yup from "yup";
 import {forgotPasswordUser} from "../../features/user/UserSlice.js";
+import {selectEmails} from "../../features/user/ExistsSlice.js";
 
 const toastOptions = {
     position: "top-right",
@@ -22,19 +23,23 @@ const toastOptions = {
 export default function ForgotPassword() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const emails = useSelector(selectEmails);
     const regexPassword = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
     const initialValues = {
         email: "",
-        otp: "",
+        validationCode: "",
         newPassword: "",
         confirmNewPassword: "",
 
     }
     const validationForgotPasswordSchema = Yup.object().shape({
         email: Yup.string()
+            .test("not exists", "Email not exists", value => {
+                return emails.includes(value)
+            })
             .email("Invalid email.Please add @.")
             .required("This field is required."),
-        otp: Yup.string().required("This field is required."),
+        validationCode: Yup.string().required("This field is required."),
         newPassword: Yup.string()
             .matches(regexPassword, "6-character password consisting of letters and numbers")
             .required("This field is required."),
@@ -74,7 +79,7 @@ export default function ForgotPassword() {
                                     <FastField
                                         name="otp"
                                         component={InputRegister}
-                                        label="Mã OTP"
+                                        label="Mã xác thực"
                                         onChange={formikProps.handleChange}/>
                                 </FormGroup>
                                 <FormGroup>

@@ -42,7 +42,7 @@ function TicketHistory() {
                             </div>
                         </div>
                         <div className="flex-col items-center space-y-3 justify-items-center justify-center">
-                            <NavLink to={"/customer/profile"}
+                            <NavLink to={"/profile"}
                                      className="flex gap-2 items-center cursor-pointer hover:bg-light-blue-100 hover:text-black">
                                 <FaUser/>
                                 My Account

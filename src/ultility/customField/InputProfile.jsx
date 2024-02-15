@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import {ErrorMessage} from "formik";
 import {FormFeedback, FormGroup, Label} from "reactstrap";
 
-InputField.propTypes = {
+InputProfile.propTypes = {
     field: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
 
@@ -13,14 +13,14 @@ InputField.propTypes = {
     disabled: PropTypes.bool,
     hidden: PropTypes.bool,
 };
-InputField.defaultProps = {
+InputProfile.defaultProps = {
     type: "text",
     label: "",
     placeholder: "",
     className: "",
     disabled: false,
 };
-export default function InputField(props) {
+export default function InputProfile(props) {
     const {
         field, form,
         type,
@@ -28,9 +28,8 @@ export default function InputField(props) {
         placeholder,
         disabled,
         hidden,
-        className,
     } = props;
-    const {name, value} = field;
+    const {name} = field;
     const {errors, touched} = form;
     const showError = errors[name] && touched[name];
     return (
@@ -49,7 +48,10 @@ export default function InputField(props) {
                     placeholder={placeholder}
                     disabled={disabled}
                     hidden={hidden}
-                    className={className}
+                    className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
+                    ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
+                    focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
+                    placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"
                 />
             </FormGroup>
             <ErrorMessage name={name}

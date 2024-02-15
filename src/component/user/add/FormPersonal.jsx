@@ -1,28 +1,27 @@
 import {FastField, Form, Formik} from "formik";
-import InputField from "../../../ultility/customField/InputField.jsx";
+import InputProfile from "../../../ultility/customField/InputProfile.jsx";
 import {FormGroup} from "reactstrap";
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import * as Yup from "yup";
 import {registerOrganizerProfile} from "../../../features/user/OrganizerSlice.js";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import {Button} from "@material-tailwind/react";
+import {
+    selectPersonEmails,
+    selectPersonIdCards,
+    selectPersonPhoneNumbers,
+    selectPersonTaxCodes
+} from "../../../features/user/ExistsSlice.js";
+import {useEffect} from "react";
 
-export default function FormPersonal({userExistsList, phoneRegex}) {
+export default function FormPersonal({toastOptions, phoneRegex, organizerRegister, success, error}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const toastOptions =
-        {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        }
+    const personPhones = useSelector(selectPersonPhoneNumbers);
+    const personEmails = useSelector(selectPersonEmails);
+    const personIdCards = useSelector(selectPersonIdCards);
+    const personTaxCodes = useSelector(selectPersonTaxCodes);
     const initialValues = {
         name: null,
         email: null,
@@ -32,18 +31,7 @@ export default function FormPersonal({userExistsList, phoneRegex}) {
         dateRangeTaxCode: null,
         issuedByTaxCode: null,
     }
-    const personPhones = userExistsList
-        .filter(organizer => organizer.personPhoneNumber)
-        .map(organizer => organizer.personPhoneNumber);
-    const personEmails = userExistsList
-        .filter(organizer => organizer.personEmail)
-        .map(organizer => organizer.personEmail);
-    const personIdCards = userExistsList
-        .filter(organizer => organizer.personIdCard)
-        .map(organizer => organizer.personIdCard);
-    const personTaxCodes = userExistsList
-        .filter(organizer => organizer.personTaxCode)
-        .map(organizer => organizer.personTaxCode);
+
     const validationPersonalSchema = Yup.object().shape({
         name: Yup.string().required("This field is required."),
         email: Yup.string()
@@ -73,17 +61,24 @@ export default function FormPersonal({userExistsList, phoneRegex}) {
         dateRangeTaxCode: Yup.date().required("This field is required."),
         issuedByTaxCode: Yup.string().required("This field is required."),
     })
-    const handleSubmit = (values) => {
-        dispatch(registerOrganizerProfile(values));
-        toast.success("🦄 Đăng ký thông tin thành công!", toastOptions)
-        navigate("/my-event/legal")
 
-    }
+    useEffect(() => {
+        if (success && organizerRegister) {
+            toast.success("🦄 Đăng ký thông tin thành công!", toastOptions);
+        }
+    }, [success, organizerRegister]);
+    useEffect(() => {
+        if (error) {
+            toast.error("🦄 Đăng ký thông tin thất bại!", toastOptions)
+        }
+    }, [error]);
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={validationPersonalSchema}
-            onSubmit={handleSubmit}>
+            onSubmit={values => {
+                dispatch(registerOrganizerProfile(values));
+            }}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 return (
@@ -94,67 +89,48 @@ export default function FormPersonal({userExistsList, phoneRegex}) {
                             <FormGroup className="grid grid-cols-2 gap-4">
                                 <FormGroup>
                                     <FastField
-                                        type="text"
                                         name="name"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Họ và tên"
                                         placeholder="Vui lòng nhập họ và tên"
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                                        />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
-                                        type="text"
                                         name="taxCode"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Mã số thuế cá nhân"
                                         placeholder="Vui lòng nhập mã số thuế cá nhân"
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                                        />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
-                                        type="text"
                                         name="idCard"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="CMNN/CCCD/Hộ chiếu"
                                         placeholder="Vui lòng nhập CMNN/CCCD/Hộ chiếu"
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                                        />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
                                         type="date"
                                         name="dateRangeTaxCode"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Ngày cấp"
-                                        className="block w-full rounded-md shadow-md border-0 p-2 mt-2
-                            text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1
-                            focus:ring-inset focus:ring-indigo-600 sm:text-1xl sm:font-serif
-                            sm:leading-6 placeholder:font-serif placeholder:text-1xl"/>
+                                       />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
-                                        type="text"
                                         name="issuedByTaxCode"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Nơi cấp"
                                         placeholder="Vui lòng nhập nơi cấp"
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                                        />
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>
@@ -163,29 +139,23 @@ export default function FormPersonal({userExistsList, phoneRegex}) {
                             <FormGroup className="grid grid-cols-2 gap-4">
                                 <FormGroup>
                                     <FastField
-                                        type="text"
+                                        type="tel"
                                         name="phoneNumber"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Số điện thoại"
                                         placeholder="Vui lòng nhập số điện thoại"
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                                        />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
                                         type="email"
                                         name="email"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Email"
                                         placeholder="bestticket@example.com"
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-500 font-serif sm:text-1xl sm:leading-6"/>
+                                        />
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>
@@ -193,7 +163,7 @@ export default function FormPersonal({userExistsList, phoneRegex}) {
                                 className=" mt-4 block w-60 rounded-full  shadow-sm text-center text-white text-1xl
                                     px-3 py-2 bg-[#10b981] border-0 hover:bg-gray-600 focus-visible:outline
                                     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            Hoàn thành
+                            Lưu thông tin
                         </Button>
                     </Form>
                 );

@@ -12,13 +12,14 @@ import {
     sendOtp,
     unlock
 } from "../../api/UserApi.js";
+import {Bounce} from "react-toastify";
 
 
 const initialState = {
 
     value: null,
     loading: false,
-    loginError: null,
+    loginError: false,
     loginSuccess: false,
     registerSuccess: false,
     registerError: null,
@@ -38,7 +39,8 @@ const initialState = {
     unlockUserError: null,
     removeUserSuccess: false,
     removeUserError: null,
-    isLocked: false,
+    isAuthenticated: false,
+    isLocked: null,
 };
 
 export const loginUser = createAsyncThunk(
@@ -46,7 +48,6 @@ export const loginUser = createAsyncThunk(
     async (loginData, {rejectWithValue}) => {
         const response = await login(loginData);
         if (response.status !== 200) {
-            console.log(response.data.message)
             return rejectWithValue(response.data.message);
         }
         return response.data;
@@ -90,6 +91,7 @@ export const fetchGetUser = createAsyncThunk(
     async (userId, {rejectWithValue}) => {
         const response = await getUser(userId);
         if (response.status !== 200) {
+            console.log(response)
             return rejectWithValue(response.data.message);
         }
         return response.data;
@@ -156,6 +158,18 @@ export const unlockUser = createAsyncThunk(
         return response.data
     }
 );
+const toastOptions = {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    transition: Bounce,
+};
+
 
 export const userSlice = createSlice(
     {
@@ -222,6 +236,9 @@ export const userSlice = createSlice(
             setIsLocked: (state, action) => {
                 state.isLocked = action.payload;
             },
+            setIsAuthenticated: (state, action) => {
+                state.isAuthenticated = action.payload;
+            }
 
         },
         extraReducers: (builder) => {
@@ -234,7 +251,7 @@ export const userSlice = createSlice(
                 .addCase(registerUser.rejected, (state, action) => {
                     state.registerSuccess = false;
                     state.loading = false;
-                    state.registerError = action.payload;
+                    state.registerError = true;
                 })
                 .addCase(registerUser.fulfilled, (state, action) => {
                     state.registerSuccess = true;
@@ -252,7 +269,7 @@ export const userSlice = createSlice(
                     state.loginSuccess = false;
                     state.loading = false;
                     state.loginError = true;
-                    state.isLocked = true;
+                    state.isAuthenticated = false;
                 })
                 .addCase(loginUser.fulfilled, (state, action) => {
                     state.loginSuccess = true;
@@ -263,7 +280,7 @@ export const userSlice = createSlice(
                     state.logoutSuccess = false;
                     state.loginError = false;
                     state.isLogin = true;
-                    state.isLocked = false
+                    state.isLocked = false;
                 })
                 .addCase(reLoginWithToken.pending, (state) => {
                     state.loginSuccess = false;
@@ -441,6 +458,7 @@ export const {
     setIsLocked,
     setRemoveUserError,
     setRemoveUserSuccess,
+    setIsAuthenticated,
 } = userSlice.actions;
 
 export const selectLoginSuccess = (state) => state.user.loginSuccess;

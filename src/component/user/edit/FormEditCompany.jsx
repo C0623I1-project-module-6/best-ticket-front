@@ -1,97 +1,104 @@
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import {editOrganizerProfile} from "../../../features/user/OrganizerSlice.js";
 import * as Yup from "yup";
 import {FastField, Form, Formik} from "formik";
 import {FormGroup, Label} from "reactstrap";
-import InputField from "../../../ultility/customField/InputField.jsx";
+import InputProfile from "../../../ultility/customField/InputProfile.jsx";
 import {Button} from "@material-tailwind/react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {
+    selectCompanyBusinessCodes,
+    selectCompanyEmails,
+    selectCompanyNames,
+    selectCompanyPhones
+} from "../../../features/user/ExistsSlice.js";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function FormEditCompany({userExistsList, phoneRegex, organizer}) {
+export default function FormEditCompany({
+                                            toastOptions,
+                                            phoneRegex,
+                                            organizer,
+                                            success,
+                                            error,
+                                            organizerEdited
+                                        }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [isEditMode, setIsEditMode] = useState(false)
-    const toastOptions =
-        {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        };
+    const [isEditMode, setIsEditMode] = useState(false);
+    const companyNames = useSelector(selectCompanyNames);
+    const companyEmails = useSelector(selectCompanyEmails);
+    const companyPhones = useSelector(selectCompanyPhones);
+    const businessCodes = useSelector(selectCompanyBusinessCodes);
+    const {
+        businessCode: currentBusinessCode,
+        companyName: currentCompanyName,
+        companyEmail: currentCompanyEmail,
+        companyPhone: currentCompanyPhone,
+        dateRange: currentDateRange,
+        issuedBy: currentCompanyIssuedBy,
+    } = organizer;
     const initialValues = {
-        businessCode: null,
-        companyName: null,
-        companyEmail: null,
-        companyPhone: null,
-        dateRange: null,
-        issuedBy: null,
+        businessCode: currentBusinessCode,
+        companyName: currentCompanyName,
+        companyEmail: currentCompanyEmail,
+        companyPhone: currentCompanyPhone,
+        dateRange: currentDateRange,
+        issuedBy: currentCompanyIssuedBy,
     };
 
-    const companyNames = userExistsList
-        .filter(organizer => organizer.companyName)
-        .map(organizer => organizer.companyName);
-    const companyEmails = userExistsList
-        .filter(organizer => organizer.companyEmail)
-        .map(organizer => organizer.companyEmail)
-    const companyPhones = userExistsList
-        .filter(organizer => organizer.companyPhone)
-        .map(organizer => organizer.companyPhone);
-    const businessCodes = userExistsList
-        .filter(organizer => organizer.companyBusinessCode)
-        .map(organizer => organizer.companyBusinessCode);
     const validationCompanySchema = Yup.object().shape({
         companyEmail: Yup.string()
             .test("unique", "Email already exists.", value => {
-                return !companyEmails.includes(value);
+                return !companyEmails.includes(value) || value === currentCompanyEmail;
             })
             .email("Invalid email! Please add @.")
             .nullable(),
         companyName: Yup.string()
             .test("unique", "Company name already exists.", value => {
-                return !companyNames.includes(value);
+                return !companyNames.includes(value) || value === currentCompanyName;
             })
             .nullable(),
         companyPhone: Yup.string()
             .test("unique", "Company phone number already exists.", value => {
-                return !companyPhones.includes(value);
+                return !companyPhones.includes(value) || value === currentCompanyPhone;
             })
             .matches(phoneRegex, "Invalid phone number! Start from 0 and has 10 numbers.")
             .nullable(),
         businessCode: Yup.string()
             .test("unique", "Business code already exists.", value => {
-                return !businessCodes.includes(value);
+                return !businessCodes.includes(value) || value === currentBusinessCode;
             })
             .nullable(),
-
-
         dateRange: Yup.date().nullable(),
         issuedBy: Yup.string().nullable(),
     });
     const toggleEditMode = () => {
         setIsEditMode(prev => !prev);
     };
-    const handleSubmit = (values) => {
-        dispatch(editOrganizerProfile(values));
-        setIsEditMode(false);
-        toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
-        navigate("/my-event/legal");
-    };
 
+    useEffect(() => {
+        if (success && organizerEdited) {
+            setIsEditMode(false);
+            toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
+            navigate("/my-event/legal");
+        }
+    }, [success, organizerEdited]);
+    useEffect(() => {
+        if (error) {
+            toast.error("🦄 Cập nhật thông tin thất bại!", toastOptions);
+        }
+    }, [error]);
     return (
         <Formik initialValues={initialValues}
                 validationSchema={validationCompanySchema}
-                onSubmit={handleSubmit}>
+                onSubmit={values => {
+                    dispatch(editOrganizerProfile(values));
+                }}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 return (
@@ -104,27 +111,21 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                     <FastField
                                         type="text"
                                         name="companyName"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Tên doanh nghiệp"
-                                        placeholder={organizer.companyName || "Vui lòng nhập tên doanh nghiệp"}
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                        placeholder="Vui lòng nhập tên doanh nghiệp"
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
                                         type="text"
                                         name="businessCode"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Mã số đăng ký kinh doanh"
-                                        placeholder={organizer.businessCode || "Vui lòng nhập mã số đăng ký kinh doanh"}
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                        placeholder="Vui lòng nhập mã số đăng ký kinh doanh"
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label htmlFor="dateRange" className="block text-1xl font-serif text-gray-700">
@@ -134,25 +135,18 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                                         type="date"
                                         name="dateRange"
                                         onChange={formikProps.handleChange}
-                                        value={organizer.dateRange}
                                         disabled={!isEditMode}
-                                        className="block w-full rounded-md shadow-md border-0 p-2 mt-2
-                            text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1
-                            focus:ring-inset focus:ring-indigo-600 sm:text-1xl sm:font-serif
-                            sm:leading-6 placeholder:font-serif placeholder:text-1xl"/>
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
                                         type="text"
                                         name="issuedBy"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Nơi Cấp"
-                                        placeholder={organizer.issuedBy || "Vui lòng nhập nơi cấp"}
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                        placeholder="Vui lòng nhập nơi cấp"
+                                    />
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>
@@ -161,29 +155,23 @@ export default function FormEditCompany({userExistsList, phoneRegex, organizer})
                             <FormGroup className="grid grid-cols-2 gap-4">
                                 <FormGroup>
                                     <FastField
-                                        type="text"
+                                        type="tel"
                                         name="companyPhone"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Số điện thoại"
-                                        placeholder={organizer.companyPhone || "Vui lòng nhập số điện thoại"}
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                        placeholder="Vui lòng nhập số điện thoại"
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
                                         type="email"
                                         name="companyEmail"
-                                        component={InputField}
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Nơi Cấp"
-                                        placeholder={organizer.companyEmail || "bestticket@example.com"}
-                                        className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                            ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                            focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                            placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                        placeholder="bestticket@example.com"
+                                    />
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>

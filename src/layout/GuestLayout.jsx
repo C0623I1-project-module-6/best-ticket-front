@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {reLoginWithToken, selectIsLogin} from "../features/user/UserSlice.js";
 import {useNavigate} from "react-router-dom";
+import {getExistsUsers, selectExistsList} from "../features/user/ExistsSlice.js";
 
 const GuestLayout = ({children}) => {
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
@@ -31,7 +32,8 @@ const GuestLayout = ({children}) => {
         if (localStorage.getItem("token") !== null) {
             dispatch(reLoginWithToken())
         }
-    }, []);
+    }, [])
+
     return (
         <div className="flex-row ">
             <div>

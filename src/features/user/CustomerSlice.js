@@ -26,6 +26,7 @@ export const editCustomerProfile = createAsyncThunk(
     async (editCustomer, {rejectedWithValue}) => {
         const response = await updateCustomer(editCustomer);
         if (response.status !== 200) {
+            console.log(response)
             return rejectedWithValue(response.data.message);
         }
         return response.data;
