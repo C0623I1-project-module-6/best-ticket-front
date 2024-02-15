@@ -33,7 +33,6 @@ export default function OrganizerSidebar() {
             active: "345" === pathName
         }
     ]
-    console.log(steps[0].active)
     return (
 
         <div className="fixed w-1/4 h-full text-white font-serif bg-gray-800 pt-10 pl-5">

@@ -15,6 +15,7 @@ import {
 } from "../../../features/user/ExistsSlice.js";
 import {useEffect} from "react";
 
+
 export default function FormCompany({toastOptions, phoneRegex, organizerRegister, success, error}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
     const companyEmails = useSelector(selectCompanyEmails);
     const companyPhones = useSelector(selectCompanyPhones);
     const businessCodes = useSelector(selectCompanyBusinessCodes);
+
     const initialValues = {
         businessCode: null,
         companyName: null,
@@ -89,7 +91,7 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
                                         onChange={formikProps.handleChange}
                                         label="Tên doanh nghiệp"
                                         placeholder="Vui lòng nhập tên doanh ngiệp"
-                                        />
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -98,7 +100,7 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
                                         onChange={formikProps.handleChange}
                                         label="Mã số đăng ký kinh doanh"
                                         placeholder="Vui lòng nhập mã số đăng ký kinh doanh"
-                                        />
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -107,7 +109,7 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
                                         component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Ngày cấp"
-                                       />
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -116,7 +118,7 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
                                         onChange={formikProps.handleChange}
                                         label="Nơi Cấp"
                                         placeholder="Vui lòng nhập nơi cấp"
-                                        />
+                                    />
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>
@@ -131,7 +133,7 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
                                         onChange={formikProps.handleChange}
                                         label="Số điện thoại"
                                         placeholder="Vui lòng nhập số điện thoại"
-                                        />
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -141,7 +143,7 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
                                         onChange={formikProps.handleChange}
                                         label="Nơi Cấp"
                                         placeholder="bestticket@example.com"
-                                        />
+                                    />
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>

@@ -2,7 +2,9 @@ import UserHeader from "../component/header/UserHeader.jsx";
 import {useEffect} from "react";
 import {reLoginWithToken, selectUserLogin} from "../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
+
 import {getExistsUsers, selectExistsList} from "../features/user/ExistsSlice.js";
+
 
 const UserLayout = ({children}) => {
     const user = useSelector(selectUserLogin);
@@ -26,11 +28,11 @@ const UserLayout = ({children}) => {
                 <UserHeader/>
                 <div className="relative md:flex max-h-full h-screen overflow-y-hidden">
                     {children}
-                </div>
 
+                </div>
             </div>
         </>
+    );
 
-    )
 }
 export default UserLayout;

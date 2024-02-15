@@ -57,6 +57,7 @@ export const getPageTickets = createAsyncThunk(
     if (response.status !== 200) {
       return rejectWithValue(response.data.message);
     }
+    console.log(response)
     return response.data;
   }
 )
@@ -149,7 +150,7 @@ export const adminSlice = createSlice(
         .addCase(getPageTickets.fulfilled, (state, action) => {
           state.getPageTicketsSuccess = true;
           state.loading = false;
-          state.tickets = action.payload.data.content;
+          state.tickets = action.payload.data.data;
           state.error = false;
         })
         .addCase(getPageUsers.pending, (state) => {
@@ -166,8 +167,6 @@ export const adminSlice = createSlice(
           state.getPageUsersSuccess = true;
           state.loading = false;
           state.users = action.payload.data.content;
-          state.totalPagesOfUser = action.payload.data.totalPages;
-          state.totalElementsOfUser = action.payload.data.totalElements
 
           state.error = false;
         })
@@ -201,18 +200,25 @@ export const {
 
 } = adminSlice.actions;
 export const selectBookings = (state) => state.admin.bookings;
-export const selectBooking = (state) => state.admin.booking;
-export const selectBookingsSuccess = (state) => state.admin.getPageBookingsSuccess;
-export const selectTotalElementsOfBooking = (state) => state.admin.totalElementsOfBooking;
-export const selectTotalPageOfBooking = (state) => state.admin.totalPagesOfBooking;
 export const selectTickets = (state) => state.admin.tickets;
 export const selectUsers = (state) => state.admin.users;
-export const selectTotalElementsOfUser = (state) => state.admin.totalElementsOfUser;
-export const selectTotalPageOfUser = (state) => state.admin.totalPagesOfUser;
-export const selectUsersSuccess = (state) => state.admin.getPageUsersSuccess;
 export const selectEvents = (state) => state.admin.events;
+export const selectBooking = (state) => state.admin.booking;
+export const selectTicket = (state) => state.admin.ticket;
+export const selectUser = (state) => state.admin.user;
+export const selectEvent = (state) => state.admin.event;
+export const selectBookingsSuccess = (state) => state.admin.getPageBookingsSuccess;
+export const selectUsersSuccess = (state) => state.admin.getPageUsersSuccess;
+export const selectEventsSuccess = (state) => state.admin.getPageEventsSuccess;
+export const selectTicketsSuccess = (state) => state.admin.getPageTicketsSuccess;
+export const selectTotalElementsOfBooking = (state) => state.admin.totalElementsOfBooking;
 export const selectTotalElementsOfEvent = (state) => state.admin.totalElementsOfEvent;
+export const selectTotalElementsOfTicket = (state) => state.admin.totalElementsOfTicket;
+export const selectTotalElementsOfUser = (state) => state.admin.totalElementsOfUser;
+export const selectTotalPageOfBooking = (state) => state.admin.totalPagesOfBooking;
+export const selectTotalPageOfUser = (state) => state.admin.totalPagesOfUser;
 export const selectTotalPageOfEvent = (state) => state.admin.totalPagesOfEvent;
+export const selectTotalPageOfTicket = (state) => state.admin.totalPagesOfTicket;
 
 
 export default adminSlice.reducer;

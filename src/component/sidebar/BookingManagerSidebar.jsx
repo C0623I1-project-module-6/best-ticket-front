@@ -11,7 +11,9 @@ import {getExistsUsers, selectExistsList} from "../../features/user/ExistsSlice.
 import {Avatar, Popover, PopoverContent, PopoverHandler} from "@material-tailwind/react";
 import {FaSignOutAlt} from "react-icons/fa";
 import {Bounce, toast} from "react-toastify";
-
+import logo from "../../assets/img/logo/logo-auth-header-light.svg";
+import {twMerge} from 'tailwind-merge';
+import {FaQuestionCircle} from "react-icons/fa";
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
@@ -20,6 +22,8 @@ const BookingManagerSidebar = () => {
     const user = useSelector(selectUserLogin);
     const userExists = useSelector(selectExistsList)
     const userLogout = useSelector(selectUserLogout);
+    const pathName = location.pathname;
+
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
@@ -37,26 +41,68 @@ const BookingManagerSidebar = () => {
         navigate("/404");
     }
 
+    const steps = [
+        {
+            icon: <GiReturnArrow/>,
+            title: "Quay lại trang sự kiện của tôi",
+            url: `/my-event/legal/createdEvent`,
+            active: `/my-event/legal/createdEvent` === pathName
+        },
+        {
+            icon: <BsGraphUpArrow/>,
+            title: "Tổng kết",
+            url: `/my-event/event/${eventId}/summarize`,
+            active: `/my-event/event/${eventId}/summarize` === pathName
+        },
+        {
+            icon: <RiGroupLine/>,
+            title: "RSVPs",
+            url: `/my-event/event/${eventId}/RSVPs/bookings`,
+            active: `/my-event/event/${eventId}/RSVPs/bookings` === pathName
+        },
+        {
+            icon: <GrAnnounce/>,
+            title: "Quảng bá",
+            url: `/my-event/event/${eventId}/promote`,
+            active: `/my-event/event/${eventId}/promote` === pathName
+        },
+        {
+            icon: <BiSolidDiscount/>,
+            title: "Mã giảm giá",
+            url: `/my-event/event/${eventId}/discount-codes`,
+            active: `/my-event/event/${eventId}/discount-codes` === pathName
+        },
+        {
+            icon: <GrUserManager/>,
+            title: "Người quản lý",
+            url: `/my-event/event/${eventId}/moderators`,
+            active: `/my-event/event/${eventId}/moderators` === pathName
+        },
+    ]
+
     return (<div className="fixed w-[26%] border-r shadow-md">
-        <nav className="bg-[#303B46] h-screen">
+        <nav className="bg-[#424242] h-screen">
             <ul className="text-left">
                 <li>
-                    <div className="text-center p-2 flex bg-[#262F38]">
-                        <div className="w-1/2 text-left ml-6 py-1">
-                            <a href="/">
-                                <img src="/src/assets/img/logo/logo-auth-header-light.svg" alt=""
-                                     className="h-[50px] w-[50px] cursor-pointer bg-white"/>
-                            </a>
+                    <div className="text-center flex bg-[#14B981]">
+                        <div className="w-1/2 text-left ml-2">
+                            <div className="flex items-center gap-3 font-semibold dark:text-white">
+                                <img src={logo} alt="" className="h-[75px] w-[100px] m-0 cursor-pointer  "
+                                     onClick={() => navigate("/")}/>
+                            </div>
                         </div>
-                        {user ? (<div className="w-1/2 text-right m-3 mr-8">
+                        {user ? (<div className="w-1/2 text-right justify-right mx-3 my-5 mr-8">
                             <Popover placement="bottom-end" dismiss={true}>
                                 <PopoverHandler>
-                                    <Avatar
-                                        size="sm"
-                                        alt={avatar}
-                                        src={user.avatar}
-                                        className="border border-green-500 shadow-xl shadow-green-900/20 ring-4 ring-green-500/30"
-                                    />
+                                    <button className="ml-28 flex">
+                                        <div className="pr-2 py-1 text-xl">{user.username}</div>
+                                        <Avatar
+                                            size="sm"
+                                            alt={avatar}
+                                            src={user.avatar}
+                                            className="border border-white-500 shadow-xl shadow-green-900/20 ring-4 ring-blue-300"
+                                        />
+                                    </button>
                                 </PopoverHandler>
                                 <PopoverContent className="w-48 p-1">
                                     <div className="flex-col w-full gap-3">
@@ -94,7 +140,7 @@ const BookingManagerSidebar = () => {
                                     " onClick={() => {
                                             dispatch(getExistsUsers())
                                             if (userExists !== null) {
-                                                navigate(`/404`)
+                                                navigate(`/my-event/pos/${eventId}`)
                                             }
                                         }}>
                                             <div>Thống kê Pos</div>
@@ -110,84 +156,32 @@ const BookingManagerSidebar = () => {
                                         </div>
                                     </div>
                                 </PopoverContent>
-                            </Popover>)
+                            </Popover>
                         </div>) : navigate(`/login`)}
                     </div>
                 </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/my-event/legal/createdEvent`)
-                    }} className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1"><GiReturnArrow/></div>
-                            Quay lại trang sự kiện của tôi
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        // navigate(`/my-event/event/${eventId}/summarize`)
-                        navigate('/503')
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1"><BsGraphUpArrow/></div>
-                            Tổng kết
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/my-event/event/${eventId}/RSVPs/bookings`)
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1"><RiGroupLine/></div>
-                            RSVPs
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/my-event/event/${eventId}/promote`)
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1"><GrAnnounce/></div>
-                            Quảng bá
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/404`)
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1"><BiSolidDiscount/></div>
-                            Mã giảm giá
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a onClick={() => {
-                        navigate(`/my-event/event/${eventId}/moderators`)
-                    }}
-                       className="block p-5 rounded hover:bg-indigo-600 hover:text-white">
-                        <div className="flex">
-                            <div className="m-1"><GrUserManager/></div>
-                            Người quản lý
-                        </div>
-                    </a>
-                </li>
+                {steps.map((step, index) => (
+                    <li key={index}
+                        className={twMerge('flex gap-5 items-center hover:bg-[#ece8f3] hover:text-black py-3 px-5 mb-0', step.active && 'bg-gray-400 text-black ')}
+                        onClick={() => navigate(step.url)}
+                    >
+                    <span className={`rounded-full h-10 w-10 flex items-center justify-center text-xl`}>
+                        {step.icon}
+                    </span>
+                        <p>{step.title}</p>
+                    </li>
+                ))}
             </ul>
             <div className="h-screen">
                 <div className="text-center flex">
                     <a onClick={() => {
-                        navigate(`/404`)
+                        navigate(`/help-center`)
                     }}
-                       className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[70%]">
-                        <div className="m-3">Câu hỏi thường gặp</div>
+                       className="w-full border-none rounded-xl bg-[#57616A] m-10 my-[85%]">
+                        <div className="m-3 flex text-center justify-center">
+                            <div className="p-1 text-xl"><FaQuestionCircle/></div>
+                            <div className="text-lg">Câu hỏi thường gặp</div>
+                        </div>
                     </a>
                 </div>
             </div>

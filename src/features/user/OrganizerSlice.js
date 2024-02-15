@@ -36,7 +36,6 @@ export const getOrganizerByUserId = createAsyncThunk(
     "organizers/userId",
     async (userId) => {
         const response = await findByUserId({userId});
-        console.log(response.data)
         return response.data;
     }
 );
