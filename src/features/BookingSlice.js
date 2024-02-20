@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {
     createBooking,
     findAllBookings,
-    findAllBookingsByEventId,
+    findAllBookingsByEventId, findAllBookingsByEventIdNoPaged,
     findBookingsByTimeId,
     searchBookingByKeyword
 } from "../api/BookingApi.js";
@@ -28,6 +28,13 @@ export const getAllBookings = createAsyncThunk("bookings", async (currentPage, r
 });
 export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({eventId, currentPage}, rejectWithValue) => {
     const response = await findAllBookingsByEventId(eventId, currentPage);
+    if (response.status !== 200) {
+        return rejectWithValue(response.data)
+    }
+    return response.data;
+});
+export const getAllBookingsByEventIdNoPaged = createAsyncThunk("bookings/byEventId/list", async (eventId, rejectWithValue) => {
+    const response = await findAllBookingsByEventIdNoPaged(eventId);
     if (response.status !== 200) {
         return rejectWithValue(response.data)
     }
@@ -93,6 +100,15 @@ export const BookingSlice = createSlice({
             .addCase(getAllBookingsByEventId.rejected, handleRejected)
             .addCase(getAllBookingsByEventId.fulfilled, handleFulfilled)
 
+            .addCase(getAllBookingsByEventIdNoPaged.pending, handlePending)
+            .addCase(getAllBookingsByEventIdNoPaged.rejected, handleRejected)
+            .addCase(getAllBookingsByEventIdNoPaged.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.error = false;
+                state.bookingByEventIdNoPaged = action.payload.data;
+            })
+
             .addCase(getAllBookingsByKeyword.pending, handlePending)
             .addCase(getAllBookingsByKeyword.rejected, handleRejected)
             .addCase(getAllBookingsByKeyword.fulfilled, handleFulfilled)
@@ -117,6 +133,7 @@ export const BookingSlice = createSlice({
     }
 });
 export const selectAllBookingsByEventId = (state) => state.booking.bookings;
+export const selectAllBookingsByEventIdNoPaged = (state) => state.booking.bookingByEventIdNoPaged;
 export const selectBookingsByTimeId = (state) => state.booking.bookingForTime;
 export const selectBookingCreate = (state) => state.booking.bookingCreate;
 export const selectAllBookingsByKeyword = (state) => state.booking.bookings;
