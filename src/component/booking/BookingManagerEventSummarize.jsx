@@ -25,6 +25,8 @@ const BookingManagerEventSummarize = () => {
         const [soldTicketsCount, setSoldTicketsCount] = useState(0);
         const [soldTicketsTotalAmount, setSoldTicketsTotalAmount] = useState(0);
         const [serviceFee, setServiceFee] = useState(0);
+        const [canceledTicketsCount, setCanceledTicketsCount] = useState(0);
+        const [expiredTicketsCount, setExpiredTicketsCount] = useState(0);
 
         useEffect(() => {
             dispatch(getEventById(eventId))
@@ -37,21 +39,27 @@ const BookingManagerEventSummarize = () => {
         useEffect(() => {
             if (bookings && bookings.content) {
                 let calculatedSoldTicketsTotalAmount = 0;
-                let count = 0;
+                let countForSoldTickets = 0;
+                let countForCanceledTickets = 0;
+                let countForExpiredTickets = 0;
                 bookings.content.forEach((booking) => {
                     if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
                         booking.bookingDetailResponseList.forEach((detail) => {
                             if (booking.id === detail.bookingId && detail.ticketInBookingDetailResponses && detail.ticketInBookingDetailResponses.length > 0) {
                                 detail.ticketInBookingDetailResponses.forEach((ticket) => {
                                     if (ticket.status === "Success") {
-                                        count += 1;
+                                        countForSoldTickets += 1;
                                         calculatedSoldTicketsTotalAmount += ticket.ticketTypePrice;
-                                    }
+                                    } else if (ticket.status === "Canceled") {
+                                        countForCanceledTickets += 1;
+                                    } else countForExpiredTickets += 1;
                                 });
-                                setSoldTicketsCount(count);
+                                setSoldTicketsCount(countForSoldTickets);
                                 setSoldTicketsTotalAmount(calculatedSoldTicketsTotalAmount);
                                 setServiceFee(8.8 / 100 + 15000 * soldTicketsCount);
                                 setTotalAmount(soldTicketsTotalAmount - serviceFee);
+                                setCanceledTicketsCount(countForCanceledTickets);
+                                setExpiredTicketsCount(countForExpiredTickets);
                             }
                         });
                     }
@@ -194,21 +202,21 @@ const BookingManagerEventSummarize = () => {
                         <div className="border rounded-lg bg-[#A1DA79] flex">
                             <div className="my-4 pl-5 text-3xl"><FaCheck/></div>
                             <div>
-                                <div className="mx-3 mt-2">0</div>
+                                <div className="mx-3 mt-2">{soldTicketsCount}</div>
                                 <div className="mx-3 mb-2">Đã thanh toán</div>
                             </div>
                         </div>
                         <div className="mx-5 border rounded-lg bg-[#FD6161] flex">
                             <div className="my-2 pl-3 text-5xl"><HiMiniXMark/></div>
                             <div>
-                                <div className="mx-3 mt-2">0</div>
+                                <div className="mx-3 mt-2">{canceledTicketsCount}</div>
                                 <div className="mx-3 mb-2">Đã hủy</div>
                             </div>
                         </div>
                         <div className="border rounded-lg bg-[#F7B31F] flex">
                             <div className="my-2 pl-3 text-5xl"><HiMiniXMark/></div>
                             <div>
-                                <div className="mx-3 mt-2">0</div>
+                                <div className="mx-3 mt-2">{expiredTicketsCount}</div>
                                 <div className="mx-3 mb-2">Hết hạn</div>
                             </div>
                         </div>
