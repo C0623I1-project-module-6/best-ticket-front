@@ -315,7 +315,6 @@ export const userSlice = createSlice(
                 .addCase(loginWithGoogle.fulfilled, (state, action) => {
                     state.loginSuccess = true;
                     state.loading = false;
-                    state.logoutSuccess = false;
                     state.value = action.payload.data;
                     state.listRole = action.payload.data.listRole;
                     localStorage.setItem("token", action.payload.data.token);

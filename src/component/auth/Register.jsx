@@ -76,11 +76,11 @@ function Register() {
     })
 
     useEffect(() => {
-        if (success && register) {
+        if (success) {
             toast.success("🦄 Đăng ký thành công", toastOptions);
             navigate("/login");
         }
-    }, [success, register]);
+    }, [success]);
     useEffect(() => {
         if (error) {
             toast.success("🦄 Đăng ký thất bại!", toastOptions);

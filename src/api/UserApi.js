@@ -23,7 +23,8 @@ export async function login(user) {
 
 export async function loginWithToken() {
     let response = null;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
+    console.log(token)
     await axios({
         url: `${BEST_TICKET_API}auth/login`,
         headers: {
