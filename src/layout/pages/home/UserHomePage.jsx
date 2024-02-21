@@ -4,7 +4,6 @@ import SideBar from "../../../component/sidebar/UserSideBar.jsx";
 const UserHomePage = () => {
     return (
         <>
-
             <div className="h-full max-h-full overflow-y-auto">
                 <SideBar/>
             </div>

@@ -4,8 +4,7 @@ import {useEffect} from "react";
 import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import UserFooter from "../footer/UserFooter.jsx"
 import {FacebookIcon, FacebookShareButton} from "react-share";
-import {FaArrowRight} from "react-icons/fa";
-import {FaCloudDownloadAlt} from "react-icons/fa";
+import {FaArrowRight, FaCloudDownloadAlt} from "react-icons/fa";
 import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 const BookingManagerPromotion = () => {

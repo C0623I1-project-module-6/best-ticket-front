@@ -150,7 +150,9 @@ export const adminSlice = createSlice(
         .addCase(getPageTickets.fulfilled, (state, action) => {
           state.getPageTicketsSuccess = true;
           state.loading = false;
-          state.tickets = action.payload.data.data;
+          state.tickets = action.payload.data.data.content;
+          state.totalPagesOfTicket = action.payload.data.data.totalPages;
+          state.totalElementsOfTicket = action.payload.data.data.totalElements;
           state.error = false;
         })
         .addCase(getPageUsers.pending, (state) => {
@@ -167,7 +169,8 @@ export const adminSlice = createSlice(
           state.getPageUsersSuccess = true;
           state.loading = false;
           state.users = action.payload.data.content;
-
+          state.totalPagesOfUser = action.payload.data.totalPages
+          state.totalElementsOfUser = action.payload.data.totalElements
           state.error = false;
         })
         .addCase(getPageEvents.pending, (state) => {

@@ -3,23 +3,22 @@ import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
     getPageBookings,
-    getPageEvents, getPageTickets,
+    getPageEvents,
+    getPageTickets,
     getPageUsers,
-    selectBookingsSuccess, selectTickets,
-    selectTotalElementsOfBooking,
-    selectTotalElementsOfUser,
-    selectTotalPageOfBooking, selectTotalPageOfEvent, selectTotalPageOfTicket,
+    selectBookingsSuccess, selectEventsSuccess,
+    selectTickets,
+    selectTotalPageOfBooking, selectTotalPageOfEvent,
+    selectTotalPageOfTicket,
     selectTotalPageOfUser,
-    selectUsersSuccess,
-    setBookings,
-    setUsers
+    selectUsersSuccess
 } from "../../features/AdminSlice.js";
 import {
     TABLE_HEAD_BOOKING,
     TABLE_HEAD_EVENT,
-    TABLE_HEAD_USER,
     TABLE_HEAD_EVENT_APPROVAL,
-    TABLE_HEAD_TICKET
+    TABLE_HEAD_TICKET,
+    TABLE_HEAD_USER
 } from "../../ultility/AppConstant.js";
 import TableContent from "./TableContent.jsx";
 import Pagination from '@mui/material/Pagination';
@@ -35,10 +34,12 @@ export default function AdminTable() {
     const totalPagesOfBookings = useSelector(selectTotalPageOfBooking);
     const totalPageOfUser = useSelector(selectTotalPageOfUser)
     const totalPageOfTicket = useSelector(selectTotalPageOfTicket)
+    const totalPageOfEvent = useSelector(selectTotalPageOfEvent)
     const [totalPages, setTotalPages] = useState(0);
     const selectUserSuccess = useSelector(selectUsersSuccess);
     const selectBookingSuccess = useSelector(selectBookingsSuccess)
     const selectTicketSuccess = useSelector(selectTickets)
+    const selectEventSuccess = useSelector(selectEventsSuccess)
     const ref = useRef();
     useEffect(() => {
         setTotalPages(totalPageOfUser)
@@ -48,7 +49,11 @@ export default function AdminTable() {
     }, [selectBookingSuccess]);
     useEffect(() => {
         setTotalPages(totalPageOfTicket)
+
     }, [selectTicketSuccess]);
+    useEffect(() => {
+        setTotalPages(totalPageOfEvent)
+    }, [selectEventSuccess]);
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -86,7 +91,7 @@ export default function AdminTable() {
             dispatch(getPageUsers(currentPage - 1))
         } else if (param.param === "eventApproval") {
             dispatch(getPageUsers(currentPage - 1))
-        }else if (param.param === "tickets") {
+        } else if (param.param === "tickets") {
             dispatch(getPageTickets(currentPage - 1))
         }
     }, [currentPage]);
@@ -100,11 +105,6 @@ export default function AdminTable() {
     return (
         <>
             <div className="flex-col items-center justify-center justify-items-center ">
-                <div className="flex justify-center gap-4 items-center bg-amber-500">
-                    <div>Right</div>
-                    <div>Header</div>
-                    <div>Left</div>
-                </div>
                 <div className="flex justify-center mt-3 ">
                     <div className="uppercase font-bold text-3xl">{param.param}</div>
                 </div>
