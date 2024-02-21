@@ -1,14 +1,33 @@
 import UserHeader from "../component/header/UserHeader.jsx";
-import {useEffect} from "react";
-import {reLoginWithToken, selectUserLogin} from "../features/user/UserSlice.js";
-import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import {reLoginWithToken} from "../features/user/UserSlice.js";
+import {useDispatch} from "react-redux";
 
 const UserLayout = ({children}) => {
-    const user = useSelector(selectUserLogin);
     const dispatch = useDispatch();
+
     useEffect(() => {
         if (localStorage.getItem("token") !== null) {
             dispatch(reLoginWithToken())
+        }
+    }, []);
+
+    const time = sessionStorage.getItem("time");
+    const [timeLeft, setTimeLeft] = useState(time);
+    useEffect(() => {
+        if (time) {
+            const timer = setInterval(() => {
+                setTimeLeft(prevTime => {
+                    if (prevTime <= 0) {
+                        clearInterval(timer);
+                        return prevTime;
+                    }
+                    return prevTime - 1;
+                });
+            }, 1000);
+            return () => {
+                clearInterval(timer);
+            };
         }
     }, []);
     return (

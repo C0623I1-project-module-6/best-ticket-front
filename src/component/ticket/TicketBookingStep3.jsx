@@ -65,7 +65,7 @@ export const TicketBookingStep3 = () => {
         }
 
     }, [bookingCreate])
-
+    console.log(dataSendMail)
     return (
         <>
             <div className=" mx-56">

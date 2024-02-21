@@ -30,12 +30,12 @@ export const TicketBookingStep1 = (props) => {
     const handleDataFormButton = async () => {
         if (dataTotalPrice !== 0 && dataSeat !== null) {
             try {
-                await updateStatusSuccess(dataSeat);
                 dispatch(setSeats(dataSeat));
                 dispatch(setTotalPrice(dataTotalPrice));
                 dispatch(setTicketType(dataNameTicketType));
                 dispatch(setPrice(dataPriceOneTicket));
-                dispatch(setTicketCode(dataTicketCode))
+                dispatch(setTicketCode(dataTicketCode));
+                await updateStatusSuccess(dataSeat);
                 props.callbackData(1);
             } catch (error) {
                 console.error('Error:', error);

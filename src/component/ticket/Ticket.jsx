@@ -50,7 +50,7 @@ const Ticket = (props) => {
                                 <div className=''>
                                     <p>{props.dataSendMail.eventName}</p>
                                     <p className="flex items-center"><CiClock2
-                                        className="mr-2"/>Time: {time}</p>
+                                        className="mr-2"/>Time: {props.dataSendMail.time}</p>
                                     <p className="flex items-center"><CiLocationOn className="mr-2 text-xl"/>Nhà Văn hoá
                                         Thanh niên
                                         Thành phố Hồ Chí Minh <br/>4 Phạm Ngọc Thạch, Bến Nghé, Quận 1, Thành Phố

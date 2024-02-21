@@ -34,7 +34,8 @@ function Seat({dataFormSeat}) {
             setNameTicketType((prevNameTicketType) => [...prevNameTicketType, nameTicketType]);
             setPriceOneTicket((prevPriceOneTicket) => [...prevPriceOneTicket, priceOneTicket]);
             setTicketCodeSeats(prevTicketCode=>[...prevTicketCode,ticketCode])
-            dataFormSeat((totalPrice + parseInt(price)), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket],[...ticketCodeSeats]);
+            console.log(totalPrice)
+            dataFormSeat((totalPrice), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket],[...ticketCodeSeats]);
             event.target.style.backgroundColor = "#2E7D32";
         } else {
             const price = selectedSeat.ticketType.price;

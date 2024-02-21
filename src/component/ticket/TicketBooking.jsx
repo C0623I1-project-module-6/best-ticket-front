@@ -9,6 +9,7 @@ import {selectEventById} from "../../features/EventSlice.js";
 import {selectShowTimeByEventId} from "../../features/TimeSlice.js";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 import {useParams} from "react-router-dom";
+import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 
 function TicketBooking() {
@@ -16,6 +17,8 @@ function TicketBooking() {
     const event = useSelector(selectEventById);
     const times = useSelector(selectShowTimeByEventId);
     const param = useParams().param;
+    const user = useSelector(selectUserLogin);
+    console.log(user.id)
     const [current, setCurrent] = useState(0);
     const callBackFunction = (data) => {
         setCurrent(data)
@@ -29,7 +32,7 @@ function TicketBooking() {
                     <div className="w-3/4 ">
                         <a href="#">
                             <span className="font-bold text-3xl	">
-                                {event.name}
+                                {event !== null ? event.name : <div></div>}
                             </span>
                         </a>
                         <p>Nhà Văn hoá Thanh niên Thành phố Hồ Chí Minh - 4 Phạm Ngọc Thạch, Bến Nghé, Quận 1, Thành Phố
