@@ -31,19 +31,18 @@ import CreatedEvent from "../component/user/CreatedEvent.jsx";
 import BookingManagerPromotion from "../component/booking/BookingManagerPromotion.jsx";
 import BookingManagerEventSummarize from "../component/booking/BookingManagerEventSummarize.jsx";
 import ForgotPassword from "../component/auth/ForgotPassword.jsx";
-import SendOtp from "../component/auth/SendOtp.jsx";
+import SendCodeValidationForgotPassword from "../component/auth/SendCodeValidationForgotPassword.jsx";
 import UnLockUser from "../component/auth/UnLockUser.jsx";
-import UserProfile from "../component/user/UserProfile.jsx";
 import UserRecovery from "../component/auth/UserRecovery.jsx";
-import SendOtpUnlock from "../component/auth/SendOtpUnlock.jsx";
+import SendCodeValidationUnlock from "../component/auth/SendCodeValidationUnlock.jsx";
 
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
     {path: "/register", element: Register, layout: GuestLayout},
-    {path: "/send-otp", element: SendOtp, layout: GuestLayout},
+    {path: "/send-otp", element: SendCodeValidationForgotPassword, layout: GuestLayout},
     {path: "/forgot-password", element: ForgotPassword, layout: GuestLayout},
     {path: "/unlock", element: UnLockUser, layout: GuestLayout},
-    {path: "/send-otp-unlock", element: SendOtpUnlock, layout: GuestLayout},
+    {path: "/send-otp-unlock", element: SendCodeValidationUnlock, layout: GuestLayout},
     {path: "/user-recovery", element: UserRecovery, layout: GuestLayout},
     {path: "/403", element: ForbiddenPage, layout: ErrorLayout},
     {path: "/404", element: NotFoundPage, layout: ErrorLayout},
@@ -59,9 +58,9 @@ export const ROUT_DATA = [
     {path: "/admin/:param", element: AdminTable, layout: AdminLayout},
     {path: "/search", element: Search, layout: UserLayout},
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
-    {path: "/user-profile", element: UserProfile, layout: UserLayout},
     {path: "/profile", element: CustomerProfile, layout: UserLayout},
     {path: "/my-event/legal", element: OrganizerProfile, layout: OrganizerLayout},
+    {path: "*", element: NotFoundPage},
 
 
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
@@ -81,9 +80,21 @@ export const ROUT_DATA = [
         ]
     },
 
-    {path: "/my-event/event/:eventId/summarize", element: BookingManagerEventSummarize, layout: OrganizerBookingManagerLayout},
-    {path: "/my-event/event/:eventId/RSVPs/bookings", element: BookingManagerEventBookings, layout: OrganizerBookingManagerLayout},
+    {
+        path: "/my-event/event/:eventId/summarize",
+        element: BookingManagerEventSummarize,
+        layout: OrganizerBookingManagerLayout
+    },
+    {
+        path: "/my-event/event/:eventId/RSVPs/bookings",
+        element: BookingManagerEventBookings,
+        layout: OrganizerBookingManagerLayout
+    },
     {path: "/my-event/event/:eventId/promote", element: BookingManagerPromotion, layout: OrganizerBookingManagerLayout},
     // {path: "/my-event/event/:eventId/discount-codes", element: null, layout: OrganizerBookingManagerLayout},
-    {path: "/my-event/event/:eventId/moderators", element: BookingManagerModeratorList, layout: OrganizerBookingManagerLayout},
+    {
+        path: "/my-event/event/:eventId/moderators",
+        element: BookingManagerModeratorList,
+        layout: OrganizerBookingManagerLayout
+    },
 ];

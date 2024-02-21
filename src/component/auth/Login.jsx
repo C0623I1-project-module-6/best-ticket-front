@@ -11,7 +11,6 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
-import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
 
 function Login() {
     const dispatch = useDispatch();
@@ -19,8 +18,8 @@ function Login() {
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
-    const userExists = useSelector(selectExistsUsers);
-    const isLocked = useSelector(selectIsLocked)
+    const userLocked = useSelector(selectIsLocked);
+    console.log(userLocked);
     const toastOptions = {
         position: "top-right",
         autoClose: 2000,
@@ -42,17 +41,18 @@ function Login() {
         }
         dispatch(loginUser(user));
     }
+
     useEffect(() => {
         if (loginSuccess && user && user.token) {
             toast.success("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             dispatch(getOrganizerByUserId(user.id));
             history.back();
-            // navigate("/");
         }
     }, [user]);
+
     useEffect(() => {
         if (loginError) {
-            toast.error("🦄 Tên đăng nhập hoặc mật khẩu không đúng!", toastOptions);
+            toast.error("🦄 Xác thực không thành công. Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!", toastOptions)
         }
     }, [loginError]);
 
@@ -127,25 +127,24 @@ function Login() {
                             onClick={() => {
                                 navigate("/send-otp")
                             }}>Forgot password ?</span>
-                        <span
-                            className="cursor-pointer text-sm text-blue-500 hover:text-gray-500 font-bold"
-                            onClick={() => {
-                                navigate("/user-recovery")
-                            }}>Recover account ?</span>
                         <div className="flex">
                             <span className="mx-2 font-bold">
                                 Don't have account ?
                             </span>
                             <span className="cursor-pointer hover:text-gray-500 font-bold text-blue-500"
                                   onClick={() => {
-                                      dispatch(getExistsUsers())
-                                      if (userExists != null)
-                                          navigate("/register")
+                                      navigate("/register")
                                   }}>Register</span>
                         </div>
                     </div>
+                    <div className="w-full flex justify-between text-sm">
+                            <span
+                                className="cursor-pointer text-sm text-blue-500 hover:text-gray-500 font-bold"
+                                onClick={() => {
+                                    navigate("/user-recovery")
+                                }}>Recover account ?</span>
+                    </div>
                 </form>
-
             </div>
         </div>
     );

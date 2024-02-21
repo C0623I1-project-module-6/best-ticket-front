@@ -1,6 +1,6 @@
 import {FaCogs, FaFileContract, FaHome, FaSignOutAlt} from "react-icons/fa";
 import {FaMoon, FaSun, FaUsers} from "react-icons/fa6";
-import {MdEventAvailable} from "react-icons/md";
+import {MdAppRegistration, MdEventAvailable} from "react-icons/md";
 import {ImTicket} from "react-icons/im";
 import {useNavigate, useParams} from "react-router-dom";
 import {Avatar} from "@material-tailwind/react";
@@ -58,7 +58,18 @@ function AdminSidebar() {
             path: "/admin/events",
             current: param.param === 'events'
         },
-        {icon: <ImTicket size={25}/>, label: " Tickets", path: "/admin/tickets", current: param.param === 'tickets'},
+        {
+            icon: <ImTicket size={25}/>,
+            label: " Tickets",
+            path: "/admin/tickets",
+            current: param.param === 'tickets'
+        },
+        {
+            icon: <MdAppRegistration size={25}/>,
+            label: "Event Approval",
+            path: "/admin/event-approval",
+            current: param.param === 'event-approval'
+        }
     ]
     const itemFooter = [
         {icon: <FaCogs size={25}/>, label: "Setting", path: "/admin"},

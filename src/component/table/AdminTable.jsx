@@ -4,19 +4,25 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     getPageBookings,
     getPageEvents,
+    getPageTickets,
     getPageUsers,
-    selectBookingsSuccess,
-    selectTotalElementsOfBooking,
-    selectTotalElementsOfUser,
-    selectTotalPageOfBooking,
+    selectBookingsSuccess, selectEventsSuccess,
+    selectTickets,
+    selectTotalPageOfBooking, selectTotalPageOfEvent,
+    selectTotalPageOfTicket,
     selectTotalPageOfUser,
-    selectUsersSuccess,
-    setBookings,
-    setUsers
+    selectUsersSuccess
 } from "../../features/AdminSlice.js";
-import {TABLE_HEAD_BOOKING, TABLE_HEAD_EVENT, TABLE_HEAD_USER} from "../../ultility/AppConstant.js";
+import {
+    TABLE_HEAD_BOOKING,
+    TABLE_HEAD_EVENT,
+    TABLE_HEAD_EVENT_APPROVAL,
+    TABLE_HEAD_TICKET,
+    TABLE_HEAD_USER
+} from "../../ultility/AppConstant.js";
 import TableContent from "./TableContent.jsx";
 import Pagination from '@mui/material/Pagination';
+import {getEventByStatusIsPending} from "../../features/EventSlice.js";
 
 
 export default function AdminTable() {
@@ -25,13 +31,15 @@ export default function AdminTable() {
     const dispatch = useDispatch();
     const [dataHeader, setDataHeader] = useState([]);
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
-    const totalElementOfBooking = useSelector(selectTotalElementsOfBooking)
-    const totalElementOfUser = useSelector(selectTotalElementsOfUser);
     const totalPagesOfBookings = useSelector(selectTotalPageOfBooking);
     const totalPageOfUser = useSelector(selectTotalPageOfUser)
+    const totalPageOfTicket = useSelector(selectTotalPageOfTicket)
+    const totalPageOfEvent = useSelector(selectTotalPageOfEvent)
     const [totalPages, setTotalPages] = useState(0);
     const selectUserSuccess = useSelector(selectUsersSuccess);
     const selectBookingSuccess = useSelector(selectBookingsSuccess)
+    const selectTicketSuccess = useSelector(selectTickets)
+    const selectEventSuccess = useSelector(selectEventsSuccess)
     const ref = useRef();
     useEffect(() => {
         setTotalPages(totalPageOfUser)
@@ -39,6 +47,13 @@ export default function AdminTable() {
     useEffect(() => {
         setTotalPages(totalPagesOfBookings)
     }, [selectBookingSuccess]);
+    useEffect(() => {
+        setTotalPages(totalPageOfTicket)
+
+    }, [selectTicketSuccess]);
+    useEffect(() => {
+        setTotalPages(totalPageOfEvent)
+    }, [selectEventSuccess]);
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -53,18 +68,20 @@ export default function AdminTable() {
     }, [theme]);
     useEffect(() => {
         if (param.param === "users") {
-            dispatch(setBookings(null))
             dispatch(getPageUsers())
             setDataHeader(TABLE_HEAD_USER);
         } else if (param.param === "bookings") {
-            dispatch(setUsers(null))
             dispatch(getPageBookings())
             setDataHeader(TABLE_HEAD_BOOKING)
         } else if (param.param === "events") {
-            dispatch(setBookings(null))
-            dispatch(setUsers(null))
             dispatch(getPageEvents())
             setDataHeader(TABLE_HEAD_EVENT)
+        } else if (param.param === "event-approval") {
+            dispatch(getEventByStatusIsPending(0))
+            setDataHeader(TABLE_HEAD_EVENT_APPROVAL)
+        } else if (param.param === "tickets") {
+            dispatch(getPageTickets())
+            setDataHeader(TABLE_HEAD_TICKET)
         }
     }, [param]);
     useEffect(() => {
@@ -72,25 +89,22 @@ export default function AdminTable() {
             dispatch(getPageBookings(currentPage - 1));
         } else if (param.param === "users") {
             dispatch(getPageUsers(currentPage - 1))
+        } else if (param.param === "eventApproval") {
+            dispatch(getPageUsers(currentPage - 1))
+        } else if (param.param === "tickets") {
+            dispatch(getPageTickets(currentPage - 1))
         }
     }, [currentPage]);
 
-
-
-   async function handleSearch(e) {
+    async function handleSearch(e) {
         e.preventDefault()
-       const keyword = ref.current.value;
-       console.log(keyword)
+        const keyword = ref.current.value;
+        console.log(keyword)
     }
 
     return (
         <>
             <div className="flex-col items-center justify-center justify-items-center ">
-                <div className="flex justify-center gap-4 items-center bg-amber-500">
-                    <div>Right</div>
-                    <div>Header</div>
-                    <div>Left</div>
-                </div>
                 <div className="flex justify-center mt-3 ">
                     <div className="uppercase font-bold text-3xl">{param.param}</div>
                 </div>
@@ -103,22 +117,29 @@ export default function AdminTable() {
                         <thead className="bg-amber-500
                         dark:text-white dark:bg-black">
                         <tr>
-                            {
-                                dataHeader.map((data, index) => (
-                                    <th scope="col" key={index}
-                                        className="px-4 py-3 text-start text-xs font-bold font-sans uppercase">
-                                        {data}
-                                    </th>
-                                ))
-                            }
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-
-                            </th>
-                            <th scope="col"
-                                className="px-6 py-3 text-start text-xs font-bold font-sans uppercase">
-
-                            </th>
+                            {param.param !== "eventApproval" ? (
+                                <>
+                                    {dataHeader.map((data, index) => (
+                                        <th scope="col" key={index}
+                                            className="px-4 py-3 text-start text-xs font-bold font-sans uppercase">
+                                            {data}
+                                        </th>
+                                    ))}
+                                    <th scope="col"
+                                        className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
+                                    <th scope="col"
+                                        className="px-6 py-3 text-start text-xs font-bold font-sans uppercase"></th>
+                                </>
+                            ) : (
+                                <>
+                                    {dataHeader.map((data, index) => (
+                                        <th scope="col" key={index}
+                                            className="px-4 py-3 text-start text-xs font-bold font-sans uppercase">
+                                            {data}
+                                        </th>
+                                    ))}
+                                </>
+                            )}
                         </tr>
                         </thead>
                         <TableContent content={param}/>

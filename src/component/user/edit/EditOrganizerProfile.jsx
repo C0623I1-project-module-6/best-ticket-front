@@ -4,14 +4,19 @@ import {Bounce} from "react-toastify";
 import UserFooter from "../../footer/UserFooter.jsx";
 import FormEditCompany from "./FormEditCompany.jsx";
 import FormEditPersonal from "./FormEditPersonal.jsx";
-import {selectExistsUsers} from "../../../features/user/ExistsUserSlice.js";
 import {FormGroup, Label} from "reactstrap";
+import {
+    selectEditOrganizerError,
+    selectEditOrganizerSuccess,
+    selectOrganizerEdit
+} from "../../../features/user/OrganizerSlice.js";
 
 function EditOrganizerProfile({organizer}) {
     const [selected, setSelected] = useState("0");
-    const userExistsList = useSelector(selectExistsUsers)
+    const success = useSelector(selectEditOrganizerSuccess);
+    const error = useSelector(selectEditOrganizerError);
+    const organizerEdited = useSelector(selectOrganizerEdit);
     const phoneRegex = /^0\d{9}$/;
-
     const toastOptions =
         {
             position: "top-right",
@@ -61,11 +66,19 @@ function EditOrganizerProfile({organizer}) {
                 {selected === "0" && <FormEditCompany
                     organizer={organizer}
                     phoneRegex={phoneRegex}
-                    userExistsList={userExistsList}/>}
+                    toastOptions={toastOptions}
+                    organizerEdited={organizerEdited}
+                    success={success}
+                    error={error}
+                />}
                 {selected === "1" && <FormEditPersonal
                     organizer={organizer}
                     phoneRegex={phoneRegex}
-                    userExistsList={userExistsList}/>}
+                    toastOptions={toastOptions}
+                    organizerEdited={organizerEdited}
+                    success={success}
+                    error={error}
+                />}
             </FormGroup>
             <FormGroup><UserFooter/></FormGroup>
         </FormGroup>

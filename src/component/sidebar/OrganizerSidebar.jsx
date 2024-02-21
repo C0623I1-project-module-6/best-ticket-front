@@ -33,7 +33,6 @@ export default function OrganizerSidebar() {
             active: "345" === pathName
         }
     ]
-    console.log(steps[0].active)
     return (
 
         <div className="fixed w-1/4 h-full text-white font-serif bg-gray-800 pt-10 pl-5">
@@ -42,10 +41,10 @@ export default function OrganizerSidebar() {
                      className={twMerge('flex gap-5 items-center hover:bg-[#ece8f3] hover:text-black py-3 px-5 mb-2',step.active && 'bg-gray-400 text-black ')}
                      onClick={()=> navigate(step.url)}
                 >
-                    <span className={`rounded-full h-10 w-10 flex items-center justify-center`}>
+                    <span className={`rounded-full h-10 w-10 flex items-center justify-center text-2xl`}>
                         {step.icon}
                     </span>
-                        <p>{step.title}</p>
+                        <p className="text-xl">{step.title}</p>
                 </div>
             ))}
         </div>

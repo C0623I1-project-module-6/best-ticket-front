@@ -36,7 +36,6 @@ export const getOrganizerByUserId = createAsyncThunk(
     "organizers/userId",
     async (userId) => {
         const response = await findByUserId({userId});
-        console.log(response.data)
         return response.data;
     }
 );
@@ -81,7 +80,7 @@ export const organizerSlice = createSlice(
                     .addCase(registerOrganizerProfile.rejected, (state, action) => {
                         state.registerOrganizerSuccess = false;
                         state.loading = false;
-                        state.registerOrganizerError = action.payload;
+                        state.registerOrganizerError = true;
                     })
                     .addCase(registerOrganizerProfile.fulfilled, (state, action) => {
                         state.registerOrganizerSuccess = true;
@@ -98,7 +97,7 @@ export const organizerSlice = createSlice(
                     .addCase(editOrganizerProfile.rejected, (state, action) => {
                         state.editOrganizerSuccess = false;
                         state.loading = false;
-                        state.editOrganizerError = action.payload;
+                        state.editOrganizerError = true;
                     })
                     .addCase(editOrganizerProfile.fulfilled, (state, action) => {
                         state.editOrganizerSuccess = true;

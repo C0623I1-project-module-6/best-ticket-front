@@ -36,10 +36,10 @@ export async function showBookingDetail(id) {
   return response;
 }
 
-export async function showTickets() {
+export async function showTickets(currentPage) {
   let response = null;
   await axios({
-    url: `${BEST_TICKET_API}admin/tickets`,
+    url: `${BEST_TICKET_API}admin/tickets?page=${currentPage}`,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -81,5 +81,6 @@ export async function showEvents(currentPage) {
   }).catch((e) => {
     response = e;
   })
+  console.log(response)
   return response;
 }

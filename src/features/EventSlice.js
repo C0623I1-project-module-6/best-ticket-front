@@ -5,7 +5,9 @@ import {
     findEventById,
     findEventByOrganizerId,
     findEventsByEventTypes,
-    findEventsByName
+    findEventsByName,
+    findEventByStatusIsPending,
+    findEventsBySearchCriteria
 } from "../api/EventApi.js";
 
 const initialState = {
@@ -43,10 +45,18 @@ export const addEvent = createAsyncThunk("event/create", async (eventRequest) =>
 
 export const getEventByOrganizerId = createAsyncThunk("events/OrganizerId", async ({organizerId, currentPage}) => {
     const response = await findEventByOrganizerId(organizerId, currentPage);
-    console.log(response.data)
     return response.data;
 })
 
+export const getEventByStatusIsPending = createAsyncThunk("events/status/pending", async (currentPage) => {
+    const response = await findEventByStatusIsPending(currentPage);
+    return response.data;
+})
+
+export const getEventBySearchCriteria = createAsyncThunk("events/SearchCriteria", async (searchTerm, province, eventTypeNames, time, currenPage) => {
+    const response = await findEventsBySearchCriteria(searchTerm);
+    return response.data;
+})
 // set action for slice
 const handlePending = (state) => {
     state.success = false;
@@ -92,6 +102,14 @@ export const EventSlice = createSlice({
             .addCase(getEventByOrganizerId.pending, handlePending)
             .addCase(getEventByOrganizerId.rejected, handleRejected)
             .addCase(getEventByOrganizerId.fulfilled, handleFulfilled)
+            // find by status is pending
+            .addCase(getEventByStatusIsPending.pending, handlePending)
+            .addCase(getEventByStatusIsPending.rejected, handleRejected)
+            .addCase(getEventByStatusIsPending.fulfilled, handleFulfilled)
+            //
+            .addCase(getEventBySearchCriteria.pending, handlePending)
+            .addCase(getEventBySearchCriteria.rejected, handleRejected)
+            .addCase(getEventBySearchCriteria.fulfilled, handleFulfilled)
             // find by EventById
             .addCase(getEventById.pending, handlePending)
             .addCase(getEventById.rejected, handleRejected)

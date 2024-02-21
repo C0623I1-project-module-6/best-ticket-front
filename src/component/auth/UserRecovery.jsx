@@ -7,7 +7,7 @@ export default function UserRecovery() {
     return (
         <FormGroup className="flex bg-white rounded-lg  items-center  flex-1 flex-col justify-center lg:px-8
                              dark:bg-black dark:text-white">
-            <AuthHeader name={"Recover account"}/>
+            <FormGroup name={"Recover account"}/>
             <FormGroup className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
                 <FormGroup>
                     <span className="text-xl">Bạn muốn khôi phục tài khoản bị khóa?</span>

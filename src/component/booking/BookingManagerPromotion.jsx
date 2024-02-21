@@ -4,8 +4,7 @@ import {useEffect} from "react";
 import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import UserFooter from "../footer/UserFooter.jsx"
 import {FacebookIcon, FacebookShareButton} from "react-share";
-import {FaArrowRight} from "react-icons/fa";
-import {FaCloudDownloadAlt} from "react-icons/fa";
+import {FaArrowRight, FaCloudDownloadAlt} from "react-icons/fa";
 import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 const BookingManagerPromotion = () => {
@@ -85,24 +84,24 @@ const BookingManagerPromotion = () => {
                         </div>
                         <div>
                             <div className="flex">
-                                <div><FaArrowRight/></div>
+                                <div className="py-1"><FaArrowRight/></div>
                                 <div>Là sự kiện nóng trên ngay trang chủ</div>
                             </div>
                             <div className="flex">
-                                <div><FaArrowRight/></div>
+                                <div className="py-1"><FaArrowRight/></div>
                                 <div>Gửi email marketing cho các khách hàng tiềm năng</div>
                             </div>
                         </div>
                         <div className="my-5 text-xl">Xem các dịch vụ hỗ trợ marketing</div>
                         <div className="flex pb-10">
                             <button className="border-0 border-black rounded bg-[#C2DEA3] flex" onClick={() => {
-                                navigate(`/503`)
+                                navigate(`/404`)
                             }}>
                                 <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
                                 <div className="m-2 text-xl">Tiếng Việt</div>
                             </button>
                             <button className="border-0 border-black rounded bg-[#C2DEA3] mx-2 flex" onClick={() => {
-                                navigate(`/503`)
+                                navigate(`/404`)
                             }}>
                                 <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
                                 <div className="m-2 text-xl">English</div>
@@ -115,7 +114,7 @@ const BookingManagerPromotion = () => {
                 <UserFooter/>
             </div>
         </>
-    ) : (navigate('/'))}
+    ) : (navigate(`/my-event/event/${eventId}/RSVPs/bookings`))}
     </>)
 };
 

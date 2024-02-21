@@ -1,12 +1,13 @@
 import {FastField, Form, Formik} from "formik";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {FormGroup} from "reactstrap";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import InputRegister from "../../ultility/customField/InputRegister.jsx";
 import {sendOtpWithEmail} from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 import * as Yup from "yup";
+import {selectEmails} from "../../features/user/ExistsSlice.js";
 
 const toastOptions = {
     position: "top-right",
@@ -19,14 +20,18 @@ const toastOptions = {
     theme: "light",
     transition: Bounce,
 };
-export default function SendOtp() {
+export default function SendCodeValidationForgotPassword() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const emails = useSelector(selectEmails);
     const initialValues = {
         email: "",
     }
     const validationSendOtpSchema = Yup.object().shape({
         email: Yup.string()
+            .test("not exists ", "Email not exists", value => {
+                return emails.includes(value)
+            })
             .email("Invalid email! Please add @.")
             .required("This field is required.")
     })

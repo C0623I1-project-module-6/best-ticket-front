@@ -4,7 +4,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 import {useAuthor} from "../ultility/customHook/useAuthor.js";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {reLoginWithToken, selectLogoutSuccess, selectUserLogout} from "../features/user/UserSlice.js";
+import {reLoginWithToken, selectLogoutSuccess} from "../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 
 
@@ -40,7 +40,7 @@ const AdminLayout = ({children}) => {
                     <div className="h-screen">
                         <AdminSidebar/>
                     </div>
-                    <div className="flex-col justify-center w-full  overflow-hidden">
+                    <div className="flex-col  justify-center w-full  overflow-hidden">
                         <div className="flex-col  max-h-full overflow-hidden">
                             <AdminHeader/>
                             <div className="h-fit">

@@ -18,7 +18,13 @@ export const TABLE_HEAD_BOOKING = [
   "detail",
 ];
 export const TABLE_HEAD_TICKET = [
-  "stt"
+  "stt",
+  "event name",
+  "customer name",
+  "promotion",
+  "ticket code",
+  "ticket type",
+  "time",
 ];
 export const TABLE_HEAD_EVENT = [
   "stt",
@@ -28,6 +34,15 @@ export const TABLE_HEAD_EVENT = [
   "time",
   "event type",
   "location",
+];
+export const TABLE_HEAD_EVENT_APPROVAL =[
+  "stt",
+  "event name",
+  "organizer name",
+  "organizer type",
+  "time",
+  "location",
+  "approval",
 ];
 export const ADMIN = "ADMIN";
 export const ORGANIZER = "ORGANIZER";

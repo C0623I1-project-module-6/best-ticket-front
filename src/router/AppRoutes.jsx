@@ -8,19 +8,21 @@ function AppRoutes() {
                 const Layout = route.layout;
                 const Page = route.element;
                 return route.layout ? (
-                    <Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
-                ) : route.children ? (
-                    <Route key={index} path={route.path} element={<Page/>}>
-                        {route.children.map((childRoute, index) => {
-                            const ChildElement = childRoute.element;
-                            return (
-                                <Route key={index} path={childRoute.path} element={<ChildElement/>}/>
-                            )
-                        })}
-                    </Route>
-                ) : (
-                    <Route key={index} path={route.path} element={<Page/>}/>
-                );
+                        <Route key={index} path={route.path} element={<Layout><Page/></Layout>}/>
+                    )
+                    : route.children ? (
+                            <Route key={index} path={route.path} element={<Page/>}>
+                                {route.children.map((childRoute, index) => {
+                                    const ChildElement = childRoute.element;
+                                    return (
+                                        <Route key={index} path={childRoute.path} element={<ChildElement/>}/>
+                                    )
+                                })}
+                            </Route>
+                        )
+                        : (
+                            <Route key={index} path={route.path} element={<Page/>}/>
+                        );
             })}
         </Routes>
     );

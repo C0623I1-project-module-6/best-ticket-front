@@ -1,157 +1,197 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
-import {editCustomerProfile} from "../../../features/user/CustomerSlice.js";
-import {Bounce, toast} from "react-toastify";
+import {useEffect, useState} from "react";
+import {
+    editCustomerProfile,
+    selectCustomerProfileEdited,
+    selectEditCustomerProfileError,
+    selectEditCustomerProfileSuccess
+} from "../../../features/user/CustomerSlice.js";
+import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import Avatar from "../Avatar.jsx";
 import {FastField, Form, Formik} from "formik";
 import * as Yup from "yup";
-import {selectExistsUsers} from "../../../features/user/ExistsUserSlice.js";
-import {Button} from "@material-tailwind/react";
-import InputField from "../../../ultility/customField/InputField.jsx";
+import {Button, input} from "@material-tailwind/react";
+import InputProfile from "../../../ultility/customField/InputProfile.jsx";
 import {FormGroup, Label} from "reactstrap";
+import {lockUser, logoutUser, removeUser} from "../../../features/user/UserSlice.js";
+import LockModal from "../../auth/LockModal.jsx";
+import RemoveModal from "../../auth/RemoveModal.jsx";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function EditCustomerProfile({customer}) {
+export default function EditCustomerProfile({
+                                                customer,
+                                                user,
+                                                phoneNumbers,
+                                                idCards,
+                                                receiptEmails,
+                                                showLock, setShowLock,
+                                                showRemove, setShowRemove,
+                                                userLogout,
+                                                userLock,
+                                                userRemove,
+                                                phoneRegex,
+                                                toastOptions,
+                                            }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [gender, setGender] = useState(customer?.gender);
     const [isEditMode, setIsEditMode] = useState(false);
-    const userExistsList = useSelector(selectExistsUsers);
-    const phoneRegex = /^0\d{9}$/;
-    const phoneNumbers = userExistsList
-        .filter(customer => customer.customerPhoneNumber)
-        .map(customer => customer.customerPhoneNumber);
-    const idCards = userExistsList
-        .filter(customer => customer.customerIdCard)
-        .map(customer => customer.customerIdCard);
-    const receiptEmails = userExistsList
-        .filter(customer => customer.customerReceiptEmail)
-        .map(customer => customer.customerReceiptEmail);
-    const toastOptions = {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-    };
+    const customerEdited = useSelector(selectCustomerProfileEdited);
+    const success = useSelector(selectEditCustomerProfileSuccess);
+    const error = useSelector(selectEditCustomerProfileError);
+    const {
+        fullName: currentFullName,
+        phoneNumber: currentPhoneNumber,
+        idCard: currentIdCard,
+        receiptEmail: currentReceiptEmail,
+        dateOfBirth: currentDateOfBirth,
+        gender: currentGender,
+    } = customer;
     const initialValues = {
-        fullName: null,
-        phoneNumber: null,
-        idCard: null,
-        receiptEmail: null,
-        dateOfBirth: null,
-        gender: null,
+        fullName: currentFullName,
+        phoneNumber: currentPhoneNumber,
+        idCard: currentIdCard,
+        receiptEmail: currentReceiptEmail,
+        dateOfBirth: currentDateOfBirth,
+        gender: currentGender,
 
     }
     const validationEditSchema = Yup.object().shape({
         phoneNumber: Yup.string()
             .test("unique", "Phone number already exists.", value => {
-                return !phoneNumbers.includes(value);
+                return !phoneNumbers.includes(value) || value === currentPhoneNumber;
             })
             .matches(phoneRegex, "Invalid phone number! Start from 0 and has 10 numbers.")
             .nullable(),
         idCard: Yup.string()
             .test("unique", "Id card already exists.", value => {
-                return !idCards.includes(value);
+                return !idCards.includes(value) || value === currentIdCard;
             })
             .nullable(),
         receiptEmail: Yup.string()
             .test("unique", "Email already exists.", value => {
-                return !receiptEmails.includes(value);
+                return !receiptEmails.includes(value) || value === currentReceiptEmail;
             })
             .email("Invalid email! Please add @.")
             .nullable(),
+        dateOfBirth: Yup.date().nullable(),
     })
-    const handleSubmit = (values) => {
-        dispatch(editCustomerProfile(values));
-        setIsEditMode(false);
-        toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
-        navigate("/profile");
-
-    }
 
     const toggleEditMode = () => {
-        setIsEditMode(prev=>!prev);
+        setIsEditMode(prev => !prev);
 
     }
     const handleGenderChange = (e) => {
         setGender(e.target.value);
     }
-
+    const handleLock = () => {
+        dispatch(lockUser(userLock));
+        navigate("/");
+        dispatch(logoutUser(userLogout))
+    }
+    const handleRemove = () => {
+        dispatch(removeUser(userRemove));
+        navigate("/")
+        dispatch(logoutUser(userLogout));
+    }
+    useEffect(() => {
+        if (success && customerEdited) {
+            toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
+            setIsEditMode(false);
+        }
+    }, [success, customerEdited]);
+    useEffect(() => {
+        if (error) {
+            toast.error("🦄 Cập nhật thông tin thất bại!", toastOptions);
+        }
+    }, [error]);
     return (
         <Formik initialValues={initialValues}
                 validationSchema={validationEditSchema}
-                onSubmit={handleSubmit}
+                onSubmit={values => {
+                    dispatch(editCustomerProfile(values));
+                }}
         >
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 return (
-                    <FormGroup className="flex">
-                        <Form className="w-screen" method="PUT"
+                    <FormGroup className="flex overflow-y-auto">
+                        <Form className="w-screen " method="PUT"
                               onSubmit={formikProps.handleSubmit}>
                             <FormGroup className="flex">
                                 <Avatar/>
                                 <FormGroup className="w-3/4 p-10">
                                     <FormGroup className="border border-solid shadow-2xl rounded-md py-5 px-5 bg-white">
                                         <h2 className=" flex justify-center text-2xl font-serif leading-7 text-gray-900">
+                                            Thông tin tài khoản</h2>
+                                        <FormGroup className="grid grid-cols-2 gap-4 mt-4">
+                                            <FormGroup>
+                                                <FastField
+                                                    name="username"
+                                                    component={InputProfile}
+                                                    value={user.username}
+                                                    label="Username"
+                                                    disabled
+                                                />
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <FastField
+                                                    type="email"
+                                                    name="email"
+                                                    component={InputProfile}
+                                                    value={user.email}
+                                                    label="Email"
+                                                    disabled
+                                                />
+                                            </FormGroup>
+                                        </FormGroup>
+                                    </FormGroup>
+                                    <FormGroup
+                                        className="border border-solid shadow-2xl rounded-md py-5 px-5 mt-5 bg-white">
+                                        <h2 className=" flex justify-center text-2xl font-serif leading-7 text-gray-900">
                                             Thông tin cá nhân</h2>
                                         <FormGroup className="grid grid-cols-2 gap-4 mt-4">
                                             <FormGroup>
                                                 <FastField
                                                     name="fullName"
-                                                    component={InputField}
+                                                    component={InputProfile}
                                                     onChange={formikProps.handleChange}
                                                     label="Họ và tên"
-                                                    placeholder={customer.fullName || "Vui lòng nhập họ và tên"}
-                                                    className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                                                    ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                                                    focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                                                    placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                                    placeholder="Vui lòng nhập họ và tên"
+                                                />
                                             </FormGroup>
                                             <FormGroup>
                                                 <FastField
+                                                    type="tel"
                                                     name="phoneNumber"
-                                                    component={InputField}
+                                                    component={InputProfile}
                                                     onChange={formikProps.handleChange}
                                                     label="Số điện thoại"
-                                                    placeholder={customer.phoneNumber || "Vui lòng nhập số điện thoại"}
-                                                    className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                                                    ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                                                    focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                                                    placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                                    placeholder="Vui lòng nhập số điện thoại"
+                                                />
                                             </FormGroup>
                                             <FormGroup>
                                                 <FastField
                                                     name="idCard"
-                                                    component={InputField}
+                                                    component={InputProfile}
                                                     onChange={formikProps.handleChange}
                                                     label="CMND/CCCD/Hộ chiếu"
-                                                    placeholder={customer.idCard || "Vui lòng nhập CMND/CCCD/Hộ chiếu"}
-                                                    className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                                                    ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                                                    focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                                                    placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                                    placeholder="Vui lòng nhập CMND/CCCD/Hộ chiếu"
+                                                />
                                             </FormGroup>
                                             <FormGroup>
                                                 <FastField
                                                     type="email"
                                                     name="receiptEmail"
-                                                    component={InputField}
+                                                    component={InputProfile}
                                                     onChange={formikProps.handleChange}
                                                     label="Email nhận vé"
-                                                    placeholder={customer.receiptEmail || "bestticket@gmail.com"}
-                                                    className="block w-full rounded-md shadow-md p-2 mt-2 text-gray-900
-                                                    ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-inset
-                                                    focus:ring-indigo-600 placeholder:font-serif placeholder:text-1xl
-                                                    placeholder:text-gray-800 font-serif sm:text-1xl sm:leading-6"/>
+                                                    placeholder="bestticket@gmail.com"
+                                                />
                                                 <p className="mt-2"><a className="text-green-700" href="#">
                                                     * Click để gửi lại mail xác thực.</a>
                                                 </p>
@@ -162,16 +202,12 @@ export default function EditCustomerProfile({customer}) {
                                                     Ngày sinh
                                                 </Label>
                                                 <FormGroup className="mt-2">
-                                                    <input
+                                                    <FastField
                                                         type="date"
                                                         name="dateOfBirth"
-                                                        value={customer.dateOfBirth}
+                                                        component={InputProfile}
                                                         onChange={formikProps.handleChange}
-                                                        disabled={!isEditMode}
-                                                        className="block w-full rounded-md shadow-md border-0 p-2 mt-2
-                                                        text-gray-800 ring-1 ring-inset ring-gray-300 focus:ring-1
-                                                        focus:ring-inset focus:ring-indigo-600 sm:text-1xl sm:font-serif
-                                                        sm:leading-6 placeholder:font-serif placeholder:text-1xl"/>
+                                                    />
                                                 </FormGroup>
                                             </FormGroup>
 
@@ -223,7 +259,7 @@ export default function EditCustomerProfile({customer}) {
                                                         + "focus-visible:outline-2 focus-visible:outline-offset-2"
                                                         + "focus-visible:outline-indigo-600" : "hidden"
                                                 )}>
-                                            {isEditMode ? "Hoàn thành" : "Chỉnh sửa"}
+                                            {isEditMode ? "Lưu thông tin" : "Chỉnh sửa"}
                                         </Button>
                                         <Button onClick={toggleEditMode} type="button"
                                                 className={classNames(
@@ -232,8 +268,35 @@ export default function EditCustomerProfile({customer}) {
                                                         + "focus-visible:outline-2"
                                                         + "focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                                 )}>
-                                            {isEditMode ? "Hoàn thành" : "Chỉnh sửa"}
+                                            {isEditMode ? "Lưu thông tin" : "Chỉnh sửa"}
                                         </Button>
+                                        <Button type="button"
+                                                onClick={() => setShowLock(true)}
+                                                className="rounded-md bg-[#10b981] px-3 py-2 text-1xl
+                                         text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2
+                                         focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                            Khóa tài khoản
+                                        </Button>
+                                        {showLock && (
+                                            <LockModal
+                                                visible={showLock}
+                                                onOk={handleLock}
+                                                onCancel={() => setShowLock(false)}/>
+                                        )}
+                                        <Button type="button"
+                                                onClick={() => setShowRemove(true)}
+                                                className="rounded-md bg-[#10b981] px-3 py-2 text-1xl
+                                         text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2
+                                         focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                            Xóa tài khoản
+                                        </Button>
+                                        {showRemove && (
+                                            <RemoveModal
+                                                visible={showRemove}
+                                                onOk={handleRemove}
+                                                onCancel={() => setShowRemove(false)}
+                                            />
+                                        )}
                                     </FormGroup>
                                 </FormGroup>
                             </FormGroup>

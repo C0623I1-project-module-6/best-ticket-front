@@ -14,7 +14,6 @@ import {logoutUser, selectUserLogin, selectUserLogout, selectUserRole} from "../
 import avatar from "../../assets/img/User.png"
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
-import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
 
 
 const UserHeader = () => {
@@ -28,7 +27,6 @@ const UserHeader = () => {
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
-    const userExists = useSelector(selectExistsUsers)
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -51,11 +49,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    // useEffect(() => {
-    //     if (userRole !== null && userRole.includes(ADMIN)) {
-    //         navigate("/admin");
-    //     }
-    // }, [userRole]);
+    useEffect(() => {
+        if (userRole !== null && userRole.includes(ADMIN)) {
+            navigate("/admin");
+        }
+    }, [userRole]);
 
 
     const loginButton = () => {
@@ -86,10 +84,7 @@ const UserHeader = () => {
                             </div>
                             <div className="flex space-x-2 border-2  items-center justify-start w-full
                                       cursor-pointer" onClick={() => {
-                                dispatch(getExistsUsers())
-                                if (userExists !== null) {
-                                    navigate("/profile")
-                                }
+                                navigate("/profile")
                             }}>
                                 <div className="w-[20px]">
                                     <FaCog/>
@@ -97,13 +92,10 @@ const UserHeader = () => {
                                 <div>Edit Profile</div>
                             </div>
                             <div className="flex space-x-2 border-2 items-center justify-start w-full
-                                     cursor-pointer
-                                    " onClick={() => {
-                                dispatch(getExistsUsers())
-                                if (userExists !== null) {
-                                    navigate("/my-event/legal")
-                                }
-                            }}>
+                                     cursor-pointer"
+                                 onClick={() => {
+                                     navigate("/my-event/legal")
+                                 }}>
                                 <div className="w-[20px]">
                                     <FaUser/>
                                 </div>
