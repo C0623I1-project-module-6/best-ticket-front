@@ -1,18 +1,29 @@
 import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {registerUser} from "../../features/user/UserSlice.js";
+import {
+    registerUser,
+    selectRegisterError,
+    selectRegisterSuccess,
+    selectUserRegister
+} from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
-import {selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
+import {selectCustomerPhoneNumbers, selectEmails, selectUsernames} from "../../features/user/ExistsSlice.js";
 import {FastField, Form, Formik} from "formik";
 import InputRegister from "../../ultility/customField/InputRegister.jsx";
 import {FormGroup} from "reactstrap";
 import * as Yup from "yup";
+import {useEffect} from "react";
 
 function Register() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userExistsList = useSelector(selectExistsUsers);
+    const usernames = useSelector(selectUsernames);
+    const emails = useSelector(selectEmails);
+    const phoneNumbers = useSelector(selectCustomerPhoneNumbers);
+    const success = useSelector(selectRegisterSuccess);
+    const error = useSelector(selectRegisterError);
+    const register = useSelector(selectUserRegister);
     const regexPassword = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
     const regexPhoneNumber = /^0\d{9}$/;
     const toastOptions = {
@@ -33,15 +44,7 @@ function Register() {
         password: "",
         confirmPassword: "",
     }
-    const usernames = userExistsList
-        .filter(user => user.username)
-        .map(user => user.username);
-    const emails = userExistsList
-        .filter(user => user.userEmail)
-        .map(user => user.userEmail);
-    const phoneNumbers = userExistsList
-        .filter(user => user.customerPhoneNumber)
-        .map(user => user.customerPhoneNumber);
+
     const validationRegisterSchema = Yup.object().shape({
         username: Yup.string()
             .test("unique", "Username already exists.", value => {
@@ -56,6 +59,9 @@ function Register() {
             .required("This field is required."),
         phoneNumber: Yup.string()
             .test("unique", "Phone number already exists.", value => {
+                if (value === null) {
+                    return true;
+                }
                 return !phoneNumbers.includes(value)
             })
             .matches(regexPhoneNumber, "Invalid phone number! Start from 0 and has 10 numbers.")
@@ -68,18 +74,27 @@ function Register() {
             .matches(regexPassword, "6-character password consisting of letters and numbers")
             .required("This field is required."),
     })
-    const handleSubmit = (values) => {
-        dispatch(registerUser(values))
-        toast.success("🦄 Đăng ký thành công", toastOptions);
-        navigate("/login");
-    };
 
-
+    useEffect(() => {
+        if (success) {
+            toast.success("🦄 Đăng ký thành công", toastOptions);
+            navigate("/login");
+        }
+    }, [success]);
+    useEffect(() => {
+        if (error) {
+            toast.success("🦄 Đăng ký thất bại!", toastOptions);
+        }
+    }, [error]);
+    console.log(success)
+    console.log(error)
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={validationRegisterSchema}
-            onSubmit={handleSubmit}>
+            onSubmit={values => {
+                dispatch(registerUser(values));
+            }}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 return (

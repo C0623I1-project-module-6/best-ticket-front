@@ -10,7 +10,9 @@ import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js"
 import Chart from 'chart.js/auto';
 import {FaCheck, FaRegQuestionCircle} from "react-icons/fa";
 import {HiMiniXMark} from "react-icons/hi2";
+
 import {getAllBookingsByEventIdNoPaged, selectAllBookingsByEventIdNoPaged} from "../../features/BookingSlice.js";
+
 
 const BookingManagerEventSummarize = () => {
         const dispatch = useDispatch();

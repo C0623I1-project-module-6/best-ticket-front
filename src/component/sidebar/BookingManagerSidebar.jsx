@@ -7,7 +7,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {logoutUser, selectUserLogin, selectUserLogout} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import avatar from "../../assets/img/User.png";
-import {getExistsUsers, selectExistsUsers} from "../../features/user/ExistsUserSlice.js";
+import {getExistsUsers, selectExistsList} from "../../features/user/ExistsSlice.js";
 import {Avatar, Popover, PopoverContent, PopoverHandler} from "@material-tailwind/react";
 import {FaSignOutAlt} from "react-icons/fa";
 import {Bounce, toast} from "react-toastify";
@@ -20,7 +20,7 @@ const BookingManagerSidebar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(selectUserLogin);
-    const userExists = useSelector(selectExistsUsers)
+    const userExists = useSelector(selectExistsList)
     const userLogout = useSelector(selectUserLogout);
     const pathName = location.pathname;
 

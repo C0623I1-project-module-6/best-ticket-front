@@ -1,4 +1,4 @@
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import {sendOtpWithEmail} from "../../features/user/UserSlice.js";
@@ -7,6 +7,7 @@ import {FastField, Form, Formik} from "formik";
 import {FormGroup} from "reactstrap";
 import AuthHeader from "../header/AuthHeader.jsx";
 import InputRegister from "../../ultility/customField/InputRegister.jsx";
+import {selectEmails} from "../../features/user/ExistsSlice.js";
 
 const toastOptions = {
     position: "top-right",
@@ -19,14 +20,18 @@ const toastOptions = {
     theme: "light",
     transition: Bounce,
 };
-export default function SendOtpUnlock() {
+export default function SendCodeValidationUnlock() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const emails = useSelector(selectEmails);
     const initialValues = {
         email: "",
     }
     const validationSendOtpSchema = Yup.object().shape({
         email: Yup.string()
+            .test("not exists ", "Email not exists", value => {
+                return emails.includes(value)
+            })
             .email("Invalid email! Please add @.")
             .required("This field is required.")
     })

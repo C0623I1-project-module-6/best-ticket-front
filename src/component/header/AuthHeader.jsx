@@ -25,9 +25,7 @@ function AuthHeader(props) {
             document.documentElement.classList.remove('dark')
         }
     }, [theme]);
-    useEffect(() => {
 
-    }, []);
 
     const loginGoogle = (res) => {
         dispatch(loginWithGoogle(res))
