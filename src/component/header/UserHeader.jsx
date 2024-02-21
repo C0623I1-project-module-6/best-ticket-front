@@ -77,7 +77,9 @@ const UserHeader = () => {
                     <PopoverContent className="w-48 p-1">
                         <div className="flex-col w-full gap-3">
                             <div className="flex-col bg-blue-gray-50 text-center items-center justify-items-center justify-center  w-full
-                                      border-2 cursor-pointer">
+                                      border-2 cursor-pointer" onClick={() => {
+                                navigate("/user-profile")
+                            }}>
                                 <div>Hello</div>
                                 <div
                                     className="font-bold text-xl">{user.fullName !== null ? user.fullName : user.username}</div>

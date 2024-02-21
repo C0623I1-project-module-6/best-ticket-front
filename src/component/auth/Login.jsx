@@ -1,7 +1,13 @@
 import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {useEffect} from "react";
-import {loginUser, selectLoginError, selectLoginSuccess, selectUserLogin} from "../../features/user/UserSlice.js";
+import {
+    loginUser,
+    selectIsLocked,
+    selectLoginError,
+    selectLoginSuccess,
+    selectUserLogin
+} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
@@ -13,7 +19,8 @@ function Login() {
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
-    const userExists = useSelector(selectExistsUsers)
+    const userExists = useSelector(selectExistsUsers);
+    const isLocked = useSelector(selectIsLocked)
     const toastOptions = {
         position: "top-right",
         autoClose: 2000,
@@ -117,7 +124,14 @@ function Login() {
                     <div className="w-full flex justify-between text-sm">
                         <span
                             className="cursor-pointer text-blue-500 hover:text-gray-500 font-bold"
-                        onClick={()=>{navigate("/send-otp")}}>Forgot password ?</span>
+                            onClick={() => {
+                                navigate("/send-otp")
+                            }}>Forgot password ?</span>
+                        <span
+                            className="cursor-pointer text-sm text-blue-500 hover:text-gray-500 font-bold"
+                            onClick={() => {
+                                navigate("/user-recovery")
+                            }}>Recover account ?</span>
                         <div className="flex">
                             <span className="mx-2 font-bold">
                                 Don't have account ?
