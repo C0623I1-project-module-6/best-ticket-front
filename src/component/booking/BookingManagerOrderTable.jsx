@@ -144,9 +144,6 @@ const BookingManagerOrderTable = () => {
                 console.log(error.text);
                 window.alert("Email sent failed!");
             });
-        setSelectAllChecked(false);
-        setCheckboxesChecked([]);
-        setEmailList([]);
     };
 
     let totalAmount = 0;
@@ -229,14 +226,14 @@ const BookingManagerOrderTable = () => {
                         }
                         totalAmount += booking.totalAmount;
                         return <tr key={booking.id} className="border border-black border-x-0">
-                            <th className="px-4 py-2 text-left border-b border-black">
+                            <td className="px-4 py-2 text-left border-b border-black">
                                 <input
                                     type="checkbox"
                                     className="bg-white"
                                     checked={checkboxesChecked.includes(booking.id)}
                                     onChange={() => toggleCheckbox(booking.id)}
                                 />
-                            </th>
+                            </td>
                             <td>
                                 {booking.status === "INACTIVE" ?
                                     <GiCancel className="mx-auto" color={"red"}/> : booking.status === "PENDING" ?
@@ -367,11 +364,6 @@ const BookingManagerOrderTable = () => {
                                                         className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                         placeholder="Nhập nội dung..."
                                                     ></textarea>
-                                                </div>
-                                                <div>
-                                                    <button type="submit" className="border border-black">
-                                                        Submit
-                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
