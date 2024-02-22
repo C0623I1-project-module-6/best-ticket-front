@@ -91,7 +91,6 @@ export const fetchGetUser = createAsyncThunk(
     async (userId, {rejectWithValue}) => {
         const response = await getUser(userId);
         if (response.status !== 200) {
-            console.log(response)
             return rejectWithValue(response.data.message);
         }
         return response.data;

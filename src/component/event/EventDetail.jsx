@@ -10,7 +10,7 @@ import {IoIosArrowForward, IoMdMail} from "react-icons/io";
 import {IoTicket} from "react-icons/io5";
 import {getTicketTypes, selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
 import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
-import {selectUserLogin} from "../../features/user/UserSlice.js";
+import {fetchGetUser, selectUserLogin} from "../../features/user/UserSlice.js";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 
 const EventDetail = () => {
@@ -39,6 +39,7 @@ const EventDetail = () => {
         showEventById(eventId);
         showTicketType();
         showTimeByEventId(eventId);
+        dispatch(fetchGetUser(user.id));
     }, []);
     return (
         <>

@@ -2,7 +2,7 @@ import img from "../../assets/img/cover-event.jpg"
 import {FaFacebookF} from "react-icons/fa";
 import {CiCalendarDate} from "react-icons/ci";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUserEdit} from "../../features/user/UserSlice.js";
+import {selectUserEdit, selectUserLogin} from "../../features/user/UserSlice.js";
 import {selectInfoUser} from "../../features/UserFormInTicketBookingSlice.js";
 import {createBookingForTicket, selectBookingCreate} from "../../features/BookingSlice.js";
 import {useEffect, useState} from "react";
@@ -10,17 +10,14 @@ import {selectEventById} from "../../features/EventSlice.js";
 import {selectShowTimeByEventId} from "../../features/TimeSlice.js";
 import {useParams} from "react-router-dom";
 import Ticket from "./Ticket.jsx";
-import * as emailjs from "@emailjs/browser";
-import ReactDOMServer from "react-dom/server";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
-import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
 export const TicketBookingStep3 = () => {
     const dispatch = useDispatch();
     const param = useParams();
     const seatTickets = useSelector(state => state.seat)
     const userEdit = useSelector(selectUserEdit);
-    const infoUser = useSelector(selectInfoUser);
+    const infoUserInput = useSelector(selectInfoUser);
     const event = useSelector(selectEventById);
     const times = useSelector(selectShowTimeByEventId);
     const bookingCreate = useSelector(selectBookingCreate)
@@ -29,11 +26,13 @@ export const TicketBookingStep3 = () => {
     const ticketCodeList = seatTickets.ticketCode.join(", ");
     const seatPriceList = seatTickets.price.join(", ");
     const [dataSendMail, setDataSendMail] = useState({});
+    console.log(userEdit)
+    console.log(infoUserInput)
 
     const bookings = {
-        infoUser: infoUser,
+        infoUserInput: infoUserInput,
         seatTickets: seatTickets,
-        userEdit: userEdit
+        infoUser: userEdit
     }
     useEffect(() => {
         dispatch(createBookingForTicket(bookings))
@@ -44,11 +43,11 @@ export const TicketBookingStep3 = () => {
             const newDataSendMail = {
                 bookingId: bookingCreate.data.id,
                 eventName: event.name,
-                time: useFormatDateFull(selectedTime.time) ,
-                nameUser: infoUser.name,
-                emailUser: infoUser.email,
+                time: useFormatDateFull(selectedTime.time),
+                nameUser: infoUserInput.name,
+                emailUser: infoUserInput.email,
                 timeBooking: useFormatDateFull(bookingCreate.data.createdAt),
-                paymentMethod: infoUser.paymentMethod,
+                paymentMethod: infoUserInput.paymentMethod,
                 seat: seatList,
                 price: seatPriceList,
                 totalPrice: seatTickets.totalPrice,
@@ -81,7 +80,7 @@ export const TicketBookingStep3 = () => {
 
                 </div>
 
-                { (dataSendMail && <Ticket dataSendMail={dataSendMail}/>)}
+                {(dataSendMail && <Ticket dataSendMail={dataSendMail}/>)}
             </div>
         </>
     )

@@ -2,6 +2,7 @@ import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {useEffect} from "react";
 import {
+    fetchGetUser,
     loginUser,
     selectIsLocked,
     selectLoginError,

@@ -44,9 +44,7 @@ export default function CustomerProfile() {
         theme: "light",
         transition: Bounce,
     };
-    useEffect(() => {
-        dispatch(fetchGetUser(user.id));
-    }, []);
+
     return (
         <>
             {

@@ -9,7 +9,7 @@ import {selectEventById} from "../../features/EventSlice.js";
 import {selectShowTimeByEventId} from "../../features/TimeSlice.js";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 import {useParams} from "react-router-dom";
-import {selectUserLogin} from "../../features/user/UserSlice.js";
+import {selectUserEdit} from "../../features/user/UserSlice.js";
 
 
 function TicketBooking() {
@@ -17,8 +17,8 @@ function TicketBooking() {
     const event = useSelector(selectEventById);
     const times = useSelector(selectShowTimeByEventId);
     const param = useParams().param;
-    const user = useSelector(selectUserLogin);
-    console.log(user.id)
+    const userEdit = useSelector(selectUserEdit);
+    console.log(userEdit);
     const [current, setCurrent] = useState(0);
     const callBackFunction = (data) => {
         setCurrent(data)

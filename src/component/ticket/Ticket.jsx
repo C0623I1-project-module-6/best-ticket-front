@@ -1,7 +1,7 @@
 import {CiClock2, CiLocationOn} from "react-icons/ci";
 import React, {useEffect, useState} from "react";
 import JsBarcode from "jsbarcode";
-import ReactPDF, {Document, Page, Text} from "@react-pdf/renderer";
+import {Document, Page, Text} from "@react-pdf/renderer";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
@@ -47,7 +47,7 @@ const Ticket = (props) => {
 
                             </div>
                             <div className="w-6/12 px-5 ">
-                                <div className=''>
+                                <div>
                                     <p>{props.dataSendMail.eventName}</p>
                                     <p className="flex items-center"><CiClock2
                                         className="mr-2"/>Time: {props.dataSendMail.time}</p>
@@ -77,9 +77,9 @@ const Ticket = (props) => {
 
                         </div>
                     </Text>
-                    <Text render={({ pageNumber, totalPages }) => (
+                    <Text render={({pageNumber, totalPages}) => (
                         `${pageNumber} / ${totalPages}`
-                    )} fixed />
+                    )} fixed/>
                 </Page>
             </Document>
         </>

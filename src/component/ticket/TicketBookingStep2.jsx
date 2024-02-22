@@ -24,7 +24,7 @@ export const TicketBookingStep2 = (props) => {
         setSelectedOption(event.target.value);
     };
 
-    const [timeLeft, setTimeLeft] = useState(20);
+    const [timeLeft, setTimeLeft] = useState(1000);
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft(prevTime => {
@@ -49,7 +49,6 @@ export const TicketBookingStep2 = (props) => {
     const seconds = `0${timeLeft % 60}`.slice(-2);
 
     localStorage.setItem("userId", user.id);
-    console.log()
     const handleClick = async () => {
         try {
             await updateStatusFail(seatTickets.seats);
