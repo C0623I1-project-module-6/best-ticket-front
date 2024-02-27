@@ -2,11 +2,12 @@ import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {useEffect} from "react";
 import {
+    fetchGetUser,
     loginUser,
-    selectIsLocked,
     selectLoginError,
     selectLoginSuccess,
-    selectUserLogin
+    selectUserLogin,
+    setLoginSuccess
 } from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import {Bounce, toast} from "react-toastify";
@@ -18,8 +19,6 @@ function Login() {
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
-    const userLocked = useSelector(selectIsLocked);
-    console.log(userLocked);
     const toastOptions = {
         position: "top-right",
         autoClose: 2000,
@@ -46,14 +45,21 @@ function Login() {
         if (loginSuccess && user && user.token) {
             toast.success("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             dispatch(getOrganizerByUserId(user.id));
-            navigate('/')
+            dispatch(fetchGetUser(user.id));
+            navigate("/");
         }
-    }, [user]);
+        return () => {
+            dispatch(setLoginSuccess());
+        };
+    }, [loginSuccess,user]);
 
     useEffect(() => {
         if (loginError) {
             toast.error("🦄 Xác thực không thành công. Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!", toastOptions)
         }
+        return () => {
+            dispatch(setLoginSuccess());
+        };
     }, [loginError]);
 
     return (

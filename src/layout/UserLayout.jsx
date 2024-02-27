@@ -4,7 +4,7 @@ import {useEffect} from "react";
 import {reLoginWithToken, selectUserLogin} from "../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 
-import {getExistsUsers, selectExistsList} from "../features/user/ExistsSlice.js";
+import {getExistsUsers, selectExistsList, setExistsList} from "../features/user/ExistsSlice.js";
 
 
 
@@ -18,7 +18,7 @@ const UserLayout = ({children}) => {
     }, []);
 
     useEffect(() => {
-        dispatch(getExistsUsers());
+        dispatch(getExistsUsers())
     }, []);
     console.log(existsList)
     return (

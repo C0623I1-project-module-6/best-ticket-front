@@ -4,7 +4,11 @@ import {FormGroup} from "reactstrap";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import * as Yup from "yup";
-import {registerOrganizerProfile} from "../../../features/user/OrganizerSlice.js";
+import {
+    registerOrganizerProfile,
+    setRegisterOrganizerError,
+    setRegisterOrganizerSuccess
+} from "../../../features/user/OrganizerSlice.js";
 import {toast} from "react-toastify";
 import {Button} from "@material-tailwind/react";
 import {
@@ -63,12 +67,15 @@ export default function FormPersonal({toastOptions, phoneRegex, organizerRegiste
     })
 
     useEffect(() => {
-        if (success && organizerRegister) {
+        if (success) {
+            dispatch(setRegisterOrganizerSuccess());
             toast.success("🦄 Đăng ký thông tin thành công!", toastOptions);
+            navigate("/my-event/legal");
         }
-    }, [success, organizerRegister]);
+    }, [success]);
     useEffect(() => {
         if (error) {
+            dispatch(setRegisterOrganizerError());
             toast.error("🦄 Đăng ký thông tin thất bại!", toastOptions)
         }
     }, [error]);

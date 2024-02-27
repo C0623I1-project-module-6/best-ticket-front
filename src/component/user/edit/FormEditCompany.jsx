@@ -1,7 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
-import {editOrganizerProfile} from "../../../features/user/OrganizerSlice.js";
+import {
+    editOrganizerProfile,
+    setEditOrganizerError,
+    setEditOrganizerSuccess
+} from "../../../features/user/OrganizerSlice.js";
 import * as Yup from "yup";
 import {FastField, Form, Formik} from "formik";
 import {FormGroup, Label} from "reactstrap";
@@ -82,14 +86,16 @@ export default function FormEditCompany({
     };
 
     useEffect(() => {
-        if (success && organizerEdited) {
+        if (success) {
+            dispatch(setEditOrganizerSuccess());
             setIsEditMode(false);
             toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
             navigate("/my-event/legal");
         }
-    }, [success, organizerEdited]);
+    }, [success]);
     useEffect(() => {
         if (error) {
+            dispatch(setEditOrganizerError());
             toast.error("🦄 Cập nhật thông tin thất bại!", toastOptions);
         }
     }, [error]);
