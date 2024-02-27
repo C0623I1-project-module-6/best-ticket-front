@@ -46,7 +46,7 @@ function Login() {
         if (loginSuccess && user && user.token) {
             toast.success("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             dispatch(getOrganizerByUserId(user.id));
-            history.back();
+            navigate('/')
         }
     }, [user]);
 
