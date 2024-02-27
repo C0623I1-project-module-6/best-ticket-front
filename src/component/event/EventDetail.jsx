@@ -39,7 +39,9 @@ const EventDetail = () => {
         showEventById(eventId);
         showTicketType();
         showTimeByEventId(eventId);
-        dispatch(fetchGetUser(user.id));
+        if (user !== null){
+            dispatch(fetchGetUser(user.id));
+        }
     }, []);
     return (
         <>
@@ -106,7 +108,9 @@ const EventDetail = () => {
                                     <div className="w-1/6 flex text-right justify-end items-center" key={index}
                                          onClick={() => {
                                              if (user === null) {
-                                                 navigate("/login")
+                                                 navigate("/login");
+                                             }else {
+                                                 dispatch(fetchGetUser(user.id))
                                              }
                                          }}>
                                         <NavLink to={`${location.pathname}/ticket-booking/${time.id}`}
