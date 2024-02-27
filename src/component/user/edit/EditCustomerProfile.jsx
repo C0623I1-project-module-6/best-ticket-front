@@ -4,7 +4,7 @@ import {
     editCustomerProfile,
     selectCustomerProfileEdited,
     selectEditCustomerProfileError,
-    selectEditCustomerProfileSuccess
+    selectEditCustomerProfileSuccess, setEditCustomerProfileError, setEditCustomerProfileSuccess
 } from "../../../features/user/CustomerSlice.js";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
@@ -24,7 +24,7 @@ function classNames(...classes) {
 
 export default function EditCustomerProfile({
                                                 customer,
-                                                user,
+                                                userEdit,
                                                 phoneNumbers,
                                                 idCards,
                                                 receiptEmails,
@@ -99,13 +99,16 @@ export default function EditCustomerProfile({
         dispatch(logoutUser(userLogout));
     }
     useEffect(() => {
-        if (success && customerEdited) {
+        if (success) {
+            dispatch(setEditCustomerProfileSuccess())
             toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
             setIsEditMode(false);
+            navigate("/profile");
         }
-    }, [success, customerEdited]);
+    }, [success]);
     useEffect(() => {
         if (error) {
+            dispatch(setEditCustomerProfileError())
             toast.error("🦄 Cập nhật thông tin thất bại!", toastOptions);
         }
     }, [error]);
@@ -133,7 +136,7 @@ export default function EditCustomerProfile({
                                                 <FastField
                                                     name="username"
                                                     component={InputProfile}
-                                                    value={user.username}
+                                                    placeholder={userEdit.username}
                                                     label="Username"
                                                     disabled
                                                 />
@@ -143,7 +146,7 @@ export default function EditCustomerProfile({
                                                     type="email"
                                                     name="email"
                                                     component={InputProfile}
-                                                    value={user.email}
+                                                    placeholder={userEdit.email}
                                                     label="Email"
                                                     disabled
                                                 />

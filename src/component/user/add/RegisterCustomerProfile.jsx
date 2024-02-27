@@ -5,7 +5,7 @@ import {
     registerCustomerProfile,
     selectProfileRegister,
     selectRegisterCustomerError,
-    selectRegisterCustomerSuccess
+    selectRegisterCustomerSuccess, setRegisterProfileSuccess
 } from "../../../features/user/CustomerSlice.js";
 import Avatar from "../Avatar.jsx";
 import {FastField, Form, Formik} from "formik";
@@ -19,7 +19,7 @@ import RemoveModal from "../../auth/RemoveModal.jsx";
 import {lockUser, logoutUser, removeUser} from "../../../features/user/UserSlice.js";
 
 function RegisterCustomerProfile({
-                                     user,
+                                     userEdit,
                                      phoneNumbers,
                                      idCards,
                                      receiptEmails,
@@ -31,7 +31,7 @@ function RegisterCustomerProfile({
                                      phoneRegex,
                                      toastOptions,
                                  }) {
-    console.log(user)
+    console.log(userEdit)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const success = useSelector(selectRegisterCustomerSuccess);
@@ -85,12 +85,15 @@ function RegisterCustomerProfile({
         dispatch(logoutUser(userLogout));
     }
     useEffect(() => {
-        if (success && customerRegister) {
+        if (success) {
+            dispatch(setRegisterProfileSuccess())
             toast.success("🦄 Đăng ký thông tin thành công!", toastOptions);
+            navigate("/profile");
         }
-    }, [success, customerRegister]);
+    }, [success]);
     useEffect(() => {
         if (error) {
+            dispatch(setRegisterProfileSuccess())
             toast.error("🦄 Đăng ký thông tin thất bại!", toastOptions);
         }
     }, [error]);
@@ -119,7 +122,7 @@ function RegisterCustomerProfile({
                                                 <FastField
                                                     name="username"
                                                     component={InputProfile}
-                                                    value={user.username}
+                                                    placeholder={userEdit.username}
                                                     label="Username"
                                                     disabled
                                                 />
@@ -128,7 +131,7 @@ function RegisterCustomerProfile({
                                                 <FastField
                                                     name="email"
                                                     component={InputProfile}
-                                                    value={user.email}
+                                                    placeholder={userEdit.email}
                                                     label="Email"
                                                     disabled
                                                 />
