@@ -4,7 +4,7 @@ import {FormGroup} from "reactstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import InputRegister from "../../ultility/customField/InputRegister.jsx";
-import {sendOtpWithEmail} from "../../features/user/UserSlice.js";
+import {sendMailCode} from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 import * as Yup from "yup";
 import {selectEmails} from "../../features/user/ExistsSlice.js";
@@ -37,7 +37,7 @@ export default function SendCodeValidationForgotPassword() {
     })
 
     const handleSubmit = (values) => {
-        dispatch(sendOtpWithEmail(values))
+        dispatch(sendMailCode(values))
         toast.success("🦄 Vui lòng kiểm tra mail để nhận mã otp", toastOptions);
         navigate("/forgot-password")
     }

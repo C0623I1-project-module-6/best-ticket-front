@@ -5,7 +5,7 @@ import {
     registerUser,
     selectRegisterError,
     selectRegisterSuccess,
-    selectUserRegister
+    selectUserRegister, setRegisterSuccess
 } from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 import {selectCustomerPhoneNumbers, selectEmails, selectUsernames} from "../../features/user/ExistsSlice.js";
@@ -77,13 +77,15 @@ function Register() {
 
     useEffect(() => {
         if (success) {
+            dispatch(setRegisterSuccess());
             toast.success("🦄 Đăng ký thành công", toastOptions);
             navigate("/login");
         }
     }, [success]);
     useEffect(() => {
         if (error) {
-            toast.success("🦄 Đăng ký thất bại!", toastOptions);
+            dispatch(setRegisterSuccess());
+            toast.error("🦄 Đăng ký thất bại!", toastOptions);
         }
     }, [error]);
     console.log(success)

@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
-import {sendOtpWithEmail} from "../../features/user/UserSlice.js";
+import {sendMailCode} from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 import {FastField, Form, Formik} from "formik";
 import {FormGroup} from "reactstrap";
@@ -37,7 +37,7 @@ export default function SendCodeValidationUnlock() {
     })
 
     const handleSubmit = (values) => {
-        dispatch(sendOtpWithEmail(values))
+        dispatch(sendMailCode(values))
         toast.success("🦄 Vui lòng kiểm tra mail để nhận mã otp", toastOptions);
         navigate("/unlock")
     }

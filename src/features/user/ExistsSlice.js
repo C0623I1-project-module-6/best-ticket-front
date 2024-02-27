@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 import {fetchExistsUsers} from "../../api/ExistsUserApi.js"
 
 const initialState = {
-    existsList: null,
+    existsList: JSON.parse(localStorage.getItem("existsList")) || null,
     username: null,
     userEmail: null,
     customerPhoneNumber: null,
@@ -40,6 +40,7 @@ export const existsSlice = createSlice({
         builder
             .addCase(getExistsUsers.fulfilled, (state, action) => {
                 state.existsList = action.payload.data;
+                localStorage.setItem("existsList", JSON.stringify(action.payload.data));
             })
     }
 })

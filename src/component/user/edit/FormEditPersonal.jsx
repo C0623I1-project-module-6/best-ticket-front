@@ -7,7 +7,11 @@ import {FastField, Form, Formik} from "formik";
 import {FormGroup, Label} from "reactstrap";
 import InputProfile from "../../../ultility/customField/InputProfile.jsx";
 import {Button} from "@material-tailwind/react";
-import {editOrganizerProfile} from "../../../features/user/OrganizerSlice.js";
+import {
+    editOrganizerProfile,
+    setEditOrganizerError,
+    setEditOrganizerSuccess
+} from "../../../features/user/OrganizerSlice.js";
 import {
     selectPersonEmails,
     selectPersonIdCards,
@@ -87,14 +91,16 @@ export default function FormEditPersonal({
     };
 
     useEffect(() => {
-        if (success && organizerEdited) {
+        if (success) {
+            dispatch(setEditOrganizerSuccess());
             setIsEditMode(false);
             toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
             navigate("/my-event/legal");
         }
-    }, [success, organizerEdited]);
+    }, [success]);
     useEffect(() => {
         if (error) {
+            dispatch(setEditOrganizerError());
             toast.error("🦄 Cập nhật thông tin thất bại!", toastOptions);
         }
     }, []);
