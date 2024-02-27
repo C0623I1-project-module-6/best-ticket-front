@@ -15,6 +15,7 @@ import avatar from "../../assets/img/User.png"
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
 
+import {ADMIN} from "../../ultility/AppConstant.js"
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -49,11 +50,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    useEffect(() => {
-        if (userRole !== null && userRole.includes(ADMIN)) {
-            navigate("/admin");
-        }
-    }, [userRole]);
+    // useEffect(() => {
+    //     if (userRole !== null && userRole.includes(ADMIN)){
+    //         navigate("/admin");
+    //     }
+    // }, [userRole]);
 
 
     const loginButton = () => {
