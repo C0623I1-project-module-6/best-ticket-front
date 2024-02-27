@@ -28,7 +28,7 @@ export default function CreatedEvent() {
     }, [currentPage, organizer, dispatch]);
 
     return (
-        <div>
+        <div className="max-h-screen overflow-y-auto">
             <div className="px-10 py-5">
                 <div className="flex justify-between items-center pb-5">
                     <h1 className=" text-xl font-serif"> SỰ KIỆN CỦA BẠN</h1>
@@ -38,7 +38,7 @@ export default function CreatedEvent() {
                         <p>TẠO SỰ KIỆN </p>
                     </div>
                 </div>
-                <div className="container max-h-96 overflow-y-auto">
+                <div className="container ">
                     {user && organizer && eventByOrganizer ? (
                             eventByOrganizer.map(event => (
                                 <div
