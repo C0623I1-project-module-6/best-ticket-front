@@ -1,15 +1,13 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllBookingsByEventId, selectAllBookingsByEventId,} from '../../features/BookingSlice';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {ImInfo} from "react-icons/im";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
-import {GiCancel} from "react-icons/gi";
-import {FaCheckCircle} from "react-icons/fa";
 import {RiFileExcel2Fill} from "react-icons/ri";
-
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 const BookingManagerTicketTable = () => {
     const dispatch = useDispatch();
@@ -18,32 +16,40 @@ const BookingManagerTicketTable = () => {
     const totalPages = useSelector(state => state.booking.totalPages);
     const [currentPage, setCurrentPage] = useState(1);
     const {formatCurrency} = useFormatCurrency();
-    const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage -1}));
+        dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage - 1}));
     }, [currentPage, dispatch, eventId1]);
 
     const rowsPerPage = 10;
     const startIndex = (currentPage - 1) * rowsPerPage;
-    
+
     return (<>
         <div className="border bg-gray-100 flex my-6">
             <div className="w-1/2 m-5 flex">
-                <div className="mx-1">
-                    <button className="border-0 border-black rounded bg-[#C2DEA3]" onClick={() => {
-                        navigate(`/404`)
-                    }}>
-                        <div className="m-2 flex">
-                            <div className="p-1"><RiFileExcel2Fill /></div>
-                            <div>Tải về file Excel</div>
-                        </div>
-                    </button>
+                <div className="mx-1 border-0 border-black rounded bg-[#C2DEA3]">
+                    <ReactHTMLTableToExcel
+                        id="test-table-xls-button"
+                        table="table-to-xls"
+                        filename="ticket-list"
+                        sheet="tablexls"
+                        className="border-0 border-black rounded bg-[#C2DEA3]"
+                        buttonText={
+                            <>
+                                <div className="flex items-center p-2">
+                                    <div className="">
+                                        <RiFileExcel2Fill/>
+                                    </div>
+                                    <div className="">Tải về file Excel</div>
+                                </div>
+                            </>
+                        }
+                    />
                 </div>
             </div>
         </div>
         <div className="table-container border border-black max-h-96 overflow-y-auto">
-            <table className="w-full text-left border border-black">
+            <table id="table-to-xls" className="w-full text-left border border-black">
                 <thead className="border border-black">
                 <tr className="text-center bg-[#C2DEA3]">
                     <th className="p-2 border border-black">No.</th>
@@ -96,12 +102,14 @@ const BookingManagerTicketTable = () => {
                                             {formatCurrency(booking.totalAmount)}
                                         </td>)}
                                         <td className="border border-black">
-                                        {ticket.status === "UNPAID" || ticket.status === "Fail" || ticket.status === null ?
-                                            <GiCancel className="mx-auto" color={"red"}/> : ticket.status === "PENDING" || ticket.status === "All"?
-                                                <FaCheckCircle className="mx-auto"
-                                                               color={"orange"}/> : ticket.status === "PAID" || ticket.status === "Success"?
-                                                    <FaCheckCircle className="mx-auto" color={"green"}/> : null}
-                                    </td>
+                                            {ticket.status === "UNPAID" || ticket.status === "Fail" || ticket.status === "Canceled" || ticket.status === null ?
+                                                <div className="text-center text-red-500">Thất
+                                                    bại</div> : ticket.status === "PENDING" || ticket.status === "Pending" || ticket.status === "All" ?
+                                                    <div className="text-center text-yellow-800">Đang
+                                                        chờ</div> : ticket.status === "PAID" || ticket.status === "Success" ?
+                                                        <div className="text-center text-green-500">Thành
+                                                            công</div> : null}
+                                        </td>
                                     </tr>);
                                 });
                             }
@@ -122,15 +130,13 @@ const BookingManagerTicketTable = () => {
                     page={currentPage}
                     onChange={(event, value) => setCurrentPage(value)}
                 />
-            </Stack>)
-            }
+            </Stack>)}
         </div>
         <div className="my-2 rounded-l bg-[#F6F6F6] flex">
             <div className="m-auto text-center flex">
                 <div className="my-2"><ImInfo/></div>
                 <div className="my-auto">
-                    Thông tin của khách chọn hình thức giao vé và thu tiền tận nơi sẽ được cập nhật sau khi khách
-                    thanh
+                    Thông tin của khách chọn hình thức giao vé và thu tiền tận nơi sẽ được cập nhật sau khi khách thanh
                     toán xong
                 </div>
             </div>
