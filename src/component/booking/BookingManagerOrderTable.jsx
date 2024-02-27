@@ -27,8 +27,10 @@ const BookingManagerOrderTable = () => {
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
     const [sortBy, setSortBy] = useState('createdAt');
     const [status, setStatus] = useState('createdAt');
+    const [ticketTypeNameOption, setTicketTypeNameOption] = useState('createdAt');
     const {formatCurrency} = useFormatCurrency();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const ticketTypeNameList = [];
 
     useEffect(() => {
         dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage - 1}));
@@ -47,10 +49,31 @@ const BookingManagerOrderTable = () => {
         setStatus(selectedStatus);
     };
 
+    const handleTicketTypeNameOption = (selectedTicketTypeNameOption) => {
+        setTicketTypeNameOption(selectedTicketTypeNameOption);
+    };
+
     let sortedBookings = [];
 
     if (bookings && bookings.content) {
         sortedBookings = [...bookings.content];
+
+        sortedBookings.map((booking) => {
+            if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
+                booking.bookingDetailResponseList.forEach((detail) => {
+                    if (booking.id === detail.bookingId && detail.ticketInBookingDetailResponses && detail.ticketInBookingDetailResponses.length > 0) {
+                        detail.ticketInBookingDetailResponses.forEach((ticket) => {
+                            const ticketTypeName = ticket.ticketTypeName;
+                            if (!ticketTypeNameList.includes(ticketTypeName)) {
+                                ticketTypeNameList.push(ticketTypeName);
+                            }
+                        });
+                    }
+                });
+            }
+        })
+
+        console.log(ticketTypeNameList)
 
         if (sortBy === 'createdAt') {
             sortedBookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -100,7 +123,6 @@ const BookingManagerOrderTable = () => {
             if (selectedBooking) {
                 const selectedEmail = selectedBooking.customer.receiptEmail;
                 setEmailList((prevEmailList) => prevEmailList.filter((email) => email !== selectedEmail));
-                console.log(emailList);
             }
         } else {
             const selectedBooking = sortedBookings.find((booking) => booking.id === checkedBookingId);
@@ -109,7 +131,6 @@ const BookingManagerOrderTable = () => {
                 const selectedEmail = selectedBooking.customer.receiptEmail;
                 if (!emailList.includes(selectedEmail)) {
                     setEmailList((prevEmailList) => [...prevEmailList, selectedEmail]);
-                    console.log(emailList);
                 }
             } else {
                 console.log("Invalid booking ID");
@@ -151,6 +172,18 @@ const BookingManagerOrderTable = () => {
     return (<>
         <div className="border bg-gray-100 flex py-1">
             <div className="w-1/2 m-5 flex">
+                <div>
+                    <select className="bg-white border rounded border-black mx-1" value={ticketTypeNameOption}
+                            onChange={(e) => handleTicketTypeNameOption(e.target.value)}>
+                        {bookings === null || bookings === "" || bookings === undefined ? (
+                            <option disabled></option>
+                        ) : (
+                            ticketTypeNameList.map((ticketTypeName) => (
+                                <option key={ticketTypeName} value={ticketTypeName}>{ticketTypeName}</option>
+                            ))
+                        )}
+                    </select>
+                </div>
                 <div>
                     <select className="bg-white border rounded border-black mx-1" value={sortBy}
                             onChange={(e) => handleSortChange(e.target.value)}>
@@ -248,8 +281,12 @@ const BookingManagerOrderTable = () => {
                                 <br/>
                                 {booking.customer.phoneNumber}
                                 <br/>
-                                {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
-                                Ordered at {useFormatDate(booking.createdAt)}
+                                <div className="flex">
+                                    <div>Đã đặt vào lúc</div>
+                                    &nbsp;
+                                    {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
+                                    <div className="font-bold">{useFormatDate(booking.createdAt)}</div>
+                                </div>
                             </td>
                             <td className="py-2 border-x-0 text-center">
                                 {Object.keys(ticketCounts).length > 0 ? Object.keys(ticketCounts).map((ticketType, index) => (
