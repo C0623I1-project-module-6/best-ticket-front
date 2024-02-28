@@ -330,6 +330,7 @@ export const userSlice = createSlice(
                     state.value = action.payload.data;
                     state.logoutError = false;
                     localStorage.removeItem("token");
+                    localStorage.removeItem("user");
                 })
 
                 .addCase(fetchGetUser.fulfilled, (state, action) => {
