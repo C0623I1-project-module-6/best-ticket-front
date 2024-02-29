@@ -30,7 +30,6 @@ const BookingManagerSidebar = () => {
     const isLogin = useSelector(state => state.user.isLogin)
     const pathName = location.pathname;
 
-
     const logout = () => {
         dispatch(logoutUser(userLogout));
         dispatch(setLoginSuccess())
@@ -102,7 +101,7 @@ const BookingManagerSidebar = () => {
                                     </div>
                                 </div>
                                 <div className="w-1/2 text-right justify-right mx-3 my-5 mr-8">
-                                    <Popover placement="bottom-end" dismiss={true}>
+                                    <Popover placement="bottom-end" dismiss={{}}>
                                         <PopoverHandler>
                                             <button className="ml-28 flex">
                                                 <div className="pr-2 py-1 text-xl">{user.username}</div>

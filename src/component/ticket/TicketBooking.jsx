@@ -14,7 +14,6 @@ function TicketBooking() {
         setCurrent(data)
     }
 
-
     return (
         <div className="w-full bg-[#F1F1F1] overflow-y-auto">
             <div className=" bg-gradient-to-r from-blue-gray-400 via-brown-300 to-blue-400 text-white">

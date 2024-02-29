@@ -95,13 +95,13 @@ const BookingManagerPromotion = () => {
                     <div className="my-5 text-xl">Xem các dịch vụ hỗ trợ marketing</div>
                     <div className="flex pb-10">
                         <button className="border-0 border-black rounded bg-[#C2DEA3] flex" onClick={() => {
-                            navigate(`/404`)
+                            navigate(`${eventId}/promote/download-service-list/vi`)
                         }}>
                             <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
                             <div className="m-2 text-xl">Tiếng Việt</div>
                         </button>
                         <button className="border-0 border-black rounded bg-[#C2DEA3] mx-2 flex" onClick={() => {
-                            navigate(`/404`)
+                            navigate(`${eventId}/promote/download-service-list/en`)
                         }}>
                             <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
                             <div className="m-2 text-xl">English</div>
