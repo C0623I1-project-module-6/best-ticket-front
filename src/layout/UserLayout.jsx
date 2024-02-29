@@ -1,15 +1,15 @@
 import UserHeader from "../component/header/UserHeader.jsx";
-
-import {useContext, useEffect} from "react";
+import {useEffect} from "react";
 
 import {reLoginWithToken} from "../features/user/UserSlice.js";
-import {useDispatch} from "react-redux";
-import {getExistsUsers} from "../features/user/ExistsSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+
+import {getExistsUsers, selectExistsList} from "../features/user/ExistsSlice.js";
 
 
 const UserLayout = ({children}) => {
     const dispatch = useDispatch();
-
+    const existsList = useSelector(selectExistsList);
     useEffect(() => {
         if (localStorage.getItem("token") !== null) {
             dispatch(reLoginWithToken())
@@ -17,9 +17,9 @@ const UserLayout = ({children}) => {
     }, []);
 
     useEffect(() => {
-        dispatch(getExistsUsers());
+        dispatch(getExistsUsers())
     }, []);
-
+    console.log(existsList)
     return (
         <>
             <div className=" relative item-center h-screen max-h-full bg-[#ece8f3]

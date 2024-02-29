@@ -3,7 +3,11 @@ import InputProfile from "../../../ultility/customField/InputProfile.jsx";
 import {FormGroup} from "reactstrap";
 import {Button} from "@material-tailwind/react";
 import * as Yup from "yup";
-import {registerOrganizerProfile} from "../../../features/user/OrganizerSlice.js";
+import {
+    registerOrganizerProfile,
+    setRegisterOrganizerError,
+    setRegisterOrganizerSuccess
+} from "../../../features/user/OrganizerSlice.js";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
@@ -14,6 +18,7 @@ import {
     selectCompanyPhones
 } from "../../../features/user/ExistsSlice.js";
 import {useEffect} from "react";
+import {setRegisterSuccess} from "../../../features/user/UserSlice.js";
 
 
 export default function FormCompany({toastOptions, phoneRegex, organizerRegister, success, error}) {
@@ -60,12 +65,15 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
     })
 
     useEffect(() => {
-        if (success && organizerRegister) {
+        if (success) {
+            dispatch(setRegisterOrganizerSuccess());
             toast.success("🦄 Đăng ký thông tin thành công!", toastOptions)
+            navigate("/my-event/legal")
         }
     }, [success, organizerRegister]);
     useEffect(() => {
         if (error) {
+            dispatch(setRegisterOrganizerError());
             toast.error("🦄 Đăng ký thông tin thất bại!", toastOptions)
         }
     }, [error]);

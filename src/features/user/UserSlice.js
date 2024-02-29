@@ -12,7 +12,6 @@ import {
     sendOtp,
     unlock
 } from "../../api/UserApi.js";
-import {Bounce} from "react-toastify";
 
 
 const initialState = {
@@ -22,23 +21,23 @@ const initialState = {
     loginError: false,
     loginSuccess: false,
     registerSuccess: false,
-    registerError: null,
+    registerError: false,
     logoutSuccess: false,
     logoutError: null,
     listRole: null,
     isLogin: false,
     isAdmin: false,
-    userEdit: null,
-    sendOtpSuccess: false,
-    sendOtpError: null,
+    userEdit: JSON.parse(localStorage.getItem("user")) || null,
+    sendMailCodeSuccess: false,
+    sendMailCodeError: false,
     forgotPasswordSuccess: false,
-    forgotPasswordError: null,
+    forgotPasswordError: false,
     lockUserSuccess: false,
-    lockUserError: null,
+    lockUserError: false,
     unlockUserSuccess: false,
-    unlockUserError: null,
+    unlockUserError: false,
     removeUserSuccess: false,
-    removeUserError: null,
+    removeUserError: false,
     isAuthenticated: false,
     isLocked: null,
 };
@@ -107,7 +106,7 @@ export const registerUser = createAsyncThunk(
         return response.data;
     }
 );
-export const sendOtpWithEmail = createAsyncThunk(
+export const sendMailCode = createAsyncThunk(
     "send-otp",
     async (otpData, {rejectWithValue}) => {
         const response = await sendOtp(otpData);
@@ -157,17 +156,6 @@ export const unlockUser = createAsyncThunk(
         return response.data
     }
 );
-const toastOptions = {
-    position: "top-right",
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    transition: Bounce,
-};
 
 
 export const userSlice = createSlice(
@@ -202,11 +190,11 @@ export const userSlice = createSlice(
             setUserEdit: (state, action) => {
                 state.userEdit = action.payload;
             },
-            setSendOtpSuccess: (state, action) => {
-                state.sendOtpSuccess = action.payload;
+            setSendMailCodeSuccess: (state, action) => {
+                state.sendMailCodeSuccess = action.payload;
             },
-            setSendOtpError: (state, action) => {
-                state.sendOtpError = action.payload;
+            setSendMailCodeError: (state, action) => {
+                state.sendMailCodeError = action.payload;
             },
             setForgotPasswordSuccess: (state, action) => {
                 state.forgotPasswordSuccess = action.payload;
@@ -345,23 +333,24 @@ export const userSlice = createSlice(
 
                 .addCase(fetchGetUser.fulfilled, (state, action) => {
                     state.userEdit = action.payload.data;
+                    localStorage.setItem("user", JSON.stringify(action.payload.data));
                 })
 
-                .addCase(sendOtpWithEmail.pending, (state) => {
-                    state.sendOtpSuccess = false;
+                .addCase(sendMailCode.pending, (state) => {
+                    state.sendMailCodeSuccess = false;
                     state.loading = true;
-                    state.sendOtpError = false;
+                    state.sendMailCodeError = false;
                 })
-                .addCase(sendOtpWithEmail.rejected, (state, action) => {
-                    state.sendOtpSuccess = false;
+                .addCase(sendMailCode.rejected, (state, action) => {
+                    state.sendMailCodeSuccess = false;
                     state.loading = false;
-                    state.sendOtpError = true;
+                    state.sendMailCodeError = true;
                 })
-                .addCase(sendOtpWithEmail.fulfilled, (state, action) => {
-                    state.sendOtpSuccess = true;
+                .addCase(sendMailCode.fulfilled, (state, action) => {
+                    state.sendMailCodeSuccess = true;
                     state.loading = false;
                     state.value = action.payload.data;
-                    state.sendOtpError = false;
+                    state.sendMailCodeError = false;
                 })
 
                 .addCase(forgotPasswordUser.pending, (state) => {
@@ -445,8 +434,8 @@ export const {
     setLogoutError,
     setValue,
     setUserEdit,
-    setSendOtpSuccess,
-    setSendOtpError,
+    setSendMailCodeSuccess,
+    setSendMailCodeError,
     setForgotPasswordError,
     setForgotPasswordSuccess,
     setLockUserSuccess,
@@ -471,8 +460,8 @@ export const selectUserLogout = (state) => state.user.value;
 export const selectUserRole = (state) => state.user.listRole;
 export const selectIsAdmin = (state) => state.user.isAdmin;
 export const selectIsLogin = (state) => state.user.isLogin;
-export const selectSendOtpSuccess = (state) => state.user.sendOtpSuccess;
-export const selectSendOtpError = (state) => state.user.sendOtpSuccess;
+export const selectSendMailCodeSuccess = (state) => state.user.sendMailCodeSuccess;
+export const selectSendMailCodeError = (state) => state.user.sendMailCodeSuccess;
 export const selectLockUser = (state) => state.user.value;
 export const selectRemoveUser = (state) => state.user.value;
 export const selectIsLocked = (state) => state.user.isLocked;

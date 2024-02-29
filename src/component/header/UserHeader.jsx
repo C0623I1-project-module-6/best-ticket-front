@@ -15,6 +15,8 @@ import avatar from "../../assets/img/User.png"
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
 
+import {ADMIN} from "../../ultility/AppConstant.js"
+
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
@@ -24,8 +26,8 @@ const UserHeader = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userLogout = useSelector(selectUserLogout);
     const userRole = useSelector(selectUserRole);
-    const isLogin = useSelector(state => state.user.isLogin);
-    const organizer = useSelector(state => state.organizer.value);
+    const isLogin = useSelector(state => state.user.isLogin)
+    const organizer = useSelector(state => state.organizer.value)
 
     useEffect(() => {
         localStorage.setItem("theme", theme);
@@ -49,12 +51,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    // useEffect(() => {
-    //     if (userRole !== null && userRole.includes(ADMIN)){
-    //         navigate("/admin");
-    //     }
-    // }, [userRole]);
-
+    useEffect(() => {
+        if (userRole !== null && userRole.includes(ADMIN)) {
+            navigate("/admin");
+        }
+    }, [userRole]);
 
     const loginButton = () => {
         return (
@@ -70,7 +71,6 @@ const UserHeader = () => {
                             src={user.avatar}
                             className="border border-green-500 shadow-xl shadow-green-900/20 ring-4 ring-green-500/30"
                         />
-
                     </PopoverHandler>
                     <PopoverContent className="w-48 p-1">
                         <div className="flex-col w-full gap-3">

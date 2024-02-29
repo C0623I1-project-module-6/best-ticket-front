@@ -34,87 +34,85 @@ const BookingManagerPromotion = () => {
     //     );
     // };
 
-    return (<>{user ? (<>
-            <div className="w-full bg-white">
-                <div className="w-[80%] mx-[10%] pt-[5%] text-black">
-                    <div className="w-[80%] text-2xl">{event !== null ? event.name : <div>Loading...</div>}</div>
-                    <div className="w-[80%]">{event !== null ? event.duration : <div>Loading...</div>}</div>
-                    <hr className="my-5 border-0.5px border-black"/>
+    return (<>
+        <div className="w-full bg-white">
+            <div className="w-[80%] mx-[10%] pt-[5%] text-black">
+                <div className="w-[80%] text-2xl">{event !== null ? event.name : <div>Loading...</div>}</div>
+                <div className="w-[80%]">{event !== null ? event.duration : <div>Loading...</div>}</div>
+                <hr className="my-5 border-0.5px border-black"/>
+            </div>
+            <div className="w-[80%] mx-[10%] text-black">
+                <div className="flex text-xl">
+                    Link quảng bá:
+                    <a onClick={() => {
+                        navigate(`/event/${eventId}`)
+                    }}
+                       className="">
+                        <button className="text-[#95C897] hover:text-indigo-600">
+                            http://bestticket.com/event/{eventId}
+                        </button>
+                    </a>
                 </div>
-                <div className="w-[80%] mx-[10%] text-black">
-                    <div className="flex text-xl">
-                        Link quảng bá:
-                        <a onClick={() => {
-                            navigate(`/event/${eventId}`)
+                <div className="my-3">
+                    <FacebookShareButton
+                        url={`http://bestticket.com/${eventId}`}
+                        hashtag={"#c06bestticket"}
+                        className="flex w-[50%] justify-center"
+                        style={{
+                            backgroundColor: "#5075AF",
+                            color: "white",
+                            borderRadius: "0.25rem",
+                            padding: "0.75rem 1rem",
+                            fontSize: "1rem",
+                            cursor: "pointer"
                         }}
-                           className="">
-                            <button className="text-[#95C897] hover:text-indigo-600">
-                                http://bestticket.com/event/{eventId}
-                            </button>
-                        </a>
-                    </div>
-                    <div className="my-3">
-                        <FacebookShareButton
-                            url={`http://bestticket.com/${eventId}`}
-                            hashtag={"#c06bestticket"}
-                            className="flex w-[50%] justify-center"
-                            style={{
-                                backgroundColor: "#5075AF",
-                                color: "white",
-                                borderRadius: "0.25rem",
-                                padding: "0.75rem 1rem",
-                                fontSize: "1rem",
-                                cursor: "pointer"
-                            }}
-                        >
-                            <FacebookIcon size={30} round/>
-                            <span className="ml-2 text-xl">Chia sẻ lên Facebook</span>
-                        </FacebookShareButton>
-                    </div>
-                    <hr className="my-5 border-0.5px border-black"/>
+                    >
+                        <FacebookIcon size={30} round/>
+                        <span className="ml-2 text-xl">Chia sẻ lên Facebook</span>
+                    </FacebookShareButton>
                 </div>
-                {/*<div className="w-[80%] mx-[10%] text-black">*/}
-                {/*    <div> Chia sẻ lên website, blog</div>*/}
-                {/*    <div>Sao chép đoạn mã dưới đây để tạo widget bán vé trên website hoặc blog của bạn</div>*/}
-                {/*</div>*/}
-                <div className="w-[80%] mx-[10%] text-black">
+                <hr className="my-5 border-0.5px border-black"/>
+            </div>
+            {/*<div className="w-[80%] mx-[10%] text-black">*/}
+            {/*    <div> Chia sẻ lên website, blog</div>*/}
+            {/*    <div>Sao chép đoạn mã dưới đây để tạo widget bán vé trên website hoặc blog của bạn</div>*/}
+            {/*</div>*/}
+            <div className="w-[80%] mx-[10%] text-black">
+                <div>
+                    <div className="my-3 text-xl">
+                        Quảng bá sự kiện cùng Best Ticket
+                    </div>
                     <div>
-                        <div className="my-3 text-xl">
-                            Quảng bá sự kiện cùng Best Ticket
+                        <div className="flex">
+                            <div className="py-1"><FaArrowRight/></div>
+                            <div>Là sự kiện nóng trên ngay trang chủ</div>
                         </div>
-                        <div>
-                            <div className="flex">
-                                <div className="py-1"><FaArrowRight/></div>
-                                <div>Là sự kiện nóng trên ngay trang chủ</div>
-                            </div>
-                            <div className="flex">
-                                <div className="py-1"><FaArrowRight/></div>
-                                <div>Gửi email marketing cho các khách hàng tiềm năng</div>
-                            </div>
+                        <div className="flex">
+                            <div className="py-1"><FaArrowRight/></div>
+                            <div>Gửi email marketing cho các khách hàng tiềm năng</div>
                         </div>
-                        <div className="my-5 text-xl">Xem các dịch vụ hỗ trợ marketing</div>
-                        <div className="flex pb-10">
-                            <button className="border-0 border-black rounded bg-[#C2DEA3] flex" onClick={() => {
-                                navigate(`/404`)
-                            }}>
-                                <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
-                                <div className="m-2 text-xl">Tiếng Việt</div>
-                            </button>
-                            <button className="border-0 border-black rounded bg-[#C2DEA3] mx-2 flex" onClick={() => {
-                                navigate(`/404`)
-                            }}>
-                                <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
-                                <div className="m-2 text-xl">English</div>
-                            </button>
-                        </div>
+                    </div>
+                    <div className="my-5 text-xl">Xem các dịch vụ hỗ trợ marketing</div>
+                    <div className="flex pb-10">
+                        <button className="border-0 border-black rounded bg-[#C2DEA3] flex" onClick={() => {
+                            navigate(`${eventId}/promote/download-service-list/vi`)
+                        }}>
+                            <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
+                            <div className="m-2 text-xl">Tiếng Việt</div>
+                        </button>
+                        <button className="border-0 border-black rounded bg-[#C2DEA3] mx-2 flex" onClick={() => {
+                            navigate(`${eventId}/promote/download-service-list/en`)
+                        }}>
+                            <div className="my-3 pl-2 text-xl"><FaCloudDownloadAlt/></div>
+                            <div className="m-2 text-xl">English</div>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div>
-                <UserFooter/>
-            </div>
-        </>
-    ) : (navigate(`/my-event/event/${eventId}/RSVPs/bookings`))}
+        </div>
+        <div>
+            <UserFooter/>
+        </div>
     </>)
 };
 

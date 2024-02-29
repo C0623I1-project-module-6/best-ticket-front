@@ -1,13 +1,6 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
-import {
-    fetchGetUser,
-    selectLockUser,
-    selectRemoveUser,
-    selectUserEdit,
-    selectUserLogin,
-    selectUserLogout
-} from "../../features/user/UserSlice.js";
+import {selectLockUser, selectRemoveUser, selectUserEdit, selectUserLogout} from "../../features/user/UserSlice.js";
 import {useEffect, useState} from "react";
 import EditCustomerProfile from "./edit/EditCustomerProfile.jsx";
 import RegisterCustomerProfile from "./add/RegisterCustomerProfile.jsx";
@@ -17,13 +10,11 @@ import {
     selectCustomerReceiptEmails
 } from "../../features/user/ExistsSlice.js";
 import {Bounce} from "react-toastify";
-import {selectEditCustomerProfileError, selectEditCustomerProfileSuccess} from "../../features/user/CustomerSlice.js";
 
 
 export default function CustomerProfile() {
-    const dispatch = useDispatch();
-    const user = useSelector(selectUserLogin);
     const userEdit = useSelector(selectUserEdit);
+    console.log(userEdit)
     const phoneNumbers = useSelector(selectCustomerPhoneNumbers);
     const idCards = useSelector(selectCustomerIdCards);
     const receiptEmails = useSelector(selectCustomerReceiptEmails);
@@ -44,14 +35,13 @@ export default function CustomerProfile() {
         theme: "light",
         transition: Bounce,
     };
-
     return (
         <>
             {
                 userEdit?.customer ? (
                     <EditCustomerProfile
                         customer={userEdit?.customer}
-                        user={user}
+                        userEdit={userEdit}
                         phoneNumbers={phoneNumbers}
                         idCards={idCards}
                         receiptEmails={receiptEmails}
@@ -67,7 +57,7 @@ export default function CustomerProfile() {
                     />
                 ) : (
                     <RegisterCustomerProfile
-                        user={user}
+                        userEdit={userEdit}
                         phoneNumbers={phoneNumbers}
                         idCards={idCards}
                         receiptEmails={receiptEmails}
