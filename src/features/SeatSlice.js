@@ -23,11 +23,9 @@ export const SeatSlice = createSlice({
         },
         setPrice:(state,action)=>{
             state.price = action.payload;
-            console.log(state.price)
         },
         setTicketCode:(state,action)=>{
             state.ticketCode = action.payload;
-            console.log(state.ticketCode)
         },
     },
 });

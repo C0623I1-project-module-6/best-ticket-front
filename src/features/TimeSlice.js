@@ -3,7 +3,7 @@ import {showAllTimeByEventId} from "../api/TimeApi.js";
 
 
 const initialState = {
-  values: [],
+  values: JSON.parse(localStorage.getItem("times")),
   value: null,
   loading: false,
   success: false,
@@ -35,6 +35,7 @@ const handleFulfilled = (state, action) => {
   state.loading = false;
   state.values = action.payload;
   state.value = action.payload;
+  localStorage.setItem("times", JSON.stringify(action.payload));
   state.error = false;
 };
 
@@ -57,8 +58,6 @@ export const TimeSlice = createSlice({
       .addCase(getTimeByEventId.pending, handlePending)
       .addCase(getTimeByEventId.rejected, handleRejected)
       .addCase(getTimeByEventId.fulfilled, handleFulfilled)
-
-
   }
 });
 export const {setLoading, setError, setSuccess} = TimeSlice.actions;

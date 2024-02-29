@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Steps} from 'antd';
 import UserFooter from "../footer/UserFooter.jsx";
 import {TicketBookingStep1} from "./TicketBookingStep1.jsx";
 import {TicketBookingStep2} from "./TicketBookingStep2.jsx";
 import {TicketBookingStep3} from "./TicketBookingStep3.jsx";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectEventById} from "../../features/EventSlice.js";
 import {selectShowTimeByEventId} from "../../features/TimeSlice.js";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
@@ -13,7 +13,6 @@ import {useParams} from "react-router-dom";
 
 function TicketBooking() {
     const {Step} = Steps;
-    const dispatch = useDispatch();
     const event = useSelector(selectEventById);
     const times = useSelector(selectShowTimeByEventId);
     const param = useParams().param;
@@ -22,7 +21,6 @@ function TicketBooking() {
         setCurrent(data)
     }
 
-    console.log(param)
     return (
         <div className="w-full bg-[#F1F1F1] overflow-y-auto">
             <div className=" bg-gradient-to-r from-blue-gray-400 via-brown-300 to-blue-400 text-white">

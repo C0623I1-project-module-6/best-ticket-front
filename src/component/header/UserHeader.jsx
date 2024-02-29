@@ -14,9 +14,6 @@ import {logoutUser, selectUserLogin, selectUserLogout, selectUserRole} from "../
 import avatar from "../../assets/img/User.png"
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
-import {ADMIN} from "../../ultility/AppConstant.js";
-
-import {ADMIN} from "../../ultility/AppConstant.js"
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -27,8 +24,9 @@ const UserHeader = () => {
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userLogout = useSelector(selectUserLogout);
     const userRole = useSelector(selectUserRole);
-    const isLogin = useSelector(state => state.user.isLogin)
-    const organizer = useSelector(state => state.organizer.value)
+    const isLogin = useSelector(state => state.user.isLogin);
+    const organizer = useSelector(state => state.organizer.value);
+
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (

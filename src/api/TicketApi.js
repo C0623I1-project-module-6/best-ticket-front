@@ -109,7 +109,6 @@ export async function updateStatusFail(selectedSeats) {
 
     }).then((res) => {
         response = res
-        console.log(response)
     }).catch((e) => {
         response = e;
     })

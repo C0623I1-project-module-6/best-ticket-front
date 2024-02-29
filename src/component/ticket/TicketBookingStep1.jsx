@@ -13,7 +13,6 @@ export const TicketBookingStep1 = (props) => {
     const [dataTicketCode, setDataTicketCode] = useState([]);
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
-
     const showTicketType = () => {
         dispatch(getTicketTypes())
     }
@@ -35,13 +34,10 @@ export const TicketBookingStep1 = (props) => {
                 dispatch(setTicketType(dataNameTicketType));
                 dispatch(setPrice(dataPriceOneTicket));
                 dispatch(setTicketCode(dataTicketCode));
-                await updateStatusSuccess(dataSeat);
                 props.callbackData(1);
             } catch (error) {
                 console.error('Error:', error);
             }
-        } else {
-            return
         }
     }
     return (

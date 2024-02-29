@@ -10,7 +10,6 @@ const Ticket = (props) => {
     const time = useFormatDateFull(props.dataSendMail.time);
     const timeBooking = useFormatDateFull(props.dataSendMail.timeBooking);
     const {formatCurrency} = useFormatCurrency()
-
     useEffect(() => {
         const splitTicketCodes = async () => {
             if (props.dataSendMail && props.dataSendMail.ticketCode) {
@@ -22,7 +21,6 @@ const Ticket = (props) => {
 
         splitTicketCodes();
     }, [props.dataSendMail]);
-    console.log(listTicketCode)
 
     useEffect(() => {
         listTicketCode.forEach(ticketCode => {
@@ -40,7 +38,7 @@ const Ticket = (props) => {
                                 <div>
                                     <p>Mã đơn hàng: {props.dataSendMail.bookingId}</p>
                                     <p>Được đặt bởi: {props.dataSendMail.nameUser} <br/> vào
-                                        lúc {timeBooking}
+                                        lúc {props.dataSendMail.timeBooking}
                                     </p>
                                 </div>
 

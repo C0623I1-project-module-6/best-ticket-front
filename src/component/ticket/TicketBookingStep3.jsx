@@ -26,8 +26,9 @@ export const TicketBookingStep3 = () => {
     const ticketCodeList = seatTickets.ticketCode.join(", ");
     const seatPriceList = seatTickets.price.join(", ");
     const [dataSendMail, setDataSendMail] = useState({});
-    console.log(userEdit)
-    console.log(infoUserInput)
+    localStorage.removeItem("eventById")
+    localStorage.removeItem("times")
+    sessionStorage.removeItem("time")
 
     const bookings = {
         infoUserInput: infoUserInput,

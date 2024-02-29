@@ -57,7 +57,7 @@ const EventDetail = () => {
                                     <div className="text-black text-xl">{event !== null ? event.name :
                                         <div>Loading...</div>}
                                     </div>
-                                    {times.data?.content.map((time, index) => {
+                                    {times !== null ? times.data.content.map((time, index) => {
                                         if (isFirstRender) {
                                             isFirstRender = false;
                                             return (
@@ -67,7 +67,7 @@ const EventDetail = () => {
                                                 </div>
                                             )
                                         }
-                                    })}
+                                    }):<div></div>}
 
 
                                     <div className="flex items-center text-black"><FaLocationDot className="mr-2"/> Nhà
@@ -97,7 +97,7 @@ const EventDetail = () => {
                             <div className="font-bold text-xl border-dashed border-b border-black py-3">
                                 <p className="text-black px-3">Lịch sự kiện</p>
                             </div>
-                            {times.data?.content.map((time, index) => (
+                            {times !== null ? times.data?.content.map((time, index) => (
 
                                 <div className="flex w-full border-dashed border-b border-black py-3 px-4" key={index}>
 
@@ -119,7 +119,7 @@ const EventDetail = () => {
                                         </NavLink>
                                     </div>
                                 </div>
-                            ))}
+                            )) : <div></div> }
 
                         </div>
 
@@ -188,7 +188,7 @@ const EventDetail = () => {
                         <div className="sticky top-0 w-[80%] bg-white">
                             <p className="p-3 text-black text-xl">{event !== null ? event.name : <div></div>}</p>
                             <hr/>
-                            {times.data?.content.map((time, index) => {
+                            {times !==null ? times.data?.content.map((time, index) => {
                                 if (isFirstRender) {
                                     isFirstRender = false;
                                     return (
@@ -197,7 +197,7 @@ const EventDetail = () => {
                                             <span>{time.time}</span>
                                         </p>)
                                 }
-                            })}
+                            }): <div></div>}
 
                             <p className="flex p-3 mb-3">
                                 <span className="mr-3"><FaLocationDot/></span>
