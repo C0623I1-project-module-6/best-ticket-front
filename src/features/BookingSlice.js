@@ -2,7 +2,8 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {
     createBooking,
     findAllBookings,
-    findAllBookingsByEventId, findAllBookingsByEventIdNoPaged,
+    findAllBookingsByEventId,
+    findAllBookingsByEventIdNoPaged,
     findBookingsByTimeId,
     searchBookingByKeyword
 } from "../api/BookingApi.js";
@@ -26,7 +27,10 @@ export const getAllBookings = createAsyncThunk("bookings", async (currentPage, r
     }
     return response.data;
 });
-export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({eventId, currentPage}, rejectWithValue) => {
+export const getAllBookingsByEventId = createAsyncThunk("bookings/byEventId", async ({
+                                                                                         eventId,
+                                                                                         currentPage
+                                                                                     }, rejectWithValue) => {
     const response = await findAllBookingsByEventId(eventId, currentPage);
     if (response.status !== 200) {
         return rejectWithValue(response.data)

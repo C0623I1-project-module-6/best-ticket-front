@@ -13,15 +13,13 @@ export const TicketBookingStep1 = (props) => {
     const [dataTicketCode, setDataTicketCode] = useState([]);
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
-    console.log(dataSeat);
-
     const showTicketType = () => {
         dispatch(getTicketTypes())
     }
     useEffect(() => {
         showTicketType();
     }, [])
-    const handleDataFromSeat = (totalPrice, seat, nameTicketType, priceOneTicket,ticketCodeSeats) => {
+    const handleDataFromSeat = (totalPrice, seat, nameTicketType, priceOneTicket, ticketCodeSeats) => {
         setDataTotalPrice(totalPrice);
         setDataSeat(seat);
         setDataNameTicketType(nameTicketType);
@@ -31,18 +29,15 @@ export const TicketBookingStep1 = (props) => {
     const handleDataFormButton = async () => {
         if (dataTotalPrice !== 0 && dataSeat !== null) {
             try {
-                 await updateStatusSuccess(dataSeat);
                 dispatch(setSeats(dataSeat));
                 dispatch(setTotalPrice(dataTotalPrice));
                 dispatch(setTicketType(dataNameTicketType));
                 dispatch(setPrice(dataPriceOneTicket));
-                dispatch(setTicketCode(dataTicketCode))
+                dispatch(setTicketCode(dataTicketCode));
                 props.callbackData(1);
             } catch (error) {
                 console.error('Error:', error);
             }
-        } else {
-            return
         }
     }
     return (

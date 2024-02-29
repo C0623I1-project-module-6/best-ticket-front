@@ -3,8 +3,8 @@ export const useFormatDateFull = (data) => {
   let day = date.getDate();
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
-  let hour = date.getHours();
-  let minute = date.getMinutes();
+  let hour = `0${Math.floor(date.getHours() / 60)}`.slice(-2);
+  let minute = `0${Math.floor(date.getMinutes() / 60)}`.slice(-2);
   if (day < 10) {
     day = "0" + day;
   }

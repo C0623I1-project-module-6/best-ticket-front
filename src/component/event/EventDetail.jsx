@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import {NavLink, useLocation, useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {FaClock, FaHeart} from "react-icons/fa";
 import {FaFacebook, FaLocationDot} from "react-icons/fa6";
 import img from '../../assets/img/image/event.png'
@@ -10,7 +10,7 @@ import {IoIosArrowForward, IoMdMail} from "react-icons/io";
 import {IoTicket} from "react-icons/io5";
 import {getTicketTypes, selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
 import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
-import {selectUserLogin} from "../../features/user/UserSlice.js";
+import {fetchGetUser, selectUserLogin} from "../../features/user/UserSlice.js";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 
 const EventDetail = () => {
@@ -39,6 +39,9 @@ const EventDetail = () => {
         showEventById(eventId);
         showTicketType();
         showTimeByEventId(eventId);
+        if (user !== null){
+            dispatch(fetchGetUser(user.id));
+        }
     }, []);
     return (
         <>
@@ -54,7 +57,7 @@ const EventDetail = () => {
                                     <div className="text-black text-xl">{event !== null ? event.name :
                                         <div>Loading...</div>}
                                     </div>
-                                    {times.data?.content.map((time, index) => {
+                                    {times !== null ? times.data.content.map((time, index) => {
                                         if (isFirstRender) {
                                             isFirstRender = false;
                                             return (
@@ -64,7 +67,7 @@ const EventDetail = () => {
                                                 </div>
                                             )
                                         }
-                                    })}
+                                    }):<div></div>}
 
 
                                     <div className="flex items-center text-black"><FaLocationDot className="mr-2"/> Nhà
@@ -94,7 +97,7 @@ const EventDetail = () => {
                             <div className="font-bold text-xl border-dashed border-b border-black py-3">
                                 <p className="text-black px-3">Lịch sự kiện</p>
                             </div>
-                            {times.data?.content.map((time, index) => (
+                            {times !== null ? times.data?.content.map((time, index) => (
 
                                 <div className="flex w-full border-dashed border-b border-black py-3 px-4" key={index}>
 
@@ -105,7 +108,9 @@ const EventDetail = () => {
                                     <div className="w-1/6 flex text-right justify-end items-center" key={index}
                                          onClick={() => {
                                              if (user === null) {
-                                                 navigate("/login")
+                                                 navigate("/login");
+                                             }else {
+                                                 dispatch(fetchGetUser(user.id))
                                              }
                                          }}>
                                         <NavLink to={`${location.pathname}/ticket-booking/${time.id}`}
@@ -114,7 +119,7 @@ const EventDetail = () => {
                                         </NavLink>
                                     </div>
                                 </div>
-                            ))}
+                            )) : <div></div> }
 
                         </div>
 
@@ -183,7 +188,7 @@ const EventDetail = () => {
                         <div className="sticky top-0 w-[80%] bg-white">
                             <p className="p-3 text-black text-xl">{event !== null ? event.name : <div></div>}</p>
                             <hr/>
-                            {times.data?.content.map((time, index) => {
+                            {times !==null ? times.data?.content.map((time, index) => {
                                 if (isFirstRender) {
                                     isFirstRender = false;
                                     return (
@@ -192,7 +197,7 @@ const EventDetail = () => {
                                             <span>{time.time}</span>
                                         </p>)
                                 }
-                            })}
+                            }): <div></div>}
 
                             <p className="flex p-3 mb-3">
                                 <span className="mr-3"><FaLocationDot/></span>

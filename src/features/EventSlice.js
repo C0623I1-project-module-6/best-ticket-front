@@ -17,7 +17,7 @@ const initialState = {
     loading: false,
     success: false,
     error: null,
-    eventById: null
+    eventById: JSON.parse(localStorage.getItem("eventById"))
 };
 export const getEventsByName = createAsyncThunk("events/byName", async ({searchTerm, currentPage}) => {
     const response = await findEventsByName(searchTerm, currentPage);
@@ -118,6 +118,7 @@ export const EventSlice = createSlice({
                 state.loading = false;
                 state.totalPages = action.payload.totalPages;
                 state.eventById = action.payload.data;
+                localStorage.setItem("eventById", JSON.stringify(action.payload.data))
                 state.error = false;
             })
 

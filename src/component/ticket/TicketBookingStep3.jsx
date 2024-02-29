@@ -2,7 +2,7 @@ import img from "../../assets/img/cover-event.jpg"
 import {FaFacebookF} from "react-icons/fa";
 import {CiCalendarDate} from "react-icons/ci";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUserEdit} from "../../features/user/UserSlice.js";
+import {selectUserEdit, selectUserLogin} from "../../features/user/UserSlice.js";
 import {selectInfoUser} from "../../features/UserFormInTicketBookingSlice.js";
 import {createBookingForTicket, selectBookingCreate} from "../../features/BookingSlice.js";
 import {useEffect, useState} from "react";
@@ -10,15 +10,14 @@ import {selectEventById} from "../../features/EventSlice.js";
 import {selectShowTimeByEventId} from "../../features/TimeSlice.js";
 import {useParams} from "react-router-dom";
 import Ticket from "./Ticket.jsx";
-import * as emailjs from "@emailjs/browser";
-import ReactDOMServer from "react-dom/server";
+import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 
 export const TicketBookingStep3 = () => {
     const dispatch = useDispatch();
     const param = useParams();
     const seatTickets = useSelector(state => state.seat)
     const userEdit = useSelector(selectUserEdit);
-    const infoUser = useSelector(selectInfoUser);
+    const infoUserInput = useSelector(selectInfoUser);
     const event = useSelector(selectEventById);
     const times = useSelector(selectShowTimeByEventId);
     const bookingCreate = useSelector(selectBookingCreate)
@@ -27,17 +26,14 @@ export const TicketBookingStep3 = () => {
     const ticketCodeList = seatTickets.ticketCode.join(", ");
     const seatPriceList = seatTickets.price.join(", ");
     const [dataSendMail, setDataSendMail] = useState({});
+    localStorage.removeItem("eventById")
+    localStorage.removeItem("times")
+    sessionStorage.removeItem("time")
 
-    // eslint-disable-next-line no-undef
-    // const pdfContent = ReactDOMServer.renderToString(<Ticket />);
-    // const pdfBlob = new Blob([pdfContent], { type: "application/pdf" });
-    // const file = new File([pdfBlob], "my_pdf_file.pdf");
-
-    // console.log(file)
     const bookings = {
-        infoUser: infoUser,
+        infoUserInput: infoUserInput,
         seatTickets: seatTickets,
-        userEdit: userEdit
+        infoUser: userEdit
     }
     useEffect(() => {
         dispatch(createBookingForTicket(bookings))
@@ -48,11 +44,11 @@ export const TicketBookingStep3 = () => {
             const newDataSendMail = {
                 bookingId: bookingCreate.data.id,
                 eventName: event.name,
-                time: selectedTime.time,
-                nameUser: infoUser.name,
-                emailUser: infoUser.email,
-                timeBooking: bookingCreate.data.createdAt,
-                paymentMethod: infoUser.paymentMethod,
+                time: useFormatDateFull(selectedTime.time),
+                nameUser: infoUserInput.name,
+                emailUser: infoUserInput.email,
+                timeBooking: useFormatDateFull(bookingCreate.data.createdAt),
+                paymentMethod: infoUserInput.paymentMethod,
                 seat: seatList,
                 price: seatPriceList,
                 totalPrice: seatTickets.totalPrice,
@@ -60,16 +56,16 @@ export const TicketBookingStep3 = () => {
             };
             setDataSendMail(newDataSendMail);
 
-            emailjs.send('service_rgh3yss', 'template_tc83two', newDataSendMail, 'bC7itDNp2khTY1SsL')
-                .then(function (response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                }, function (error) {
-                    console.log('FAILED...', error);
-                });
+            // emailjs.send('service_rgh3yss', 'template_tc83two', newDataSendMail, 'bC7itDNp2khTY1SsL')
+            //     .then(function (response) {
+            //         console.log('SUCCESS!', response.status, response.text);
+            //     }, function (error) {
+            //         console.log('FAILED...', error);
+            //     });
         }
 
     }, [bookingCreate])
-
+    console.log(dataSendMail)
     return (
         <>
             <div className=" mx-56">
@@ -85,7 +81,7 @@ export const TicketBookingStep3 = () => {
 
                 </div>
 
-                { (dataSendMail && <Ticket dataSendMail={dataSendMail}/>)}
+                {(dataSendMail && <Ticket dataSendMail={dataSendMail}/>)}
             </div>
         </>
     )

@@ -14,7 +14,6 @@ function Seat({dataFormSeat}) {
     const timeId = useParams().param;
 
     const tickets = useSelector(selectShowTicketByTimeId);
-
     useEffect(() => {
         dispatch(getTicketByTimeId(timeId))
     }, [])
@@ -22,26 +21,28 @@ function Seat({dataFormSeat}) {
 
     const handleSeatClick = (seatNumber) => {
         const selectedSeat = tickets.data.find((ticket) => ticket.seat === seatNumber);
+        const price = selectedSeat.ticketType.price;
+        const seat = selectedSeat.seat;
+        const ticketTypeName = selectedSeat.ticketType.name;
+        const priceTicket = selectedSeat.ticketType.price;
+        const ticketCode = selectedSeat.ticketCode;
         if (selectedSeat && !selectedSeats.includes(selectedSeat.seat)) {
-            const price = selectedSeat.ticketType.price;
-            const seat = selectedSeat.seat;
-            const nameTicketType = selectedSeat.ticketType.name;
-            const priceOneTicket = selectedSeat.ticketType.price;
-            const ticketCode = selectedSeat.ticketCode;
             setTotalPrice((prevTotalPrice) => prevTotalPrice + parseInt(price));
             setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seat]);
             setClickedSeats((prevClickedSeats) => [...prevClickedSeats, seat]);
-            setNameTicketType((prevNameTicketType) => [...prevNameTicketType, nameTicketType]);
-            setPriceOneTicket((prevPriceOneTicket) => [...prevPriceOneTicket, priceOneTicket]);
+            setNameTicketType((prevNameTicketType) => [...prevNameTicketType, ticketTypeName]);
+            setPriceOneTicket((prevPriceOneTicket) => [...prevPriceOneTicket, priceTicket]);
             setTicketCodeSeats(prevTicketCode=>[...prevTicketCode,ticketCode])
-            dataFormSeat((totalPrice + parseInt(price)), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket],[...ticketCodeSeats]);
+            dataFormSeat((totalPrice), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket],[...ticketCodeSeats]);
+
             event.target.style.backgroundColor = "#2E7D32";
         } else {
-            const price = selectedSeat.ticketType.price;
-            const seat = selectedSeat.seat;
+
             setTotalPrice((prevTotalPrice) => prevTotalPrice - parseInt(price));
             setSelectedSeats(selectedSeats.filter(item => item !== seat));
-            dataFormSeat(totalPrice + parseInt(price), [...selectedSeats, seat]);
+            setTicketCodeSeats(ticketCodeSeats.filter(item => item !== ticketCode));
+            setPriceOneTicket(priceOneTicket.filter(item => item !== priceTicket))
+            setNameTicketType(nameTicketType.filter(item => item !== ticketTypeName));
             if (selectedSeat.ticketType.name === "VIP") {
                 event.target.style.backgroundColor = "#FFD5CF";
             } else if (selectedSeat.ticketType.name === "THƯỜNG") {
