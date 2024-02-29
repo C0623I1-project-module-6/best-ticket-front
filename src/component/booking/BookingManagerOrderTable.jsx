@@ -73,8 +73,6 @@ const BookingManagerOrderTable = () => {
             }
         })
 
-        console.log(ticketTypeNameList)
-
         if (sortBy === 'createdAt') {
             sortedBookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         } else if (sortBy === 'createdAt_reversed') {
@@ -89,6 +87,19 @@ const BookingManagerOrderTable = () => {
             sortedBookings = sortedBookings.filter(booking => booking.status === status);
         }
 
+        if (ticketTypeNameList.includes(ticketTypeNameOption)) {
+            sortedBookings = sortedBookings.filter(booking => {
+                let found = false;
+                booking.bookingDetailResponseList.forEach(detail => {
+                    detail.ticketInBookingDetailResponses.forEach(ticket => {
+                        if (ticket.ticketTypeName === ticketTypeNameOption) {
+                            found = true;
+                        }
+                    });
+                });
+                return found;
+            });
+        }
     }
 
     const toggleSelectAll = (e) => {
@@ -176,12 +187,8 @@ const BookingManagerOrderTable = () => {
                     <select className="bg-white border rounded border-black mx-1" value={ticketTypeNameOption}
                             onChange={(e) => handleTicketTypeNameOption(e.target.value)}>
                         {bookings === null || bookings === "" || bookings === undefined ? (
-                            <option disabled></option>
-                        ) : (
-                            ticketTypeNameList.map((ticketTypeName) => (
-                                <option key={ticketTypeName} value={ticketTypeName}>{ticketTypeName}</option>
-                            ))
-                        )}
+                            <option disabled></option>) : (ticketTypeNameList.map((ticketTypeName) => (
+                            <option key={ticketTypeName} value={ticketTypeName}>{ticketTypeName}</option>)))}
                     </select>
                 </div>
                 <div>
@@ -289,11 +296,20 @@ const BookingManagerOrderTable = () => {
                                 </div>
                             </td>
                             <td className="py-2 border-x-0 text-center">
-                                {Object.keys(ticketCounts).length > 0 ? Object.keys(ticketCounts).map((ticketType, index) => (
-                                    <div key={index}>
-                                        <div>{ticketCounts[ticketType]}</div>
-                                        <div>{ticketType}</div>
-                                    </div>)) : <span>No booking details available</span>}
+                                {Object.keys(ticketCounts).length > 0 ? (
+                                    Object.keys(ticketCounts).map((ticketType, index) => (
+                                        ticketType === ticketTypeNameOption ? (
+                                            <div key={index}>
+                                                <div>{ticketCounts[ticketType]}</div>
+                                                <div>{ticketType}</div>
+                                            </div>
+                                        ) : (
+                                            <div key={index}></div>
+                                        ))
+                                    )
+                                ) : (
+                                    <span>No booking details available</span>
+                                )}
                             </td>
                             <td className="py-2 border-x-0 text-center">
                                 {formatCurrency(booking.totalAmount)}
