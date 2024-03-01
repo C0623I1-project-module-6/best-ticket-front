@@ -183,7 +183,7 @@ const UserHeader = () => {
 
     const handleCreateEvent = async () => {
         if (isLogin) {
-            dispatch(selectUserLogin);
+            dispatch(getOrganizerByUserId(user.id));
             if (organizer !== null) {
                 navigate('/event/create');
             } else {
