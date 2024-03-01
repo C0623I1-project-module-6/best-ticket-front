@@ -13,6 +13,7 @@ import {FaQuestionCircle, FaSignOutAlt} from "react-icons/fa";
 import {Bounce, toast} from "react-toastify";
 import logo from "../../assets/img/logo/logo-auth-header-light.svg";
 import {twMerge} from 'tailwind-merge';
+import {useEffect} from 'react';
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
@@ -22,6 +23,8 @@ const BookingManagerSidebar = () => {
     const userExists = useSelector(selectExistsList)
     const userLogout = useSelector(selectUserLogout);
     const pathName = location.pathname;
+    const isLogin = useSelector(state => state.user.isLogin)
+
     const logout = () => {
         dispatch(logoutUser(userLogout));
         dispatch(setLoginSuccess())
@@ -71,13 +74,7 @@ const BookingManagerSidebar = () => {
         active: `/my-event/event/${eventId}/moderators` === pathName
     },]
 
-    // useEffect(() => {
-    //     if (user == null) {
-    //         navigate("/login");
-    //     }
-    // }, [user]);
-
-    return (!user ? navigate("/") : <div className="fixed w-[26%] border-r shadow-md">
+    return (!user ? navigate(`/404`) : <div className="fixed w-[26%] border-r shadow-md">
         <nav className="bg-[#424242] h-screen">
             <ul className="text-left">
                 <li>
