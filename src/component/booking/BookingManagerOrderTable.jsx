@@ -165,7 +165,6 @@ const BookingManagerOrderTable = () => {
     const form = useRef();
 
     const sendEmail = () => {
-        // e.preventDefault();
         emailjs
             .sendForm('service_99xnbap', 'template_x4164f8', form.current, 'LHVxILU3VnOGyS6nU')
             .then((result) => {
@@ -179,6 +178,9 @@ const BookingManagerOrderTable = () => {
     };
 
     let totalAmount = 0;
+    let amountByTicketTypeAndBooking = 0;
+    let totalAmountByTicketType = 0;
+    let calculatedTotalAmount = 0;
 
     return (<>
         <div className="border bg-gray-100 flex py-1">
@@ -186,6 +188,7 @@ const BookingManagerOrderTable = () => {
                 <div>
                     <select className="bg-white border rounded border-black mx-1" value={ticketTypeNameOption}
                             onChange={(e) => handleTicketTypeNameOption(e.target.value)}>
+                        <option value="createdAt">Tất cả loại vé</option>
                         {bookings === null || bookings === "" || bookings === undefined ? (
                             <option disabled></option>) : (ticketTypeNameList.map((ticketTypeName) => (
                             <option key={ticketTypeName} value={ticketTypeName}>{ticketTypeName}</option>)))}
@@ -246,9 +249,12 @@ const BookingManagerOrderTable = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {bookings === null || bookings === "" || bookings === undefined ? (<tr>
-                        <td colSpan="5" className="text-center">Chưa có vé nào được bán</td>
-                    </tr>) : (sortedBookings.map((booking) => {
+                    {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (
+                        <tr>
+                            <td colSpan="5" className="text-center">
+                                <div className="m-5 p-2 font-bold rounded bg-[#E5F1C8]"> Chưa có vé nào được bán</div>
+                            </td>
+                        </tr>) : (sortedBookings.map((booking) => {
                         const ticketCounts = {};
                         if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
                             booking.bookingDetailResponseList.forEach((detail) => {
@@ -296,23 +302,30 @@ const BookingManagerOrderTable = () => {
                                 </div>
                             </td>
                             <td className="py-2 border-x-0 text-center">
-                                {Object.keys(ticketCounts).length > 0 ? (
-                                    Object.keys(ticketCounts).map((ticketType, index) => (
-                                        ticketType === ticketTypeNameOption ? (
-                                            <div key={index}>
-                                                <div>{ticketCounts[ticketType]}</div>
-                                                <div>{ticketType}</div>
-                                            </div>
-                                        ) : (
-                                            <div key={index}></div>
-                                        ))
-                                    )
-                                ) : (
-                                    <span>No booking details available</span>
-                                )}
+                                {Object.keys(ticketCounts).length > 0 && ticketTypeNameOption !== 'createdAt' ? (Object.keys(ticketCounts).map((ticketType, index) => (ticketType === ticketTypeNameOption ? (
+                                    <div key={index}>
+                                        <div>{ticketCounts[ticketType]}</div>
+                                        <div>{ticketType}</div>
+                                    </div>) : (<div
+                                    key={index}></div>)))) : Object.keys(ticketCounts).map((ticketType, index) => (
+                                    <div key={index}>
+                                        <div>{ticketCounts[ticketType]}</div>
+                                        <div>{ticketType}</div>
+                                    </div>))}
                             </td>
                             <td className="py-2 border-x-0 text-center">
-                                {formatCurrency(booking.totalAmount)}
+                                {ticketTypeNameOption === 'createdAt' ? (formatCurrency(booking.totalAmount)) : (Object.keys(ticketCounts).length > 0 ? (booking.bookingDetailResponseList.forEach((detail) => {
+                                    calculatedTotalAmount = 0;
+                                    detail.ticketInBookingDetailResponses.forEach((ticket) => {
+                                        if (booking.id === detail.bookingId && Object.keys(ticketCounts).includes(ticket.ticketTypeName) && ticket.ticketTypeName === ticketTypeNameOption) {
+                                            amountByTicketTypeAndBooking = ticket.ticketTypePrice * ticketCounts[ticket.ticketTypeName];
+                                            calculatedTotalAmount = amountByTicketTypeAndBooking;
+                                        }
+                                    });
+                                    totalAmountByTicketType += calculatedTotalAmount;
+                                })) : (<span>Loading...</span>))}
+                                {ticketTypeNameOption !== 'createdAt' && (
+                                    <div>{formatCurrency(amountByTicketTypeAndBooking)}</div>)}
                             </td>
                         </tr>;
                     }))}
@@ -322,12 +335,15 @@ const BookingManagerOrderTable = () => {
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td className="py-5 text-center">{formatCurrency(totalAmount)}</td>
+                        <td className="py-5 text-center">
+                            {ticketTypeNameOption !== 'createdAt' ? (
+                                    <div>{formatCurrency(totalAmountByTicketType)}</div>) :
+                                <div>{formatCurrency(totalAmount)}</div>}</td>
                     </tr>)}
                     </tbody>
                 </table>
                 <div className="flex items-center justify-center h-20">
-                    {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) : (<Stack
+                    {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (<div></div>) : (<Stack
                         spacing={2}
                     >
                         <Pagination
