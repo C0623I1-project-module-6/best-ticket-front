@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 
 const NotFoundPage = () => {
     const goBack = () => {
-        window.history.back();
+        history.back();
     };
 
     return (

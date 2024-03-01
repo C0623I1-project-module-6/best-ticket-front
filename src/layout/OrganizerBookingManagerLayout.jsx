@@ -11,7 +11,7 @@ function OrganizerBookingManagerLayout({children}) {
             dispatch(reLoginWithToken())
         }
     }, [dispatch]);
-    
+
     return (
         <div className="flex">
             <div className="w-2/6 text-white">
