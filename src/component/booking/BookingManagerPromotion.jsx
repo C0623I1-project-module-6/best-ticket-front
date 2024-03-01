@@ -5,14 +5,12 @@ import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import UserFooter from "../footer/UserFooter.jsx"
 import {FacebookIcon, FacebookShareButton} from "react-share";
 import {FaArrowRight, FaCloudDownloadAlt} from "react-icons/fa";
-import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 const BookingManagerPromotion = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const event = useSelector(selectEventById);
     const eventId = useParams().eventId;
-    const user = useSelector(selectUserLogin);
 
     useEffect(() => {
         dispatch(getEventById(eventId))
