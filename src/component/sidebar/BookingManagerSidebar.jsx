@@ -13,7 +13,6 @@ import {FaQuestionCircle, FaSignOutAlt} from "react-icons/fa";
 import {Bounce, toast} from "react-toastify";
 import logo from "../../assets/img/logo/logo-auth-header-light.svg";
 import {twMerge} from 'tailwind-merge';
-import {useEffect} from 'react';
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
