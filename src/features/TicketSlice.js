@@ -152,7 +152,7 @@ export const TicketSlice = createSlice({
             .addCase(getTicketByEventId.fulfilled, (state, action) => {
                 state.success = true;
                 state.loading = false;
-                state.ticket = action.payload;
+                state.ticketForEvent= action.payload;
                 state.error = false;
             })
 
@@ -193,4 +193,5 @@ export const selectLoading = (state) => state.ticket.loading;
 export const selectError = (state) => state.ticket.error;
 export const selectShowTicket = (state) => state.ticket.tickets;
 export const selectShowTicketByTimeId = (state) => state.ticket.ticketForTime;
+export const selectShowTicketByEventId = (state) => state.ticket.ticketForEvent;
 export default TicketSlice.reducer;

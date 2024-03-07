@@ -3,31 +3,23 @@ import {FaPencil, FaUser} from "react-icons/fa6";
 import {MdEmail} from "react-icons/md";
 import {FaPhone} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchGetUser, selectUserEdit, selectUserLogin} from "../../features/user/UserSlice.js";
+import {selectUserLogin} from "../../features/user/UserSlice.js";
 import {useEffect, useState} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup"
 import {Modal} from 'antd';
-import {updateStatusFail} from "../../api/TicketApi.js";
+import {updateStatusFail, updateStatusSuccess} from "../../api/TicketApi.js";
 import {setValues} from "../../features/UserFormInTicketBookingSlice.js";
 
 
 export const TicketBookingStep2 = (props) => {
     const dispatch = useDispatch();
     const user = useSelector(selectUserLogin);
-    const userEdit = useSelector(selectUserEdit);
     const seatTickets = useSelector(state => state.seat)
     const [open, setOpen] = useState(true);
+    console.log(seatTickets)
     const [selectedOption, setSelectedOption] = useState('');
-    const [inputValue, setInputValue] = useState("");
-
-
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
-    };
-
-    const [timeLeft, setTimeLeft] = useState(600);
-
+    const [timeLeft, setTimeLeft] = useState(1000);
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft(prevTime => {
@@ -35,34 +27,34 @@ export const TicketBookingStep2 = (props) => {
                     clearInterval(timer);
                     return prevTime;
                 }
+                if (typeof (Storage) !== 'undefined') {
+                    sessionStorage.setItem('time', prevTime.toString());
+                }
                 return prevTime - 1;
             });
         }, 1000);
-
         return () => {
             clearInterval(timer);
+            updateStatusFail(seatTickets.seats);
         };
     }, []);
 
     const minutes = `0${Math.floor(timeLeft / 60)}`.slice(-2);
     const seconds = `0${timeLeft % 60}`.slice(-2);
 
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
+
+    localStorage.setItem("userId", user.id);
     const handleClick = async () => {
         try {
-            const response = await updateStatusFail(seatTickets.seats);
             history.back();
-
-            return response;
         } catch (error) {
             console.error('Error:', error);
         }
-        history.back();
     }
 
-
-    useEffect(() => {
-        dispatch(fetchGetUser(user.id))
-    }, [])
 
     const formik = useFormik({
         initialValues: {
@@ -79,14 +71,15 @@ export const TicketBookingStep2 = (props) => {
             confirmEmail: Yup.string().oneOf([Yup.ref('email')], 'email không khớp với email đã nhập!').required("Không được bỏ trống!")
         }),
         onSubmit: (values) => {
-            dispatch(setValues(values))
+            dispatch(setValues(values));
+            updateStatusSuccess(seatTickets.seats);
+            console.log("he")
             props.callbackData(2);
         }
     })
 
 
     return (
-        <>
             <div className="mx-40 text-black py-5">
                 <div className="flex gap-10 items-center justify-center bg-neutral-400 py-5">
                     <div className="w-3/5 flex-col">
@@ -246,7 +239,7 @@ export const TicketBookingStep2 = (props) => {
                                 <div className="font-bold py-3">THÔNG TIN ĐẶT VÉ</div>
                                 <div className="flex items-center">
                                     <span><FaPencil/></span>
-                                    <span className="cursor-pointer" onClick={()=>{
+                                    <span className="cursor-pointer" onClick={() => {
                                         history.back()
                                     }}>Sửa</span>
                                 </div>
@@ -260,39 +253,11 @@ export const TicketBookingStep2 = (props) => {
                             <hr className="border border-dashed"/>
                             {seatTickets.ticketTypes.map((ticketType, index) => (
                                 <div className="flex justify-between py-2" key={index}>
-                                    {ticketType === "VIP" && (
+                                    {(ticketType === "VIP" || ticketType === "THƯỜNG" || ticketType === "LẦU") && seatTickets.seats[index] !== undefined && (
                                         <>
                                             <div className="w-2/3" key={index}>
                                                 <p>Vé {ticketType}</p>
-                                                <p>{/* Dữ liệu của loại vé VIP */}</p>
-                                                <p>{" " + seatTickets.seats[index]}</p>
-                                            </div>
-                                            <div className="w-1/3 text-right">
-                                                <p>1</p>
-                                                <p>{seatTickets.price[index]} VNĐ</p>
-                                            </div>
-                                        </>
-
-                                    )}
-                                    {ticketType === "THƯỜNG" && (
-                                        <>
-                                            <div className="w-2/3">
-                                                <p>Vé {ticketType}</p>
-                                                <p>{/* Dữ liệu của loại vé Standard */}</p>
-                                                <p>{" " + seatTickets.seats[index]}</p>
-                                            </div>
-                                            <div className="w-1/3 text-right">
-                                                <p>1</p>
-                                                <p>{seatTickets.price[index]} VNĐ</p>
-                                            </div>
-                                        </>
-                                    )}
-                                    {ticketType === "LẦU" && (
-                                        <>
-                                            <div className="w-2/3">
-                                                <p>Vé {ticketType}</p>
-                                                <p>{/* Dữ liệu của loại vé Standard */}</p>
-                                                <p>{" " + seatTickets.seats[index]}</p>
+                                                <p>{seatTickets.seats[index]}</p>
                                             </div>
                                             <div className="w-1/3 text-right">
                                                 <p>1</p>
@@ -318,7 +283,6 @@ export const TicketBookingStep2 = (props) => {
                     </div>
                 </div>
             </div>
-        </>
     )
         ;
 }

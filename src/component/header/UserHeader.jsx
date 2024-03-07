@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logoutUser, selectUserLogin, selectUserLogout, selectUserRole} from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
+import {ADMIN} from "../../ultility/AppConstant.js";
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -25,6 +26,7 @@ const UserHeader = () => {
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
+
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -47,12 +49,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    // useEffect(() => {
-    //     if (userRole !== null && userRole.includes(ADMIN)){
-    //         navigate("/admin");
-    //     }
-    // }, [userRole]);
-
+    useEffect(() => {
+        if (userRole !== null && userRole.includes(ADMIN)) {
+            navigate("/admin");
+        }
+    }, [userRole]);
 
     const loginButton = () => {
         return (

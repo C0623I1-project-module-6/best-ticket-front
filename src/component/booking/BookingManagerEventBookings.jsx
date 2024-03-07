@@ -5,11 +5,13 @@ import {useEffect, useState} from "react";
 import {getEventById, selectEventById} from "../../features/EventSlice.js";
 import BookingManagerTicketTable from "./BookingManagerTicketTable.jsx";
 import UserFooter from "../footer/UserFooter.jsx"
+import {selectShowTimeByEventId} from "../../features/TimeSlice.js";
 
 export function BookingManagerEventBookings() {
     const dispatch = useDispatch();
     const event = useSelector(selectEventById);
     const eventId = useParams().eventId;
+    const times = useSelector(selectShowTimeByEventId);
 
     useEffect(() => {
         dispatch(getEventById(eventId))

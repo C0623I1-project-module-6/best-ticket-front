@@ -25,31 +25,33 @@ const BookingManagerTicketTable = () => {
     const startIndex = (currentPage - 1) * rowsPerPage;
 
     return (<>
-        <div className="border bg-gray-100 flex my-6">
-            <div className="w-1/2 m-5 flex">
-                <div className="mx-1 border-0 border-black rounded bg-[#C2DEA3]">
-                    <ReactHTMLTableToExcel
-                        id="test-table-xls-button"
-                        table="table-to-xls"
-                        filename="ticket-list"
-                        sheet="tablexls"
-                        className="border-0 border-black rounded bg-[#C2DEA3]"
-                        buttonText={
-                            <>
-                                <div className="flex items-center p-2">
-                                    <div className="">
-                                        <RiFileExcel2Fill/>
+        {bookings === null || bookings === "" || bookings === undefined ? (<div></div>) :
+            (<div className="border bg-gray-100 flex my-6">
+                <div className="w-1/2 m-5 flex">
+                    <div className="mx-1 border-0 border-black rounded bg-[#C2DEA3]">
+                        <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            table="table-to-xls"
+                            filename="ticket-list"
+                            sheet="tablexls"
+                            className="border-0 border-black rounded bg-[#C2DEA3]"
+                            buttonText={
+                                <>
+                                    <div className="flex items-center p-2">
+                                        <div className="">
+                                            <RiFileExcel2Fill/>
+                                        </div>
+                                        <div className="">Tải về file Excel</div>
                                     </div>
-                                    <div className="">Tải về file Excel</div>
-                                </div>
-                            </>
-                        }
-                    />
+                                </>
+                            }
+                        />
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div className="table-container border border-black max-h-96 overflow-y-auto">
-            <table id="table-to-xls" className="w-full text-left border border-black">
+            </div>)
+        }
+        <div className="table-container max-h-96 overflow-y-auto">
+            <table id="table-to-xls" className="w-full text-left">
                 <thead className="border border-black">
                 <tr className="text-center bg-[#C2DEA3]">
                     <th className="p-2 border border-black">No.</th>
@@ -65,7 +67,9 @@ const BookingManagerTicketTable = () => {
                 </thead>
                 <tbody>
                 {bookings === null || bookings === "" || bookings === undefined ? (<tr>
-                    <td colSpan="9" className="text-center">Chưa có vé nào được bán</td>
+                    <td colSpan="9" className="text-center">
+                        <div className="m-5 p-2 font-bold rounded bg-[#E5F1C8]"> Chưa có vé nào được bán</div>
+                    </td>
                 </tr>) : (bookings.content.map((booking, index) => {
                     const detailRows = [];
                     if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {

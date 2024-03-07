@@ -1,35 +1,31 @@
 import BookingManagerSidebar from "../component/sidebar/BookingManagerSidebar.jsx";
 import {useEffect} from "react";
-import {reLoginWithToken, selectUserLogin} from "../features/user/UserSlice.js";
-import {useDispatch, useSelector} from "react-redux";
-import {getExistsUsers, selectExistsList} from "../features/user/ExistsSlice.js";
+import {reLoginWithToken} from "../features/user/UserSlice.js";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
-function OrganizerBookingManagerLayout({children}) {
+function OrganizerBookingManagerLayout({ children }) {
     const dispatch = useDispatch();
-    const existsList = useSelector(selectExistsList);
-    useEffect(() => {
-        if (localStorage.getItem("token") !== null) {
-            dispatch(reLoginWithToken())
-        }
-    }, []);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(getExistsUsers());
-    }, []);
-    console.log(existsList)
-    
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            dispatch(reLoginWithToken(token));
+        } else {
+            navigate("/login");
+        }
+    }, [dispatch, navigate]);
+
     return (
         <div className="flex">
             <div className="w-2/6 text-white">
-                <BookingManagerSidebar/>
+                <BookingManagerSidebar />
             </div>
-            <div className="bg-white">
-                {
-                    children
-                }
-            </div>
+            <div className="bg-white">{children}</div>
         </div>
-    )
+    );
 }
 
 export default OrganizerBookingManagerLayout;

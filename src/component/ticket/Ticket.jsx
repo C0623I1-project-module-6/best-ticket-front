@@ -1,17 +1,15 @@
 import {CiClock2, CiLocationOn} from "react-icons/ci";
 import React, {useEffect, useState} from "react";
 import JsBarcode from "jsbarcode";
-import ReactPDF, {Document, Page, Text} from "@react-pdf/renderer";
+import {Document, Page, Text} from "@react-pdf/renderer";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
 const Ticket = (props) => {
-    console.log(props.dataSendMail)
     const [listTicketCode, setListTicketCode] = useState([]);
     const time = useFormatDateFull(props.dataSendMail.time);
     const timeBooking = useFormatDateFull(props.dataSendMail.timeBooking);
     const {formatCurrency} = useFormatCurrency()
-
     useEffect(() => {
         const splitTicketCodes = async () => {
             if (props.dataSendMail && props.dataSendMail.ticketCode) {
@@ -23,7 +21,6 @@ const Ticket = (props) => {
 
         splitTicketCodes();
     }, [props.dataSendMail]);
-    console.log(listTicketCode)
 
     useEffect(() => {
         listTicketCode.forEach(ticketCode => {
@@ -41,17 +38,17 @@ const Ticket = (props) => {
                                 <div>
                                     <p>Mã đơn hàng: {props.dataSendMail.bookingId}</p>
                                     <p>Được đặt bởi: {props.dataSendMail.nameUser} <br/> vào
-                                        lúc {timeBooking}
+                                        lúc {props.dataSendMail.timeBooking}
                                     </p>
                                 </div>
 
 
                             </div>
                             <div className="w-6/12 px-5 ">
-                                <div className=''>
+                                <div>
                                     <p>{props.dataSendMail.eventName}</p>
                                     <p className="flex items-center"><CiClock2
-                                        className="mr-2"/>Time: {time}</p>
+                                        className="mr-2"/>Time: {props.dataSendMail.time}</p>
                                     <p className="flex items-center"><CiLocationOn className="mr-2 text-xl"/>Nhà Văn hoá
                                         Thanh niên
                                         Thành phố Hồ Chí Minh <br/>4 Phạm Ngọc Thạch, Bến Nghé, Quận 1, Thành Phố
@@ -78,9 +75,9 @@ const Ticket = (props) => {
 
                         </div>
                     </Text>
-                    <Text render={({ pageNumber, totalPages }) => (
+                    <Text render={({pageNumber, totalPages}) => (
                         `${pageNumber} / ${totalPages}`
-                    )} fixed />
+                    )} fixed/>
                 </Page>
             </Document>
         </>
