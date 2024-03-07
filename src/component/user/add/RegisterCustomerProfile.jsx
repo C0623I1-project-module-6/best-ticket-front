@@ -5,9 +5,10 @@ import {
     registerCustomerProfile,
     selectProfileRegister,
     selectRegisterCustomerError,
-    selectRegisterCustomerSuccess, setRegisterProfileSuccess
+    selectRegisterCustomerSuccess,
+    setRegisterProfileSuccess
 } from "../../../features/user/CustomerSlice.js";
-import Avatar from "../Avatar.jsx";
+import AvatarUser from "../AvatarUser.jsx";
 import {FastField, Form, Formik} from "formik";
 import {Button, input} from "@material-tailwind/react";
 import InputProfile from "../../../ultility/customField/InputProfile.jsx";
@@ -17,6 +18,7 @@ import {FormGroup, Label} from "reactstrap";
 import LockModal from "../../auth/LockModal.jsx";
 import RemoveModal from "../../auth/RemoveModal.jsx";
 import {lockUser, logoutUser, removeUser} from "../../../features/user/UserSlice.js";
+import {selectUrlAvatar} from "../../../features/FileSlice.js";
 
 function RegisterCustomerProfile({
                                      userEdit,
@@ -30,6 +32,7 @@ function RegisterCustomerProfile({
                                      userRemove,
                                      phoneRegex,
                                      toastOptions,
+                                     urlAvatar,
                                  }) {
     console.log(userEdit)
     const navigate = useNavigate();
@@ -37,6 +40,7 @@ function RegisterCustomerProfile({
     const success = useSelector(selectRegisterCustomerSuccess);
     const error = useSelector(selectRegisterCustomerError);
     const customerRegister = useSelector(selectProfileRegister);
+
     const validationSchema = Yup.object().shape({
         fullName: Yup.string().required("This field is required."),
 
@@ -72,6 +76,7 @@ function RegisterCustomerProfile({
         receiptEmail: "",
         dateOfBirth: "",
         gender: "",
+        avatar: urlAvatar,
 
     }
     const handleLock = () => {
@@ -112,7 +117,7 @@ function RegisterCustomerProfile({
                         <Form className="w-screen overflow-y-auto" method="POST"
                               onSubmit={formikProps.handleSubmit}>
                             <FormGroup className="flex">
-                                <Avatar/>
+                                <AvatarUser/>
                                 <FormGroup className="w-3/4 p-10">
                                     <FormGroup className="border border-solid shadow-2xl rounded-md py-5 px-5 bg-white">
                                         <h2 className=" flex justify-center text-2xl font-serif leading-7 text-gray-900">

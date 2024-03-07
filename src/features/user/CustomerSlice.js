@@ -73,7 +73,9 @@ export const customerSlice = createSlice(
                     state.registerCustomerProfileSuccess = true;
                     state.loading = false;
                     state.value = action.payload.data;
+                    localStorage.removeItem("urlImage");
                     state.registerCustomerProfileError = false;
+
                 })
 
                 .addCase(editCustomerProfile.pending, (state) => {
@@ -90,7 +92,9 @@ export const customerSlice = createSlice(
                     state.editCustomerProfileSuccess = true;
                     state.loading = false;
                     state.value = action.payload.data;
+                    localStorage.removeItem("urlImage");
                     state.editCustomerProfileError = false;
+
                 })
         }
     }
