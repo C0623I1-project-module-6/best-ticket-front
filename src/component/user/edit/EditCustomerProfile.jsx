@@ -4,11 +4,13 @@ import {
     editCustomerProfile,
     selectCustomerProfileEdited,
     selectEditCustomerProfileError,
-    selectEditCustomerProfileSuccess, setEditCustomerProfileError, setEditCustomerProfileSuccess
+    selectEditCustomerProfileSuccess,
+    setEditCustomerProfileError,
+    setEditCustomerProfileSuccess
 } from "../../../features/user/CustomerSlice.js";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
-import Avatar from "../Avatar.jsx";
+import AvatarUser from "../AvatarUser.jsx";
 import {FastField, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {Button, input} from "@material-tailwind/react";
@@ -35,6 +37,7 @@ export default function EditCustomerProfile({
                                                 userRemove,
                                                 phoneRegex,
                                                 toastOptions,
+                                                urlAvatar,
                                             }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -43,6 +46,7 @@ export default function EditCustomerProfile({
     const customerEdited = useSelector(selectCustomerProfileEdited);
     const success = useSelector(selectEditCustomerProfileSuccess);
     const error = useSelector(selectEditCustomerProfileError);
+
     const {
         fullName: currentFullName,
         phoneNumber: currentPhoneNumber,
@@ -58,6 +62,7 @@ export default function EditCustomerProfile({
         receiptEmail: currentReceiptEmail,
         dateOfBirth: currentDateOfBirth,
         gender: currentGender,
+        avatar: urlAvatar,
 
     }
     const validationEditSchema = Yup.object().shape({
@@ -126,7 +131,7 @@ export default function EditCustomerProfile({
                         <Form className="w-screen " method="PUT"
                               onSubmit={formikProps.handleSubmit}>
                             <FormGroup className="flex">
-                                <Avatar/>
+                                <AvatarUser onchange={formikProps.handleChange}/>
                                 <FormGroup className="w-3/4 p-10">
                                     <FormGroup className="border border-solid shadow-2xl rounded-md py-5 px-5 bg-white">
                                         <h2 className=" flex justify-center text-2xl font-serif leading-7 text-gray-900">

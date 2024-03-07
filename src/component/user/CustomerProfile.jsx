@@ -10,11 +10,11 @@ import {
     selectCustomerReceiptEmails
 } from "../../features/user/ExistsSlice.js";
 import {Bounce} from "react-toastify";
+import {selectUrlAvatar} from "../../features/FileSlice.js";
 
 
 export default function CustomerProfile() {
     const userEdit = useSelector(selectUserEdit);
-    console.log(userEdit)
     const phoneNumbers = useSelector(selectCustomerPhoneNumbers);
     const idCards = useSelector(selectCustomerIdCards);
     const receiptEmails = useSelector(selectCustomerReceiptEmails);
@@ -23,6 +23,7 @@ export default function CustomerProfile() {
     const userLogout = useSelector(selectUserLogout);
     const userLock = useSelector(selectLockUser);
     const userRemove = useSelector(selectRemoveUser);
+    const urlAvatar= useSelector(selectUrlAvatar);
     const phoneRegex = /^0\d{9}$/;
     const toastOptions = {
         position: "top-right",
@@ -54,6 +55,7 @@ export default function CustomerProfile() {
                         userRemove={userRemove}
                         phoneRegex={phoneRegex}
                         toastOptions={toastOptions}
+                        urlAvatar={urlAvatar}
                     />
                 ) : (
                     <RegisterCustomerProfile
@@ -70,6 +72,7 @@ export default function CustomerProfile() {
                         userRemove={userRemove}
                         phoneRegex={phoneRegex}
                         toastOptions={toastOptions}
+                        urlAvatar={urlAvatar}
                     />
                 )
             }
