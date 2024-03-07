@@ -1,6 +1,6 @@
 import {Button} from "@material-tailwind/react";
 
-export default function Avatar(){
+export default function AvatarUser(){
     return(
         <div className="w-1/4">
             <div className="parent flex justify-center h-screen">
