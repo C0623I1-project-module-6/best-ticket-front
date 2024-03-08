@@ -73,7 +73,7 @@ const BookingManagerEventSummarize = () => {
         if (event) {
             const chartData = {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June'], datasets: [{
-                    label: 'Revenue', data: [1000, 2000, 1500, 3000, 2500, 4000], borderColor: 'green', fill: false,
+                    label: 'Revenue', data: [50, 100, 200, 300, 400], borderColor: 'green', fill: false,
                 },],
             };
 
@@ -82,7 +82,7 @@ const BookingManagerEventSummarize = () => {
                     x: {
                         display: true,
                     }, y: {
-                        display: true, beginAtZero: true, suggestedMax: 5000,
+                        display: true, beginAtZero: true, suggestedMax: 100,
                     },
                 },
             };
