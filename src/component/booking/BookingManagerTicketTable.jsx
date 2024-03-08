@@ -137,22 +137,10 @@ const BookingManagerTicketTable = (eventTime) => {
                 </tbody>
             </table>
         </div>
-        <div className="flex items-center justify-center h-20">
-            {bookings === null || bookings === "" || bookings === undefined || !eventTime ? (<div></div>) : (<Stack
-                spacing={2}
-            >
-                <Pagination
-                    count={totalPages || 0}
-                    color="primary"
-                    page={currentPage}
-                    onChange={(event, value) => setCurrentPage(value)}
-                />
-            </Stack>)}
-        </div>
-        <div className="my-2 rounded-l bg-[#F6F6F6] flex">
+        <div className="my-5 p-3 rounded-l bg-[#F6F6F6] flex">
             <div className="m-auto text-center flex">
-                <div className="my-2"><ImInfo/></div>
-                <div className="my-auto">
+                <div className="my-2 text-xl"><ImInfo/></div>
+                <div className="my-auto text-lg">
                     Thông tin của khách chọn hình thức giao vé và thu tiền tận nơi sẽ được cập nhật sau khi khách thanh
                     toán xong
                 </div>
