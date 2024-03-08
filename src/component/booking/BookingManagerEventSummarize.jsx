@@ -27,6 +27,8 @@ const BookingManagerEventSummarize = () => {
     const [serviceFee, setServiceFee] = useState(0);
     const [canceledTicketsCount, setCanceledTicketsCount] = useState(0);
     const [expiredTicketsCount, setExpiredTicketsCount] = useState(0);
+    const [sortByDate, setSortByDate] = useState('empty');
+    const [sortByMonth, setSortByMonth] = useState('empty');
 
     useEffect(() => {
         dispatch(getEventById(eventId));
@@ -41,38 +43,9 @@ const BookingManagerEventSummarize = () => {
     }, [dispatch, eventId]);
 
     useEffect(() => {
-        if (tickets && tickets.data && sortedTimes) {
-            let calculatedSoldTicketsTotalAmount = 0;
-            let countForSoldTickets = 0;
-            let countForCanceledTickets = 0;
-            let countForExpiredTickets = 0;
-            tickets.data.forEach((ticket) => {
-                const ticketTime = ticket.time.time;
-                if (
-                    ticket.status === "Success" &&
-                    sortedTimes.some((time) => time.time === ticketTime)
-                ) {
-                    countForSoldTickets += 1;
-                    calculatedSoldTicketsTotalAmount += ticket.ticketType.price;
-                } else if (ticket.status === "Canceled") {
-                    countForCanceledTickets += 1;
-                } else {
-                    countForExpiredTickets += 1;
-                }
-            });
-            setSoldTicketsCount(countForSoldTickets);
-            setSoldTicketsTotalAmount(calculatedSoldTicketsTotalAmount);
-            setServiceFee(8.8 / 100 + 15000 * countForSoldTickets);
-            setTotalAmount(calculatedSoldTicketsTotalAmount - serviceFee);
-            setCanceledTicketsCount(countForCanceledTickets);
-            setExpiredTicketsCount(countForExpiredTickets);
-        }
-    }, [serviceFee, tickets]);
-
-    useEffect(() => {
         if (event) {
             const chartData = {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June'], datasets: [{
+                labels: monthOptions, datasets: [{
                     label: 'Revenue', data: [50, 100, 200, 300, 400], borderColor: 'green', fill: false,
                 },],
             };
@@ -124,7 +97,9 @@ const BookingManagerEventSummarize = () => {
             );
         });
 
-    const dateOptions = sortedTimes
+    const filteredTimes = sortedTimes.filter((time) => time.time === sortByMonth);
+
+    const dateOptions = filteredTimes
         .slice()
         .sort((a, b) => {
             const dateA = new Date(a.time);
@@ -150,6 +125,46 @@ const BookingManagerEventSummarize = () => {
             );
         });
 
+    const handleMonthOptionChange = (selectedSortByMonth) => {
+        setSortByMonth(selectedSortByMonth);
+    };
+
+    const handleDateOptionChange = (selectedSortByDate) => {
+        setSortByDate(selectedSortByDate);
+    };
+
+    useEffect(() => {
+        if (tickets && tickets.data) {
+            let calculatedSoldTicketsTotalAmount = 0;
+            let countForSoldTickets = 0;
+            let countForCanceledTickets = 0;
+            let countForExpiredTickets = 0;
+            tickets.data.forEach((ticket) => {
+                let ticketTime = sortByDate;
+                if (ticket.event.id === event.id) {
+                    if (
+                        ticket.status === "Success" &&
+                        ticket.time.time === ticketTime &&
+                        (ticket.bookingDetail !== "")
+                    ) {
+                        countForSoldTickets += 1;
+                        calculatedSoldTicketsTotalAmount += ticket.ticketType.price;
+                    } else if (ticket.status === "Canceled" && ticket.time.time === ticketTime) {
+                        countForCanceledTickets += 1;
+                    } else if (ticket.time.time === ticketTime) {
+                        countForExpiredTickets += 1;
+                    }
+                }
+            });
+            setSoldTicketsCount(countForSoldTickets);
+            setSoldTicketsTotalAmount(calculatedSoldTicketsTotalAmount);
+            setServiceFee(8.8 / 100 + 15000 * countForSoldTickets);
+            setTotalAmount(calculatedSoldTicketsTotalAmount - (8.8 / 100 + 15000 * countForSoldTickets));
+            setCanceledTicketsCount(countForCanceledTickets);
+            setExpiredTicketsCount(countForExpiredTickets);
+        }
+    }, [event.id, filteredTimes, serviceFee, sortByDate, tickets]);
+    
     return (<>
         <div className="mt-16 mb-10 mx-[10%] border border-gray-300 rounded-xl text-black">
             <div className="flex">
@@ -178,12 +193,16 @@ const BookingManagerEventSummarize = () => {
             <div className="bg-[#F1F1F1] mb-5 mx-16 flex">
                 <div className="p-2">Hiển thị</div>
                 <div className="py-2">
-                    <select className="bg-white">
+                    <select className="bg-white" value={sortByMonth}
+                            onChange={(e) => handleMonthOptionChange(e.target.value)}>
+                        <option value="empty">--Chọn tháng--</option>
                         {monthOptions}
                     </select>
                 </div>
                 <div className="px-2 py-2">
-                    <select className="bg-white">
+                    <select className="bg-white" value={sortByDate}
+                            onChange={(e) => handleDateOptionChange(e.target.value)}>
+                        <option value="empty">--Vui lòng chọn ngày--</option>
                         {dateOptions}
                     </select>
                 </div>
@@ -214,17 +233,11 @@ const BookingManagerEventSummarize = () => {
         <div className="bg-[#F1F1F1] mb-10 mx-[10%] flex text-black border rounded-lg">
             <div className="my-3 p-2 font-bold">Từ</div>
             <div className="my-3 py-2">
-                <select className="bg-white">
-                    <option>01/2024</option>
-                    <option>02/2024</option>
-                </select>
+                <input type="date" className="bg-gray-500 rounded"/>
             </div>
             <div className="my-3 py-2 pl-2 font-bold">Đến</div>
             <div className="my-3 px-2 py-2">
-                <select className="bg-white">
-                    <option>01/2024</option>
-                    <option>02/2024</option>
-                </select>
+                <input type="date" className="bg-gray-500 rounded"/>
             </div>
             <button className="bg-[#ADD260] border m-3 shadow-lg shadow-[#829E48] rounded-lg">
                 <div className="px-5 text-white">Chọn</div>

@@ -150,13 +150,16 @@ const BookingManagerOrderTable = (eventTime) => {
             }
         }
     };
+
     const showModal = () => {
         setIsModalOpen(true);
     };
+
     const handleOk = () => {
         sendEmail();
         handleCancel();
     };
+
     const handleCancel = () => {
         setIsModalOpen(false);
         setSelectAllChecked(false);

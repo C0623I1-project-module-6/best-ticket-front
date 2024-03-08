@@ -48,6 +48,7 @@ export function BookingManagerEventBookings() {
         });
 
     const filteredTimes = sortedTimes.filter((time) => time.time === sortByMonth);
+
     const dateOptions = filteredTimes
         .sort((a, b) => {
             const dateA = new Date(a.time);
