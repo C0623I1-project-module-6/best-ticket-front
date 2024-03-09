@@ -37,7 +37,6 @@ export async function loginWithToken() {
     }).catch((e) => {
         response = e;
     })
-    console.log(response)
     return response;
 }
 
