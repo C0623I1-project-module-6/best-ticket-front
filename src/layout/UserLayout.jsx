@@ -5,11 +5,15 @@ import {reLoginWithToken} from "../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 
 import {getExistsUsers, selectExistsList} from "../features/user/ExistsSlice.js";
+import {getTicketTypes} from "../features/TicketTypeSlice.js";
 
 
 const UserLayout = ({children}) => {
     const dispatch = useDispatch();
     const existsList = useSelector(selectExistsList);
+    const showTicketType = () => {
+        dispatch(getTicketTypes())
+    }
     useEffect(() => {
         if (localStorage.getItem("token") !== null) {
             dispatch(reLoginWithToken())
@@ -17,6 +21,7 @@ const UserLayout = ({children}) => {
     }, []);
 
     useEffect(() => {
+        showTicketType();
         dispatch(getExistsUsers())
     }, []);
     console.log(existsList)

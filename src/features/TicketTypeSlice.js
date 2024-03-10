@@ -3,7 +3,7 @@ import {showAllTicketType} from "../api/TicketTypeApi.js";
 
 
 const initialState = {
-  ticketTypes: [],
+  ticketTypes: JSON.parse(localStorage.getItem("ticketTypes")),
   ticketType: null,
   loading: false,
   success: false,
@@ -51,6 +51,7 @@ export const TicketTypeSlice = createSlice({
         state.success = true;
         state.loading = false;
         state.ticketTypes = action.payload;
+        localStorage.setItem("ticketTypes", JSON.stringify(action.payload));
         state.error = false;
       })
 

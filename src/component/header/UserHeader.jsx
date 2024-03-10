@@ -25,6 +25,7 @@ const UserHeader = () => {
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userLogout = useSelector(selectUserLogout);
+    console.log(userLogout)
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
@@ -51,11 +52,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    useEffect(() => {
-        if (userRole !== null && userRole.includes(ADMIN)) {
-            navigate("/admin");
-        }
-    }, [userRole]);
+    // useEffect(() => {
+    //     if (userRole !== null && userRole.includes(ADMIN)) {
+    //         navigate("/admin");
+    //     }
+    // }, [userRole]);
 
     const loginButton = () => {
         return (
@@ -178,6 +179,7 @@ const UserHeader = () => {
             theme: "light",
             transition: Bounce,
         });
+        localStorage.removeItem("user");
         navigate("/");
     }
 

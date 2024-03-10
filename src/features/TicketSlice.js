@@ -13,7 +13,7 @@ const initialState = {
     tickets: [],
     ticket: null,
     ticketForTime: null,
-    totalElementsOfTicket: null,
+    ticketIsBeingSelected : [{ticketCode: "5411-7755-1545"}, {ticketCode: "2489-6202-7687"}],
     loading: false,
     success: false,
     error: null,
@@ -162,7 +162,6 @@ export const TicketSlice = createSlice({
                 state.success = true;
                 state.loading = false;
                 state.ticketForTime = action.payload;
-                state.totalElementsOfTicket = action.payload.data.totalElements;
                 state.error = false;
             })
 
@@ -194,4 +193,5 @@ export const selectError = (state) => state.ticket.error;
 export const selectShowTicket = (state) => state.ticket.tickets;
 export const selectShowTicketByTimeId = (state) => state.ticket.ticketForTime;
 export const selectShowTicketByEventId = (state) => state.ticket.ticketForEvent;
+export const selectShowTicketIsBeingSelected = (state) => state.ticket.ticketIsBeingSelected;
 export default TicketSlice.reducer;

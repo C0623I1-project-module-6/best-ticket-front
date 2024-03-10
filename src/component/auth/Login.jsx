@@ -19,6 +19,7 @@ function Login() {
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
+    console.log(history.state.key)
     const toastOptions = {
         position: "top-right",
         autoClose: 2000,
@@ -46,13 +47,17 @@ function Login() {
             toast.success("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             dispatch(getOrganizerByUserId(user.id));
             dispatch(fetchGetUser(user.id));
-            navigate("/");
+            // if (history.state.key !== "9nku26w4") {
+                navigate("/");
+            // } else {
+            //     history.back();
+            // }
         }
         return () => {
             dispatch(setLoginSuccess());
         };
-    }, [loginSuccess,user]);
-
+    }, [loginSuccess, user]);
+    console.log(history.state.key)
     useEffect(() => {
         if (loginError) {
             toast.error("🦄 Xác thực không thành công. Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!", toastOptions)
