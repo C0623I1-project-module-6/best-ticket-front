@@ -1,19 +1,22 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {
     showAllTicket,
+    showAllTicketByCustomerId,
     showAllTicketFinished,
     showAllTicketUpcoming,
     showTicketByEventId,
     showTicketById,
-    showTicketByTimeId, updateStatusFail,
+    showTicketByTimeId,
+    updateStatusFail,
     updateStatusSuccess
 } from "../api/TicketApi";
 
 const initialState = {
     tickets: [],
     ticket: null,
+    ticketsByCustomerId: [],
     ticketForTime: null,
-    ticketIsBeingSelected : [{ticketCode: "5411-7755-1545"}, {ticketCode: "2489-6202-7687"}],
+    ticketIsBeingSelected: [{ticketCode: "5411-7755-1545"}, {ticketCode: "2489-6202-7687"}],
     loading: false,
     success: false,
     error: null,
@@ -24,6 +27,14 @@ export const getTicketsByStatusFinished = createAsyncThunk(
     "tickets/showAllTicketFinished",
     async (data) => {
         const response = await showAllTicketFinished(data);
+        return response.data;
+    }
+);
+export const getTicketsByCustomerId = createAsyncThunk(
+    "tickets/showAllTicketByCustomerId",
+    async (customerId) => {
+        const response = await showAllTicketByCustomerId(customerId);
+        console.log(response)
         return response.data;
     }
 );
@@ -129,6 +140,16 @@ export const TicketSlice = createSlice({
                 state.error = false;
             })
 
+            .addCase(getTicketsByCustomerId.pending, handlePending)
+            .addCase(getTicketsByCustomerId.rejected, handleRejected)
+            .addCase(getTicketsByCustomerId.fulfilled, (state, action) => {
+                state.success = true;
+                state.loading = false;
+                state.ticketsByCustomerId = action.payload;
+                console.log(action.payload)
+                state.error = false;
+            })
+
             .addCase(getTickets.pending, handlePending)
             .addCase(getTickets.rejected, handleRejected)
             .addCase(getTickets.fulfilled, (state, action) => {
@@ -152,7 +173,7 @@ export const TicketSlice = createSlice({
             .addCase(getTicketByEventId.fulfilled, (state, action) => {
                 state.success = true;
                 state.loading = false;
-                state.ticketForEvent= action.payload;
+                state.ticketForEvent = action.payload;
                 state.error = false;
             })
 
@@ -191,6 +212,7 @@ export const {setLoading, setError, setSuccess} = TicketSlice.actions;
 export const selectLoading = (state) => state.ticket.loading;
 export const selectError = (state) => state.ticket.error;
 export const selectShowTicket = (state) => state.ticket.tickets;
+export const selectShowTicketsByCustomerId = (state) => state.ticket.ticketsByCustomerId;
 export const selectShowTicketByTimeId = (state) => state.ticket.ticketForTime;
 export const selectShowTicketByEventId = (state) => state.ticket.ticketForEvent;
 export const selectShowTicketIsBeingSelected = (state) => state.ticket.ticketIsBeingSelected;
