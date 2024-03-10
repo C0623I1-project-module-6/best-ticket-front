@@ -14,6 +14,7 @@ import InputRegister from "../../ultility/customField/InputRegister.jsx";
 import {FormGroup} from "reactstrap";
 import * as Yup from "yup";
 import {useEffect} from "react";
+import avatar from "../../assets/img/User.png"
 
 function Register() {
     const navigate = useNavigate();

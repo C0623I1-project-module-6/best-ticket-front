@@ -73,6 +73,7 @@ export async function loginGoogle(user) {
     }).catch((e) => {
         response = e;
     })
+    console.log(response)
     return response;
 }
 
@@ -92,6 +93,7 @@ export async function logout(user) {
     }).catch((e) => {
         response = e;
     })
+    console.log(response)
     return response;
 }
 
@@ -110,6 +112,7 @@ export async function getUser(userId) {
     }).catch((e) => {
         response = e;
     })
+    console.log(response)
     return response;
 }
 

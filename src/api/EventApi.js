@@ -7,7 +7,7 @@ export const findAllEvents = async (currentPage) => {
     try {
         result = await axios.get(`${BEST_TICKET_API}events?page=${currentPage}&pageSize=20`, {
             headers: {
-                Authorization: "Bearer " + token,
+                Authorization: `Bearer ${token}`,
             },
         });
     } catch (e) {

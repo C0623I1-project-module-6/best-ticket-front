@@ -27,6 +27,10 @@ const BookingManagerEventSummarize = () => {
     const [serviceFee, setServiceFee] = useState(0);
     const [canceledTicketsCount, setCanceledTicketsCount] = useState(0);
     const [expiredTicketsCount, setExpiredTicketsCount] = useState(0);
+    const [sortByDate, setSortByDate] = useState('empty');
+    const [sortByMonth, setSortByMonth] = useState('empty');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     useEffect(() => {
         dispatch(getEventById(eventId));
@@ -40,40 +44,31 @@ const BookingManagerEventSummarize = () => {
         dispatch(getTicketByEventId(eventId));
     }, [dispatch, eventId]);
 
-    useEffect(() => {
-        if (tickets && tickets.data && sortedTimes) {
-            let calculatedSoldTicketsTotalAmount = 0;
-            let countForSoldTickets = 0;
-            let countForCanceledTickets = 0;
-            let countForExpiredTickets = 0;
-            tickets.data.forEach((ticket) => {
-                const ticketTime = ticket.time.time;
-                if (
-                    ticket.status === "Success" &&
-                    sortedTimes.some((time) => time.time === ticketTime)
-                ) {
-                    countForSoldTickets += 1;
-                    calculatedSoldTicketsTotalAmount += ticket.ticketType.price;
-                } else if (ticket.status === "Canceled") {
-                    countForCanceledTickets += 1;
-                } else {
-                    countForExpiredTickets += 1;
-                }
-            });
-            setSoldTicketsCount(countForSoldTickets);
-            setSoldTicketsTotalAmount(calculatedSoldTicketsTotalAmount);
-            setServiceFee(8.8 / 100 + 15000 * countForSoldTickets);
-            setTotalAmount(calculatedSoldTicketsTotalAmount - serviceFee);
-            setCanceledTicketsCount(countForCanceledTickets);
-            setExpiredTicketsCount(countForExpiredTickets);
-        }
-    }, [serviceFee, tickets]);
+    const handleStartDateChange = (selectedStartDate) => {
+        setStartDate(selectedStartDate);
+        console.log(startDate)
+    };
+
+    const handleEndDateChange = (selectedEndDate) => {
+        setEndDate(selectedEndDate);
+        console.log(endDate)
+    };
 
     useEffect(() => {
-        if (event) {
+        if (event && startDate && endDate) {
+            const filteredDates = dateOptions.filter((option) => {
+                const formattedDate = option.props.children;
+                const [day, month] = formattedDate.split('/');
+                const date = new Date();
+                date.setFullYear(new Date().getFullYear(), Number(month) - 1, Number(day));
+                return date >= new Date(startDate) && date <= new Date(endDate);
+            });
+
+            const labels = filteredDates.map((option) => option.props.children);
+
             const chartData = {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June'], datasets: [{
-                    label: 'Revenue', data: [1000, 2000, 1500, 3000, 2500, 4000], borderColor: 'green', fill: false,
+                labels: labels, datasets: [{
+                    label: 'Revenue', data: [50, 100, 200, 300, 400], borderColor: 'green', fill: false,
                 },],
             };
 
@@ -82,7 +77,7 @@ const BookingManagerEventSummarize = () => {
                     x: {
                         display: true,
                     }, y: {
-                        display: true, beginAtZero: true, suggestedMax: 5000,
+                        display: true, beginAtZero: true, suggestedMax: 100,
                     },
                 },
             };
@@ -97,7 +92,7 @@ const BookingManagerEventSummarize = () => {
                 lineChart.destroy();
             };
         }
-    }, [event]);
+    }, [endDate, event, startDate]);
 
     let sortedTimes = [];
     if (times && times.data) {
@@ -124,7 +119,9 @@ const BookingManagerEventSummarize = () => {
             );
         });
 
-    const dateOptions = sortedTimes
+    const filteredTimes = sortedTimes.filter((time) => time.time === sortByMonth);
+
+    const dateOptions = filteredTimes
         .slice()
         .sort((a, b) => {
             const dateA = new Date(a.time);
@@ -150,6 +147,63 @@ const BookingManagerEventSummarize = () => {
             );
         });
 
+    const handleMonthOptionChange = (selectedSortByMonth) => {
+        setSortByMonth(selectedSortByMonth);
+    };
+
+    const handleDateOptionChange = (selectedSortByDate) => {
+        setSortByDate(selectedSortByDate);
+    };
+
+    let ticketTypeList = [];
+    if (tickets && tickets.data) {
+        const ticketTypeSet = new Set();
+        ticketTypeList = tickets.data.reduce((types, ticket) => {
+            if (!ticketTypeSet.has(ticket.ticketType.id)) {
+                ticketTypeSet.add(ticket.ticketType.id);
+                types.push(ticket.ticketType);
+            }
+            return types;
+        }, []);
+    }
+
+    useEffect(() => {
+        if (tickets && tickets.data) {
+            let calculatedSoldTicketsTotalAmount = 0;
+            let countForSoldTickets = 0;
+            let countForCanceledTickets = 0;
+            let countForExpiredTickets = 0;
+            tickets.data.forEach((ticket) => {
+                let ticketTime = sortByDate;
+                if (ticket.event.id === event.id) {
+                    if (
+                        ticket.status === "Success" &&
+                        ticket.time.time === ticketTime &&
+                        (ticket.bookingDetail !== "")
+                    ) {
+                        countForSoldTickets += 1;
+                        calculatedSoldTicketsTotalAmount += ticket.ticketType.price;
+                    } else if (ticket.status === "Canceled" && ticket.time.time === ticketTime) {
+                        countForCanceledTickets += 1;
+                    } else if (ticket.time.time === ticketTime) {
+                        countForExpiredTickets += 1;
+                    }
+                }
+            });
+            setSoldTicketsCount(countForSoldTickets);
+            setSoldTicketsTotalAmount(calculatedSoldTicketsTotalAmount);
+            setServiceFee(8.8 / 100 + 15000 * countForSoldTickets);
+            setTotalAmount(calculatedSoldTicketsTotalAmount - (8.8 / 100 + 15000 * countForSoldTickets));
+            setCanceledTicketsCount(countForCanceledTickets);
+            setExpiredTicketsCount(countForExpiredTickets);
+        }
+    }, [event.id, filteredTimes, serviceFee, sortByDate, tickets]);
+
+    let countForSoldTicketsByTicketType = 0;
+    let countForProcessedTicketsByTicketType = 0;
+    let countForSoldTicketsByAllTicketType = 0;
+    let countForProcessedTicketsByAllTicketType = 0;
+
     return (<>
         <div className="mt-16 mb-10 mx-[10%] border border-gray-300 rounded-xl text-black">
             <div className="flex">
@@ -161,11 +215,11 @@ const BookingManagerEventSummarize = () => {
                     </div>
                 </div>
                 <div className="w-3/6 my-14">
-                    <div className="text-xl pb-2">{event !== null ? event.name : <div>Loading...</div>}</div>
-                    <div>{event !== null ? (<div className="flex">
+                    <div className="text-xl pb-2">{event.name}</div>
+                    <div className="flex">
                         <div className="pr-1"><SlLocationPin/></div>
                         <div>{event.location.address}, {event.location.district}, {event.location.province} </div>
-                    </div>) : <div>Loading...</div>}</div>
+                    </div>
                 </div>
                 <div className="m-14 pl-24">
                     <button className="border bg-gray-200" onClick={() => {
@@ -178,12 +232,16 @@ const BookingManagerEventSummarize = () => {
             <div className="bg-[#F1F1F1] mb-5 mx-16 flex">
                 <div className="p-2">Hiển thị</div>
                 <div className="py-2">
-                    <select className="bg-white">
+                    <select className="bg-white" value={sortByMonth}
+                            onChange={(e) => handleMonthOptionChange(e.target.value)}>
+                        <option value="empty">--Chọn tháng--</option>
                         {monthOptions}
                     </select>
                 </div>
                 <div className="px-2 py-2">
-                    <select className="bg-white">
+                    <select className="bg-white" value={sortByDate}
+                            onChange={(e) => handleDateOptionChange(e.target.value)}>
+                        <option value="empty">--Vui lòng chọn ngày--</option>
                         {dateOptions}
                     </select>
                 </div>
@@ -214,17 +272,13 @@ const BookingManagerEventSummarize = () => {
         <div className="bg-[#F1F1F1] mb-10 mx-[10%] flex text-black border rounded-lg">
             <div className="my-3 p-2 font-bold">Từ</div>
             <div className="my-3 py-2">
-                <select className="bg-white">
-                    <option>01/2024</option>
-                    <option>02/2024</option>
-                </select>
+                <input type="date" className="bg-gray-500 rounded" value={startDate}
+                       onChange={(e) => handleStartDateChange(e.target.value)}/>
             </div>
             <div className="my-3 py-2 pl-2 font-bold">Đến</div>
             <div className="my-3 px-2 py-2">
-                <select className="bg-white">
-                    <option>01/2024</option>
-                    <option>02/2024</option>
-                </select>
+                <input type="date" className="bg-gray-500 rounded" value={endDate}
+                       onChange={(e) => handleEndDateChange(e.target.value)}/>
             </div>
             <button className="bg-[#ADD260] border m-3 shadow-lg shadow-[#829E48] rounded-lg">
                 <div className="px-5 text-white">Chọn</div>
@@ -285,40 +339,35 @@ const BookingManagerEventSummarize = () => {
                 </tr>
                 </thead>
                 <tbody className="text-right text-black">
+                {ticketTypeList !== [] ? (ticketTypeList.map((ticketType) => {
+                    countForSoldTicketsByTicketType = 0;
+                    countForProcessedTicketsByTicketType = 0;
+                    tickets.data.forEach((ticket) => {
+                        if (ticket.ticketType.name === ticketType.name && ticket.time.time === sortByDate && ticket.status === "Success") {
+                            countForSoldTicketsByTicketType++;
+                            countForProcessedTicketsByTicketType++;
+                        }
+                    });
+                    countForSoldTicketsByAllTicketType += countForSoldTicketsByTicketType;
+                    countForProcessedTicketsByAllTicketType += countForProcessedTicketsByTicketType;
+                    return (
+                        <tr key={ticketType.id}>
+                            <td className="text-center">
+                                <input type="checkbox" className="bg-white"/>
+                            </td>
+                            <td>{ticketType.name}</td>
+                            <td>{ticketType.price}</td>
+                            <td>{countForSoldTicketsByTicketType}</td>
+                            <td>{countForProcessedTicketsByTicketType}</td>
+                            <td>{countForProcessedTicketsByTicketType}</td>
+                        </tr>
+                    );
+                })) : <div>Loading..</div>}
                 <tr>
-                    <td className="border border-[#DFDFDF] text-center">
-                        <input
-                            type="checkbox"
-                            className="bg-white"
-                        />
-                    </td>
-                    <td className="border border-[#DFDFDF] text-[#8AB447]">Vip</td>
-                    <td className="border border-[#DFDFDF]">1,000</td>
-                    <td className="border border-[#DFDFDF]">0</td>
-                    <td className="border border-[#DFDFDF]">0</td>
-                    <td className="border border-[#DFDFDF]">0</td>
-                </tr>
-                <tr>
-                    <td className="border border-[#DFDFDF] text-center">
-                        <input
-                            type="checkbox"
-                            className="bg-white"
-                        />
-                    </td>
-                    <td className="border border-[#DFDFDF] text-[#8AB447]">Nhà nghèo</td>
-                    <td className="border border-[#DFDFDF]">0</td>
-                    <td className="border border-[#DFDFDF]">0</td>
-                    <td className="border border-[#DFDFDF]">0</td>
-                    <td className="border border-[#DFDFDF]">0</td>
-                </tr>
-                <tr>
-                    <td colSpan="3"
-                        className="bg-[#F2F2F2] border border-[#DFDFDF] text-left font-bold">Tổng
-                        cộng
-                    </td>
-                    <td className="bg-[#F2F2F2] border border-[#DFDFDF] font-bold">0</td>
-                    <td className="bg-[#F2F2F2] border border-[#DFDFDF] font-bold">0</td>
-                    <td className="bg-[#F2F2F2] border border-[#DFDFDF] font-bold">0</td>
+                    <td colSpan="3" className="bg-[#F2F2F2] border border-[#DFDFDF] text-left font-bold">Tổng cộng</td>
+                    <td className="bg-[#F2F2F2] border border-[#DFDFDF] font-bold">{countForSoldTicketsByAllTicketType}</td>
+                    <td className="bg-[#F2F2F2] border border-[#DFDFDF] font-bold">{countForProcessedTicketsByAllTicketType}</td>
+                    <td className="bg-[#F2F2F2] border border-[#DFDFDF] font-bold">{countForSoldTicketsByAllTicketType}</td>
                 </tr>
                 </tbody>
             </table>

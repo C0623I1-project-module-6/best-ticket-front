@@ -11,11 +11,9 @@ import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 
 import {logoutUser, selectUserLogin, selectUserLogout, selectUserRole} from "../../features/user/UserSlice.js";
-import avatar from "../../assets/img/User.png"
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
-
-import {ADMIN} from "../../ultility/AppConstant.js"
+import {ADMIN} from "../../ultility/AppConstant.js";
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -68,10 +66,8 @@ const UserHeader = () => {
                     <PopoverHandler>
                         <Avatar
                             size="sm"
-                            alt={avatar}
                             src={user.avatar}
-                            className="border border-green-500 shadow-xl shadow-green-900/20 ring-4 ring-green-500/30"
-                        />
+                            className="border border-green-500 shadow-xl shadow-green-900/20 ring-4 ring-green-500/30"/>
                     </PopoverHandler>
                     <PopoverContent className="w-48 p-1">
                         <div className="flex-col w-full gap-3">
