@@ -10,7 +10,13 @@ import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 
-import {logoutUser, selectUserLogin, selectUserLogout, selectUserRole} from "../../features/user/UserSlice.js";
+import {
+    logoutUser,
+    selectUserEdit,
+    selectUserLogin,
+    selectUserLogout,
+    selectUserRole
+} from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
 import {ADMIN} from "../../ultility/AppConstant.js";
@@ -23,6 +29,7 @@ const UserHeader = () => {
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userLogout = useSelector(selectUserLogout);
+    const userEdit = useSelector(selectUserEdit);
     const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
@@ -49,11 +56,11 @@ const UserHeader = () => {
             await setTheme("dark")
         }
     }
-    useEffect(() => {
-        if (userRole !== null && userRole.includes(ADMIN)) {
-            navigate("/admin");
-        }
-    }, [userRole]);
+    // useEffect(() => {
+    //     if (userRole !== null && userRole.includes(ADMIN)) {
+    //         navigate("/admin");
+    //     }
+    // }, [userRole]);
 
     const loginButton = () => {
         return (
@@ -174,6 +181,7 @@ const UserHeader = () => {
             theme: "light",
             transition: Bounce,
         });
+        localStorage.removeItem("user");
         navigate("/");
     }
 
@@ -223,7 +231,7 @@ const UserHeader = () => {
                     <div className="cursor-pointer flex items-center gap-3 hover:text-amber-400"
                          onClick={() => {
                              if (user !== null) {
-                                 navigate(`/my-ticket/${user.id}`);
+                                 navigate(`/my-ticket/${userEdit.customer.id}`);
                              } else {
                                  navigate("/login");
                              }

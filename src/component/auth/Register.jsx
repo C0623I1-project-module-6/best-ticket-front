@@ -24,9 +24,9 @@ function Register() {
     const phoneNumbers = useSelector(selectCustomerPhoneNumbers);
     const success = useSelector(selectRegisterSuccess);
     const error = useSelector(selectRegisterError);
-    const register = useSelector(selectUserRegister);
     const regexPassword = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
     const regexPhoneNumber = /^0\d{9}$/;
+    console.log(history.state)
     const toastOptions = {
         position: "top-right",
         autoClose: 2000,

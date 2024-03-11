@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getTicketsByStatusFinished, getTicketsByStatusUpcoming, selectShowTicket} from "../../features/TicketSlice.js";
+import {
+    getTicketsByCustomerId,
+    getTicketsByStatusUpcoming,
+    selectShowTicketsByCustomerId
+} from "../../features/TicketSlice.js";
 import JsBarcode from "jsbarcode";
 import {NavLink, useParams} from "react-router-dom";
 import img from "../../assets/img/image/main.png"
@@ -8,10 +12,9 @@ import img from "../../assets/img/image/main.png"
 function TicketDetails(props) {
     const customerId = useParams().customerId;
     const dispatch = useDispatch();
-    const tickets = useSelector(selectShowTicket)
+    const tickets = useSelector(selectShowTicketsByCustomerId);
     const [activeButton1, setActiveButton1] = useState("");
-
-    console.log(tickets)
+    // console.log(tickets)
 
     const arg = {
         customerId: customerId,
@@ -20,7 +23,7 @@ function TicketDetails(props) {
 
 
     useEffect(() => {
-        tickets.data?.forEach(ticket => {
+         tickets.data.content.forEach(ticket => {
             JsBarcode(`#barcode-${ticket.ticketCode}`, ticket.ticketCode);
         })
     }, [tickets.data])
@@ -33,6 +36,7 @@ function TicketDetails(props) {
                         activeButton1 === 'upcoming' ? 'bg-[#2DC275] text-black' : 'bg-[#5D616A] text-black'
                     }`}
                             onClick={() => {
+                                console.log(activeButton1)
                                 setActiveButton1('upcoming');
                                 dispatch(getTicketsByStatusUpcoming(arg));
                             }}
@@ -42,16 +46,17 @@ function TicketDetails(props) {
                         activeButton1 === 'finished' ? 'bg-[#2DC275] text-black' : 'bg-[#5D616A] text-black'
                     }`}
                             onClick={() => {
+                                console.log(activeButton1)
                                 setActiveButton1('finished');
-                                dispatch(getTicketsByStatusFinished(arg));
+                                dispatch(getTicketsByCustomerId(customerId));
                             }}
                     >
                         Finished
                     < /button>
                 </div>
 
-                {tickets.data?.length > 0 ? (
-                    tickets.data.map((ticket, index) => (
+                {tickets.data.content.length > 0 ? (
+                    tickets.data.content.map((ticket, index) => (
                         <div style={{border: "1px solid black"}} className="flex py-3 px-5 h-full" key={ticket.id}>
                             <div className="left w-2/12 border-r ">
                                 {index + 1}
