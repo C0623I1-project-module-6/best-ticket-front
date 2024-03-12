@@ -33,8 +33,8 @@ const UserHeader = () => {
     const userEdit = useSelector(selectUserEdit);
     useEffect(() => {
         if (userEdit !== null) {
-            const customerId = userEdit.customer.id;
-            dispatch(getTicketsByCustomerId(customerId));
+            // const customerId = userEdit.customer.id;
+            // dispatch(getTicketsByCustomerId(customerId));
         }
     }, []);
 

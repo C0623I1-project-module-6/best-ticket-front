@@ -55,19 +55,9 @@ const BookingManagerEventSummarize = () => {
     };
 
     useEffect(() => {
-        if (event && startDate && endDate) {
-            const filteredDates = dateOptions.filter((option) => {
-                const formattedDate = option.props.children;
-                const [day, month] = formattedDate.split('/');
-                const date = new Date();
-                date.setFullYear(new Date().getFullYear(), Number(month) - 1, Number(day));
-                return date >= new Date(startDate) && date <= new Date(endDate);
-            });
-
-            const labels = filteredDates.map((option) => option.props.children);
-
+        if (event) {
             const chartData = {
-                labels: labels, datasets: [{
+                labels: ["Jan", "Feb", "March", "April"], datasets: [{
                     label: 'Revenue', data: [50, 100, 200, 300, 400], borderColor: 'green', fill: false,
                 },],
             };
