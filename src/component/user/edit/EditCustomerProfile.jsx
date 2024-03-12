@@ -19,6 +19,7 @@ import {FormGroup, Label} from "reactstrap";
 import {lockUser, logoutUser, removeUser} from "../../../features/user/UserSlice.js";
 import LockModal from "../../auth/LockModal.jsx";
 import RemoveModal from "../../auth/RemoveModal.jsx";
+import {selectUrlAvatar} from "../../../features/FileSlice.js";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -37,7 +38,6 @@ export default function EditCustomerProfile({
                                                 userRemove,
                                                 phoneRegex,
                                                 toastOptions,
-                                                urlAvatar,
                                             }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -46,7 +46,8 @@ export default function EditCustomerProfile({
     const customerEdited = useSelector(selectCustomerProfileEdited);
     const success = useSelector(selectEditCustomerProfileSuccess);
     const error = useSelector(selectEditCustomerProfileError);
-
+    const urlAvatar=useSelector(selectUrlAvatar);
+    console.log(urlAvatar)
     const {
         fullName: currentFullName,
         phoneNumber: currentPhoneNumber,
@@ -200,9 +201,6 @@ export default function EditCustomerProfile({
                                                     label="Email nhận vé"
                                                     placeholder="bestticket@gmail.com"
                                                 />
-                                                <p className="mt-2"><a className="text-green-700" href="#">
-                                                    * Click để gửi lại mail xác thực.</a>
-                                                </p>
                                             </FormGroup>
                                             <FormGroup>
                                                 <Label htmlFor="dateOfBirth"
