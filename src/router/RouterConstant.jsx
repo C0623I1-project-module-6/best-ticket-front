@@ -60,13 +60,14 @@ export const ROUT_DATA = [
     {path: "/event/id/ticket-booking/id", element: TicketBooking, layout: UserLayout},
     {path: "/profile", element: CustomerProfile , layout: UserLayout},
     {path: "/my-event/legal", element: OrganizerProfile, layout: OrganizerLayout},
+    {path: "/my-event/legal/createdEvent", element: CreatedEvent, layout: OrganizerLayout},
     {path: "*", element: NotFoundPage},
 
 
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
 
-    {path: "/my-event/legal/createdEvent", element: CreatedEvent, layout: OrganizerLayout},
+
     {path: "/event/:id", element: EventDetail, layout: UserLayout},
     {path: "/event/:param/ticket-booking/:param", element: TicketBooking, layout: UserLayout},
 

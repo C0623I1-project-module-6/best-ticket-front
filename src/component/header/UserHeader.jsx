@@ -17,9 +17,9 @@ import {
     selectUserLogout,
     selectUserRole
 } from "../../features/user/UserSlice.js";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
-import {ADMIN} from "../../ultility/AppConstant.js";
+import {toastOptions} from "../../ultility/toastOptions.js";
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -170,17 +170,7 @@ const UserHeader = () => {
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
-        toast('🦄 Logout success!', {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        });
+        toast('🦄 Hẹn gặp lại!', toastOptions);
         localStorage.removeItem("user");
         navigate("/");
     }

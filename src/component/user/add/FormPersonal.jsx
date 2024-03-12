@@ -18,8 +18,9 @@ import {
     selectPersonTaxCodes
 } from "../../../features/user/ExistsSlice.js";
 import {useEffect} from "react";
+import {toastOptions} from "../../../ultility/toastOptions.js";
 
-export default function FormPersonal({toastOptions, phoneRegex, organizerRegister, success, error}) {
+export default function FormPersonal({phoneRegex, success, error}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const personPhones = useSelector(selectPersonPhoneNumbers);
@@ -70,7 +71,7 @@ export default function FormPersonal({toastOptions, phoneRegex, organizerRegiste
         if (success) {
             dispatch(setRegisterOrganizerSuccess());
             toast.success("🦄 Đăng ký thông tin thành công!", toastOptions);
-            navigate("/my-event/legal");
+            navigate("/my-event/legal/createdEvent");
         }
     }, [success]);
     useEffect(() => {

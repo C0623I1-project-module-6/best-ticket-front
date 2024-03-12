@@ -18,10 +18,10 @@ import {
     selectCompanyPhones
 } from "../../../features/user/ExistsSlice.js";
 import {useEffect} from "react";
-import {setRegisterSuccess} from "../../../features/user/UserSlice.js";
+import {toastOptions} from "../../../ultility/toastOptions.js";
 
 
-export default function FormCompany({toastOptions, phoneRegex, organizerRegister, success, error}) {
+export default function FormCompany({phoneRegex,success, error}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const companyNames = useSelector(selectCompanyNames);
@@ -63,14 +63,17 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
         dateRange: Yup.date().required("This field is required."),
         issuedBy: Yup.string().required("This field is required."),
     })
+    const handleSubmit = (values) => {
+        dispatch(registerOrganizerProfile(values));
+    }
 
     useEffect(() => {
         if (success) {
             dispatch(setRegisterOrganizerSuccess());
             toast.success("🦄 Đăng ký thông tin thành công!", toastOptions)
-            navigate("/my-event/legal")
+            navigate("/my-event/legal/createdEvent")
         }
-    }, [success, organizerRegister]);
+    }, [success]);
     useEffect(() => {
         if (error) {
             dispatch(setRegisterOrganizerError());
@@ -80,9 +83,8 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
     return (
         <Formik validationSchema={validationCompanySchema}
                 initialValues={initialValues}
-                onSubmit={values => {
-                    dispatch(registerOrganizerProfile(values));
-                }}>
+                onSubmit={handleSubmit}
+        >
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 return (
@@ -149,7 +151,7 @@ export default function FormCompany({toastOptions, phoneRegex, organizerRegister
                                         name="companyEmail"
                                         component={InputProfile}
                                         onChange={formikProps.handleChange}
-                                        label="Nơi Cấp"
+                                        label="Email"
                                         placeholder="bestticket@example.com"
                                     />
                                 </FormGroup>

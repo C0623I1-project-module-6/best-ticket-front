@@ -12,7 +12,7 @@ import {getTicketsByCustomerId} from "../features/TicketSlice.js";
 const UserLayout = ({children}) => {
     const dispatch = useDispatch();
     const userEdit = useSelector(selectUserEdit);
-    const customerId = userEdit.customer.id;
+    // const customerId = userEdit.customer.id;
     const showTicketByCustomerId = () =>{
         dispatch(getTicketsByCustomerId(customerId));
     }
@@ -27,7 +27,7 @@ const UserLayout = ({children}) => {
 
     useEffect(() => {
         showTicketType();
-        showTicketByCustomerId();
+        // showTicketByCustomerId();
         dispatch(getExistsUsers())
     }, []);
     return (

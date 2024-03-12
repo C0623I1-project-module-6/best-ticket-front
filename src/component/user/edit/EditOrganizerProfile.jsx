@@ -1,34 +1,16 @@
 import {useSelector} from "react-redux";
 import {useState} from "react";
-import {Bounce} from "react-toastify";
 import UserFooter from "../../footer/UserFooter.jsx";
 import FormEditCompany from "./FormEditCompany.jsx";
 import FormEditPersonal from "./FormEditPersonal.jsx";
 import {FormGroup, Label} from "reactstrap";
-import {
-    selectEditOrganizerError,
-    selectEditOrganizerSuccess,
-    selectOrganizerEdit
-} from "../../../features/user/OrganizerSlice.js";
+import {selectEditOrganizerError, selectEditOrganizerSuccess} from "../../../features/user/OrganizerSlice.js";
 
 function EditOrganizerProfile({organizer}) {
     const [selected, setSelected] = useState("0");
     const success = useSelector(selectEditOrganizerSuccess);
     const error = useSelector(selectEditOrganizerError);
-    const organizerEdited = useSelector(selectOrganizerEdit);
     const phoneRegex = /^0\d{9}$/;
-    const toastOptions =
-        {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        }
 
     const handleSelectChange = (e) => {
         setSelected(e.target.value);
@@ -66,16 +48,12 @@ function EditOrganizerProfile({organizer}) {
                 {selected === "0" && <FormEditCompany
                     organizer={organizer}
                     phoneRegex={phoneRegex}
-                    toastOptions={toastOptions}
-                    organizerEdited={organizerEdited}
                     success={success}
                     error={error}
                 />}
                 {selected === "1" && <FormEditPersonal
                     organizer={organizer}
                     phoneRegex={phoneRegex}
-                    toastOptions={toastOptions}
-                    organizerEdited={organizerEdited}
                     success={success}
                     error={error}
                 />}

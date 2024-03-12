@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {
     registerCustomerProfile,
-    selectProfileRegister,
     selectRegisterCustomerError,
     selectRegisterCustomerSuccess,
     setRegisterProfileSuccess
@@ -19,6 +18,7 @@ import LockModal from "../../auth/LockModal.jsx";
 import RemoveModal from "../../auth/RemoveModal.jsx";
 import {lockUser, logoutUser, removeUser} from "../../../features/user/UserSlice.js";
 import {selectUrlAvatar} from "../../../features/FileSlice.js";
+import {toastOptions} from "../../../ultility/toastOptions.js";
 
 function RegisterCustomerProfile({
                                      userEdit,
@@ -31,14 +31,11 @@ function RegisterCustomerProfile({
                                      userLock,
                                      userRemove,
                                      phoneRegex,
-                                     toastOptions,
                                  }) {
-    console.log(userEdit)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const success = useSelector(selectRegisterCustomerSuccess);
     const error = useSelector(selectRegisterCustomerError);
-    const customerRegister = useSelector(selectProfileRegister);
     const urlAvatar = useSelector(selectUrlAvatar);
 
     const validationSchema = Yup.object().shape({
@@ -79,6 +76,9 @@ function RegisterCustomerProfile({
         avatar: urlAvatar,
 
     }
+    const handleSubmit = (values) => {
+        dispatch(registerCustomerProfile(values));
+    }
     const handleLock = () => {
         dispatch(lockUser(userLock));
         navigate("/");
@@ -106,9 +106,7 @@ function RegisterCustomerProfile({
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={values => {
-                dispatch(registerCustomerProfile(values))
-            }}
+            onSubmit={handleSubmit}
         >
             {formikProps => {
                 const {values, errors, touched} = formikProps;
@@ -185,9 +183,6 @@ function RegisterCustomerProfile({
                                                     label="Email nhận vé"
                                                     placeholder="bestticket@gmail.com"
                                                 />
-                                                <p className="mt-2"><a className="text-green-700" href="#">
-                                                    * Click để gửi lại mail xác thực.</a>
-                                                </p>
                                             </FormGroup>
                                             <FormGroup>
                                                 <FastField
