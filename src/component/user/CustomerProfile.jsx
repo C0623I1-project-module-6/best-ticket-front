@@ -23,8 +23,6 @@ export default function CustomerProfile() {
     const userLogout = useSelector(selectUserLogout);
     const userLock = useSelector(selectLockUser);
     const userRemove = useSelector(selectRemoveUser);
-    const urlAvatar= useSelector(selectUrlAvatar);
-    console.log(urlAvatar)
     const phoneRegex = /^0\d{9}$/;
     const toastOptions = {
         position: "top-right",
@@ -56,7 +54,6 @@ export default function CustomerProfile() {
                         userRemove={userRemove}
                         phoneRegex={phoneRegex}
                         toastOptions={toastOptions}
-                        urlAvatar={urlAvatar}
                     />
                 ) : (
                     <RegisterCustomerProfile
