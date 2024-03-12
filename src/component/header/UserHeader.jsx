@@ -15,11 +15,10 @@ import {
     selectUserEdit,
     selectUserLogin,
     selectUserLogout,
-    selectUserRole
 } from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
-import {ADMIN} from "../../ultility/AppConstant.js";
+import {getTicketsByCustomerId} from "../../features/TicketSlice.js";
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,10 +28,16 @@ const UserHeader = () => {
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userLogout = useSelector(selectUserLogout);
-    const userEdit = useSelector(selectUserEdit);
-    const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
+    const userEdit = useSelector(selectUserEdit);
+    useEffect(() => {
+        if (userEdit !== null) {
+            const customerId = userEdit.customer.id;
+            dispatch(getTicketsByCustomerId(customerId));
+        }
+    }, []);
+
 
     useEffect(() => {
         localStorage.setItem("theme", theme);

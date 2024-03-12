@@ -19,7 +19,6 @@ function Login() {
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
-    console.log(history.state.key)
     const toastOptions = {
         position: "top-right",
         autoClose: 2000,
@@ -57,7 +56,6 @@ function Login() {
             dispatch(setLoginSuccess());
         };
     }, [loginSuccess, user]);
-    console.log(history.state.key)
     useEffect(() => {
         if (loginError) {
             toast.error("🦄 Xác thực không thành công. Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!", toastOptions)
