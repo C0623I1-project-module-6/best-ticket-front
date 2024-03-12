@@ -75,7 +75,7 @@ function Seat({dataFormSeat}) {
                         key={index}
                         className={`inline-block w-8 h-8 leading-8 text-center text-black text-xs m-2 rounded ${classTicketSuccess} ${classTicketIsBeingSelected} ${classTicketVIP} ${classTicketThuong} ${classTicketLau}`}
                         onClick={() => handleSeatClick(ticket.seat)}
-                        disabled={ticket.status === "Success" || classTicketIsBeingSelected !== ''}
+                        disabled={ticket.status === "Success" || classTicketIsBeingSelected === ''}
                     >
                         {ticket.seat}
                     </button>
