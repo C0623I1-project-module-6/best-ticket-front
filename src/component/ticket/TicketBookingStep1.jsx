@@ -1,10 +1,12 @@
 import Seat from "./Seat.jsx";
 import {useDispatch} from "react-redux";
 import {getTicketTypes} from "../../features/TicketTypeSlice.js";
-import {updateStatusSuccess} from "../../api/TicketApi.js";
 import {setPrice, setSeats, setTicketCode, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
 import React, {useEffect, useState} from "react";
-
+import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
+import {useParams} from "react-router-dom";
+import {getTicketByTimeId} from "../../features/TicketSlice.js";
+import "./Ticket.css"
 
 export const TicketBookingStep1 = (props) => {
     const [dataTotalPrice, setDataTotalPrice] = useState(0);
@@ -13,12 +15,19 @@ export const TicketBookingStep1 = (props) => {
     const [dataTicketCode, setDataTicketCode] = useState([]);
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
+    const timeId = useParams().param;
+
+    const {formatCurrency} = useFormatCurrency()
+    useEffect(() => {
+        dispatch(getTicketByTimeId(timeId))
+    }, [])
     const showTicketType = () => {
         dispatch(getTicketTypes())
     }
     useEffect(() => {
         showTicketType();
     }, [])
+
     const handleDataFromSeat = (totalPrice, seat, nameTicketType, priceOneTicket, ticketCodeSeats) => {
         setDataTotalPrice(totalPrice);
         setDataSeat(seat);
@@ -45,27 +54,26 @@ export const TicketBookingStep1 = (props) => {
             <div className="mx-40 my-5 flex justify-between	">
                 <span>Vui lòng chọn ghế bên dưới</span>
                 <span><span className="mr-2 inline-block w-4 h-4 rounded-full bg-white"></span>Ghế trống</span>
-                <span> <span
-                    className="mr-2 inline-block w-4 h-4 rounded-full bg-green-800"></span>Ghế đang chọn</span>
-                <span><span
-                    className="mr-2 inline-block w-4 h-4 rounded-full bg-red-800"></span>Ghế đã có người chọn</span>
-                <span><span
-                    className="mr-2 inline-block w-4 h-4 rounded-full bg-gray-700"></span>Ghế không được chọn</span>
+                <span> <span className="mr-2 inline-block w-4 h-4 rounded-full bg-green-800"></span>Ghế đang chọn</span>
+                <span> <span className="mr-2 inline-block w-4 h-4 rounded-full bg-brown-500"></span>Ghế có người đang chọn</span>
+                <span>
+                    <span
+                        className="mr-2 inline-block w-4 h-4 rounded-full bg-red-800 "></span>Ghế đã có người chọn</span>
+                <span>
+                    <span className="mr-2 inline-block w-4 h-4 rounded-full bg-gray-700"></span>Ghế không được chọn
+                </span>
             </div>
 
             <div className="flex mx-40">
                 <div className="w-4/6  mr-3">
                     <div className="bg-[#E3E3E3]">
-
                         <div className="flex p-3">
-
                             <div className="w-1/2">
                                 <div className="flex ">
                                     <div className="w-8 h-8 bg-[#FFD5CF] mr-4 my-auto"></div>
                                     <div className="w-full">
-                                        <p className="text-[#66666E] font-bold">Vé Vip</p>
-                                        <p className="text-[#66666E]">270.000VND</p>
-
+                                        <p className="text-[#66666E] font-bold">Vé VIP</p>
+                                        <p className="text-[#66666E]">{formatCurrency(270000)}</p>
                                     </div>
                                     <div
                                         className="h-5 w-5 rounded-full bg-gray-400 text-center text-white my-auto">
@@ -78,7 +86,7 @@ export const TicketBookingStep1 = (props) => {
                                     <div className="w-8 h-8 bg-[#C4F1F2] mr-4 my-auto"></div>
                                     <div className="w-full">
                                         <p className="text-[#66666E] font-bold">Vé Thường</p>
-                                        <p className="text-[#66666E]">220.000VND</p>
+                                        <p className="text-[#66666E]">{formatCurrency(220000)}</p>
 
                                     </div>
                                     <div
@@ -87,7 +95,9 @@ export const TicketBookingStep1 = (props) => {
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
                         <div className="border border-dashed"></div>
                         <div className="flex p-3">
                             <div className="w-1/2">
@@ -95,7 +105,7 @@ export const TicketBookingStep1 = (props) => {
                                     <div className="w-8 h-8 bg-[#FDE098] mr-4 my-auto"></div>
                                     <div className="w-full">
                                         <p className="text-[#66666E] font-bold">Vé Lầu</p>
-                                        <p className="text-[#66666E]">170.000VND</p>
+                                        <p className="text-[#66666E]">{formatCurrency(170000)}</p>
                                     </div>
                                     <div
                                         className="h-5 w-5 rounded-full bg-gray-400 text-center text-white my-auto">
@@ -121,7 +131,7 @@ export const TicketBookingStep1 = (props) => {
 
                     <div className="pl-5 bg-[#666666] py-4 flex text-white">
                         <span className="w-3/5 ">Tổng cộng:  </span>
-                        <span>{dataTotalPrice} VND</span>
+                        <span>{formatCurrency(dataTotalPrice)}</span>
                     </div>
                     <button className="bg-[#7CA629] py-3 px-2 w-full text-white mt-10"
                             onClick={handleDataFormButton}

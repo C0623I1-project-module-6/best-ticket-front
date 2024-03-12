@@ -15,7 +15,7 @@ import {FaCheckCircle} from "react-icons/fa";
 import {Modal} from 'antd';
 import emailjs from '@emailjs/browser';
 
-const BookingManagerOrderTable = () => {
+const BookingManagerOrderTable = (eventTime) => {
     const dispatch = useDispatch();
     const totalPages = useSelector(state => state.booking.totalPages);
     const bookings = useSelector(selectAllBookingsByEventId);
@@ -26,11 +26,12 @@ const BookingManagerOrderTable = () => {
     const [emailList, setEmailList] = useState([]);
     const [checkboxesChecked, setCheckboxesChecked] = useState([]);
     const [sortBy, setSortBy] = useState('createdAt');
-    const [status, setStatus] = useState('createdAt');
-    const [ticketTypeNameOption, setTicketTypeNameOption] = useState('createdAt');
+    const [status, setStatus] = useState('allBookings');
+    const [ticketTypeNameOption, setTicketTypeNameOption] = useState('allTicketTypes');
     const {formatCurrency} = useFormatCurrency();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const ticketTypeNameList = [];
+    const {timeOfEvent} = eventTime;
 
     useEffect(() => {
         dispatch(getAllBookingsByEventId({eventId: eventId1, currentPage: currentPage - 1}));
@@ -56,9 +57,7 @@ const BookingManagerOrderTable = () => {
     let sortedBookings = [];
 
     if (bookings && bookings.content) {
-        sortedBookings = [...bookings.content];
-
-        sortedBookings.map((booking) => {
+        bookings.content.map((booking) => {
             if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
                 booking.bookingDetailResponseList.forEach((detail) => {
                     if (booking.id === detail.bookingId && detail.ticketInBookingDetailResponses && detail.ticketInBookingDetailResponses.length > 0) {
@@ -67,11 +66,14 @@ const BookingManagerOrderTable = () => {
                             if (!ticketTypeNameList.includes(ticketTypeName)) {
                                 ticketTypeNameList.push(ticketTypeName);
                             }
+                            if (ticket.time.time === timeOfEvent && !sortedBookings.some((sortedBooking) => sortedBooking.id === booking.id)) {
+                                sortedBookings.push(booking);
+                            }
                         });
                     }
                 });
             }
-        })
+        });
 
         if (sortBy === 'createdAt') {
             sortedBookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -148,13 +150,16 @@ const BookingManagerOrderTable = () => {
             }
         }
     };
+
     const showModal = () => {
         setIsModalOpen(true);
     };
+
     const handleOk = () => {
         sendEmail();
         handleCancel();
     };
+
     const handleCancel = () => {
         setIsModalOpen(false);
         setSelectAllChecked(false);
@@ -177,10 +182,10 @@ const BookingManagerOrderTable = () => {
             });
     };
 
-    let totalAmount = 0;
     let amountByTicketTypeAndBooking = 0;
     let totalAmountByTicketType = 0;
     let calculatedTotalAmount = 0;
+    let totalAmount = 0;
 
     return (<>
         <div className="border bg-gray-100 flex py-1">
@@ -188,7 +193,7 @@ const BookingManagerOrderTable = () => {
                 <div>
                     <select className="bg-white border rounded border-black mx-1" value={ticketTypeNameOption}
                             onChange={(e) => handleTicketTypeNameOption(e.target.value)}>
-                        <option value="createdAt">Tất cả loại vé</option>
+                        <option value="allTicketTypes">Tất cả loại vé</option>
                         {bookings === null || bookings === "" || bookings === undefined ? (
                             <option disabled></option>) : (ticketTypeNameList.map((ticketTypeName) => (
                             <option key={ticketTypeName} value={ticketTypeName}>{ticketTypeName}</option>)))}
@@ -206,7 +211,7 @@ const BookingManagerOrderTable = () => {
                 <div>
                     <select className="bg-white border rounded border-black mx-1" value={status}
                             onChange={(e) => handleStatusChange(e.target.value)}>
-                        <option value="createdAt">Tất cả đơn hàng</option>
+                        <option value="allBookings">Tất cả đơn hàng</option>
                         <option value="ACTIVE">Đang hiệu lực</option>
                         <option value="PENDING">Đang chờ</option>
                         <option value="INACTIVE">Không còn hiệu lực</option>
@@ -249,28 +254,33 @@ const BookingManagerOrderTable = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (
+                    {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 || !eventTime ? (
                         <tr>
                             <td colSpan="5" className="text-center">
-                                <div className="m-5 p-2 font-bold rounded bg-[#E5F1C8]"> Chưa có vé nào được bán</div>
+                                <div className="m-5 p-2 font-bold rounded bg-[#E5F1C8]"> Chưa có vé nào được bán
+                                </div>
                             </td>
                         </tr>) : (sortedBookings.map((booking) => {
                         const ticketCounts = {};
                         if (booking.bookingDetailResponseList && booking.bookingDetailResponseList.length > 0) {
+                            calculatedTotalAmount = 0;
                             booking.bookingDetailResponseList.forEach((detail) => {
                                 if (booking.id === detail.bookingId && detail.ticketInBookingDetailResponses && detail.ticketInBookingDetailResponses.length > 0) {
                                     detail.ticketInBookingDetailResponses.forEach((ticket) => {
-                                        const ticketTypeName = ticket.ticketTypeName;
-                                        if (ticketCounts[ticketTypeName]) {
-                                            ticketCounts[ticketTypeName] += 1;
-                                        } else {
-                                            ticketCounts[ticketTypeName] = 1;
+                                        if (ticket.time.time === timeOfEvent) {
+                                            calculatedTotalAmount += ticket.ticketTypePrice;
+                                            const ticketTypeName = ticket.ticketTypeName;
+                                            if (ticketCounts[ticketTypeName]) {
+                                                ticketCounts[ticketTypeName] += 1;
+                                            } else {
+                                                ticketCounts[ticketTypeName] = 1;
+                                            }
                                         }
                                     });
                                 }
                             });
                         }
-                        totalAmount += booking.totalAmount;
+                        totalAmount += calculatedTotalAmount;
                         return <tr key={booking.id} className="border border-black border-x-0">
                             <td className="px-4 py-2 text-left border-b border-black">
                                 <input
@@ -302,7 +312,7 @@ const BookingManagerOrderTable = () => {
                                 </div>
                             </td>
                             <td className="py-2 border-x-0 text-center">
-                                {Object.keys(ticketCounts).length > 0 && ticketTypeNameOption !== 'createdAt' ? (Object.keys(ticketCounts).map((ticketType, index) => (ticketType === ticketTypeNameOption ? (
+                                {Object.keys(ticketCounts).length > 0 && ticketTypeNameOption !== 'allTicketTypes' ? (Object.keys(ticketCounts).map((ticketType, index) => (ticketType === ticketTypeNameOption ? (
                                     <div key={index}>
                                         <div>{ticketCounts[ticketType]}</div>
                                         <div>{ticketType}</div>
@@ -314,18 +324,19 @@ const BookingManagerOrderTable = () => {
                                     </div>))}
                             </td>
                             <td className="py-2 border-x-0 text-center">
-                                {ticketTypeNameOption === 'createdAt' ? (formatCurrency(booking.totalAmount)) : (Object.keys(ticketCounts).length > 0 ? (booking.bookingDetailResponseList.forEach((detail) => {
-                                    calculatedTotalAmount = 0;
-                                    detail.ticketInBookingDetailResponses.forEach((ticket) => {
-                                        if (booking.id === detail.bookingId && Object.keys(ticketCounts).includes(ticket.ticketTypeName) && ticket.ticketTypeName === ticketTypeNameOption) {
-                                            amountByTicketTypeAndBooking = ticket.ticketTypePrice * ticketCounts[ticket.ticketTypeName];
-                                            calculatedTotalAmount = amountByTicketTypeAndBooking;
-                                        }
-                                    });
-                                    totalAmountByTicketType += calculatedTotalAmount;
-                                })) : (<span>Loading...</span>))}
-                                {ticketTypeNameOption !== 'createdAt' && (
-                                    <div>{formatCurrency(amountByTicketTypeAndBooking)}</div>)}
+                                {ticketTypeNameOption === 'allTicketTypes' ?
+                                    <div>{formatCurrency(calculatedTotalAmount)}</div> : (Object.keys(ticketCounts).length > 0 ? (booking.bookingDetailResponseList.forEach((detail) => {
+                                        calculatedTotalAmount = 0;
+                                        detail.ticketInBookingDetailResponses.forEach((ticket) => {
+                                            if (booking.id === detail.bookingId && Object.keys(ticketCounts).includes(ticket.ticketTypeName) && ticket.ticketTypeName === ticketTypeNameOption) {
+                                                amountByTicketTypeAndBooking = ticket.ticketTypePrice * ticketCounts[ticket.ticketTypeName];
+                                                calculatedTotalAmount = amountByTicketTypeAndBooking;
+                                            }
+                                        });
+                                        totalAmountByTicketType += calculatedTotalAmount;
+                                    })) : (<span>Loading...</span>))}
+                                {ticketTypeNameOption !== 'allTicketTypes' &&
+                                    <div>{formatCurrency(amountByTicketTypeAndBooking)}</div>}
                             </td>
                         </tr>;
                     }))}
@@ -336,14 +347,14 @@ const BookingManagerOrderTable = () => {
                         <td></td>
                         <td></td>
                         <td className="py-5 text-center">
-                            {ticketTypeNameOption !== 'createdAt' ? (
-                                    <div>{formatCurrency(totalAmountByTicketType)}</div>) :
-                                <div>{formatCurrency(totalAmount)}</div>}</td>
+                            <div>{ticketTypeNameOption === 'allTicketTypes' ? formatCurrency(totalAmount) : formatCurrency(totalAmountByTicketType)}</div>
+                        </td>
                     </tr>)}
                     </tbody>
                 </table>
                 <div className="flex items-center justify-center h-20">
-                    {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (<div></div>) : (<Stack
+                    {bookings === null || bookings === "" || bookings === undefined || sortedBookings.length === 0 ? (
+                        <div></div>) : (<Stack
                         spacing={2}
                     >
                         <Pagination

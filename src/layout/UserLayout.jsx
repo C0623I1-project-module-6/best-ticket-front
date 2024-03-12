@@ -1,15 +1,24 @@
 import UserHeader from "../component/header/UserHeader.jsx";
 import {useEffect} from "react";
 
-import {reLoginWithToken} from "../features/user/UserSlice.js";
+import {reLoginWithToken, selectUserEdit} from "../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 
 import {getExistsUsers, selectExistsList} from "../features/user/ExistsSlice.js";
+import {getTicketTypes} from "../features/TicketTypeSlice.js";
+import {getTicketsByCustomerId} from "../features/TicketSlice.js";
 
 
 const UserLayout = ({children}) => {
     const dispatch = useDispatch();
-    const existsList = useSelector(selectExistsList);
+    const userEdit = useSelector(selectUserEdit);
+    const customerId = userEdit.customer.id;
+    const showTicketByCustomerId = () =>{
+        dispatch(getTicketsByCustomerId(customerId));
+    }
+    const showTicketType = () => {
+        dispatch(getTicketTypes())
+    }
     useEffect(() => {
         if (localStorage.getItem("token") !== null) {
             dispatch(reLoginWithToken())
@@ -17,9 +26,10 @@ const UserLayout = ({children}) => {
     }, []);
 
     useEffect(() => {
+        showTicketType();
+        showTicketByCustomerId();
         dispatch(getExistsUsers())
     }, []);
-    console.log(existsList)
     return (
         <>
             <div className=" relative item-center h-screen max-h-full bg-[#ece8f3]

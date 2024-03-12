@@ -8,10 +8,11 @@ import img from '../../assets/img/image/event.png'
 import imgOrganizerLogo from '../../assets/img/image/organizerlogo.jpg'
 import {IoIosArrowForward, IoMdMail} from "react-icons/io";
 import {IoTicket} from "react-icons/io5";
-import {getTicketTypes, selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
+import {selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
 import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
 import {fetchGetUser, selectUserLogin} from "../../features/user/UserSlice.js";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
+import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
 const EventDetail = () => {
     const dispatch = useDispatch();
@@ -22,14 +23,11 @@ const EventDetail = () => {
     const ticketTypes = useSelector(selectShowTicketTypes);
     const times = useSelector(selectShowTimeByEventId)
     const user = useSelector(selectUserLogin);
+    const {formatCurrency} = useFormatCurrency()
     let isFirstRender = true;
 
     const showEventById = () => {
         dispatch(getEventById(eventId));
-    }
-
-    const showTicketType = () => {
-        dispatch(getTicketTypes())
     }
     const showTimeByEventId = () => {
         dispatch(getTimeByEventId(eventId))
@@ -37,9 +35,8 @@ const EventDetail = () => {
 
     useEffect(() => {
         showEventById(eventId);
-        showTicketType();
         showTimeByEventId(eventId);
-        if (user !== null){
+        if (user !== null) {
             dispatch(fetchGetUser(user.id));
         }
     }, []);
@@ -67,14 +64,11 @@ const EventDetail = () => {
                                                 </div>
                                             )
                                         }
-                                    }):<div></div>}
+                                    }) : <div></div>}
 
 
                                     <div className="flex items-center text-black"><FaLocationDot className="mr-2"/> Nhà
-                                        Văn hoá
-                                        Thanh
-                                        niên
-                                        Thành phố Hồ Chí Minh
+                                        Văn hoá Thanh niên Thành phố Hồ Chí Minh
                                     </div>
                                     <div>4 Phạm Ngọc Thạch, Bến Nghé, Quận 1, Thành Phố Hồ Chí Minh</div>
                                 </div>
@@ -86,18 +80,20 @@ const EventDetail = () => {
                                 <p className="text-black px-3">Thông tin vé</p>
                             </div>
 
-                            {ticketTypes.data?.map((ticketType, index) => (
+                            {ticketTypes !== null ? ticketTypes.data.map((ticketType, index) => (
                                 <div className="flex w-full border-dashed border-b border-black py-3 px-4" key={index}>
                                     <div className="w-5/6">{ticketType.name}</div>
-                                    <div className="w-1/6 text-right">{ticketType.price} VND</div>
+                                    <div
+                                        className="w-1/6 text-right"> {formatCurrency(ticketType.price)}
+                                    </div>
                                 </div>
-                            ))}
+                            )) : <div></div>}
                         </div>
                         <div className="bg-white mt-10">
                             <div className="font-bold text-xl border-dashed border-b border-black py-3">
                                 <p className="text-black px-3">Lịch sự kiện</p>
                             </div>
-                            {times !== null ? times.data?.content.map((time, index) => (
+                            {times !== null ? times.data.content.map((time, index) => (
 
                                 <div className="flex w-full border-dashed border-b border-black py-3 px-4" key={index}>
 
@@ -109,7 +105,7 @@ const EventDetail = () => {
                                          onClick={() => {
                                              if (user === null) {
                                                  navigate("/login");
-                                             }else {
+                                             } else {
                                                  dispatch(fetchGetUser(user.id))
                                              }
                                          }}>
@@ -119,7 +115,7 @@ const EventDetail = () => {
                                         </NavLink>
                                     </div>
                                 </div>
-                            )) : <div></div> }
+                            )) : <div></div>}
 
                         </div>
 
@@ -188,7 +184,7 @@ const EventDetail = () => {
                         <div className="sticky top-0 w-[80%] bg-white">
                             <p className="p-3 text-black text-xl">{event !== null ? event.name : <div></div>}</p>
                             <hr/>
-                            {times !==null ? times.data?.content.map((time, index) => {
+                            {times !== null ? times.data.content.map((time, index) => {
                                 if (isFirstRender) {
                                     isFirstRender = false;
                                     return (
@@ -197,7 +193,7 @@ const EventDetail = () => {
                                             <span>{time.time}</span>
                                         </p>)
                                 }
-                            }): <div></div>}
+                            }) : <div></div>}
 
                             <p className="flex p-3 mb-3">
                                 <span className="mr-3"><FaLocationDot/></span>
@@ -209,7 +205,7 @@ const EventDetail = () => {
                             </p>
                             <hr/>
                             <p className="flex items-center py-2 px-4">
-                                {ticketTypes.data?.map((ticketType, index) => {
+                                {ticketTypes.data.map((ticketType, index) => {
                                     if (isFirstRender) {
                                         isFirstRender = false;
                                         return (
