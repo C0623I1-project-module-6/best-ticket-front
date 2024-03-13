@@ -16,9 +16,11 @@ import * as Yup from "yup";
 import {Button, input} from "@material-tailwind/react";
 import InputProfile from "../../../ultility/customField/InputProfile.jsx";
 import {FormGroup, Label} from "reactstrap";
-import {lockUser, logoutUser, removeUser} from "../../../features/user/UserSlice.js";
+import {fetchGetUser, lockUser, logoutUser, removeUser} from "../../../features/user/UserSlice.js";
 import LockModal from "../../auth/LockModal.jsx";
 import RemoveModal from "../../auth/RemoveModal.jsx";
+import {selectUrlAvatar, setUrlAvatar} from "../../../features/FileSlice.js";
+import {toastOptions} from "../../../ultility/toastOptions.js";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -36,16 +38,14 @@ export default function EditCustomerProfile({
                                                 userLock,
                                                 userRemove,
                                                 phoneRegex,
-                                                toastOptions,
-                                                urlAvatar,
                                             }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [gender, setGender] = useState(customer?.gender);
     const [isEditMode, setIsEditMode] = useState(false);
-    const customerEdited = useSelector(selectCustomerProfileEdited);
     const success = useSelector(selectEditCustomerProfileSuccess);
     const error = useSelector(selectEditCustomerProfileError);
+    const urlAvatar = useSelector(selectUrlAvatar);
 
     const {
         fullName: currentFullName,
@@ -55,16 +55,19 @@ export default function EditCustomerProfile({
         dateOfBirth: currentDateOfBirth,
         gender: currentGender,
     } = customer;
-    const initialValues = {
-        fullName: currentFullName,
-        phoneNumber: currentPhoneNumber,
-        idCard: currentIdCard,
-        receiptEmail: currentReceiptEmail,
-        dateOfBirth: currentDateOfBirth,
-        gender: currentGender,
-        avatar: urlAvatar,
 
+    const {avatar: currentAvatar} = userEdit;
+
+    const initialValues = {
+        fullName: "" || currentFullName,
+        phoneNumber: "" || currentPhoneNumber,
+        idCard: "" || currentIdCard,
+        receiptEmail: "" || currentReceiptEmail,
+        dateOfBirth: "" || currentDateOfBirth,
+        gender: "" || currentGender,
+        avatar: urlAvatar || currentAvatar,
     }
+
     const validationEditSchema = Yup.object().shape({
         phoneNumber: Yup.string()
             .test("unique", "Phone number already exists.", value => {
@@ -86,9 +89,15 @@ export default function EditCustomerProfile({
         dateOfBirth: Yup.date().nullable(),
     })
 
+    const handleSubmit = (values) => {
+        const updatedValues = {
+            ...values,
+            avatar: urlAvatar || values.avatar,
+        };
+        dispatch(editCustomerProfile(updatedValues));
+    };
     const toggleEditMode = () => {
         setIsEditMode(prev => !prev);
-
     }
     const handleGenderChange = (e) => {
         setGender(e.target.value);
@@ -105,7 +114,9 @@ export default function EditCustomerProfile({
     }
     useEffect(() => {
         if (success) {
-            dispatch(setEditCustomerProfileSuccess())
+            dispatch(setEditCustomerProfileSuccess());
+            dispatch(setUrlAvatar());
+            dispatch(fetchGetUser(userEdit.id));
             toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
             setIsEditMode(false);
             navigate("/profile");
@@ -120,9 +131,7 @@ export default function EditCustomerProfile({
     return (
         <Formik initialValues={initialValues}
                 validationSchema={validationEditSchema}
-                onSubmit={values => {
-                    dispatch(editCustomerProfile(values));
-                }}
+                onSubmit={handleSubmit}
         >
             {formikProps => {
                 const {values, errors, touched} = formikProps;
@@ -131,7 +140,7 @@ export default function EditCustomerProfile({
                         <Form className="w-screen " method="PUT"
                               onSubmit={formikProps.handleSubmit}>
                             <FormGroup className="flex">
-                                <AvatarUser onchange={formikProps.handleChange}/>
+                                <AvatarUser onChange={formikProps.handleChange}/>
                                 <FormGroup className="w-3/4 p-10">
                                     <FormGroup className="border border-solid shadow-2xl rounded-md py-5 px-5 bg-white">
                                         <h2 className=" flex justify-center text-2xl font-serif leading-7 text-gray-900">
@@ -170,6 +179,7 @@ export default function EditCustomerProfile({
                                                     onChange={formikProps.handleChange}
                                                     label="Họ và tên"
                                                     placeholder="Vui lòng nhập họ và tên"
+                                                    onBlur={formikProps.handleBlur}
                                                 />
                                             </FormGroup>
                                             <FormGroup>
@@ -200,9 +210,6 @@ export default function EditCustomerProfile({
                                                     label="Email nhận vé"
                                                     placeholder="bestticket@gmail.com"
                                                 />
-                                                <p className="mt-2"><a className="text-green-700" href="#">
-                                                    * Click để gửi lại mail xác thực.</a>
-                                                </p>
                                             </FormGroup>
                                             <FormGroup>
                                                 <Label htmlFor="dateOfBirth"

@@ -190,6 +190,9 @@ export const userSlice = createSlice(
             setUserEdit: (state, action) => {
                 state.userEdit = action.payload;
             },
+            setUpdateUserEdit:(state,action)=>{
+                state.userEdit= {...state.userEdit, ...action.payload};
+            },
             setSendMailCodeSuccess: (state, action) => {
                 state.sendMailCodeSuccess = action.payload;
             },
@@ -435,6 +438,7 @@ export const {
     setLogoutError,
     setValue,
     setUserEdit,
+    setUpdateUserEdit,
     setSendMailCodeSuccess,
     setSendMailCodeError,
     setForgotPasswordError,

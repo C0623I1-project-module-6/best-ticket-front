@@ -5,16 +5,16 @@ import {
     registerUser,
     selectRegisterError,
     selectRegisterSuccess,
-    selectUserRegister, setRegisterSuccess
+    setRegisterSuccess
 } from "../../features/user/UserSlice.js";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import {selectCustomerPhoneNumbers, selectEmails, selectUsernames} from "../../features/user/ExistsSlice.js";
 import {FastField, Form, Formik} from "formik";
 import InputRegister from "../../ultility/customField/InputRegister.jsx";
 import {FormGroup} from "reactstrap";
 import * as Yup from "yup";
 import {useEffect} from "react";
-import avatar from "../../assets/img/User.png"
+import {toastOptions} from "../../ultility/toastOptions.js";
 
 function Register() {
     const navigate = useNavigate();
@@ -26,18 +26,7 @@ function Register() {
     const error = useSelector(selectRegisterError);
     const regexPassword = /^(?=.*[A-Za-z])[A-Za-z\d]{6,}$/;
     const regexPhoneNumber = /^0\d{9}$/;
-    console.log(history.state)
-    const toastOptions = {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-    };
+
     const initialValues = {
         username: "",
         email: "",
@@ -45,6 +34,10 @@ function Register() {
         password: "",
         confirmPassword: "",
     }
+    const handleSubmit = (values) => {
+        dispatch(registerUser(values));
+    }
+
 
     const validationRegisterSchema = Yup.object().shape({
         username: Yup.string()
@@ -95,9 +88,7 @@ function Register() {
         <Formik
             initialValues={initialValues}
             validationSchema={validationRegisterSchema}
-            onSubmit={values => {
-                dispatch(registerUser(values));
-            }}>
+            onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 return (

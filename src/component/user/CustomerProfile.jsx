@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux";
 
 import {selectLockUser, selectRemoveUser, selectUserEdit, selectUserLogout} from "../../features/user/UserSlice.js";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import EditCustomerProfile from "./edit/EditCustomerProfile.jsx";
 import RegisterCustomerProfile from "./add/RegisterCustomerProfile.jsx";
 import {
@@ -9,8 +9,6 @@ import {
     selectCustomerPhoneNumbers,
     selectCustomerReceiptEmails
 } from "../../features/user/ExistsSlice.js";
-import {Bounce} from "react-toastify";
-import {selectUrlAvatar} from "../../features/FileSlice.js";
 
 
 export default function CustomerProfile() {
@@ -23,19 +21,8 @@ export default function CustomerProfile() {
     const userLogout = useSelector(selectUserLogout);
     const userLock = useSelector(selectLockUser);
     const userRemove = useSelector(selectRemoveUser);
-    const urlAvatar= useSelector(selectUrlAvatar);
     const phoneRegex = /^0\d{9}$/;
-    const toastOptions = {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-    };
+
     return (
         <>
             {
@@ -54,8 +41,6 @@ export default function CustomerProfile() {
                         userLock={userLock}
                         userRemove={userRemove}
                         phoneRegex={phoneRegex}
-                        toastOptions={toastOptions}
-                        urlAvatar={urlAvatar}
                     />
                 ) : (
                     <RegisterCustomerProfile
@@ -71,8 +56,6 @@ export default function CustomerProfile() {
                         userLock={userLock}
                         userRemove={userRemove}
                         phoneRegex={phoneRegex}
-                        toastOptions={toastOptions}
-                        urlAvatar={urlAvatar}
                     />
                 )
             }

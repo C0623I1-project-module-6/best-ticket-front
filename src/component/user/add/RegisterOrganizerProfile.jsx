@@ -4,30 +4,12 @@ import FormCompany from "./FormCompany.jsx";
 import FormPersonal from "./FormPersonal.jsx";
 import UserFooter from "../../footer/UserFooter.jsx";
 import {FormGroup, Label} from "reactstrap";
-import {Bounce} from "react-toastify";
-import {
-    selectOrganizerRegister,
-    selectRegisterOrganizerError,
-    selectRegisterOrganizerSuccess
-} from "../../../features/user/OrganizerSlice.js";
+import {selectRegisterOrganizerError, selectRegisterOrganizerSuccess} from "../../../features/user/OrganizerSlice.js";
 
 export default function RegisterOrganizerProfile() {
     const [selected, setSelected] = useState("0");
     const success = useSelector(selectRegisterOrganizerSuccess);
     const error = useSelector(selectRegisterOrganizerError);
-    const organizerRegister=useSelector(selectOrganizerRegister);
-    const toastOptions =
-        {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        }
     const phoneRegex = /^0\d{9}$/;
     const handleSelectChange = (e) => {
         setSelected(e.target.value);
@@ -64,15 +46,11 @@ export default function RegisterOrganizerProfile() {
                 </FormGroup>
                 {selected === "0" && <FormCompany
                     phoneRegex={phoneRegex}
-                    toastOptions={toastOptions}
-                    organizerRegister={organizerRegister}
                     success={success}
                     error={error}
                 />}
                 {selected === "1" && <FormPersonal
                     phoneRegex={phoneRegex}
-                    toastOptions={toastOptions}
-                    organizerRegister={organizerRegister}
                     success={success}
                     error={error}
                 />}
