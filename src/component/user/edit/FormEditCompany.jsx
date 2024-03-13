@@ -18,19 +18,13 @@ import {
     selectCompanyNames,
     selectCompanyPhones
 } from "../../../features/user/ExistsSlice.js";
+import {toastOptions} from "../../../ultility/toastOptions.js";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function FormEditCompany({
-                                            toastOptions,
-                                            phoneRegex,
-                                            organizer,
-                                            success,
-                                            error,
-                                            organizerEdited
-                                        }) {
+export default function FormEditCompany({phoneRegex, organizer, success, error}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isEditMode, setIsEditMode] = useState(false);
@@ -47,12 +41,12 @@ export default function FormEditCompany({
         issuedBy: currentCompanyIssuedBy,
     } = organizer;
     const initialValues = {
-        businessCode: currentBusinessCode,
-        companyName: currentCompanyName,
-        companyEmail: currentCompanyEmail,
-        companyPhone: currentCompanyPhone,
-        dateRange: currentDateRange,
-        issuedBy: currentCompanyIssuedBy,
+        businessCode: currentBusinessCode || null,
+        companyName: currentCompanyName || null,
+        companyEmail: currentCompanyEmail || null,
+        companyPhone: currentCompanyPhone || null,
+        dateRange: currentDateRange || null,
+        issuedBy: currentCompanyIssuedBy || null,
     };
 
     const validationCompanySchema = Yup.object().shape({
@@ -81,6 +75,9 @@ export default function FormEditCompany({
         dateRange: Yup.date().nullable(),
         issuedBy: Yup.string().nullable(),
     });
+    const handleSubmit = (values) => {
+        dispatch(editOrganizerProfile(values));
+    }
     const toggleEditMode = () => {
         setIsEditMode(prev => !prev);
     };
@@ -102,9 +99,7 @@ export default function FormEditCompany({
     return (
         <Formik initialValues={initialValues}
                 validationSchema={validationCompanySchema}
-                onSubmit={values => {
-                    dispatch(editOrganizerProfile(values));
-                }}>
+                onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 return (
@@ -134,13 +129,12 @@ export default function FormEditCompany({
                                     />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label htmlFor="dateRange" className="block text-1xl font-serif text-gray-700">
-                                        Ngày cấp
-                                    </Label>
                                     <FastField
                                         type="date"
                                         name="dateRange"
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
+                                        label="Ngày cấp"
                                         disabled={!isEditMode}
                                     />
                                 </FormGroup>
@@ -175,7 +169,7 @@ export default function FormEditCompany({
                                         name="companyEmail"
                                         component={InputProfile}
                                         onChange={formikProps.handleChange}
-                                        label="Nơi Cấp"
+                                        label="Email"
                                         placeholder="bestticket@example.com"
                                     />
                                 </FormGroup>

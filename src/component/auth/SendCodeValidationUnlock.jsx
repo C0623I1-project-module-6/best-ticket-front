@@ -8,18 +8,9 @@ import {FormGroup} from "reactstrap";
 import AuthHeader from "../header/AuthHeader.jsx";
 import InputRegister from "../../ultility/customField/InputRegister.jsx";
 import {selectEmails} from "../../features/user/ExistsSlice.js";
+import {toastOptions} from "../../ultility/toastOptions.js";
 
-const toastOptions = {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    transition: Bounce,
-};
+
 export default function SendCodeValidationUnlock() {
     const dispatch = useDispatch();
     const navigate = useNavigate();

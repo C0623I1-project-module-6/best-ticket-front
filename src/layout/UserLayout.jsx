@@ -1,8 +1,8 @@
 import UserHeader from "../component/header/UserHeader.jsx";
 import {useEffect} from "react";
 
-import {reLoginWithToken} from "../features/user/UserSlice.js";
-import {useDispatch} from "react-redux";
+import {reLoginWithToken, selectUserEdit} from "../features/user/UserSlice.js";
+import {useDispatch, useSelector} from "react-redux";
 
 import {getExistsUsers} from "../features/user/ExistsSlice.js";
 import {getTicketTypes} from "../features/TicketTypeSlice.js";
@@ -11,6 +11,7 @@ import {getTicketTypes} from "../features/TicketTypeSlice.js";
 const UserLayout = ({children}) => {
     const dispatch = useDispatch();
 
+    const userEdit = useSelector(selectUserEdit);
     const showTicketType = () => {
         dispatch(getTicketTypes())
     }

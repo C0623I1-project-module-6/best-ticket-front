@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import * as Yup from "yup";
 import {FastField, Form, Formik} from "formik";
-import {FormGroup, Label} from "reactstrap";
+import {FormGroup} from "reactstrap";
 import InputProfile from "../../../ultility/customField/InputProfile.jsx";
 import {Button} from "@material-tailwind/react";
 import {
@@ -48,13 +48,13 @@ export default function FormEditPersonal({
         issuedByTaxCode: currentIssuedByTaxCode,
     } = organizer
     const initialValues = {
-        name: currentName,
-        email: currentEmail,
-        phoneNumber: currentPhoneNumber,
-        idCard: currentIdCard,
-        taxCode: currentTaxCode,
-        dateRangeTaxCode: currentDateRangeTaxCode,
-        issuedByTaxCode: currentIssuedByTaxCode,
+        name: currentName || null,
+        email: currentEmail || null,
+        phoneNumber: currentPhoneNumber || null,
+        idCard: currentIdCard || null,
+        taxCode: currentTaxCode || null,
+        dateRangeTaxCode: currentDateRangeTaxCode || null,
+        issuedByTaxCode: currentIssuedByTaxCode || null,
     }
 
     const validationPersonalSchema = Yup.object().shape({
@@ -86,6 +86,9 @@ export default function FormEditPersonal({
         dateRangeTaxCode: Yup.date().nullable(),
         issuedByTaxCode: Yup.string().nullable(),
     })
+    const handleSubmit = (values) => {
+        dispatch(editOrganizerProfile(values));
+    }
     const toggleEditMode = () => {
         setIsEditMode(prev => !prev);
     };
@@ -108,9 +111,7 @@ export default function FormEditPersonal({
         <Formik
             initialValues={initialValues}
             validationSchema={validationPersonalSchema}
-            onSubmit={values => {
-                dispatch(editOrganizerProfile(values));
-            }}>
+            onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 return (
@@ -151,14 +152,12 @@ export default function FormEditPersonal({
                                     />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label htmlFor="dateRangeTaxCode"
-                                           className="block text-1xl font-serif text-gray-700">
-                                        Ngày cấp
-                                    </Label>
                                     <FastField
                                         type="date"
                                         name="dateRangeTaxCode"
+                                        component={InputProfile}
                                         onChange={formikProps.handleChange}
+                                        label="Ngày cấp"
                                         disabled={!isEditMode}
                                     />
                                 </FormGroup>
