@@ -1,7 +1,7 @@
 import Seat from "./Seat.jsx";
 import {useDispatch} from "react-redux";
 import {getTicketTypes} from "../../features/TicketTypeSlice.js";
-import {setPrice, setSeats, setTicketCode, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
+import {setIdSeat, setPrice, setSeats, setTicketCode, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
 import React, {useEffect, useState} from "react";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 import {useParams} from "react-router-dom";
@@ -11,13 +11,14 @@ import "./Ticket.css"
 export const TicketBookingStep1 = (props) => {
     const [dataTotalPrice, setDataTotalPrice] = useState(0);
     const [dataPriceOneTicket, setDataPriceOneTicket] = useState([]);
+    const [dataIdSeat, setDataIdSeat] = useState([]);
     const [dataSeat, setDataSeat] = useState([]);
     const [dataTicketCode, setDataTicketCode] = useState([]);
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
     const timeId = useParams().param;
 
-    const {formatCurrency} = useFormatCurrency()
+    const {formatCurrency} = useFormatCurrency();
     useEffect(() => {
         dispatch(getTicketByTimeId(timeId))
     }, [])
@@ -28,12 +29,13 @@ export const TicketBookingStep1 = (props) => {
         showTicketType();
     }, [])
 
-    const handleDataFromSeat = (totalPrice, seat, nameTicketType, priceOneTicket, ticketCodeSeats) => {
+    const handleDataFromSeat = (totalPrice, seat, nameTicketType, priceOneTicket, ticketCodeSeats, idSeat) => {
         setDataTotalPrice(totalPrice);
         setDataSeat(seat);
         setDataNameTicketType(nameTicketType);
         setDataPriceOneTicket(priceOneTicket);
-        setDataTicketCode(ticketCodeSeats)
+        setDataTicketCode(ticketCodeSeats);
+        setDataIdSeat(idSeat);
     }
     const handleDataFormButton = async () => {
         if (dataTotalPrice !== 0 && dataSeat !== null) {
@@ -43,6 +45,7 @@ export const TicketBookingStep1 = (props) => {
                 dispatch(setTicketType(dataNameTicketType));
                 dispatch(setPrice(dataPriceOneTicket));
                 dispatch(setTicketCode(dataTicketCode));
+                dispatch(setIdSeat(dataIdSeat));
                 props.callbackData(1);
             } catch (error) {
                 console.error('Error:', error);

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getTicketsByCustomerId,
     getTicketsByStatusFinished,
     getTicketsByStatusUpcoming,
     selectShowTicketByCustomerId
@@ -9,7 +8,6 @@ import {
 import JsBarcode from "jsbarcode";
 import {NavLink, useParams} from "react-router-dom";
 import img from "../../assets/img/image/main.png"
-import {selectUserEdit} from "../../features/user/UserSlice.js";
 
 function TicketDetails(props) {
     const customerId = useParams().customerId;
@@ -20,8 +18,6 @@ function TicketDetails(props) {
         customerId: customerId,
         status: props.value
     }
-
-
     useEffect(() => {
         if (tickets !== null) {
             tickets.data.forEach(ticket => {
