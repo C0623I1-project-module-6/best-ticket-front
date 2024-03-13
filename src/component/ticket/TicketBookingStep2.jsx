@@ -10,6 +10,7 @@ import * as Yup from "yup"
 import {Modal} from 'antd';
 import {updateStatusFail, updateStatusSuccess} from "../../api/TicketApi.js";
 import {setValues} from "../../features/UserFormInTicketBookingSlice.js";
+import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 
 
 export const TicketBookingStep2 = (props) => {
@@ -17,7 +18,7 @@ export const TicketBookingStep2 = (props) => {
     const user = useSelector(selectUserLogin);
     const seatTickets = useSelector(state => state.seat)
     const [open, setOpen] = useState(true);
-    console.log(seatTickets)
+    const {formatCurrency} = useFormatCurrency();
     const [selectedOption, setSelectedOption] = useState('');
     const [timeLeft, setTimeLeft] = useState(1000);
     useEffect(() => {
@@ -35,7 +36,6 @@ export const TicketBookingStep2 = (props) => {
         }, 1000);
         return () => {
             clearInterval(timer);
-            updateStatusFail(seatTickets.seats);
         };
     }, []);
 
@@ -73,7 +73,6 @@ export const TicketBookingStep2 = (props) => {
         onSubmit: (values) => {
             dispatch(setValues(values));
             updateStatusSuccess(seatTickets.seats);
-            console.log("he")
             props.callbackData(2);
         }
     })
@@ -261,7 +260,7 @@ export const TicketBookingStep2 = (props) => {
                                             </div>
                                             <div className="w-1/3 text-right">
                                                 <p>1</p>
-                                                <p>{seatTickets.price[index]} VNĐ</p>
+                                                <p>{formatCurrency(seatTickets.price[index])}</p>
                                             </div>
                                         </>
                                     )}
@@ -273,7 +272,7 @@ export const TicketBookingStep2 = (props) => {
 
                         <div className="pl-5 bg-[#666666] py-4 flex text-white">
                             <span className="w-4/6 ">Tổng cộng: </span>
-                            <span>{seatTickets.totalPrice} VND</span>
+                            <span>{formatCurrency(seatTickets.totalPrice)}</span>
                         </div>
                         <p className="text-xs text-center italic py-4">Vui lòng kiểm tra kỹ đơn hàng trước khi hoàn
                             tất</p>

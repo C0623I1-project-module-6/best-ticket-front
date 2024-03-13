@@ -16,6 +16,7 @@ export const TicketBookingStep3 = () => {
     const dispatch = useDispatch();
     const param = useParams();
     const seatTickets = useSelector(state => state.seat)
+    console.log(seatTickets)
     const userEdit = useSelector(selectUserEdit);
     const infoUserInput = useSelector(selectInfoUser);
     const event = useSelector(selectEventById);
@@ -23,7 +24,7 @@ export const TicketBookingStep3 = () => {
     const bookingCreate = useSelector(selectBookingCreate)
     const selectedTime = times.data.content.find((time) => time.id === param.param);
     const seatList = seatTickets.seats.join(", ");
-    const ticketCodeList = seatTickets.ticketCode.join(", ");
+    const ticketCodeList = seatTickets.ticketCodes.join(", ");
     const seatPriceList = seatTickets.price.join(", ");
     const [dataSendMail, setDataSendMail] = useState({});
     localStorage.removeItem("eventById")
