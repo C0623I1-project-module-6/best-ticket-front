@@ -10,16 +10,12 @@ import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 
-import {
-    logoutUser,
-    selectUserEdit,
-    selectUserLogin,
-    selectUserLogout,
-    selectUserRole
-} from "../../features/user/UserSlice.js";
+import {logoutUser, selectUserEdit, selectUserLogin, selectUserLogout,} from "../../features/user/UserSlice.js";
 import {toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
+
 import {toastOptions} from "../../ultility/toastOptions.js";
+
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,10 +25,16 @@ const UserHeader = () => {
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userLogout = useSelector(selectUserLogout);
-    const userEdit = useSelector(selectUserEdit);
-    const userRole = useSelector(selectUserRole);
     const isLogin = useSelector(state => state.user.isLogin)
     const organizer = useSelector(state => state.organizer.value)
+    const userEdit = useSelector(selectUserEdit);
+    useEffect(() => {
+        if (userEdit !== null) {
+            const customerId = userEdit.customer.id;
+            dispatch(getTicketsByCustomerId(customerId));
+        }
+    }, []);
+
 
     useEffect(() => {
         localStorage.setItem("theme", theme);

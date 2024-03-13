@@ -4,7 +4,7 @@ import {FaCalendar, FaTicket, FaUser} from "react-icons/fa6";
 import {Link, NavLink} from "react-router-dom";
 import TicketDetails from "./TicketDetails.jsx";
 import {useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectUserLogin} from "../../features/user/UserSlice.js";
 
 function TicketHistory() {
@@ -16,7 +16,6 @@ function TicketHistory() {
         setActiveButton(data);
         setKeyword(data)
     }
-
     return (
         <div className="bg-[#27272a] w-full overflow-y-auto">
             <div className="flex-col mx-40 px-10 gap-10  space-y-10 text-white">
@@ -97,14 +96,6 @@ function TicketHistory() {
                                 onClick={() => sendKeyword('Pending')}
                             >
                                 Processing
-                            </div>
-                            <div
-                                className={`btn rounded-full btn-xs w-[150px] ${
-                                    activeButton === 'Reject' ? 'bg-[#2DC275] text-black' : 'bg-[#5D616A] text-black'
-                                }`}
-                                onClick={() => sendKeyword('Reject')}
-                            >
-                                Cancelled
                             </div>
                         </div>
 
