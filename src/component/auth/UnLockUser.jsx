@@ -8,18 +8,8 @@ import * as Yup from "yup";
 import {unlockUser} from "../../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
 import {selectEmails} from "../../features/user/ExistsSlice.js";
+import {toastOptions} from "../../ultility/toastOptions.js";
 
-const toastOptions = {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    transition: Bounce,
-};
 export default function UnLockUser() {
     const dispatch = useDispatch();
     const navigate = useNavigate();

@@ -5,7 +5,7 @@ import "./Ticket.css"
 
 function Seat({dataFormSeat}) {
 
-    const [clickedSeats, setClickedSeats] = useState([]);
+    const [idSeat, setIdSeat] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [ticketCodeSeats, setTicketCodeSeats] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
@@ -15,20 +15,20 @@ function Seat({dataFormSeat}) {
     const ticketIsBeingSelected = useSelector(selectShowTicketIsBeingSelected)
     const handleSeatClick = (seatNumber) => {
         const selectedSeat = tickets.data.find((ticket) => ticket.seat === seatNumber);
+        const idSeat = selectedSeat.id;
         const price = selectedSeat.ticketType.price;
         const seat = selectedSeat.seat;
         const ticketTypeName = selectedSeat.ticketType.name;
         const priceTicket = selectedSeat.ticketType.price;
         const ticketCode = selectedSeat.ticketCode;
         if (selectedSeat && !selectedSeats.includes(selectedSeat.seat)) {
+            setIdSeat((prevIdSeat) => [...prevIdSeat,idSeat] )
             setTotalPrice((prevTotalPrice) => prevTotalPrice + parseInt(price));
             setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seat]);
-            setClickedSeats((prevClickedSeats) => [...prevClickedSeats, seat]);
             setNameTicketType((prevNameTicketType) => [...prevNameTicketType, ticketTypeName]);
             setPriceOneTicket((prevPriceOneTicket) => [...prevPriceOneTicket, priceTicket]);
             setTicketCodeSeats(prevTicketCode => [...prevTicketCode, ticketCode])
-            dataFormSeat((totalPrice), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket], [...ticketCodeSeats]);
-
+            dataFormSeat((totalPrice), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket], [...ticketCodeSeats],[...idSeat]);
             event.target.style.backgroundColor = "#2E7D32";
         } else {
 
@@ -48,8 +48,8 @@ function Seat({dataFormSeat}) {
     };
 
     useEffect(() => {
-        dataFormSeat(totalPrice, selectedSeats, nameTicketType, priceOneTicket, ticketCodeSeats);
-    }, [totalPrice, selectedSeats, nameTicketType, priceOneTicket, ticketCodeSeats]);
+        dataFormSeat(totalPrice, selectedSeats, nameTicketType, priceOneTicket, ticketCodeSeats,idSeat);
+    }, [totalPrice, selectedSeats, nameTicketType, priceOneTicket, ticketCodeSeats,idSeat]);
 
 
     // Render danh sách ghế
@@ -75,7 +75,7 @@ function Seat({dataFormSeat}) {
                         key={index}
                         className={`inline-block w-8 h-8 leading-8 text-center text-black text-xs m-2 rounded ${classTicketSuccess} ${classTicketIsBeingSelected} ${classTicketVIP} ${classTicketThuong} ${classTicketLau}`}
                         onClick={() => handleSeatClick(ticket.seat)}
-                        disabled={ticket.status === "Success" || classTicketIsBeingSelected === ''}
+                        disabled={ticket.status === "Success" || classTicketIsBeingSelected}
                     >
                         {ticket.seat}
                     </button>

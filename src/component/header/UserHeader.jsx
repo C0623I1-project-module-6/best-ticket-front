@@ -10,15 +10,12 @@ import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 
-import {
-    logoutUser,
-    selectUserEdit,
-    selectUserLogin,
-    selectUserLogout,
-} from "../../features/user/UserSlice.js";
-import {Bounce, toast} from "react-toastify";
+import {logoutUser, selectUserEdit, selectUserLogin, selectUserLogout,} from "../../features/user/UserSlice.js";
+import {toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
-import {getTicketsByCustomerId} from "../../features/TicketSlice.js";
+
+import {toastOptions} from "../../ultility/toastOptions.js";
+
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -175,17 +172,7 @@ const UserHeader = () => {
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
-        toast('🦄 Logout success!', {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        });
+        toast('🦄 Hẹn gặp lại!', toastOptions);
         localStorage.removeItem("user");
         navigate("/");
     }

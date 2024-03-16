@@ -10,8 +10,9 @@ import {
     setLoginSuccess
 } from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
+import {toastOptions} from "../../ultility/toastOptions.js";
 
 function Login() {
     const dispatch = useDispatch();
@@ -19,17 +20,7 @@ function Login() {
     const user = useSelector(selectUserLogin);
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
-    const toastOptions = {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-    };
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const user = {
@@ -46,11 +37,7 @@ function Login() {
             toast.success("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             dispatch(getOrganizerByUserId(user.id));
             dispatch(fetchGetUser(user.id));
-            // if (history.state.key !== "9nku26w4") {
-                navigate("/");
-            // } else {
-            //     history.back();
-            // }
+            navigate("/");
         }
         return () => {
             dispatch(setLoginSuccess());
