@@ -110,8 +110,7 @@ const EventDetail = () => {
                                              }
                                          }}>
                                         <NavLink to={`${location.pathname}/ticket-booking/${time.id}`}
-                                                 className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua
-                                            vé ngay
+                                                 className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua vé ngay
                                         </NavLink>
                                     </div>
                                 </div>

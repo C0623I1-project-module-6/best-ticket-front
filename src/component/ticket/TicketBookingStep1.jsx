@@ -1,12 +1,15 @@
 import Seat from "./Seat.jsx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getTicketTypes} from "../../features/TicketTypeSlice.js";
 import {setIdSeat, setPrice, setSeats, setTicketCode, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
 import React, {useEffect, useState} from "react";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 import {useParams} from "react-router-dom";
-import {getTicketByTimeId} from "../../features/TicketSlice.js";
 import "./Ticket.css"
+import {getTicketByTimeId} from "../../features/TicketSlice.js";
+import {updateStatusSuccess} from "../../api/TicketApi.js";
+import styled from 'styled-components'
+
 
 export const TicketBookingStep1 = (props) => {
     const [dataTotalPrice, setDataTotalPrice] = useState(0);
@@ -17,6 +20,13 @@ export const TicketBookingStep1 = (props) => {
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
     const timeId = useParams().param;
+    const Button = styled.button`
+        background-color: #7CA629;
+        color: white;
+        padding: 12px 8px;
+        width: 100%;
+        margin-top: 40px;
+    `;
 
     const {formatCurrency} = useFormatCurrency();
     useEffect(() => {
@@ -46,6 +56,7 @@ export const TicketBookingStep1 = (props) => {
                 dispatch(setPrice(dataPriceOneTicket));
                 dispatch(setTicketCode(dataTicketCode));
                 dispatch(setIdSeat(dataIdSeat));
+                await updateStatusSuccess(dataSeat);
                 props.callbackData(1);
             } catch (error) {
                 console.error('Error:', error);
@@ -136,10 +147,7 @@ export const TicketBookingStep1 = (props) => {
                         <span className="w-3/5 ">Tổng cộng:  </span>
                         <span>{formatCurrency(dataTotalPrice)}</span>
                     </div>
-                    <button className="bg-[#7CA629] py-3 px-2 w-full text-white mt-10"
-                            onClick={handleDataFormButton}
-                            type="button">Tiếp tục
-                    </button>
+                    <Button onClick={handleDataFormButton} type="button">Tiếp tục</Button>
                 </div>
             </div>
         </>

@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {selectShowTicketByTimeId, selectShowTicketIsBeingSelected} from "../../features/TicketSlice.js";
 import "./Ticket.css"
 
+
 function Seat({dataFormSeat}) {
 
     const [idSeat, setIdSeat] = useState([]);
@@ -12,7 +13,9 @@ function Seat({dataFormSeat}) {
     const [priceOneTicket, setPriceOneTicket] = useState([]);
     const [nameTicketType, setNameTicketType] = useState([])
     const tickets = useSelector(selectShowTicketByTimeId);
-    const ticketIsBeingSelected = useSelector(selectShowTicketIsBeingSelected)
+    const ticketIsBeingSelected = useSelector(selectShowTicketIsBeingSelected);
+
+
     const handleSeatClick = (seatNumber) => {
         const selectedSeat = tickets.data.find((ticket) => ticket.seat === seatNumber);
         const idSeat = selectedSeat.id;
@@ -22,13 +25,13 @@ function Seat({dataFormSeat}) {
         const priceTicket = selectedSeat.ticketType.price;
         const ticketCode = selectedSeat.ticketCode;
         if (selectedSeat && !selectedSeats.includes(selectedSeat.seat)) {
-            setIdSeat((prevIdSeat) => [...prevIdSeat,idSeat] )
+            setIdSeat((prevIdSeat) => [...prevIdSeat, idSeat])
             setTotalPrice((prevTotalPrice) => prevTotalPrice + parseInt(price));
             setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seat]);
             setNameTicketType((prevNameTicketType) => [...prevNameTicketType, ticketTypeName]);
             setPriceOneTicket((prevPriceOneTicket) => [...prevPriceOneTicket, priceTicket]);
             setTicketCodeSeats(prevTicketCode => [...prevTicketCode, ticketCode])
-            dataFormSeat((totalPrice), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket], [...ticketCodeSeats],[...idSeat]);
+            dataFormSeat((totalPrice), [...selectedSeats, seat], [...nameTicketType], [priceOneTicket], [...ticketCodeSeats], [...idSeat]);
             event.target.style.backgroundColor = "#2E7D32";
         } else {
 
@@ -48,8 +51,8 @@ function Seat({dataFormSeat}) {
     };
 
     useEffect(() => {
-        dataFormSeat(totalPrice, selectedSeats, nameTicketType, priceOneTicket, ticketCodeSeats,idSeat);
-    }, [totalPrice, selectedSeats, nameTicketType, priceOneTicket, ticketCodeSeats,idSeat]);
+        dataFormSeat(totalPrice, selectedSeats, nameTicketType, priceOneTicket, ticketCodeSeats, idSeat);
+    }, [totalPrice, selectedSeats, nameTicketType, priceOneTicket, ticketCodeSeats, idSeat]);
 
 
     // Render danh sách ghế
