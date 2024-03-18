@@ -1,67 +1,58 @@
-import {useState} from "react";
+import AdminSidebar from "../component/sidebar/AdminSidebar.jsx";
+import AdminHeader from "../component/header/AdminHeader.jsx";
+import {Navigate, useNavigate} from "react-router-dom";
+import {useAuthor} from "../ultility/customHook/useAuthor.js";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {reLoginWithToken, selectLogoutSuccess} from "../features/user/UserSlice.js";
+import {Bounce, toast} from "react-toastify";
+
 
 const AdminLayout = ({children}) => {
-    const [open, setOpen] = useState(true);
-    const Menus = [
-        {title: "Dashboard", src: "Chart_fill"},
-        {title: "Inbox", src: "Chat"},
-        {title: "Accounts", src: "User", gap: true},
-        {title: "Schedule ", src: "Calendar"},
-        {title: "Search", src: "Search"},
-        {title: "Analytics", src: "Chart"},
-        {title: "Files ", src: "Folder", gap: true},
-        {title: "Setting", src: "Setting"},
-    ];
-    return (
-        <>
-            <div className="flex">
-                <div className={` ${open ? "w-72" : "w-20 "} bg-dark-purple h-screen p-5  pt-8 relative duration-300`}>
-                    <button
-                        className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
-           border-2 rounded-full  ${!open && "rotate-180"}`}
-                        onClick={() => setOpen(!open)}
-                    >
-                        <img src="../assets/best-ticket.svg"/>
-                    </button>
-                    <div className="flex gap-x-4 items-center">
-                        <img
-                            src="./src/assets/logo.png"
-                            className={`cursor-pointer duration-500 ${
-                                open && "rotate-[360deg]"
-                            }`}
-                        />
-                        <h1
-                            className={`text-white origin-left font-medium text-xl duration-200 ${
-                                !open && "scale-0"
-                            }`}
-                        >
-                            Designer
-                        </h1>
+    const isAdmin = useAuthor();
+    const dispatch = useDispatch();
+    const logoutSuccess = useSelector(selectLogoutSuccess)
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (localStorage.getItem("token") !== null ) {
+            dispatch(reLoginWithToken())
+        }
+    }, []);
+    useEffect(() => {
+        if (logoutSuccess) {
+            toast('🦄 Logout success!', {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
+            navigate("/");
+        }
+    }, []);
+    return isAdmin ? (
+            <>
+                <div className="flex max-h-full h-screen overflow-hidden">
+                    <div className="h-screen">
+                        <AdminSidebar/>
                     </div>
-                    <ul className="pt-6">
-                        {Menus.map((Menu, index) => (
-                            <li
-                                key={index}
-                                className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
-              ${Menu.gap ? "mt-9" : "mt-2"} ${
-                                    index === 0 && "bg-light-white"
-                                } `}
-                            >
-                                <img src={`./src/assets/${Menu.src}.png`}/>
-                                <span className={`${!open && "hidden"} origin-left duration-200`}>
-                {Menu.title}
-              </span>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="flex-col  justify-center w-full  overflow-hidden">
+                        <div className="flex-col  max-h-full overflow-hidden">
+                            <AdminHeader/>
+                            <div className="h-fit">
+                                {
+                                    children
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="h-screen flex-1 p-7">
-                    {
-                        children
-                    }
-                </div>
-            </div>
-        </>
-    )
+            </>
+        ) :
+        <Navigate to={"/403"}/>
 }
 export default AdminLayout;
