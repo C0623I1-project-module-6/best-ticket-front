@@ -1,12 +1,13 @@
 import Seat from "./Seat.jsx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getTicketTypes} from "../../features/TicketTypeSlice.js";
 import {setIdSeat, setPrice, setSeats, setTicketCode, setTicketType, setTotalPrice} from "../../features/SeatSlice.js";
 import React, {useEffect, useState} from "react";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 import {useParams} from "react-router-dom";
-import {getTicketByTimeId} from "../../features/TicketSlice.js";
 import "./Ticket.css"
+import {getTicketByTimeId} from "../../features/TicketSlice.js";
+import {updateStatusSuccess} from "../../api/TicketApi.js";
 
 export const TicketBookingStep1 = (props) => {
     const [dataTotalPrice, setDataTotalPrice] = useState(0);
@@ -16,6 +17,7 @@ export const TicketBookingStep1 = (props) => {
     const [dataTicketCode, setDataTicketCode] = useState([]);
     const [dataNameTicketType, setDataNameTicketType] = useState([]);
     const dispatch = useDispatch();
+
     const timeId = useParams().param;
 
     const {formatCurrency} = useFormatCurrency();
@@ -46,6 +48,7 @@ export const TicketBookingStep1 = (props) => {
                 dispatch(setPrice(dataPriceOneTicket));
                 dispatch(setTicketCode(dataTicketCode));
                 dispatch(setIdSeat(dataIdSeat));
+                await updateStatusSuccess(dataSeat);
                 props.callbackData(1);
             } catch (error) {
                 console.error('Error:', error);

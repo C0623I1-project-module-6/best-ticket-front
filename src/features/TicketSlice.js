@@ -17,6 +17,7 @@ const initialState = {
     ticketsByStatus: [],
     ticketsByCustomerId: [],
     ticketForTime: null,
+    ticketWebSocketForTime: null,
     ticketIsBeingSelected: [{ticketCode: "5411-7755-1545"}, {ticketCode: "2489-6202-7687"}],
     loading: false,
     success: false,
@@ -67,13 +68,12 @@ export const getTicketByEventId = createAsyncThunk(
     }
 );
 export const getTicketByTimeId = createAsyncThunk(
-        "tickets/showTicketByTimeId",
-        async (timeId) => {
-            const response = await showTicketByTimeId(timeId);
-            return response.data;
-        }
-    )
-;
+    "tickets/showTicketByTimeId",
+    async (timeId) => {
+        const response = await showTicketByTimeId(timeId);
+        return response.data;
+    }
+);
 
 export const updateStatusTicketSuccess = createAsyncThunk(
         "tickets/updateStatusTicket",
@@ -184,6 +184,7 @@ export const TicketSlice = createSlice({
                 state.error = false;
             })
 
+
             .addCase(updateStatusTicketSuccess.pending, handlePending)
             .addCase(updateStatusTicketSuccess.rejected, handleRejected)
             .addCase(updateStatusTicketSuccess.fulfilled, (state, action) => {
@@ -209,6 +210,7 @@ export const selectLoading = (state) => state.ticket.loading;
 export const selectError = (state) => state.ticket.error;
 export const selectShowTicket = (state) => state.ticket.tickets;
 export const selectShowTicketByTimeId = (state) => state.ticket.ticketForTime;
+export const selectShowTicketWebSocketByTimeId = (state) => state.ticket.ticketWebSocketForTime;
 export const selectShowTicketByEventId = (state) => state.ticket.ticketForEvent;
 export const selectShowTicketByCustomerId = (state) => state.ticket.ticketsByCustomerId;
 export const selectShowTicketIsBeingSelected = (state) => state.ticket.ticketIsBeingSelected;
