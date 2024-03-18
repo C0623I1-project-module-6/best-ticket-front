@@ -12,6 +12,7 @@ import {
     sendOtp,
     unlock
 } from "../../api/UserApi.js";
+import {toast} from "react-toastify";
 
 
 const initialState = {
@@ -46,11 +47,15 @@ export const loginUser = createAsyncThunk(
     "login",
     async (loginData, {rejectWithValue}) => {
         const response = await login(loginData);
-        if (response.status !== 200) {
+        console.log(response.response.status)
+        if (response.response.status !== 200) {
             return rejectWithValue(response.data.message);
         }
+        console.log(response.data.message)
         return response.data;
+
     }
+
 );
 export const reLoginWithToken = createAsyncThunk(
     "loginWithToken",

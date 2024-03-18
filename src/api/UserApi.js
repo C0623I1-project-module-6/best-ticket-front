@@ -11,13 +11,15 @@ export async function login(user) {
         method: "POST",
         data: user
     }).then((res) => {
-        const token = res.data.token
-        localStorage.setItem('token', token)
+        // const token = res.data.token
+        // localStorage.setItem('token', token)
         response = res;
     }).catch((e) => {
         response = e;
     })
+    console.log(response);
     return response;
+
 }
 
 export async function loginWithToken() {
