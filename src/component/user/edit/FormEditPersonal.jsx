@@ -18,6 +18,7 @@ import {
     selectPersonPhoneNumbers,
     selectPersonTaxCodes
 } from "../../../features/user/ExistsSlice.js";
+import {reLoginWithToken} from "../../../features/user/AuthSlice.js";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -95,10 +96,10 @@ export default function FormEditPersonal({
 
     useEffect(() => {
         if (success) {
+            dispatch(reLoginWithToken());
             dispatch(setEditOrganizerSuccess());
             setIsEditMode(false);
             toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
-            navigate("/my-event/legal");
         }
     }, [success]);
     useEffect(() => {

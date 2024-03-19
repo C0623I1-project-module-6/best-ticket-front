@@ -15,7 +15,7 @@ const initialState = {
     tickets: [],
     ticket: null,
     ticketsByStatus: [],
-    ticketsByCustomerId: [],
+    ticketsByCustomerId: null,
     ticketForTime: null,
     ticketWebSocketForTime: null,
     ticketIsBeingSelected: [{ticketCode: "5411-7755-1545"}, {ticketCode: "2489-6202-7687"}],

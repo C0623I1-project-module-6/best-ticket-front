@@ -10,7 +10,7 @@ import {IoIosArrowForward, IoMdMail} from "react-icons/io";
 import {IoTicket} from "react-icons/io5";
 import {selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
 import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
-import {fetchGetUser, } from "../../features/user/UserSlice.js";
+
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
 import {selectUserLogin} from "../../features/user/AuthSlice.js";
@@ -37,9 +37,6 @@ const EventDetail = () => {
     useEffect(() => {
         showEventById(eventId);
         showTimeByEventId(eventId);
-        if (user !== null) {
-            dispatch(fetchGetUser(user.id));
-        }
     }, []);
     return (
         <>
@@ -111,7 +108,8 @@ const EventDetail = () => {
                                              }
                                          }}>
                                         <NavLink to={`${location.pathname}/ticket-booking/${time.id}`}
-                                                 className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua vé ngay
+                                                 className="py-2 px-10 bg-[#EF4141] text-center text-white text-xs">Mua
+                                            vé ngay
                                         </NavLink>
                                     </div>
                                 </div>

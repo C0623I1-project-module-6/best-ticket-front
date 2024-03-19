@@ -1,15 +1,15 @@
 import {useSelector} from "react-redux";
-import {selectUserEdit} from "../../features/user/UserSlice.js";
 import EditOrganizerProfile from "./edit/EditOrganizerProfile.jsx";
 import RegisterOrganizerProfile from "./add/RegisterOrganizerProfile.jsx";
+import {selectUserLogin} from "../../features/user/AuthSlice.js";
 
 export default function OrganizerProfile() {
-    const userEdit = useSelector(selectUserEdit);
+    const user = useSelector(selectUserLogin);
     return (
         <>
             {
-                userEdit?.organizer ? (
-                    <EditOrganizerProfile organizer={userEdit?.organizer}/>
+                user?.organizer ? (
+                    <EditOrganizerProfile organizer={user?.organizer}/>
                 ) : (
                     <RegisterOrganizerProfile/>
                 )

@@ -2,7 +2,6 @@ import {FaPlus, FaRegEdit} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getEventByOrganizerId} from "../../features/EventSlice.js";
-import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
 import {CiClock2} from "react-icons/ci";
 import {GrStatusUnknown} from "react-icons/gr";
 import {IoLocationOutline} from "react-icons/io5";
@@ -13,21 +12,31 @@ import {selectUserLogin} from "../../features/user/AuthSlice.js";
 export default function CreatedEvent() {
     const eventByOrganizer = useSelector(state => state.event.events);
     const user = useSelector(selectUserLogin);
-    const organizer = useSelector(state => state.organizer.value);
+    const organizer = user.organizer;
     const [currentPage, setCurrentPage] = useState(0);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        dispatch(getOrganizerByUserId(user.id));
-    }, [dispatch, user.id]);
+    // useEffect(() => {
+    //     dispatch(getOrganizerByUserId(user.id));
+    // }, [dispatch, user.id]);
 
     useEffect(() => {
-        if (organizer) {
+        if (user.organizer) {
             dispatch(getEventByOrganizerId({organizerId: organizer.id, currentPage}));
         }
     }, [currentPage, organizer, dispatch]);
-
+    const handleCreateEvent = () => {
+        if (user) {
+            if (organizer) {
+                navigate("/event/create")
+            } else {
+                navigate("my-event/legal")
+            }
+        } else {
+            navigate("/login")
+        }
+    }
     return (
         <div className="max-h-screen overflow-y-auto">
             <div className="px-10 py-5">
@@ -40,7 +49,7 @@ export default function CreatedEvent() {
                     </div>
                 </div>
                 <div className="container ">
-                    {user && organizer && eventByOrganizer ? (
+                    {user && user.organizer && eventByOrganizer ? (
                         eventByOrganizer.map(event => (
                             <div
                                 className="bg-gray-300 border-2 rounded-lg flex gap-2 mt-3"

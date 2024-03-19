@@ -14,7 +14,6 @@ import {selectUserLogin, selectUserLogout} from "../../features/user/AuthSlice.j
 
 export default function CustomerProfile() {
     const user = useSelector(selectUserLogin);
-    console.log(user)
     const phoneNumbers = useSelector(selectCustomerPhoneNumbers);
     const idCards = useSelector(selectCustomerIdCards);
     const receiptEmails = useSelector(selectCustomerReceiptEmails);

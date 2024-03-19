@@ -2,7 +2,6 @@ import img from "../../assets/img/cover-event.jpg"
 import {FaFacebookF} from "react-icons/fa";
 import {CiCalendarDate} from "react-icons/ci";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUserEdit} from "../../features/user/UserSlice.js";
 import {selectInfoUser} from "../../features/UserFormInTicketBookingSlice.js";
 import {createBookingForTicket, selectBookingCreate} from "../../features/BookingSlice.js";
 import {useEffect, useState} from "react";
@@ -11,13 +10,14 @@ import {selectShowTimeByEventId} from "../../features/TimeSlice.js";
 import {useParams} from "react-router-dom";
 import Ticket from "./Ticket.jsx";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
+import {selectUserLogin} from "../../features/user/AuthSlice.js";
 
 export const TicketBookingStep3 = () => {
     const dispatch = useDispatch();
     const param = useParams();
     const seatTickets = useSelector(state => state.seat)
     console.log(seatTickets)
-    const userEdit = useSelector(selectUserEdit);
+    const user = useSelector(selectUserLogin);
     const infoUserInput = useSelector(selectInfoUser);
     const event = useSelector(selectEventById);
     const times = useSelector(selectShowTimeByEventId);
@@ -34,7 +34,7 @@ export const TicketBookingStep3 = () => {
     const bookings = {
         infoUserInput: infoUserInput,
         seatTickets: seatTickets,
-        infoUser: userEdit
+        infoUser: user
     }
     useEffect(() => {
         dispatch(createBookingForTicket(bookings))

@@ -7,12 +7,7 @@ import Event from '../content/partials/Event.jsx';
 import {CiLocationOn} from 'react-icons/ci';
 import {findAllEventType} from "../../api/EventTypeApi.js";
 import {useDispatch, useSelector} from 'react-redux';
-import {
-    getAllEvent,
-    getEventBySearchCriteria,
-    getEventsByEventTypes,
-    getEventsByName
-} from '../../features/EventSlice.js';
+import {getAllEvent, getEventsByEventTypes, getEventsByName} from '../../features/EventSlice.js';
 import {useLocation} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
@@ -92,7 +87,8 @@ export default function Search() {
                     </div>
                     <div className="relative z-10 w-full">
                         {showOptions && (
-                            <div className="absolute top-2 right-0 bg-white w-full rounded-lg h-[300px] overflow-y-auto">
+                            <div
+                                className="absolute top-2 right-0 bg-white w-full rounded-lg h-[300px] overflow-y-auto">
                                 <div
                                     onClick={() => setSelectedOptions([])}
                                     className="cursor-pointer hover:bg-green-200 p-2 rounded-lg"

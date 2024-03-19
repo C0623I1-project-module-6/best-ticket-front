@@ -19,6 +19,7 @@ import {
     selectCompanyPhones
 } from "../../../features/user/ExistsSlice.js";
 import {toastOptions} from "../../../ultility/toastOptions.js";
+import {reLoginWithToken} from "../../../features/user/AuthSlice.js";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -84,10 +85,10 @@ export default function FormEditCompany({phoneRegex, organizer, success, error})
 
     useEffect(() => {
         if (success) {
+            dispatch(reLoginWithToken());
             dispatch(setEditOrganizerSuccess());
             setIsEditMode(false);
             toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
-            navigate("/my-event/legal");
         }
     }, [success]);
     useEffect(() => {

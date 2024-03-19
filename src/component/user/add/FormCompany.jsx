@@ -19,6 +19,7 @@ import {
 } from "../../../features/user/ExistsSlice.js";
 import {useEffect} from "react";
 import {toastOptions} from "../../../ultility/toastOptions.js";
+import {reLoginWithToken} from "../../../features/user/AuthSlice.js";
 
 
 export default function FormCompany({phoneRegex,success, error}) {
@@ -69,6 +70,7 @@ export default function FormCompany({phoneRegex,success, error}) {
 
     useEffect(() => {
         if (success) {
+            dispatch(reLoginWithToken());
             dispatch(setRegisterOrganizerSuccess());
             toast.success("🦄 Đăng ký thông tin thành công!", toastOptions)
             navigate("/my-event/legal/createdEvent")

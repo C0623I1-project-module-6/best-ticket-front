@@ -9,36 +9,20 @@ import logoVie from "../../assets/img/logo/Flag_of_Vietnam.svg"
 import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUserEdit} from "../../features/user/UserSlice.js";
 import {toast} from "react-toastify";
-import {getOrganizerByUserId, selectOrganizer} from "../../features/user/OrganizerSlice.js";
 import {toastOptions} from "../../ultility/toastOptions.js";
 import {getTicketsByCustomerId} from "../../features/TicketSlice.js";
-import {
-    logoutUser,
-    selectIsLogin,
-    selectUserLogin,
-    selectUserLogout,
-    setLogoutSuccess
-} from "../../features/user/AuthSlice.js";
-import {selectCustomer} from "../../features/user/CustomerSlice.js";
+import {logoutUser, selectUserLogin, selectUserLogout, setLogoutSuccess} from "../../features/user/AuthSlice.js";
 
 
 const UserHeader = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const user = useSelector(selectUserLogin);
-    console.log(user)
     const dispatch = useDispatch();
     const inputRef = useRef();
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
     const userLogout = useSelector(selectUserLogout);
-    const isLogin = useSelector(selectIsLogin);
-    const organizer = useSelector(selectOrganizer);
-    console.log(organizer)
-    const customer = useSelector(selectCustomer);
-    const userEdit = useSelector(selectUserEdit);
-    console.log(userEdit);
 
     useEffect(() => {
         localStorage.setItem("theme", theme);
@@ -52,9 +36,11 @@ const UserHeader = () => {
             document.documentElement.classList.remove('dark')
         }
     }, [theme]);
+
     useEffect(() => {
         inputRef.current.checked = theme !== "dark";
     }, []);
+
     const changeTheme = async (e) => {
         if (e.target.checked) {
             await setTheme("light")
@@ -178,9 +164,9 @@ const UserHeader = () => {
         navigate("/");
     }
 
-    const handleCreateEvent = async () => {
-        if (isLogin) {
-            dispatch(getOrganizerByUserId(user.id));
+    const handleCreateEvent = () => {
+        const organizer = user.organizer;
+        if (user) {
             if (organizer !== null) {
                 navigate('/event/create');
             } else {
@@ -191,11 +177,12 @@ const UserHeader = () => {
         }
     };
     const handleMyTicket = async () => {
-        if (isLogin) {
-            if (userEdit.customer !== null) {
-                const customerId = userEdit.customer.id;
+        const customer = user.customer;
+        if (user) {
+            if (customer !== null) {
+                const customerId = customer.id;
                 dispatch(getTicketsByCustomerId(customerId));
-                navigate(`/my-ticket/${userEdit.customer.id}`);
+                navigate(`/my-ticket/${customerId}`);
             } else {
                 navigate('/profile');
             }
