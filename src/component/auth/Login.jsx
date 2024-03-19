@@ -1,7 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {useEffect} from "react";
-import {fetchGetUser,} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
@@ -41,7 +40,6 @@ function Login() {
         if (loginSuccess && user && user.token) {
             toast.success("🦄 Bạn đã đăng nhập thành công!", toastOptions);
             dispatch(getOrganizerByUserId(user.id));
-            dispatch(fetchGetUser(user.id));
             navigate("/");
         }
         return () => {

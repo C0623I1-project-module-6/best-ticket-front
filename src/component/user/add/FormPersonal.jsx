@@ -19,6 +19,7 @@ import {
 } from "../../../features/user/ExistsSlice.js";
 import {useEffect} from "react";
 import {toastOptions} from "../../../ultility/toastOptions.js";
+import {reLoginWithToken} from "../../../features/user/AuthSlice.js";
 
 export default function FormPersonal({phoneRegex, success, error}) {
     const navigate = useNavigate();
@@ -69,6 +70,7 @@ export default function FormPersonal({phoneRegex, success, error}) {
 
     useEffect(() => {
         if (success) {
+            dispatch(reLoginWithToken());
             dispatch(setRegisterOrganizerSuccess());
             toast.success("🦄 Đăng ký thông tin thành công!", toastOptions);
             navigate("/my-event/legal/createdEvent");
@@ -80,13 +82,14 @@ export default function FormPersonal({phoneRegex, success, error}) {
             toast.error("🦄 Đăng ký thông tin thất bại!", toastOptions)
         }
     }, [error]);
+    const handleSubmit = (values) => {
+        dispatch(registerOrganizerProfile(values));
+    }
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={validationPersonalSchema}
-            onSubmit={values => {
-                dispatch(registerOrganizerProfile(values));
-            }}>
+            onSubmit={handleSubmit}>
             {formikProps => {
                 const {values, errors, touched} = formikProps;
                 return (
@@ -102,7 +105,7 @@ export default function FormPersonal({phoneRegex, success, error}) {
                                         onChange={formikProps.handleChange}
                                         label="Họ và tên"
                                         placeholder="Vui lòng nhập họ và tên"
-                                        />
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -111,7 +114,7 @@ export default function FormPersonal({phoneRegex, success, error}) {
                                         onChange={formikProps.handleChange}
                                         label="Mã số thuế cá nhân"
                                         placeholder="Vui lòng nhập mã số thuế cá nhân"
-                                        />
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -120,7 +123,7 @@ export default function FormPersonal({phoneRegex, success, error}) {
                                         onChange={formikProps.handleChange}
                                         label="CMNN/CCCD/Hộ chiếu"
                                         placeholder="Vui lòng nhập CMNN/CCCD/Hộ chiếu"
-                                        />
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -129,7 +132,7 @@ export default function FormPersonal({phoneRegex, success, error}) {
                                         component={InputProfile}
                                         onChange={formikProps.handleChange}
                                         label="Ngày cấp"
-                                       />
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -138,7 +141,7 @@ export default function FormPersonal({phoneRegex, success, error}) {
                                         onChange={formikProps.handleChange}
                                         label="Nơi cấp"
                                         placeholder="Vui lòng nhập nơi cấp"
-                                        />
+                                    />
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>
@@ -153,7 +156,7 @@ export default function FormPersonal({phoneRegex, success, error}) {
                                         onChange={formikProps.handleChange}
                                         label="Số điện thoại"
                                         placeholder="Vui lòng nhập số điện thoại"
-                                        />
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <FastField
@@ -163,7 +166,7 @@ export default function FormPersonal({phoneRegex, success, error}) {
                                         onChange={formikProps.handleChange}
                                         label="Email"
                                         placeholder="bestticket@example.com"
-                                        />
+                                    />
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>

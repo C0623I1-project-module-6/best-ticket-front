@@ -13,6 +13,7 @@ function TicketDetails(props) {
     const customerId = useParams().customerId;
     const dispatch = useDispatch();
     const tickets = useSelector(selectShowTicketByCustomerId);
+    console.log(tickets)
     const [activeButton1, setActiveButton1] = useState("");
     const arg = {
         customerId: customerId,

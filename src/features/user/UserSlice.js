@@ -1,12 +1,11 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {forgotPassword, getUser, lock, remove, sendOtp, unlock} from "../../api/UserApi.js";
+import {forgotPassword, lock, remove, sendValidationCode, unlock} from "../../api/UserApi.js";
 
 
 const initialState = {
 
     value: null,
     loading: false,
-    userEdit: JSON.parse(localStorage.getItem("userEdit")) || null,
     sendMailCodeSuccess: false,
     sendMailCodeError: false,
     forgotPasswordSuccess: false,
@@ -20,22 +19,10 @@ const initialState = {
 };
 
 
-export const fetchGetUser = createAsyncThunk(
-    "profile",
-    async (userId, {rejectWithValue}) => {
-        const response = await getUser(userId);
-        if (response.status !== 200) {
-            return rejectWithValue(response.data.message);
-        }
-        return response.data;
-    }
-);
-
-
 export const sendMailCode = createAsyncThunk(
     "send-otp",
-    async (otpData, {rejectWithValue}) => {
-        const response = await sendOtp(otpData);
+    async (data, {rejectWithValue}) => {
+        const response = await sendValidationCode(data);
         if (response.status !== 200) {
             return rejectWithValue(response.data.message);
         }
@@ -95,9 +82,6 @@ export const userSlice = createSlice(
             setValue: (state, action) => {
                 state.value = action.payload;
             },
-            setUserEdit: (state, action) => {
-                state.userEdit = action.payload;
-            },
             setSendMailCodeSuccess: (state, action) => {
                 state.sendMailCodeSuccess = action.payload;
             },
@@ -131,11 +115,6 @@ export const userSlice = createSlice(
         },
         extraReducers: (builder) => {
             builder
-
-                .addCase(fetchGetUser.fulfilled, (state, action) => {
-                    state.userEdit = action.payload.data;
-                    localStorage.setItem("userEdit", JSON.stringify(action.payload.data));
-                })
 
                 .addCase(sendMailCode.pending, (state) => {
                     state.sendMailCodeSuccess = false;
@@ -228,7 +207,6 @@ export const {
 
     setLoading,
     setValue,
-    setUserEdit,
     setSendMailCodeSuccess,
     setSendMailCodeError,
     setForgotPasswordError,
@@ -241,7 +219,6 @@ export const {
     setRemoveUserSuccess,
 
 } = userSlice.actions;
-export const selectUserEdit = (state) => state.user.userEdit;
 export const selectSendMailCodeSuccess = (state) => state.user.sendMailCodeSuccess;
 export const selectSendMailCodeError = (state) => state.user.sendMailCodeSuccess;
 export const selectLockUser = (state) => state.user.value;

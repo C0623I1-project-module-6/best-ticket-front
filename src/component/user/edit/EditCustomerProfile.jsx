@@ -115,12 +115,11 @@ export default function EditCustomerProfile({
     }
     useEffect(() => {
         if (success) {
+            dispatch(reLoginWithToken());
             dispatch(setEditCustomerProfileSuccess());
             dispatch(setUrlAvatar());
-            dispatch(reLoginWithToken());
             toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
             setIsEditMode(false);
-            navigate("/profile");
         }
     }, [success]);
     useEffect(() => {
@@ -129,6 +128,7 @@ export default function EditCustomerProfile({
             toast.error("🦄 Cập nhật thông tin thất bại!", toastOptions);
         }
     }, [error]);
+
     return (
         <Formik initialValues={initialValues}
                 validationSchema={validationEditSchema}
