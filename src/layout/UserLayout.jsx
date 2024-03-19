@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getExistsUsers} from "../features/user/ExistsSlice.js";
 import {getTicketTypes} from "../features/TicketTypeSlice.js";
 import {reLoginWithToken} from "../features/user/AuthSlice.js";
+window.global ||= window;
 
 
 const UserLayout = ({children}) => {

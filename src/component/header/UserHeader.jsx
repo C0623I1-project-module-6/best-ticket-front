@@ -9,11 +9,9 @@ import logoVie from "../../assets/img/logo/Flag_of_Vietnam.svg"
 import logoEng from "../../assets/img/logo/Flag_of_the_United_Kingdom_(3-5).svg"
 import {FaCog, FaSignOutAlt} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
-
 import {selectUserEdit} from "../../features/user/UserSlice.js";
 import {toast} from "react-toastify";
 import {getOrganizerByUserId, selectOrganizer} from "../../features/user/OrganizerSlice.js";
-
 import {toastOptions} from "../../ultility/toastOptions.js";
 import {getTicketsByCustomerId} from "../../features/TicketSlice.js";
 import {
