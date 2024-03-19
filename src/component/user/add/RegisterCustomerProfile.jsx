@@ -16,12 +16,14 @@ import {useEffect} from "react";
 import {FormGroup, Label} from "reactstrap";
 import LockModal from "../../auth/LockModal.jsx";
 import RemoveModal from "../../auth/RemoveModal.jsx";
-import {lockUser, logoutUser, removeUser} from "../../../features/user/UserSlice.js";
+import {lockUser, removeUser} from "../../../features/user/UserSlice.js";
 import {selectUrlAvatar} from "../../../features/FileSlice.js";
 import {toastOptions} from "../../../ultility/toastOptions.js";
+import {logoutUser} from "../../../features/user/AuthSlice.js";
+
 
 function RegisterCustomerProfile({
-                                     userEdit,
+                                     user,
                                      phoneNumbers,
                                      idCards,
                                      receiptEmails,

@@ -1,8 +1,8 @@
 import OrganizerSidebar from "../component/sidebar/OrganizerSidebar.jsx";
 import UserHeader from "../component/header/UserHeader.jsx";
 import {useEffect} from "react";
-import {reLoginWithToken} from "../features/user/UserSlice.js";
 import {useDispatch} from "react-redux";
+import {reLoginWithToken} from "../features/user/AuthSlice.js";
 
 function OrganizerLayout({children}) {
     const dispatch = useDispatch();

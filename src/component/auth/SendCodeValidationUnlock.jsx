@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import {sendMailCode} from "../../features/user/UserSlice.js";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import {FastField, Form, Formik} from "formik";
 import {FormGroup} from "reactstrap";
 import AuthHeader from "../header/AuthHeader.jsx";
@@ -53,7 +53,7 @@ export default function SendCodeValidationUnlock() {
                                         type="email"
                                         name="email"
                                         component={InputRegister}
-                                        label="Email nhận OTP"
+                                        label="Email nhận mã xác thực"
                                         onChange={formikProps.handleChange}/>
                                 </FormGroup>
                                 <FormGroup className="flex justify-center gap-3">

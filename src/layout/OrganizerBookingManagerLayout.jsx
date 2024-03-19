@@ -1,10 +1,11 @@
 import BookingManagerSidebar from "../component/sidebar/BookingManagerSidebar.jsx";
 import {useEffect} from "react";
-import {reLoginWithToken} from "../features/user/UserSlice.js";
+
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {reLoginWithToken} from "../features/user/AuthSlice.js";
 
-function OrganizerBookingManagerLayout({ children }) {
+function OrganizerBookingManagerLayout({children}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ function OrganizerBookingManagerLayout({ children }) {
     return (
         <div className="flex">
             <div className="w-2/6 text-white">
-                <BookingManagerSidebar />
+                <BookingManagerSidebar/>
             </div>
             <div className="bg-white">{children}</div>
         </div>

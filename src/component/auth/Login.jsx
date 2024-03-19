@@ -1,26 +1,31 @@
 import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {useEffect} from "react";
-import {
-    fetchGetUser,
-    loginUser,
-    selectLoginError,
-    selectLoginSuccess,
-    selectUserLogin,
-    setLoginSuccess
-} from "../../features/user/UserSlice.js";
+import {fetchGetUser,} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {getOrganizerByUserId} from "../../features/user/OrganizerSlice.js";
 import {toastOptions} from "../../ultility/toastOptions.js";
+import {
+    loginUser,
+    selectErrorMessage,
+    selectLoginError,
+    selectLoginSuccess,
+    selectUserLogin,
+    setLoginError,
+    setLoginSuccess
+} from "../../features/user/AuthSlice.js";
 
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector(selectUserLogin);
+    console.log(user)
     const loginSuccess = useSelector(selectLoginSuccess);
     const loginError = useSelector(selectLoginError);
-
+    const errorMessage = useSelector(selectErrorMessage);
+    console.log(loginSuccess)
+    console.log(loginError)
     const handleSubmit = async (e) => {
         e.preventDefault()
         const user = {
@@ -43,12 +48,19 @@ function Login() {
             dispatch(setLoginSuccess());
         };
     }, [loginSuccess, user]);
+
     useEffect(() => {
         if (loginError) {
-            toast.error("🦄 Xác thực không thành công. Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!", toastOptions)
+            if (errorMessage === "User is locked!") {
+                navigate("/user-recovery");
+            } else if (errorMessage === "User is deleted!") {
+                toast.error("🦄 Xác thực không thành công.Tài khoản đã bị vô hiệu hóa vĩnh viễn. Vui lòng liên hệ với quản trị viên!", toastOptions);
+            } else {
+                toast.error("🦄 Xác thực không thành công. Vui lòng kiểm tra lại tài khoản hoặc mật khẩu!", toastOptions)
+            }
         }
         return () => {
-            dispatch(setLoginSuccess());
+            dispatch(setLoginError());
         };
     }, [loginError]);
 
@@ -121,7 +133,7 @@ function Login() {
                         <span
                             className="cursor-pointer text-blue-500 hover:text-gray-500 font-bold"
                             onClick={() => {
-                                navigate("/send-otp")
+                                navigate("/code-forgot-password")
                             }}>Forgot password ?</span>
                         <div className="flex">
                             <span className="mx-2 font-bold">
@@ -132,13 +144,6 @@ function Login() {
                                       navigate("/register")
                                   }}>Register</span>
                         </div>
-                    </div>
-                    <div className="w-full flex justify-between text-sm">
-                            <span
-                                className="cursor-pointer text-sm text-blue-500 hover:text-gray-500 font-bold"
-                                onClick={() => {
-                                    navigate("/user-recovery")
-                                }}>Recover account ?</span>
                     </div>
                 </form>
             </div>

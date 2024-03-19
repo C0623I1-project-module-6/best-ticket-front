@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {GoogleLogin} from "@react-oauth/google";
 import {useDispatch, useSelector} from "react-redux";
-import {loginWithGoogle, selectIsLogin} from "../../features/user/UserSlice.js";
+import {loginWithGoogle, selectIsLogin} from "../../features/user/AuthSlice.js";
 
 function AuthHeader(props) {
     const navigate = useNavigate();
@@ -30,7 +30,6 @@ function AuthHeader(props) {
     const loginGoogle = (res) => {
         dispatch(loginWithGoogle(res))
     }
-
 
     return (
         <>

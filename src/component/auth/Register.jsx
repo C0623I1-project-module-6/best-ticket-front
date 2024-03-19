@@ -1,12 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import AuthHeader from "../header/AuthHeader.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    registerUser,
-    selectRegisterError,
-    selectRegisterSuccess,
-    setRegisterSuccess
-} from "../../features/user/UserSlice.js";
 import {toast} from "react-toastify";
 import {selectCustomerPhoneNumbers, selectEmails, selectUsernames} from "../../features/user/ExistsSlice.js";
 import {FastField, Form, Formik} from "formik";
@@ -15,6 +9,14 @@ import {FormGroup} from "reactstrap";
 import * as Yup from "yup";
 import {useEffect} from "react";
 import {toastOptions} from "../../ultility/toastOptions.js";
+import {
+    registerUser,
+    selectRegisterError,
+    selectRegisterSuccess,
+    setRegisterError,
+    setRegisterSuccess
+} from "../../features/user/AuthSlice.js";
+
 
 function Register() {
     const navigate = useNavigate();
@@ -78,7 +80,7 @@ function Register() {
     }, [success]);
     useEffect(() => {
         if (error) {
-            dispatch(setRegisterSuccess());
+            dispatch(setRegisterError());
             toast.error("🦄 Đăng ký thất bại!", toastOptions);
         }
     }, [error]);

@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import {unlockUser} from "../../features/user/UserSlice.js";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import {selectEmails} from "../../features/user/ExistsSlice.js";
 import {toastOptions} from "../../ultility/toastOptions.js";
 
@@ -59,7 +59,7 @@ export default function UnLockUser() {
                                     <FastField
                                         name="otp"
                                         component={InputRegister}
-                                        label="Mã OTP"
+                                        label="Mã xác thực"
                                         onChange={formikProps.handleChange}/>
                                 </FormGroup>
                                 <FormGroup className="flex justify-center gap-3">
@@ -72,7 +72,7 @@ export default function UnLockUser() {
                                         </FormGroup>
                                         <FormGroup className="w-full">
                                             <button type="button" onClick={() => {
-                                                navigate("/send-otp-unlock")
+                                                navigate("/code-unlock")
                                             }}
                                                     className="w-full btn btn-outline btn-primary dark:btn-info">
                                                 Quay lại

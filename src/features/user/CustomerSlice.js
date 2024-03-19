@@ -110,7 +110,7 @@ export const {
 
 export const selectRegisterCustomerSuccess = (state) => state.customer.registerCustomerProfileSuccess;
 export const selectRegisterCustomerError = (state) => state.customer.registerCustomerProfileError;
-export const selectProfileRegister = (state) => state.customer.value;
+export const selectCustomer = (state) => state.customer.value;
 export const selectCustomerProfileEdited = (state) => state.customer.value;
 export const selectEditCustomerProfileSuccess = (state) => state.customer.editCustomerProfileSuccess;
 export const selectEditCustomerProfileError = (state) => state.customer.editCustomerProfileError;

@@ -4,22 +4,13 @@ import AuthHeader from "../header/AuthHeader.jsx";
 import InputRegister from "../../ultility/customField/InputRegister.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import * as Yup from "yup";
 import {forgotPasswordUser} from "../../features/user/UserSlice.js";
 import {selectEmails} from "../../features/user/ExistsSlice.js";
+import {toastOptions} from "../../ultility/toastOptions.js";
 
-const toastOptions = {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    transition: Bounce,
-};
+
 export default function ForgotPassword() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -87,7 +78,7 @@ export default function ForgotPassword() {
                                         type="password"
                                         name="newPassword"
                                         component={InputRegister}
-                                        label="New password"
+                                        label="Mật khẩu mới"
                                         onChange={formikProps.handleChange}/>
                                 </FormGroup>
                                 <FormGroup>
@@ -95,7 +86,7 @@ export default function ForgotPassword() {
                                         type="password"
                                         name="confirmNewPassword"
                                         component={InputRegister}
-                                        label="Confirm new password"
+                                        label="Xác nhận lại mật khẩu mới"
                                         onChange={formikProps.handleChange}/>
                                 </FormGroup>
                                 <FormGroup className="flex justify-center gap-3">
@@ -108,7 +99,7 @@ export default function ForgotPassword() {
                                         </FormGroup>
                                         <FormGroup className="w-full">
                                             <button type="button" onClick={() => {
-                                                navigate("/send-otp")
+                                                navigate("/code-forgot-password")
                                             }}
                                                     className="w-full btn btn-outline btn-primary dark:btn-info">
                                                 Quay lại

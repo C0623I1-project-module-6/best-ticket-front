@@ -1,4 +1,3 @@
-import AuthHeader from "../header/AuthHeader.jsx";
 import {FormGroup} from "reactstrap";
 import {useNavigate} from "react-router-dom";
 
@@ -10,7 +9,10 @@ export default function UserRecovery() {
             <FormGroup name={"Recover account"}/>
             <FormGroup className="mt-1 sm:mx-auto sm:w-full sm:max-w-sm">
                 <FormGroup>
-                    <span className="text-xl">Bạn muốn khôi phục tài khoản bị khóa?</span>
+                    <span className="text-xl">Tài khoản của bạn bị vô hiệu hóa tạm thời.</span>
+                </FormGroup>
+                <FormGroup>
+                    <span className="text-xl">Bạn muốn khôi phục lại tài khoản?</span>
                 </FormGroup>
                 <FormGroup>
                     <span className="text-1xl">Vui lòng chọn tiếp tục.</span>
@@ -19,7 +21,7 @@ export default function UserRecovery() {
                     <FormGroup className="w-full ">
                         <FormGroup className="w-full">
                             <button type="button" onClick={() => {
-                                navigate("/send-otp-unlock")
+                                navigate("/code-unlock")
                             }}
                                     className="w-full btn btn-outline btn-primary dark:btn-info">
                                 Tiếp tục
@@ -28,8 +30,8 @@ export default function UserRecovery() {
                         <FormGroup className="w-full">
                             <button type="button"
                                     onClick={() => {
-                                navigate("/login")
-                            }}
+                                        navigate("/login")
+                                    }}
                                     className="w-full btn btn-outline btn-primary dark:btn-info">
                                 Quay lại
                             </button>

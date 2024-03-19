@@ -3,7 +3,7 @@ import {FaPencil, FaUser} from "react-icons/fa6";
 import {MdEmail} from "react-icons/md";
 import {FaPhone} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUserLogin} from "../../features/user/UserSlice.js";
+
 import {useEffect, useState} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup"
@@ -11,6 +11,7 @@ import {Modal} from 'antd';
 import {updateStatusFail, updateStatusSuccess} from "../../api/TicketApi.js";
 import {setValues} from "../../features/UserFormInTicketBookingSlice.js";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
+import {selectUserLogin} from "../../features/user/AuthSlice.js";
 
 
 export const TicketBookingStep2 = (props) => {

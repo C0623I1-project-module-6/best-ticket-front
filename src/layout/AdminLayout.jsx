@@ -4,8 +4,8 @@ import {Navigate, useNavigate} from "react-router-dom";
 import {useAuthor} from "../ultility/customHook/useAuthor.js";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {reLoginWithToken, selectLogoutSuccess} from "../features/user/UserSlice.js";
 import {Bounce, toast} from "react-toastify";
+import {reLoginWithToken, selectLogoutSuccess} from "../features/user/AuthSlice.js";
 
 
 const AdminLayout = ({children}) => {
@@ -14,7 +14,7 @@ const AdminLayout = ({children}) => {
     const logoutSuccess = useSelector(selectLogoutSuccess)
     const navigate = useNavigate();
     useEffect(() => {
-        if (localStorage.getItem("token") !== null ) {
+        if (localStorage.getItem("token") !== null) {
             dispatch(reLoginWithToken())
         }
     }, []);

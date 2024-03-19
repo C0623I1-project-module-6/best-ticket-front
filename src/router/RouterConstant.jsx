@@ -39,10 +39,10 @@ import SendCodeValidationUnlock from "../component/auth/SendCodeValidationUnlock
 export const ROUT_DATA = [
     {path: "/login", element: Login, layout: GuestLayout},
     {path: "/register", element: Register, layout: GuestLayout},
-    {path: "/send-otp", element: SendCodeValidationForgotPassword, layout: GuestLayout},
+    {path: "/code-forgot-password", element: SendCodeValidationForgotPassword, layout: GuestLayout},
     {path: "/forgot-password", element: ForgotPassword, layout: GuestLayout},
     {path: "/unlock", element: UnLockUser, layout: GuestLayout},
-    {path: "/send-otp-unlock", element: SendCodeValidationUnlock, layout: GuestLayout},
+    {path: "/code-unlock", element: SendCodeValidationUnlock, layout: GuestLayout},
     {path: "/user-recovery", element: UserRecovery, layout: GuestLayout},
     {path: "/403", element: ForbiddenPage, layout: ErrorLayout},
     {path: "/404", element: NotFoundPage, layout: ErrorLayout},

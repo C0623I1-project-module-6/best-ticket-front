@@ -2,7 +2,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {
     editCustomerProfile,
-    selectCustomerProfileEdited,
     selectEditCustomerProfileError,
     selectEditCustomerProfileSuccess,
     setEditCustomerProfileError,
@@ -16,11 +15,13 @@ import * as Yup from "yup";
 import {Button, input} from "@material-tailwind/react";
 import InputProfile from "../../../ultility/customField/InputProfile.jsx";
 import {FormGroup, Label} from "reactstrap";
-import {fetchGetUser, lockUser, logoutUser, removeUser} from "../../../features/user/UserSlice.js";
+import {lockUser, removeUser} from "../../../features/user/UserSlice.js";
 import LockModal from "../../auth/LockModal.jsx";
 import RemoveModal from "../../auth/RemoveModal.jsx";
 import {selectUrlAvatar, setUrlAvatar} from "../../../features/FileSlice.js";
 import {toastOptions} from "../../../ultility/toastOptions.js";
+import {logoutUser, reLoginWithToken} from "../../../features/user/AuthSlice.js";
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -28,7 +29,7 @@ function classNames(...classes) {
 
 export default function EditCustomerProfile({
                                                 customer,
-                                                userEdit,
+                                                user,
                                                 phoneNumbers,
                                                 idCards,
                                                 receiptEmails,
@@ -56,7 +57,7 @@ export default function EditCustomerProfile({
         gender: currentGender,
     } = customer;
 
-    const {avatar: currentAvatar} = userEdit;
+    const {avatar: currentAvatar} = user;
 
     const initialValues = {
         fullName: "" || currentFullName,
@@ -116,7 +117,7 @@ export default function EditCustomerProfile({
         if (success) {
             dispatch(setEditCustomerProfileSuccess());
             dispatch(setUrlAvatar());
-            dispatch(fetchGetUser(userEdit.id));
+            dispatch(reLoginWithToken());
             toast.success("🦄 Cập nhật thông tin thành công!", toastOptions);
             setIsEditMode(false);
             navigate("/profile");
@@ -150,7 +151,7 @@ export default function EditCustomerProfile({
                                                 <FastField
                                                     name="username"
                                                     component={InputProfile}
-                                                    placeholder={userEdit.username}
+                                                    placeholder={user.username}
                                                     label="Username"
                                                     disabled
                                                 />
@@ -160,7 +161,7 @@ export default function EditCustomerProfile({
                                                     type="email"
                                                     name="email"
                                                     component={InputProfile}
-                                                    placeholder={userEdit.email}
+                                                    placeholder={user.email}
                                                     label="Email"
                                                     disabled
                                                 />

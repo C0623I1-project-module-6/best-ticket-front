@@ -4,11 +4,12 @@ import {Avatar} from "@material-tailwind/react";
 import avatar from "../../../assets/img/User.png";
 import {useSelector} from "react-redux";
 import {twMerge} from 'tailwind-merge';
+import {selectUserLogin} from "../../../features/user/AuthSlice.js";
 
 export default function CreateEventSideBar() {
     const location = useLocation();
     const pathname = location.pathname;
-    const user = useSelector((state) => state.user.value);
+    const user = useSelector(selectUserLogin);
     const navigate = useNavigate();
     const steps = [
         {
