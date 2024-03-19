@@ -10,9 +10,10 @@ import {IoIosArrowForward, IoMdMail} from "react-icons/io";
 import {IoTicket} from "react-icons/io5";
 import {selectShowTicketTypes} from "../../features/TicketTypeSlice.js";
 import {getTimeByEventId, selectShowTimeByEventId} from "../../features/TimeSlice.js";
-import {fetchGetUser, selectUserLogin} from "../../features/user/UserSlice.js";
+import {fetchGetUser, } from "../../features/user/UserSlice.js";
 import {useFormatDateFull} from "../../ultility/customHook/useFormatDateFull.js";
 import {useFormatCurrency} from "../../ultility/customHook/useFormatCurrency.js";
+import {selectUserLogin} from "../../features/user/AuthSlice.js";
 
 const EventDetail = () => {
     const dispatch = useDispatch();

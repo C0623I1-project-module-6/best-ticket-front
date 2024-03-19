@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 
-import {selectLockUser, selectRemoveUser, selectUserEdit, selectUserLogout} from "../../features/user/UserSlice.js";
+import {selectLockUser, selectRemoveUser} from "../../features/user/UserSlice.js";
 import {useState} from "react";
 import EditCustomerProfile from "./edit/EditCustomerProfile.jsx";
 import RegisterCustomerProfile from "./add/RegisterCustomerProfile.jsx";
@@ -9,10 +9,12 @@ import {
     selectCustomerPhoneNumbers,
     selectCustomerReceiptEmails
 } from "../../features/user/ExistsSlice.js";
+import {selectUserLogin, selectUserLogout} from "../../features/user/AuthSlice.js";
 
 
 export default function CustomerProfile() {
-    const userEdit = useSelector(selectUserEdit);
+    const user = useSelector(selectUserLogin);
+    console.log(user)
     const phoneNumbers = useSelector(selectCustomerPhoneNumbers);
     const idCards = useSelector(selectCustomerIdCards);
     const receiptEmails = useSelector(selectCustomerReceiptEmails);
@@ -26,10 +28,10 @@ export default function CustomerProfile() {
     return (
         <>
             {
-                userEdit?.customer ? (
+                user?.customer ? (
                     <EditCustomerProfile
-                        customer={userEdit?.customer}
-                        userEdit={userEdit}
+                        customer={user?.customer}
+                        user={user}
                         phoneNumbers={phoneNumbers}
                         idCards={idCards}
                         receiptEmails={receiptEmails}
@@ -44,7 +46,7 @@ export default function CustomerProfile() {
                     />
                 ) : (
                     <RegisterCustomerProfile
-                        userEdit={userEdit}
+                        user={user}
                         phoneNumbers={phoneNumbers}
                         idCards={idCards}
                         receiptEmails={receiptEmails}

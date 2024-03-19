@@ -6,19 +6,20 @@ import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import {useDispatch, useSelector} from "react-redux";
 import {findAllEventType} from "../../../api/EventTypeApi.js";
-import {getDistrict, getProvince, ProvincesApi} from "../../../api/ProvincesApi.js";
+import {getDistrict, getProvince} from "../../../api/ProvincesApi.js";
 import {CalculateDuration} from "../../../ultility/customHook/calculateDuration.js";
 import {addEvent} from "../../../features/EventSlice.js";
 import {toast} from "react-toastify";
 import {FaRegSave} from "react-icons/fa";
 import {IoMdArrowRoundForward} from "react-icons/io";
 import {useNavigate} from "react-router-dom";
+import {selectOrganizer} from "../../../features/user/OrganizerSlice.js";
 
 const CreateEventStep1 = () => {
     const navigate = useNavigate();
     const [eventTypes, setEventTypes] = useState([]);
     const [provinces, setProvinces] = useState([]);
-    const [district,setDistrict] = useState([]);
+    const [district, setDistrict] = useState([]);
     const [selectedProvince, setSelectedProvince] = useState("");
     const [selectedDistrict, setSelectedDistrict] = useState("");
     const [address, setAddress] = useState("");
@@ -28,7 +29,7 @@ const CreateEventStep1 = () => {
     const [eventName, setEventName] = useState("");
     const [eventDescription, setEventDescription] = useState("")
     const dispatch = useDispatch();
-    const organizer = useSelector(state => state.organizer.value)
+    const organizer = useSelector(selectOrganizer)
 
     const fetchApiEventTypes = async () => {
         try {
@@ -61,7 +62,7 @@ const CreateEventStep1 = () => {
                 setDistrict(DistrictData.results);
                 console.log(DistrictData);
             }
-        } catch  {
+        } catch {
             console.error("loi api");
         }
     };

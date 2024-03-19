@@ -127,7 +127,7 @@ export const {
 
 export const selectRegisterOrganizerSuccess = (state) => state.organizer.registerOrganizerSuccess;
 export const selectRegisterOrganizerError = (state) => state.organizer.registerOrganizerError;
-export const selectOrganizerRegister = (state) => state.organizer.value;
+export const selectOrganizer = (state) => state.organizer.value;
 export const selectEditOrganizerSuccess = (state) => state.organizer.editOrganizerSuccess;
 export const selectEditOrganizerError = (state) => state.organizer.editOrganizerError;
 export const selectOrganizerEdit = (state) => state.organizer.value;

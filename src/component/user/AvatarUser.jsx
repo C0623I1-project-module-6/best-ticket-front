@@ -1,11 +1,11 @@
 import {Avatar} from "@material-tailwind/react";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUserLogin} from "../../features/user/UserSlice.js";
 import {FormGroup, Label} from "reactstrap";
 import {useNavigate} from "react-router-dom";
 import {selectSuccess, setSuccess, uploadFirebase} from "../../features/FileSlice.js";
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
+import {selectUserLogin} from "../../features/user/AuthSlice.js";
 
 export default function AvatarUser() {
     const dispatch = useDispatch();

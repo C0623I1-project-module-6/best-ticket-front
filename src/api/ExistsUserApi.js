@@ -14,7 +14,7 @@ export async function fetchExistsUsers() {
     }).then((res) => {
         response = res;
     }).catch((e) => {
-        response = e;
+        response = e.response;
     })
 
     return response;

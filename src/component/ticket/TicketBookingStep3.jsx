@@ -2,7 +2,7 @@ import img from "../../assets/img/cover-event.jpg"
 import {FaFacebookF} from "react-icons/fa";
 import {CiCalendarDate} from "react-icons/ci";
 import {useDispatch, useSelector} from "react-redux";
-import {selectUserEdit, selectUserLogin} from "../../features/user/UserSlice.js";
+import {selectUserEdit} from "../../features/user/UserSlice.js";
 import {selectInfoUser} from "../../features/UserFormInTicketBookingSlice.js";
 import {createBookingForTicket, selectBookingCreate} from "../../features/BookingSlice.js";
 import {useEffect, useState} from "react";

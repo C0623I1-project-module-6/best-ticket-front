@@ -1,15 +1,9 @@
 import backgroundLight from "../assets/img/logo/logo-page-auth-light.png";
 import backgroundDark from "../assets/img/logo/logo-page-auth-dark.png";
 import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {selectIsLogin} from "../features/user/UserSlice.js";
-import {useNavigate} from "react-router-dom";
 
 const GuestLayout = ({children}) => {
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
-    const isLogin = useSelector(selectIsLogin);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
     useEffect(() => {
         localStorage.setItem("theme", theme);
         if (
@@ -22,16 +16,6 @@ const GuestLayout = ({children}) => {
             document.documentElement.classList.remove('dark')
         }
     }, [theme]);
-    // useEffect(() => {
-    //     if (isLogin) {
-    //         navigate("/")
-    //     }
-    // }, [isLogin]);
-    // useEffect(() => {
-    //     if (localStorage.getItem("token") !== null) {
-    //         dispatch(reLoginWithToken())
-    //     }
-    // }, [])
 
     return (
         <div className="flex-row ">

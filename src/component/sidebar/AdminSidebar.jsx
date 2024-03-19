@@ -5,9 +5,9 @@ import {ImTicket} from "react-icons/im";
 import {useNavigate, useParams} from "react-router-dom";
 import {Avatar} from "@material-tailwind/react";
 import {useEffect, useRef, useState} from "react";
-import {logoutUser, selectUserLogout} from "../../features/user/UserSlice.js";
-import {Bounce, toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
+import {logoutUser, selectUserLogout} from "../../features/user/AuthSlice.js";
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')

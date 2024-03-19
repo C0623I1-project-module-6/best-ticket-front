@@ -14,12 +14,14 @@ import SeatSlice from "../features/SeatSlice.js";
 import UserFormInTicketBookingSlice from "../features/UserFormInTicketBookingSlice.js";
 import FileSlice from "../features/FileSlice.js";
 import ExistsSlice from "../features/user/ExistsSlice.js";
+import AuthSlice from "../features/user/AuthSlice.js";
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = configureStore(
         {
             reducer: {
+                auth: AuthSlice,
                 user: UserSlice,
                 event: EventSlice,
                 ticket: TicketSlice,

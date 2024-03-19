@@ -15,7 +15,7 @@ export async function createOrganizer(organizer) {
   }).then((res) => {
     response = res;
   }).catch((e) => {
-    response = e;
+    response = e.response;
   })
   return response;
 }
@@ -31,7 +31,7 @@ export async function updateOrganizer(editOrganizer) {
   }).then((res) => {
     response = res;
   }).catch((e) => {
-    response = e;
+    response = e.response;
   })
   return response;
 }
@@ -49,7 +49,7 @@ export async function findByUserId({userId}) {
   }).then((res) => {
     response = res;
   }).catch((e) => {
-    response = e;
+    response = e.response;
   })
   return response;
 }

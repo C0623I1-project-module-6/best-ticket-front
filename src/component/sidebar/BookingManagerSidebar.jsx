@@ -4,15 +4,23 @@ import {GiReturnArrow} from "react-icons/gi";
 import {GrAnnounce, GrUserManager} from "react-icons/gr";
 import {BiSolidDiscount} from "react-icons/bi";
 import {useNavigate, useParams} from "react-router-dom";
-import {logoutUser, selectUserLogin, selectUserLogout, setLoginSuccess} from "../../features/user/UserSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import avatar from "../../assets/img/User.png";
 import {getExistsUsers, selectExistsList} from "../../features/user/ExistsSlice.js";
 import {Avatar, Popover, PopoverContent, PopoverHandler} from "@material-tailwind/react";
 import {FaQuestionCircle, FaSignOutAlt} from "react-icons/fa";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import logo from "../../assets/img/logo/logo-auth-header-light.svg";
 import {twMerge} from 'tailwind-merge';
+import {
+    logoutUser,
+    selectIsLogin,
+    selectUserLogin,
+    selectUserLogout,
+    setLoginSuccess
+} from "../../features/user/AuthSlice.js";
+import {toastOptions} from "../../ultility/toastOptions.js";
+
 
 const BookingManagerSidebar = () => {
     const eventId = useParams().eventId;
@@ -22,22 +30,12 @@ const BookingManagerSidebar = () => {
     const userExists = useSelector(selectExistsList)
     const userLogout = useSelector(selectUserLogout);
     const pathName = location.pathname;
-    const isLogin = useSelector(state => state.user.isLogin)
+    const isLogin = useSelector(selectIsLogin)
 
     const logout = () => {
         dispatch(logoutUser(userLogout));
         dispatch(setLoginSuccess())
-        toast('🦄 Logout success!', {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-        });
+        toast('🦄 Hẹn gặp lại!', toastOptions);
         navigate("/login");
     }
 
@@ -156,12 +154,12 @@ const BookingManagerSidebar = () => {
                 {steps.map((step, index) => (<li key={index}
                                                  className={twMerge('flex gap-5 items-center hover:bg-[#ece8f3] hover:text-black py-3 px-5 mb-0', step.active && 'bg-gray-400 text-black ')}
                                                  onClick={() => navigate(step.url)}
-                    >
+                >
                     <span className={`rounded-full h-10 w-10 flex items-center justify-center text-xl`}>
                         {step.icon}
                     </span>
-                        <p>{step.title}</p>
-                    </li>))}
+                    <p>{step.title}</p>
+                </li>))}
             </ul>
             <div className="h-screen">
                 <div className="text-center flex">

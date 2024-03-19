@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import InputRegister from "../../ultility/customField/InputRegister.jsx";
 import {sendMailCode} from "../../features/user/UserSlice.js";
-import {Bounce, toast} from "react-toastify";
+import {toast} from "react-toastify";
 import * as Yup from "yup";
 import {selectEmails} from "../../features/user/ExistsSlice.js";
 import {toastOptions} from "../../ultility/toastOptions.js";
@@ -52,7 +52,7 @@ export default function SendCodeValidationForgotPassword() {
                                         type="email"
                                         name="email"
                                         component={InputRegister}
-                                        label="Email nhận OTP"
+                                        label="Email nhận mã xác thực"
                                         onChange={formikProps.handleChange}/>
                                 </FormGroup>
                                 <FormGroup className="flex justify-center gap-3">
