@@ -157,6 +157,11 @@ const BookingManagerEventSummarize = () => {
         }, []);
     }
 
+    let countForSoldTicketsByTicketType = 0;
+    let countForProcessedTicketsByTicketType = 0;
+    let countForSoldTicketsByAllTicketType = 0;
+    let countForProcessedTicketsByAllTicketType = 0;
+
     useEffect(() => {
         if (tickets && tickets.data) {
             let calculatedSoldTicketsTotalAmount = 0;
@@ -175,7 +180,8 @@ const BookingManagerEventSummarize = () => {
                         calculatedSoldTicketsTotalAmount += ticket.ticketType.price;
                     } else if (ticket.status === "Canceled" && ticket.time.time === ticketTime) {
                         countForCanceledTickets += 1;
-                    } else if (ticket.time.time === ticketTime) {
+                    }
+                    else if (ticket.time.time === ticketTime && (ticket.status !== "Success" || ticket.status !== "Canceled")) {
                         countForExpiredTickets += 1;
                     }
                 }
@@ -188,11 +194,6 @@ const BookingManagerEventSummarize = () => {
             setExpiredTicketsCount(countForExpiredTickets);
         }
     }, [event.id, filteredTimes, serviceFee, sortByDate, tickets]);
-
-    let countForSoldTicketsByTicketType = 0;
-    let countForProcessedTicketsByTicketType = 0;
-    let countForSoldTicketsByAllTicketType = 0;
-    let countForProcessedTicketsByAllTicketType = 0;
 
     return (<>
         <div className="mt-16 mb-10 mx-[10%] border border-gray-300 rounded-xl text-black">
